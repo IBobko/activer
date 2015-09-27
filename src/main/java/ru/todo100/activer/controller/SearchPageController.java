@@ -22,7 +22,7 @@ import ru.todo100.activer.service.MarkRelationService;
 import ru.todo100.activer.service.MarkService;
 
 /**
- * @author igor
+ * @author Igor Bobko <limit-speed@yandex.ru>
  */
 
 @Controller
@@ -48,30 +48,35 @@ public class SearchPageController
 	public String canSearch(Model model, @RequestParam("s") String s)
 	{
 		final MarkItem item = markService.findMark(s);
-		final List<MarkRelationItem> items = markRelationService.findByMarkId(item.getId());
 
-		final List<MarkSearchData> result = new ArrayList<>();
-
-		for (MarkRelationItem i : items)
+		if (item != null)
 		{
-			final MarkSearchData markSearchData = new MarkSearchData();
-			if (i.getCW())
+
+			final List<MarkRelationItem> items = markRelationService.findByMarkId(item.getId());
+
+			final List<MarkSearchData> result = new ArrayList<>();
+
+			for (MarkRelationItem i : items)
 			{
-				ICanItem i1 = iCanService.get(i.getRelationId());
-				markSearchData.setCW(i.getCW());
-				markSearchData.setAccount(i1.getAccount());
-				markSearchData.setMarkItem(item);
+				final MarkSearchData markSearchData = new MarkSearchData();
+				if (i.getCW())
+				{
+					ICanItem i1 = iCanService.get(i.getRelationId());
+					markSearchData.setCW(i.getCW());
+					markSearchData.setAccount(i1.getAccount());
+					markSearchData.setMarkItem(item);
+				}
+				else
+				{
+					IWantItem i2 = iWantService.get(i.getRelationId());
+					markSearchData.setCW(i.getCW());
+					markSearchData.setAccount(i2.getAccount());
+					markSearchData.setMarkItem(item);
+				}
+				result.add(markSearchData);
 			}
-			else
-			{
-				IWantItem i2 = iWantService.get(i.getRelationId());
-				markSearchData.setCW(i.getCW());
-				markSearchData.setAccount(i2.getAccount());
-				markSearchData.setMarkItem(item);
-			}
-			result.add(markSearchData);
+			model.addAttribute("result", result);
 		}
-		model.addAttribute("result", result);
 		return "search/index";
 	}
 }
