@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd"
+>
+	<context:property-placeholder location="/WEB-INF/servlet.properties" />
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<bean
+		id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+	>
+		<property name="driverClassName">
+			<value>com.mysql.jdbc.Driver</value>
+		</property>
+		<property name="url">
+			<value>jdbc:mysql://localhost:3306/${db.database}?characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull
+			</value>
+		</property>
+		<property name="username">
+			<value>${db.username}</value>
+		</property>
+		<property name="password">
+			<value>${db.password}</value>
+		</property>
+	</bean>
+	<bean
+		id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+	>
+		<property
+			name="sessionFactory"
+			ref="sessionFactory"
+		></property>
+		<property
+			name="nestedTransactionAllowed"
+			value="true" />
+	</bean>
+	<bean
+		id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+	>
+		<property
+			name="dataSource"
+			ref="dataSource" />
+		<property
+			name="packagesToScan"
+			value="ru.todo100.activer.model" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.max_fetch_depth">3</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+	<!-- Classess for work of db tables -->
+	<bean
+		id="initApplication"
+		class="ru.todo100.activer.util.Startup"
+		scope="singleton"
+		lazy-init="false" />
+	<bean
+		id="serviceAbstract"
+		class="ru.todo100.activer.service.ServiceAbstract"
+		abstract="true" />
+	<bean
+		id="parameterService"
+		class="ru.todo100.activer.service.ParameterService"
+		parent="serviceAbstract" />
+	<bean
+		id="model3dService"
+		class="ru.todo100.activer.service.Model3dService"
+		parent="serviceAbstract" />
+	<bean
+		id="categoryService"
+		class="ru.todo100.activer.service.CategoryService"
+		parent="serviceAbstract" />
+	<bean
+		id="accountService"
+		class="ru.todo100.activer.service.AccountService"
+		parent="serviceAbstract" />
+	<bean
+		id="markService"
+		class="ru.todo100.activer.service.MarkService"
+		parent="serviceAbstract" />
+	<bean
+		id="wishService"
+		class="ru.todo100.activer.service.WishService"
+		parent="serviceAbstract" />
+	<bean
+		id="accountBuyService"
+		class="ru.todo100.activer.service.AccountBuyService"
+		parent="serviceAbstract" />
+	<bean
+		id="orderService"
+		class="ru.todo100.activer.service.OrderService"
+		parent="serviceAbstract" />
+	<bean
+		id="blogService"
+		class="ru.todo100.activer.service.BlogService"
+		parent="serviceAbstract" />
+	<bean
+		id="countryService"
+		class="ru.todo100.activer.service.CountryService"
+		parent="serviceAbstract" />
+	<bean
+		id="saveModel3d"
+		class="ru.todo100.activer.util.SaveModel3d" />
+	<!-- end classess -->
+	<bean
+		id="dBRequest"
+		class="ru.todo100.activer.util.DBRequest" />
+	<context:annotation-config />
+	<tx:annotation-driven />
+	<import resource="security-context.xml" />
+	<bean
+		id="MyFilter"
+		class="ru.todo100.activer.filter.AddingStandartItemsFilter" />
+	<bean
+		id="jmxExporter"
+		class="org.springframework.jmx.export.MBeanExporter"
+	>
+		<property name="beans">
+			<map>
+				<!-- entry
+					key="bean:name=test"
+					value-ref="initApplication" /-->
+			</map>
+		</property>
+	</bean>
+	<bean
+		id="myProperties"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean"
+	>
+		<property name="locations">
+			<list>
+				<value>/WEB-INF/servlet.properties</value>
+			</list>
+		</property>
+	</bean>
+	<bean
+		id="mailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl"
+	>
+		<property
+			name="host"
+			value="smtp.yandex.ru" />
+		<property
+			name="username"
+			value="support@3dplenty.com" />
+		<property
+			name="password"
+			value="3dplenty" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.ssl.enable">true</prop>
+				<prop key="mail.smtp.from">support@3dplenty.com</prop>
+			</props>
+		</property>
+	</bean>
+	<bean
+		id="velocityEngine"
+		class="org.springframework.ui.velocity.VelocityEngineFactoryBean"
+	>
+		<property name="velocityProperties">
+			<props>
+				<prop key="resource.loader">file</prop>
+				<prop key="file.resource.loader.class">org.apache.velocity.runtime.resource.loader.FileResourceLoader
+				</prop>
+				<prop key="file.resource.loader.path">/</prop>
+				<prop key="file.resource.loader.cache">false</prop>
+				<prop key="file.resource.loader.modificationCheckInterval">0</prop>
+			</props>
+		</property>
+	</bean>
+	<bean
+		id="mailBean"
+		class="ru.todo100.activer.util.MailBean"
+	>
+		<property
+			name="mailSender"
+			ref="mailSender" />
+		<property
+			name="velocityEngine"
+			ref="velocityEngine" />
+	</bean>
+	<!-- Localization -->
+	<bean
+		id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+	>
+		<property
+			name="basename"
+			value="classpath:messages" />
+		<property
+			name="defaultEncoding"
+			value="utf-8" />
+	</bean>
+	<bean
+		id="localeResolver"
+		class="org.springframework.web.servlet.i18n.CookieLocaleResolver"
+	>
+		<property
+			name="defaultLocale"
+			value="en" />
+	</bean>
+	<mvc:annotation-driven />
+</beans>

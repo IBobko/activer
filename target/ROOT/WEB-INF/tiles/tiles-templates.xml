@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+	
+	<definition name="base-template" template="/WEB-INF/templates/base-template.jsp">
+    	<put-attribute name="title" value="3D PLENTY" />
+    	<put-attribute name="header" value="/WEB-INF/templates/header.jsp" />
+    	<put-attribute name="content" value="" />
+    	<put-attribute name="footer" value="/WEB-INF/templates/footer.jsp" />
+	</definition>
+
+	<definition name="index/index" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/index/index.jsp" />
+	</definition>
+
+	<definition name="auth/index" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/auth/index.jsp" />
+	</definition>
+
+	<definition name="auth/denied" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/auth/denied.jsp" />
+	</definition>
+	
+	<definition name="auth/signup" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/auth/signup.jsp" />
+	</definition>
+	
+	<definition name="auth/done" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/auth/done.jsp" />
+	</definition>
+	
+	<definition name="auth/forgot" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/auth/forgot.jsp" />
+	</definition>
+	
+	<definition name="model3d/index" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/model3d/index.jsp" />
+	</definition>
+
+	<definition name="model3d/show" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/model3d/show.jsp" />
+	</definition>
+
+	<definition name="model3d/upload" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/model3d/upload.jsp" />
+	</definition>
+	
+	<definition name="model3d/purchase" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/model3d/purchase.jsp" />
+	</definition>
+	
+	<definition name="model3d/search" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/model3d/search.jsp" />
+	</definition>
+	
+	<definition name="model3d/edit" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/model3d/edit.jsp" />
+	</definition>	
+
+	<definition name="category/index" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/category/index.jsp" />
+	</definition>	
+	
+	<definition name="profile/index" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/profile/index.jsp" />
+	</definition>
+	
+	<definition name="profile/change" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/profile/change.jsp" />
+	</definition>
+	
+	<definition name="admin/index" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/admin/index.jsp" />
+	</definition>	
+	
+	<definition name="admin/accounts" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/admin/accounts.jsp" />
+	</definition>	
+	
+	<definition name="admin/model3ds" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/admin/model3ds.jsp" />
+	</definition>
+		
+	<definition name="about/index" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/about/index.jsp" />
+	</definition>
+	
+	<definition name="mysql/index" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/mysql/index.jsp" />
+	</definition>
+	
+	<definition name="mysql/sqlfile" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/mysql/sqlfile.jsp" />
+	</definition>
+	
+	<definition name="mysql/tables" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/mysql/tables.jsp" />
+	</definition>
+	
+	<definition name="wish/index" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/wish/index.jsp" />
+	</definition>
+	
+	<definition name="error/modelFileNotFound" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/error/modelFileNotFound.jsp" />
+	</definition>
+
+	<definition name="error/modelNotPaid" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/error/modelNotPaid.jsp" />
+	</definition>
+	
+	<definition name="order/index" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/order/index.jsp" />
+	</definition>
+	
+	<definition name="payment/fail" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/payment/fail.jsp" />
+	</definition>
+	
+	<definition name="payment/success" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/payment/success.jsp" />
+	</definition>
+	
+	<definition name="mark/index" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/mark/index.jsp" />
+	</definition>
+
+	<definition name="category/edit-list" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/category/edit-list.jsp" />
+	</definition>
+	
+	<definition name="category/edit" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/category/edit.jsp" />
+	</definition>
+	
+	<definition name="blog/index" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/blog/index.jsp" />
+	</definition>
+	
+	<definition name="blog/edit" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/blog/edit.jsp" />
+	</definition>
+	
+	<definition name="auth/agree/commission" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/auth/agreement-commision.jsp" />
+	</definition>
+	
+	<definition name="auth/agree/buysell" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/auth/agreement-buysell.jsp" />
+	</definition>
+	
+</tiles-definitions> 
