@@ -29,6 +29,8 @@
                 <form:input cssClass="form-control" placeholder="Введите текст поиска" path="s"/>
                 <button type="submit" class="btn btn-default">Искать</button>
             </form:form>
+
+            <a href="/j_spring_security_logout" style="margin-top: 10px">Выход</a>
         </div>
         </sec:authorize>
     </div>

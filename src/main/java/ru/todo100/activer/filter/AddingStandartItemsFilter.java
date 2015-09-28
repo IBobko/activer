@@ -39,7 +39,7 @@ public class AddingStandartItemsFilter extends GenericFilterBean
 	{
 		request.setAttribute("countries", getCountry());
 		request.setAttribute("months", getMonth());
-		request.setAttribute("categories", getCategories());
+
 		request.setAttribute("searchForm", new SearchForm());
 		filterChain.doFilter(request, response);
 	}
@@ -63,12 +63,5 @@ public class AddingStandartItemsFilter extends GenericFilterBean
 		String[] newMonths = new String[12];
 		System.arraycopy(months, 0, newMonths, 0, newMonths.length);
 		return newMonths;
-	}
-
-	private List<CategoryItem> getCategories()
-	{
-		final Criteria criteria = categoryService.getCriteria();
-		criteria.add(Restrictions.or(Restrictions.isNull("parent"), Restrictions.eq("parent", 0l)));
-		return criteria.list();
 	}
 }
