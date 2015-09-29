@@ -1,5 +1,22 @@
+body {
+    background-color:#f5f8fa;
+}
+
+.navbar-default {
+    background-color: #2882b5;
+}
+
+
+.well {
+    border: 1px solid #d3e0e9;
+    background-color: #fff;
+}
 ul.model3d {
 	overflow: hidden;
+}
+
+.navbar-default .navbar-brand {
+    color: rgba(255, 255, 255,0.8 );
 }
 
 ul.model3d li {

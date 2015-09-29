@@ -21,7 +21,7 @@
 
 <nav style="margin-top:20px" class="navbar navbar-default">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Activer</a>
+        <a class="navbar-brand" href="<c:url value="/"/> ">Activer</a>
         <sec:authorize access="isAuthenticated()">
 
         <div style="float:right">
@@ -29,6 +29,8 @@
                 <form:input cssClass="form-control" placeholder="Введите текст поиска" path="s"/>
                 <button type="submit" class="btn btn-default">Искать</button>
             </form:form>
+
+            <a href="/j_spring_security_logout" style="margin-top: 10px">Выход</a>
         </div>
         </sec:authorize>
     </div>

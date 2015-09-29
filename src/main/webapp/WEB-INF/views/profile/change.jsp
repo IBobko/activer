@@ -1,7 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="profile" tagdir="/WEB-INF/tags/profile" %>
+
 <div>
+
     <% if (request.getAttribute("ie") != null)
     { %>
     <div class="alert alert-danger">
@@ -15,26 +18,19 @@
     <% if (request.getAttribute("success") != null)
     { %>
     <div class="alert alert-success">
-        Password is changed
-        </ul>
+        Изменения успешно сохранены
     </div>
     <% } %>
-    <form method="post">
-
-        <tiles:insertTemplate template="/WEB-INF/views/auth/form.jsp"/>
-
+    <form:form method="post" commandName="changeProfileForm" enctype="multipart/form-data">
+        <profile:change_form/>
         <div class="form-group">
-            <label for="inputPassword">Password</label>
-            <input type="password" class="form-control" placeholder="Enter the password" name="password" id="inputPassword">
+            <label for="facePhoto">Фотография профиля</label>
+            <form:input type="file" class="form-control" id="facePhoto" placeholder="Подтвердите пароль" path="facePhoto"/>
         </div>
-        <div class="form-group">
-            <label for="inputRepeatPassword">Repeat the password</label>
-            <input type="password" class="form-control" placeholder="Repeat the password" name="repeat_password"
-                   id="inputRepeatPassword">
-        </div>
+
         <div class="form-group">
             <input type="submit" class="btn btn-primary" value="Change"/>
         </div>
-    </form>
-    <a href="<%=request.getContextPath() %>/profile/">Go to profile</a>
+    </form:form>
+    <a href="<c:url value="/profile/"/>">Вернуться</a>
 </div>

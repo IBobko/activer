@@ -1,14 +1,10 @@
 package ru.todo100.activer.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import ru.todo100.activer.data.ICanData;
 import ru.todo100.activer.data.IWantData;
-import ru.todo100.activer.data.MarkData;
 import ru.todo100.activer.facade.MarkFacade;
+import ru.todo100.activer.form.ChangeProfileForm;
 import ru.todo100.activer.form.ICanForm;
 import ru.todo100.activer.form.IWantForm;
 import ru.todo100.activer.model.AccountItem;
@@ -67,7 +63,7 @@ public class ProfilePageController
 	private MarkService markService;
 
 	@Autowired
-	MarkRelationService markRelationService;
+	private MarkRelationService markRelationService;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String index(Model model)
@@ -80,25 +76,34 @@ public class ProfilePageController
 	}
 
 	@RequestMapping(value = "/change")
-	public String change(HttpServletRequest request, Model model) throws IOException
+	public String change(HttpServletRequest request, Model model,@ModelAttribute final ChangeProfileForm changeProfileForm) throws IOException
 	{
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		AccountItem account = accountService.get(auth.getName());
 		model.addAttribute("account", account);
+
+		changeProfileForm.setEmail(account.getEmail());
+		changeProfileForm.setFirstName(account.getFirstName());
+		changeProfileForm.setLastName(account.getLastName());
+
+		System.out.println(changeProfileForm.getFacePhoto());
+
+
+		model.addAttribute("changeProfileForm", changeProfileForm);
+
 		if (request.getMethod().equals("POST"))
 		{
-			String password = request.getParameter("password");
-			String repeatPassword = request.getParameter("repeat_password");
 			InputError ie = new InputError();
-			if (password.trim().equals(""))
+			if (!changeProfileForm.getPassword().trim().equals(""))
 			{
-				ie.addError("Password is empty");
+				if (!changeProfileForm.getPassword().equals(changeProfileForm.getRepeatPassword()))
+				{
+					ie.addError("Repeat password is not matched");
+				} else {
+					account.setPassword(changeProfileForm.getRepeatPassword());
+				}
 			}
 
-			if (!password.equals(repeatPassword))
-			{
-				ie.addError("Repeat password is not matched");
-			}
 
 			if (ie.getErrors().size() != 0)
 			{
@@ -106,7 +111,6 @@ public class ProfilePageController
 			}
 			else
 			{
-				account.setPassword(repeatPassword);
 				accountService.save(account);
 				model.addAttribute("success", true);
 			}
@@ -127,10 +131,9 @@ public class ProfilePageController
 		final AccountItem accountItem = accountService.getCurrentAccount();
 		ICanItem canItem = iCanService.add(accountItem, iCanForm);
 
+		String[] marks = StringUtils.tokenizeToStringArray(iCanForm.getMarks(), ",", true, true);
 
-		String[] marks = StringUtils.tokenizeToStringArray(iCanForm.getMarks(),",",true,true);
-
-		for (String mark: marks)
+		for (String mark : marks)
 		{
 			MarkItem item = markService.findMark(mark.trim());
 			if (item == null)
@@ -152,7 +155,6 @@ public class ProfilePageController
 			}
 		}
 
-
 		return "redirect:/profile";
 	}
 
@@ -166,13 +168,6 @@ public class ProfilePageController
 	@RequestMapping(value = "/add_i_want", method = RequestMethod.POST)
 	public String doAddIWant(@ModelAttribute IWantForm iWantForm)
 	{
-
-
-
-
-
-
-
 
 		final AccountItem accountItem = accountService.getCurrentAccount();
 		iWantService.add(accountItem, iWantForm);
@@ -199,9 +194,9 @@ public class ProfilePageController
 		final AccountItem accountItem = accountService.getCurrentAccount();
 		ICanItem canItem = iCanService.add(accountItem, iCanForm);
 
-		String[] marks = StringUtils.tokenizeToStringArray(iCanForm.getMarks(),",",true,true);
+		String[] marks = StringUtils.tokenizeToStringArray(iCanForm.getMarks(), ",", true, true);
 
-		for (String mark: marks)
+		for (String mark : marks)
 		{
 			MarkItem item = markService.findMark(mark.trim());
 			if (item == null)
@@ -246,9 +241,9 @@ public class ProfilePageController
 		final AccountItem accountItem = accountService.getCurrentAccount();
 		IWantItem wantItem = iWantService.add(accountItem, iWantForm);
 
-		String[] marks = StringUtils.tokenizeToStringArray(iWantForm.getMarks(),",",true,true);
+		String[] marks = StringUtils.tokenizeToStringArray(iWantForm.getMarks(), ",", true, true);
 
-		for (String mark: marks)
+		for (String mark : marks)
 		{
 			MarkItem item = markService.findMark(mark.trim());
 			if (item == null)
@@ -270,5 +265,15 @@ public class ProfilePageController
 			}
 		}
 		return "redirect:/profile";
+	}
+
+	@RequestMapping(value = "/id{id:\\d+}", method = RequestMethod.GET)
+	public String people(Model model, @PathVariable Integer id)
+	{
+		final AccountItem account = accountService.get(id.longValue());
+		model.addAttribute("account", account);
+		model.addAttribute("cans", iCanService.getAll());
+		model.addAttribute("wants", iWantService.getAll());
+		return "profile/index";
 	}
 }

@@ -21,7 +21,7 @@
 
 <nav style="margin-top:20px" class="navbar navbar-default">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Activer</a>
+        <a class="navbar-brand" href="<c:url value="/"/> ">Activer</a>
         <sec:authorize access="isAuthenticated()">
 
         <div style="float:right">
