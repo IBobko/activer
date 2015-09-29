@@ -1,5 +1,8 @@
 package ru.todo100.activer.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +37,7 @@ import ru.todo100.activer.service.ICanService;
 import ru.todo100.activer.service.IWantService;
 import ru.todo100.activer.service.MarkRelationService;
 import ru.todo100.activer.service.MarkService;
+import ru.todo100.activer.strategy.PhotoStrategy;
 import ru.todo100.activer.util.InputError;
 
 @Controller
@@ -65,6 +69,9 @@ public class ProfilePageController
 	@Autowired
 	private MarkRelationService markRelationService;
 
+	@Autowired
+	private PhotoStrategy photoStrategy;
+
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String index(Model model)
 	{
@@ -76,7 +83,8 @@ public class ProfilePageController
 	}
 
 	@RequestMapping(value = "/change")
-	public String change(HttpServletRequest request, Model model,@ModelAttribute final ChangeProfileForm changeProfileForm) throws IOException
+	public String change(HttpServletRequest request, Model model, @ModelAttribute final ChangeProfileForm changeProfileForm)
+					throws IOException
 	{
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		AccountItem account = accountService.get(auth.getName());
@@ -88,7 +96,6 @@ public class ProfilePageController
 
 		System.out.println(changeProfileForm.getFacePhoto());
 
-
 		model.addAttribute("changeProfileForm", changeProfileForm);
 
 		if (request.getMethod().equals("POST"))
@@ -99,11 +106,12 @@ public class ProfilePageController
 				if (!changeProfileForm.getPassword().equals(changeProfileForm.getRepeatPassword()))
 				{
 					ie.addError("Repeat password is not matched");
-				} else {
+				}
+				else
+				{
 					account.setPassword(changeProfileForm.getRepeatPassword());
 				}
 			}
-
 
 			if (ie.getErrors().size() != 0)
 			{
@@ -112,6 +120,13 @@ public class ProfilePageController
 			else
 			{
 				accountService.save(account);
+
+				if (!changeProfileForm.getFacePhoto().isEmpty())
+				{
+					System.out.println("Start");
+					System.out.println(photoStrategy.saveFile(changeProfileForm.getFacePhoto()));
+				}
+
 				model.addAttribute("success", true);
 			}
 		}
