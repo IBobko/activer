@@ -40,11 +40,13 @@ public class MailBean {
 	            message.setSubject("Registration on 3dplenty.com");
 	            Map<String, String> model = new HashMap<String, String>();
 	            model.put("fullName", account.getFirstName() + " " + account.getLastName());
-	            model.put("login", account.getUsername());
+	            model.put("login", account.getUsername());/*	            String text = VelocityEngineUtils.mergeTemplateIntoString(
+	               velocityEngine, servletContext.getRealPath("/WEB-INF/velocity/email/forgot.vm"), model);*/
+/*	            message.setText(text, true);
 	            model.put("password", account.getPassword());
-	            String text = VelocityEngineUtils.mergeTemplateIntoString(
-	               velocityEngine, servletContext.getRealPath("/WEB-INF/velocity/email/registration.vm"), model);
-	            message.setText(text, true);
+//	            String text = VelocityEngineUtils.mergeTemplateIntoString(
+//	               velocityEngine, servletContext.getRealPath("/WEB-INF/velocity/email/registration.vm"), model);
+	            message.setText(text, true);*/
 			}
 		};
 		mailSender.send(preparator);
@@ -62,9 +64,9 @@ public class MailBean {
 	            model.put("fullName", account.getFirstName() + " " + account.getLastName());
 	            model.put("login", account.getUsername());
 	            model.put("password", account.getPassword());
-	            String text = VelocityEngineUtils.mergeTemplateIntoString(
-	               velocityEngine, servletContext.getRealPath("/WEB-INF/velocity/email/forgot.vm"), model);
-	            message.setText(text, true);
+//	            String text = VelocityEngineUtils.mergeTemplateIntoString(
+//	               velocityEngine, servletContext.getRealPath("/WEB-INF/velocity/email/forgot.vm"), model);
+//	            message.setText(text, true);
 			}
 		};
 		mailSender.send(preparator);		

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import ru.todo100.activer.data.ICanData;
 import ru.todo100.activer.data.IWantData;
+import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.facade.MarkFacade;
 import ru.todo100.activer.form.ChangeProfileForm;
 import ru.todo100.activer.form.ICanForm;
@@ -32,6 +33,7 @@ import ru.todo100.activer.model.MarkItem;
 import ru.todo100.activer.model.MarkRelationItem;
 import ru.todo100.activer.populators.ICanPopulator;
 import ru.todo100.activer.populators.IWantPopulator;
+import ru.todo100.activer.populators.ProfilePopulator;
 import ru.todo100.activer.service.AccountService;
 import ru.todo100.activer.service.ICanService;
 import ru.todo100.activer.service.IWantService;
@@ -72,11 +74,17 @@ public class ProfilePageController
 	@Autowired
 	private PhotoStrategy photoStrategy;
 
+	@Autowired
+	private ProfilePopulator profilePopulator;
+
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String index(Model model)
 	{
 		final AccountItem account = accountService.getCurrentAccount();
-		model.addAttribute("account", account);
+
+		ProfileData profile = profilePopulator.populate(account);
+
+		model.addAttribute("profile", profile);
 		model.addAttribute("cans", iCanService.getAll());
 		model.addAttribute("wants", iWantService.getAll());
 		return "profile/index";

@@ -126,9 +126,7 @@
 		id="saveModel3d"
 		class="ru.todo100.activer.util.SaveModel3d" />
 	<!-- end classess -->
-	<bean
-		id="dBRequest"
-		class="ru.todo100.activer.util.DBRequest" />
+
 	<context:annotation-config />
 	<tx:annotation-driven />
 	<import resource="security-context.xml" />
@@ -218,6 +216,9 @@
 	<bean id="markPopulator" class="ru.todo100.activer.populators.MarkPopulator"/>
 	<bean id="iCanPopulator" class="ru.todo100.activer.populators.ICanPopulator"/>
 	<bean id="iWantPopulator" class="ru.todo100.activer.populators.IWantPopulator"/>
+
+
+	<bean id="profilePopulator" class="ru.todo100.activer.populators.ProfilePopulator"/>
 
 
 	<bean id="markRelationService" class="ru.todo100.activer.service.MarkRelationService"/>

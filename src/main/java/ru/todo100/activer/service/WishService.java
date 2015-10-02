@@ -19,9 +19,9 @@ public class WishService extends ServiceAbstract{
 		return WishItem.class;
 	}
 	
-	public CategoryItem get(Long id) {
+	public WishItem get(Long id) {
 		Session session = getSession();
-		CategoryItem obj = (CategoryItem) session.get(this.getItemClass(), id);
+		WishItem obj = (WishItem) session.get(this.getItemClass(), id);
 		return obj;
 	}
 	

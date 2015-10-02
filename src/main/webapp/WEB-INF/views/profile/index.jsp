@@ -7,10 +7,9 @@
 <div style="overflow:hidden">
 
     <div style="float:left;margin-right:10px;background-color:#fff;border-radius:4px;">
-        <img src="https://pp.vk.me/c625218/v625218991/47afc/t5gNpfpElTA.jpg" style="width:250px;border-radius: 4px"/><br/>
-
+        <img src="${profile.facePhotoUrl}" style="border-radius: 4px"/>
         <div style="font-weight:600;font-size:16px;text-align: center;line-height:2.2">
-            ${account.firstName} ${account.lastName}
+            ${profile.firstName} ${profile.lastName}
         </div>
     </div>
 </div>
