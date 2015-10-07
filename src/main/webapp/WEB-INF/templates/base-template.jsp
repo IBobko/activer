@@ -23,15 +23,17 @@
     <div class="container-fluid">
         <a class="navbar-brand" href="<c:url value="/"/> ">Activer</a>
         <sec:authorize access="isAuthenticated()">
+            <a class="navbar-brand" href="<c:url value="/message"/> ">Сообщения</a>
+            <a class="navbar-brand" href="<c:url value="/search/people"/> ">Поиск людей</a>
 
-        <div style="float:right">
-            <form:form method="get" commandName="searchForm" action="${searchUrl}" cssClass="navbar-form navbar-left">
-                <form:input cssClass="form-control" placeholder="Введите текст поиска" path="s"/>
-                <button type="submit" class="btn btn-default">Искать</button>
-            </form:form>
+            <div style="float:right">
+                <form:form method="get" commandName="searchForm" action="${searchUrl}" cssClass="navbar-form navbar-left">
+                    <form:input cssClass="form-control" placeholder="Введите текст поиска" path="s"/>
+                    <button type="submit" class="btn btn-default">Искать</button>
+                </form:form>
 
-            <a href="/j_spring_security_logout" style="margin-top: 10px">Выход</a>
-        </div>
+                <a href="/j_spring_security_logout" style="margin-top: 10px">Выход</a>
+            </div>
         </sec:authorize>
     </div>
 </nav>

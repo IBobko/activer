@@ -24,4 +24,7 @@ public class AccountBuyService extends ServiceAbstract{
 		Session session = getSession();
 		session.saveOrUpdate(item);
 	}
+
+
+
 }

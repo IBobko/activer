@@ -16,9 +16,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
-import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.SortType;
 
 
 @Entity
@@ -46,7 +44,6 @@ public class CategoryItem extends Item {
 	
     @NotFound(action = NotFoundAction.IGNORE)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="parent")
-	@Sort(type = SortType.NATURAL)
 	@Fetch(FetchMode.SUBSELECT)
 /*
     @Cascade({   org.hibernate.annotations.CascadeType.ALL,

@@ -17,6 +17,8 @@ public class ProfilePopulator implements Populator<AccountItem,ProfileData>
 	@Autowired
 	private PhotoService photoService;
 
+
+
 	@Override
 	public ProfileData populate(final AccountItem accountItem)
 	{
@@ -25,9 +27,14 @@ public class ProfilePopulator implements Populator<AccountItem,ProfileData>
 		ProfileData profileData = new ProfileData();
 		profileData.setFirstName(accountItem.getFirstName());
 		profileData.setLastName(accountItem.getLastName());
-		profileData.setFacePhotoUrl(facePhoto.getPath());
+
+		profileData.setId(accountItem.getId().intValue());
+
+		if (facePhoto != null) {
+			profileData.setFacePhotoUrl(facePhoto.getPath());
 		File f = new File(facePhoto.getPath());
 		profileData.setFacePhotoUrl(f.getParent() + "/" + "thumb_" + f.getName());
+	}
 		return profileData;
 	}
 }

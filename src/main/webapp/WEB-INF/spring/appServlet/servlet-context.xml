@@ -31,6 +31,8 @@
 		mapping="/resources/**"
 		location="/resources/" />
 	<context:component-scan base-package="ru.todo100.activer.controller" />
+
+	<context:component-scan base-package="ru.todo100.activer.config"/>
 	<!-- Configure Apache Tiles for the view -->
 	<beans:bean
 		id="tilesConfigurer"

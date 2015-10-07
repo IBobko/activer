@@ -1,11 +1,11 @@
 package ru.todo100.activer.controller;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import ru.todo100.activer.data.ICanData;
 import ru.todo100.activer.data.IWantData;
@@ -39,6 +40,7 @@ import ru.todo100.activer.service.ICanService;
 import ru.todo100.activer.service.IWantService;
 import ru.todo100.activer.service.MarkRelationService;
 import ru.todo100.activer.service.MarkService;
+import ru.todo100.activer.service.WallService;
 import ru.todo100.activer.strategy.PhotoStrategy;
 import ru.todo100.activer.util.InputError;
 
@@ -75,6 +77,9 @@ public class ProfilePageController
 	private PhotoStrategy photoStrategy;
 
 	@Autowired
+	private WallService wallService;
+
+	@Autowired
 	private ProfilePopulator profilePopulator;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
@@ -84,8 +89,20 @@ public class ProfilePageController
 
 		ProfileData profile = profilePopulator.populate(account);
 
+		List<AccountItem> friends = accountService.getFriends(account.getId().intValue());
+		List<ProfileData> friendsData = new ArrayList<>();
+		for (AccountItem friend : friends)
+		{
+			if (friend != null)
+			{
+				ProfileData friendData = profilePopulator.populate(friend);
+				friendsData.add(friendData);
+			}
+		}
+		profile.setFriends(friendsData);
 		model.addAttribute("profile", profile);
 		model.addAttribute("cans", iCanService.getAll());
+		populatePersonOfPage(model,account);
 		model.addAttribute("wants", iWantService.getAll());
 		return "profile/index";
 	}
@@ -294,9 +311,41 @@ public class ProfilePageController
 	public String people(Model model, @PathVariable Integer id)
 	{
 		final AccountItem account = accountService.get(id.longValue());
-		model.addAttribute("account", account);
+		ProfileData profile = profilePopulator.populate(account);
+		List<AccountItem> friends = accountService.getFriends(account.getId().intValue());
+		List<ProfileData> friendsData = new ArrayList<>();
+		for (AccountItem friend : friends)
+		{
+			if (friend != null)
+			{
+				ProfileData friendData = profilePopulator.populate(friend);
+				friendsData.add(friendData);
+			}
+		}
+		profile.setFriends(friendsData);
+
+
+
+		model.addAttribute("account", profile);
 		model.addAttribute("cans", iCanService.getAll());
 		model.addAttribute("wants", iWantService.getAll());
+
+		populatePersonOfPage(model,account);
 		return "profile/index";
 	}
+
+	@RequestMapping(value = "/{id:\\d+}/add", method = RequestMethod.GET)
+	@ResponseBody
+	public void addToFriend(HttpServletResponse response, Model model, @PathVariable Integer id) throws IOException
+	{
+		accountService.addFriend(accountService.getCurrentAccount(), id);
+		response.getOutputStream().print("Succesfull");
+	}
+
+
+	void populatePersonOfPage(Model model,AccountItem account) {
+		model.addAttribute("personOfPage", account);
+		model.addAttribute("wall",wallService.getAllByAccount(account.getId().intValue()));
+	}
+
 }

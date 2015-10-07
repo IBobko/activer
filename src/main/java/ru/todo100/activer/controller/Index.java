@@ -1,5 +1,6 @@
 package ru.todo100.activer.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -7,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(value = "/")
 public class Index
 {
+
+
 	final public String AUTH_REDIRECT = "redirect:/auth";
 	@RequestMapping
 	public String index()
@@ -14,3 +17,5 @@ public class Index
 		return AUTH_REDIRECT;
 	}
 }
+
+

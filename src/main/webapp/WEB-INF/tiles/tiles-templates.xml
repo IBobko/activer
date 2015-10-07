@@ -165,5 +165,18 @@
 	<definition name="auth/agree/buysell" extends="base-template">
     	<put-attribute name="content" value="/WEB-INF/views/auth/agreement-buysell.jsp" />
 	</definition>
+
+	<definition name="message/index" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/message/index.jsp" />
+	</definition>
+
+	<definition name="search/people" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/search/people.jsp" />
+	</definition>
+
+	<definition name="message/comunicate" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/message/comunicate.jsp" />
+	</definition>
+
 	
 </tiles-definitions> 

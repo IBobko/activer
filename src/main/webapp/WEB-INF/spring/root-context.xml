@@ -121,13 +121,15 @@
 
 	<bean id="photoService" class="ru.todo100.activer.service.PhotoService"/>
 
+	<bean id="messageService" class="ru.todo100.activer.service.MessageService" />
+
 
 	<bean
 		id="saveModel3d"
 		class="ru.todo100.activer.util.SaveModel3d" />
 	<!-- end classess -->
 
-	<context:annotation-config />
+	<context:annotation-config  />
 	<tx:annotation-driven />
 	<import resource="security-context.xml" />
 	<bean
@@ -220,15 +222,20 @@
 
 	<bean id="profilePopulator" class="ru.todo100.activer.populators.ProfilePopulator"/>
 
+	<bean id="messagePopulator" class="ru.todo100.activer.populators.ProfilePopulator"/>
+
 
 	<bean id="markRelationService" class="ru.todo100.activer.service.MarkRelationService"/>
 
 	<bean id="markFacade" class="ru.todo100.activer.facade.MarkFacade"/>
 
+	<bean id="wallService" class="ru.todo100.activer.service.WallService"/>
 
 	<bean id="photoStrategy" class="ru.todo100.activer.strategy.PhotoStrategy">
 		<property name="pathToSave" value="/resources/photos"/>
 	</bean>
+
+	<bean id="accountFriendRelationService" class="ru.todo100.activer.service.AccountFriendRelationService"/>
 
 
 	<bean
