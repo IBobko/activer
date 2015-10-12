@@ -16,12 +16,14 @@
     <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/style.css"/>">
     <script type="text/javascript" src="<c:url value="/resources/js/jquery-1.10.2.min.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
+    <script type="text/javascript" src="/resources/sockjs-0.3.4.js"></script>
+    <script type="text/javascript" src="/resources/stomp.js"></script>
 </head>
 <body>
 
 <nav style="margin-top:20px" class="navbar navbar-default">
     <div class="container-fluid">
-        <a class="navbar-brand" href="<c:url value="/"/> ">Activer</a>
+        <a class="navbar-brand" href="<c:url value="/profile"/> ">Activer</a>
         <sec:authorize access="isAuthenticated()">
             <a class="navbar-brand" href="<c:url value="/message"/> ">Сообщения</a>
             <a class="navbar-brand" href="<c:url value="/search/people"/> ">Поиск людей</a>

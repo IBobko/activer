@@ -12,25 +12,37 @@
  * <p>
  * (c) 2015 by NOVARDIS
  *********************************************************************/
-package ru.todo100.activer.controller;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+package ru.todo100.activer.data;
 
 /**
- *
- *
  * @author igor
- * @package ru.todo100.activer.controller
+ * @package ru.todo100.activer.data
  * @link http://www.novardis.com/
  * @copyright 2015 NOVARDIS
  */
-@Controller
-public class MessageTestController
+public class MessageAccountData
 {
-	@RequestMapping("/test")
-	public String greeting() throws Exception {
+	private String firstName;
+	private String lastName;
 
-		return "hello";
+	public String getLastName()
+	{
+		return lastName;
+	}
+
+	public void setLastName(final String lastName)
+	{
+		this.lastName = lastName;
+	}
+
+	public String getFirstName()
+	{
+
+		return firstName;
+	}
+
+	public void setFirstName(final String firstName)
+	{
+		this.firstName = firstName;
 	}
 }

@@ -1,5 +1,7 @@
 package ru.todo100.activer.model;
 
+import java.util.Calendar;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,6 +26,18 @@ public class MessageItem extends Item
 	private Integer accountTo;
 	@Column(name = "text")
 	private String  text;
+	@Column(name = "added_date")
+	private Calendar addedDate;
+
+	public Calendar getAddedDate()
+	{
+		return addedDate;
+	}
+
+	public void setAddedDate(final Calendar addedDate)
+	{
+		this.addedDate = addedDate;
+	}
 
 	public Integer getId()
 	{

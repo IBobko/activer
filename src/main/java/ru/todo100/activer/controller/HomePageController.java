@@ -6,14 +6,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping(value = "/")
-public class Index
+public class HomePageController
 {
-
-
 	final public String AUTH_REDIRECT = "redirect:/auth";
 	@RequestMapping
 	public String index()
 	{
+		String hello = "hello";
+		System.out.println(hello + " " + "World" + " Image");
+
 		return AUTH_REDIRECT;
 	}
 }

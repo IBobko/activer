@@ -6,7 +6,7 @@
     }
 </style>
 
-<div style="width:350px;margin:0px auto">
+<div class="well" style="width:350px;margin:0px auto">
     <c:if test="${ie != null}">
         <div class="alert alert-danger">
             <ul>
@@ -32,8 +32,8 @@
             <tr>
                 <td></td>
                 <td style="text-align: center">
-                    <a href="<c:url value="/auth/forgot"/>">Забыли пароль</a>
-                    <a href="<c:url value="/auth/signup"/>">Регистрация</a>
+                    <a href="<c:url value="/auth/forgot"/>" class="btn btn-default">Забыли пароль</a>
+                    <a href="<c:url value="/auth/signup"/>" class="btn btn-default">Регистрация</a>
                 </td>
             </tr>
 

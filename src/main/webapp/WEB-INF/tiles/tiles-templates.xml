@@ -92,10 +92,6 @@
 	<definition name="admin/model3ds" extends="base-template">
     	<put-attribute name="content" value="/WEB-INF/views/admin/model3ds.jsp" />
 	</definition>
-		
-	<definition name="about/index" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/about/index.jsp" />
-	</definition>
 	
 	<definition name="mysql/index" extends="base-template">
     	<put-attribute name="content" value="/WEB-INF/views/mysql/index.jsp" />
@@ -174,8 +170,8 @@
 		<put-attribute name="content" value="/WEB-INF/views/search/people.jsp" />
 	</definition>
 
-	<definition name="message/comunicate" extends="base-template">
-		<put-attribute name="content" value="/WEB-INF/views/message/comunicate.jsp" />
+	<definition name="message/communicate" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/message/communicate.jsp" />
 	</definition>
 
 	

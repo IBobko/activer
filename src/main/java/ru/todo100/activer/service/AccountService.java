@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import ru.todo100.activer.config.Environment;
 import ru.todo100.activer.model.AccountFriendRelationItem;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.util.InputError;
@@ -68,6 +69,10 @@ public class AccountService extends ServiceAbstract
 		if (auth != null && auth.isAuthenticated())
 		{
 			return get(auth.getName());
+		}
+
+		if (Environment.terrarium != null) {
+			return get(Environment.terrarium.getName());
 		}
 		return null;
 	}

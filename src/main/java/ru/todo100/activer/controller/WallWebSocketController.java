@@ -19,6 +19,7 @@ import ru.todo100.activer.service.WallService;
  * @author Igor Bobko
  */
 @Controller
+
 public class WallWebSocketController
 {
 	@Autowired

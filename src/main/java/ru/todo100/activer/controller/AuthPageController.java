@@ -17,7 +17,8 @@ import ru.todo100.activer.util.MailBean;
 
 @Controller
 @RequestMapping(value = "/auth")
-public class Auth {
+public class AuthPageController
+{
 	@Autowired
 	private AccountService accountService;
 	@Autowired

@@ -1,9 +1,13 @@
 package ru.todo100.activer.service;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.LogicalExpression;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import ru.todo100.activer.model.Item;
@@ -32,15 +36,23 @@ public class MessageService extends ServiceAbstract
 		return messageItems;
 	}
 
-
+	/**
+	 * Gets last messages
+	 *
+	 * @param id
+	 * @return last messages
+	 */
 	public List<MessageItem> getLastDialogs(Integer id) {
-		Criterion condition = Restrictions.or(
+		final Criterion condition = Restrictions.or(
 						Restrictions.eq("accountTo", id),
 						Restrictions.eq("accountFrom", id)
 		);
 
-		final List<MessageItem> messageItems = getCriteria().add(condition).list();
-
+		final Criteria criteria = getCriteria().add(condition).addOrder(Order.desc("addedDate"));
+		/** @TODO Убрать статическое число **/
+		final List<MessageItem> messageItems = criteria.setMaxResults(10).list();
+		Collections.reverse(messageItems);;
 		return messageItems;
 	}
+
 }

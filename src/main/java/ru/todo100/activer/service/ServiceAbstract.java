@@ -21,7 +21,7 @@ abstract public class ServiceAbstract {
 	}
 	
 	public Session getSession() {
-		Session session = sessionFactory.openSession();
+		Session session = sessionFactory.getCurrentSession();
 		return session;
 	}
 	
