@@ -1,6 +1,9 @@
 package ru.todo100.activer.strategy;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -54,7 +57,7 @@ public class PhotoStrategy
 		}
 		catch (IOException e)
 		{
-			System.out.println(e.getMessage());
+			/** @Todo Реализовать исключение **/
 		}
 	}
 
@@ -110,6 +113,11 @@ public class PhotoStrategy
 								new File(getClass().getResource("/../../").getPath() + getPathToSave() + "/thumb_" + randomFileName),
 								StringUtils.getFilenameExtension(randomFileName)
 				);
+				resize2(
+								new File(name),
+								new File(getClass().getResource("/../../").getPath() + getPathToSave() + "/60x60_" + randomFileName),
+								StringUtils.getFilenameExtension(randomFileName)
+				);
 			}
 			catch (Exception ignored)
 			{
@@ -118,5 +126,45 @@ public class PhotoStrategy
 			return getPathToSave() + "/" + randomFileName;
 		}
 		return null;
+	}
+
+	private static BufferedImage generateMinimal(BufferedImage originalImage, int type,int width)
+	{
+		final int height = (int) (width * (double) originalImage.getHeight() / (double) originalImage.getWidth());
+		final BufferedImage resizedImage = new BufferedImage(width, height, type);
+		final Graphics2D graphics = resizedImage.createGraphics();
+		graphics.drawImage(originalImage, 0, 0, width, height, null);
+		final Area area = new Area(new Rectangle(0,0, width,height));
+		area.subtract(new Area(new Ellipse2D.Double(75, 75, 60, 60)));
+		graphics.fill(area);
+		graphics.dispose();
+		return resizedImage;
+	}
+
+	public static void resize2(File original, File dest, String extension)
+	{
+		try
+		{
+			if (extension.equals("png"))
+			{
+				System.out.println(original.getName() + " to " + dest.getName());
+				BufferedImage originalImage = ImageIO.read(original);
+				int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
+				BufferedImage resizeImagePng = generateMinimal(originalImage, type,60);
+				ImageIO.write(resizeImagePng, "png", dest);
+			}
+			if (extension.equals("jpg"))
+			{
+				System.out.println(original.getName() + " to " + dest.getName());
+				BufferedImage originalImage = ImageIO.read(original);
+				int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
+				BufferedImage resizeImagePng = generateMinimal(originalImage, type, 60);
+				ImageIO.write(resizeImagePng, "jpg", dest);
+			}
+		}
+		catch (IOException e)
+		{
+			/** @Todo Реализовать исключение **/
+		}
 	}
 }

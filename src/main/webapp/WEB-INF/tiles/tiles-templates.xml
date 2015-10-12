@@ -140,20 +140,11 @@
 	<definition name="category/edit" extends="base-template">
     	<put-attribute name="content" value="/WEB-INF/views/category/edit.jsp" />
 	</definition>
-	
-	<definition name="blog/index" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/blog/index.jsp" />
-	</definition>
 
 	<definition name="search/index" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/search/index.jsp" />
 	</definition>
 
-	
-	<definition name="blog/edit" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/blog/edit.jsp" />
-	</definition>
-	
 	<definition name="auth/agree/commission" extends="base-template">
     	<put-attribute name="content" value="/WEB-INF/views/auth/agreement-commision.jsp" />
 	</definition>
