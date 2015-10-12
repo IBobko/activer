@@ -37,34 +37,6 @@
     	<put-attribute name="content" value="/WEB-INF/views/auth/forgot.jsp" />
 	</definition>
 	
-	<definition name="model3d/index" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/model3d/index.jsp" />
-	</definition>
-
-	<definition name="model3d/show" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/model3d/show.jsp" />
-	</definition>
-
-	<definition name="model3d/upload" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/model3d/upload.jsp" />
-	</definition>
-	
-	<definition name="model3d/purchase" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/model3d/purchase.jsp" />
-	</definition>
-	
-	<definition name="model3d/search" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/model3d/search.jsp" />
-	</definition>
-	
-	<definition name="model3d/edit" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/model3d/edit.jsp" />
-	</definition>	
-
-	<definition name="category/index" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/category/index.jsp" />
-	</definition>	
-	
 	<definition name="profile/index" extends="base-template">
     	<put-attribute name="content" value="/WEB-INF/views/profile/index.jsp" />
 	</definition>
@@ -131,14 +103,6 @@
 	
 	<definition name="mark/index" extends="base-template">
     	<put-attribute name="content" value="/WEB-INF/views/mark/index.jsp" />
-	</definition>
-
-	<definition name="category/edit-list" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/category/edit-list.jsp" />
-	</definition>
-	
-	<definition name="category/edit" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/category/edit.jsp" />
 	</definition>
 
 	<definition name="search/index" extends="base-template">

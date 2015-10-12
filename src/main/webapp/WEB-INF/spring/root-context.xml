@@ -165,6 +165,7 @@
 	<bean id="iCanPopulator" class="ru.todo100.activer.populators.ICanPopulator"/>
 	<bean id="iWantPopulator" class="ru.todo100.activer.populators.IWantPopulator"/>
 
+	<bean id="wallPopulator" class="ru.todo100.activer.populators.WallPopulator"/>
 
 	<bean id="profilePopulator" class="ru.todo100.activer.populators.ProfilePopulator"/>
 

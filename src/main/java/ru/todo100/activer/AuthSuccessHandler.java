@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
-import ru.todo100.activer.config.Environment;
+
 
 /**
  * @author Igor Bobko
@@ -36,9 +36,6 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
 	public void onAuthenticationSuccess(final HttpServletRequest httpServletRequest, final HttpServletResponse httpServletResponse,
 	                                    final Authentication authentication) throws IOException, ServletException
 	{
-		Environment.terrarium = authentication;
 		super.onAuthenticationSuccess(httpServletRequest,httpServletResponse,authentication);
-
-
 	}
 }

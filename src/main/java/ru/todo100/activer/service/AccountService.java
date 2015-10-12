@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import ru.todo100.activer.config.Environment;
+
 import ru.todo100.activer.model.AccountFriendRelationItem;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.util.InputError;
@@ -25,8 +25,7 @@ public class AccountService extends ServiceAbstract
 
 	public List<AccountItem> getAll()
 	{
-		final List<AccountItem> lst = getSession().createQuery("from AccountItem c").setMaxResults(10).list();
-		return lst;
+		return getCriteria().setMaxResults(10).list();
 	}
 
 	@Override
@@ -35,11 +34,10 @@ public class AccountService extends ServiceAbstract
 		return AccountItem.class;
 	}
 
-	public AccountItem get(Long id)
+	public AccountItem get(Integer id)
 	{
 		Session session = getSession();
-		AccountItem obj = (AccountItem) session.get(this.getItemClass(), id);
-		return obj;
+		return session.get(this.getItemClass(), id);
 	}
 
 	public void save(AccountItem account)
@@ -50,33 +48,24 @@ public class AccountService extends ServiceAbstract
 
 	public AccountItem get(String login)
 	{
-		Session session = getSession();
-		AccountItem account = (AccountItem) session.createCriteria(AccountItem.class).
-						add(Restrictions.eq("username", login)).uniqueResult();
-		return account;
+		return (AccountItem) getCriteria().add(Restrictions.eq("username", login)).uniqueResult();
 	}
 
 	public AccountItem getByEmail(String email)
 	{
-		AccountItem account = (AccountItem) getCriteria().
-						                                                 add(Restrictions.eq("email", email)).uniqueResult();
-		return account;
+		return (AccountItem) getCriteria().add(Restrictions.eq("email", email)).uniqueResult();
 	}
 
 	public AccountItem getCurrentAccount()
 	{
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null && auth.isAuthenticated())
 		{
 			return get(auth.getName());
 		}
-
-		if (Environment.terrarium != null) {
-			return get(Environment.terrarium.getName());
-		}
 		return null;
 	}
-
+  /** TODO переттащить это все в фасад **/
 	public AccountItem saveByRequest(HttpServletRequest request) throws InputError
 	{
 		String email = request.getParameter("email");
@@ -142,7 +131,7 @@ public class AccountService extends ServiceAbstract
 		final List<AccountItem> result = new ArrayList<>();
 		for (AccountFriendRelationItem friend : friendsRelation)
 		{
-			final AccountItem friendAccount = get(friend.getFriendAccountId().longValue());
+			final AccountItem friendAccount = get(friend.getFriendAccountId());
 			result.add(friendAccount);
 		}
 		return result;

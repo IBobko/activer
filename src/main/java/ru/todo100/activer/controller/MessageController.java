@@ -54,8 +54,7 @@ public class MessageController
 		messageItem.setText(messageData.getText());
 		messageItem.setAddedDate(new GregorianCalendar());
 		messageService.save(messageItem);
-		/** @Todo уйти от преобразования logValue() **/
-		AccountItem accountTo = accountService.get(messageData.getAccountTo().longValue());
+		AccountItem accountTo = accountService.get(messageData.getAccountTo());
 		MessageAccountData accountDataTo = new MessageAccountData();
 		accountDataTo.setFirstName(accountTo.getFirstName());
 		accountDataTo.setLastName(accountTo.getLastName());
@@ -91,7 +90,7 @@ public class MessageController
 		for (MessageItem item : messageItems)
 		{
 			final MessageData data = new MessageData();
-			final AccountItem from = accountService.get(item.getAccountFrom().longValue());
+			final AccountItem from = accountService.get(item.getAccountFrom());
 			final MessageAccountData sender = new MessageAccountData();
 			sender.setFirstName(from.getFirstName());
 			sender.setLastName(from.getLastName());
@@ -103,7 +102,7 @@ public class MessageController
 			messageData.add(data);
 		}
 
-		final AccountItem friend = accountService.get(id.longValue());
+		final AccountItem friend = accountService.get(id);
 		ProfileData friendData = profilePopulator.populate(friend);
 		model.addAttribute("friend", friendData);
 		model.addAttribute("myProfile", accountService.getCurrentAccount());

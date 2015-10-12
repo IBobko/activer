@@ -28,24 +28,24 @@ public class AccountItem extends Item
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long   id;
+	private Integer id;
 	@Column(name = "account_username")
-	private String username;
+	private String  username;
 	@Column(name = "account_password")
-	private String password;
+	private String  password;
 	@Column(name = "account_email")
-	private String email;
+	private String  email;
 	@Column(name = "account_firstname")
-	private String firstName;
+	private String  firstName;
 	@Column(name = "account_lastname")
-	private String lastName;
+	private String  lastName;
 
-	public Long getId()
+	public Integer getId()
 	{
 		return id;
 	}
 
-	public void setId(Long id)
+	public void setId(Integer id)
 	{
 		this.id = id;
 	}

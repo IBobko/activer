@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import ru.todo100.activer.data.ICanData;
 import ru.todo100.activer.data.IWantData;
+import ru.todo100.activer.data.MessageData;
 import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.facade.MarkFacade;
 import ru.todo100.activer.form.ChangeProfileForm;
@@ -32,9 +33,11 @@ import ru.todo100.activer.model.ICanItem;
 import ru.todo100.activer.model.IWantItem;
 import ru.todo100.activer.model.MarkItem;
 import ru.todo100.activer.model.MarkRelationItem;
+import ru.todo100.activer.model.WallItem;
 import ru.todo100.activer.populators.ICanPopulator;
 import ru.todo100.activer.populators.IWantPopulator;
 import ru.todo100.activer.populators.ProfilePopulator;
+import ru.todo100.activer.populators.WallPopulator;
 import ru.todo100.activer.service.AccountService;
 import ru.todo100.activer.service.ICanService;
 import ru.todo100.activer.service.IWantService;
@@ -82,6 +85,9 @@ public class ProfilePageController
 	@Autowired
 	private ProfilePopulator profilePopulator;
 
+	@Autowired
+	private WallPopulator wallPopulator;
+
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String index(Model model)
 	{
@@ -89,7 +95,7 @@ public class ProfilePageController
 
 		ProfileData profile = profilePopulator.populate(account);
 
-		List<AccountItem> friends = accountService.getFriends(account.getId().intValue());
+		List<AccountItem> friends = accountService.getFriends(account.getId());
 		List<ProfileData> friendsData = new ArrayList<>();
 		for (AccountItem friend : friends)
 		{
@@ -102,7 +108,7 @@ public class ProfilePageController
 		profile.setFriends(friendsData);
 		model.addAttribute("profile", profile);
 		model.addAttribute("cans", iCanService.getAll());
-		populatePersonOfPage(model,account);
+		populatePersonOfPage(model, account);
 		model.addAttribute("wants", iWantService.getAll());
 		return "profile/index";
 	}
@@ -310,7 +316,7 @@ public class ProfilePageController
 	@RequestMapping(value = "/id{id:\\d+}", method = RequestMethod.GET)
 	public String people(Model model, @PathVariable Integer id)
 	{
-		final AccountItem account = accountService.get(id.longValue());
+		final AccountItem account = accountService.get(id);
 		ProfileData profile = profilePopulator.populate(account);
 		List<AccountItem> friends = accountService.getFriends(account.getId().intValue());
 		List<ProfileData> friendsData = new ArrayList<>();
@@ -345,7 +351,14 @@ public class ProfilePageController
 
 	void populatePersonOfPage(Model model,AccountItem account) {
 		model.addAttribute("personOfPage", account);
-		model.addAttribute("wall",wallService.getAllByAccount(account.getId().intValue()));
+
+		final List<MessageData> wall = new ArrayList<>();
+		final List<WallItem> posts = wallService.getAllByAccount(account.getId());
+		for (final WallItem item: posts) {
+			final MessageData data = wallPopulator.populate(item);
+			wall.add(data);
+		}
+		model.addAttribute("wall",wall);
 	}
 
 }

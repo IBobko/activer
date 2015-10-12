@@ -9,18 +9,18 @@
     <table>
         <tr>
             <td>Заголовок:</td>
-            <td><form:input path="title"/></td>
+            <td><form:input path="title" cssClass="form-control"/></td>
         </tr>
         <tr>
             <td>Описание:</td>
-            <td><form:input path="description"/></td>
+            <td><form:textarea path="description" cssClass="form-control"/></td>
         </tr>
         <tr>
             <td>Тэги:</td>
-            <td><form:input path="marks"/></td>
+            <td><form:input cssClass="form-control" path="marks"/></td>
         </tr>
         <tr>
-            <td colspan="2"><input type="submit"/></td>
+            <td colspan="2"><form:button type="submit" class="btn btn-default">Сохранить</form:button></td>
         </tr>
     </table>
 </form:form>

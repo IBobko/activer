@@ -7,21 +7,8 @@
 
 <form:form method="post" commandName="iCanForm">
     <form:hidden path="id"/>
-    <table>
-        <tr>
-            <td>Заголовок:</td>
-            <td><form:input path="title"/></td>
-        </tr>
-        <tr>
-            <td>Описание:</td>
-            <td><form:input path="description"/></td>
-        </tr>
-        <tr>
-            <td>Тэги:</td>
-            <td><form:input path="marks"/></td>
-        </tr>
-        <tr>
-            <td colspan="2"><input type="submit"/></td>
-        </tr>
-    </table>
+    <div>Заголовок <form:input path="title" cssClass="form-control"/></div>
+    <div>Описание <form:textarea path="description" cssClass="form-control"/></div>
+    <div>Тэги <form:input cssClass="form-control" path="marks"/></div>
+    <div><form:button type="submit" class="btn btn-default">Сохранить</form:button></div>
 </form:form>
