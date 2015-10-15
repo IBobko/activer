@@ -3,6 +3,7 @@ package ru.todo100.activer.service;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import ru.todo100.activer.form.ICanForm;
 import ru.todo100.activer.form.IWantForm;
@@ -15,6 +16,7 @@ import ru.todo100.activer.model.Model3dItem;
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>
  */
+@SuppressWarnings({"JpaQlInspection", "unchecked"})
 public class ICanService  extends ServiceAbstract{
 
 	@Override
@@ -44,5 +46,10 @@ public class ICanService  extends ServiceAbstract{
 	public ICanItem get(Integer id) {
 		final Session session = getSession();
 		return  (ICanItem) session.get(this.getItemClass(), id);
+	}
+
+
+	public List<ICanItem> getByAccount(Integer id) {
+		return getCriteria().add(Restrictions.eq("account.id", id)).list();
 	}
 }

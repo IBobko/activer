@@ -18,6 +18,18 @@
     <script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
     <script type="text/javascript" src="/resources/sockjs-0.3.4.js"></script>
     <script type="text/javascript" src="/resources/stomp.js"></script>
+    <script>
+        window.ACTIVER = {};
+
+        $(function(){
+            $.each(window.ACTIVER,function(i,o){
+                if (o.init != undefined) {
+                    o.init();
+                }
+            })
+        });
+
+    </script>
 </head>
 <body>
 

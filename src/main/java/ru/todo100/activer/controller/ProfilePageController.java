@@ -24,6 +24,8 @@ import ru.todo100.activer.data.ICanData;
 import ru.todo100.activer.data.IWantData;
 import ru.todo100.activer.data.MessageData;
 import ru.todo100.activer.data.ProfileData;
+import ru.todo100.activer.facade.ICanFacade;
+import ru.todo100.activer.facade.IWantFacade;
 import ru.todo100.activer.facade.MarkFacade;
 import ru.todo100.activer.form.ChangeProfileForm;
 import ru.todo100.activer.form.ICanForm;
@@ -87,6 +89,12 @@ public class ProfilePageController
 
 	@Autowired
 	private WallPopulator wallPopulator;
+
+	@Autowired
+	private ICanFacade iCanFacade;
+
+	@Autowired
+	private IWantFacade iWantFacade;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String index(Model model)
@@ -333,8 +341,8 @@ public class ProfilePageController
 
 
 		model.addAttribute("account", profile);
-		model.addAttribute("cans", iCanService.getAll());
-		model.addAttribute("wants", iWantService.getAll());
+		model.addAttribute("cans", iCanFacade.getByAccount(id));
+		model.addAttribute("wants",iWantFacade.getByAccount(id));
 
 		populatePersonOfPage(model,account);
 		return "profile/index";

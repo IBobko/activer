@@ -8,7 +8,11 @@ import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -18,6 +22,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import ru.todo100.activer.data.MessageAccountData;
 import ru.todo100.activer.data.MessageData;
@@ -107,6 +113,18 @@ public class MessageController
 		model.addAttribute("friend", friendData);
 		model.addAttribute("myProfile", accountService.getCurrentAccount());
 		model.addAttribute("lastMessages", messageData);
+		model.addAttribute("templatePost",generateTemplateMessageData());
 		return "message/communicate";
+	}
+
+	public MessageData generateTemplateMessageData() {
+		final MessageData template = new MessageData();
+		template.setText("%text%");
+		final MessageAccountData sender = new MessageAccountData();
+		sender.setFirstName("%firstName%");
+		sender.setLastName("%lastName%");
+		template.setDate("%date%");
+		template.setSender(sender);
+		return template;
 	}
 }

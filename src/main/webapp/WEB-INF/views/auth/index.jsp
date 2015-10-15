@@ -6,7 +6,7 @@
     }
 </style>
 
-<div class="well" style="width:350px;margin:0px auto">
+<div class="well" style="width:350px;margin:0 auto">
     <c:if test="${ie != null}">
         <div class="alert alert-danger">
             <ul>
@@ -20,10 +20,10 @@
         <table style="width:100%;border:none">
             <tr>
                 <td><label for="username">Логин:</label></td>
-                <td><input type="text" name="j_username" value="" class='form-control'/></td>
+                <td><input type="text" name="j_username" id="username" value="" class='form-control'/></td>
             <tr>
                 <td><label for="password">Пароль</label></td>
-                <td><input type="password" name="j_password" value="" class='form-control'/></td>
+                <td><input type="password" name="j_password" id="password" value="" class='form-control'/></td>
             </tr>
             <tr>
                 <td></td>
