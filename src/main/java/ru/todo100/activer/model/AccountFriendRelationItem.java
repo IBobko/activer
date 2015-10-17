@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -20,30 +22,32 @@ public class AccountFriendRelationItem extends Item
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "account_id")
-	private Integer accountId;
+	@OneToOne
+	@JoinColumn(name = "account_id")
+	private AccountItem account;
 
-	@Column(name = "friend_account_id")
-	private Integer friendAccountId;
+	@OneToOne
+	@JoinColumn(name = "friend_account_id")
+	private AccountItem friendAccount;
 
-	public Integer getFriendAccountId()
+	public AccountItem getAccount()
 	{
-		return friendAccountId;
+		return account;
 	}
 
-	public void setFriendAccountId(final Integer friendAccountId)
+	public void setAccount(final AccountItem account)
 	{
-		this.friendAccountId = friendAccountId;
+		this.account = account;
 	}
 
-	public Integer getAccountId()
+	public AccountItem getFriendAccount()
 	{
-		return accountId;
+		return friendAccount;
 	}
 
-	public void setAccountId(final Integer accountId)
+	public void setFriendAccount(final AccountItem friendAccount)
 	{
-		this.accountId = accountId;
+		this.friendAccount = friendAccount;
 	}
 
 	public Integer getId()

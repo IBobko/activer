@@ -191,4 +191,5 @@
 
 	<bean id="iCanFacade" class="ru.todo100.activer.facade.impl.ICanFacadeImpl"/>
 	<bean id="iWantFacade" class="ru.todo100.activer.facade.impl.IWantFacadeImpl"/>
+
 </beans>

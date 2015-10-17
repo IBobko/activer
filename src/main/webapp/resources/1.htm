@@ -2,8 +2,14 @@
 <html>
 <head>
     <title>Hello WebSocket</title>
-    <script src="sockjs-0.3.4.js"></script>
-    <script src="stomp.js"></script>
+    <link type="text/css" rel="stylesheet" href="/resources/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="/resources/css/style.css">
+    <link type="text/css" rel="stylesheet" href="/resources/css/photo-upload.css">
+    <script type="text/javascript" src="/resources/js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="/resources/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/resources/js/activer.photo-upload.js"></script>
+    <script type="text/javascript" src="/resources/sockjs-0.3.4.js"></script>
+    <script type="text/javascript" src="/resources/stomp.js"></script>
     <script type="text/javascript">
         var stompClient = null;
 
@@ -62,5 +68,25 @@
         <p id="response"></p>
     </div>
 </div>
+
+<div class="btn btn-default file-btn">
+    <input type="file">
+    <div>Выбрать</div>
+</div>
+<canvas id="canvas" style="width:100px; height:100px"></canvas>
+
+<script>
+    if (window.ACTIVER == undefined) {
+        window.ACTIVER = {};
+    }
+
+    $(function(){
+        $.each(window.ACTIVER,function(i,o){
+            if (o.init != undefined) {
+                o.init();
+            }
+        })
+    });
+</script>
 </body>
 </html>

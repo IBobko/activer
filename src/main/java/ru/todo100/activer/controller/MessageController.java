@@ -82,7 +82,7 @@ public class MessageController
 	@RequestMapping("/message")
 	public String index(final Model model)
 	{
-		final List<AccountItem> friends = accountService.getFriends(accountService.getCurrentAccount().getId().intValue());
+		final List<AccountItem> friends = accountService.getFriends(accountService.getCurrentAccount());
 		model.addAttribute("friends", friends);
 		return "message/index";
 	}

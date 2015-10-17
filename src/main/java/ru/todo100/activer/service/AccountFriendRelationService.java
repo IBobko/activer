@@ -5,11 +5,13 @@ import java.util.List;
 import org.hibernate.criterion.Restrictions;
 
 import ru.todo100.activer.model.AccountFriendRelationItem;
+import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.Item;
 
 /**
  * @author Igor Bobko
  */
+@SuppressWarnings("unchecked")
 public class AccountFriendRelationService extends ServiceAbstract
 {
 	@Override
@@ -18,8 +20,10 @@ public class AccountFriendRelationService extends ServiceAbstract
 		return AccountFriendRelationItem.class;
 	}
 
-	public List<AccountFriendRelationItem> getFriends(Integer accountId)
+	public List<AccountFriendRelationItem> getFriends(AccountItem account)
 	{
-		return getCriteria().add(Restrictions.eq("accountId", accountId) ).list();
+		return getCriteria().add(Restrictions.eq("account", account) ).list();
 	}
+
+
 }

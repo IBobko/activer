@@ -14,12 +14,19 @@
     <title><tiles:insertAttribute name="title"/></title>
     <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css"/>">
     <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/style.css"/>">
+    <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/photo-upload.css"/>">
+
+
+
     <script type="text/javascript" src="<c:url value="/resources/js/jquery-1.10.2.min.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/resources/js/activer.photo-upload.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
     <script type="text/javascript" src="/resources/sockjs-0.3.4.js"></script>
     <script type="text/javascript" src="/resources/stomp.js"></script>
     <script>
-        window.ACTIVER = {};
+        if (window.ACTIVER == undefined) {
+            window.ACTIVER = {};
+        }
 
         $(function(){
             $.each(window.ACTIVER,function(i,o){
@@ -39,7 +46,7 @@
         <sec:authorize access="isAuthenticated()">
             <a class="navbar-brand" href="<c:url value="/message"/> ">Сообщения</a>
             <a class="navbar-brand" href="<c:url value="/search/people"/> ">Поиск людей</a>
-
+            <a class="navbar-brand" href="<c:url value="/friend"/> ">Друзья</a>
             <div style="float:right">
                 <form:form method="get" commandName="searchForm" action="${searchUrl}" cssClass="navbar-form navbar-left">
                     <form:input cssClass="form-control" placeholder="Введите текст поиска" path="s"/>

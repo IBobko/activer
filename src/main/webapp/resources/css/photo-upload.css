@@ -1,0 +1,15 @@
+.file-btn {
+    padding: 0px;
+    width: 82px;
+    height: 34px;
+}
+.file-btn [type="file"] {
+    width: 82px;
+    height: 34px;
+    opacity: 0;
+    position: absolute;
+}
+
+.file-btn div {
+    margin-top: 7px;
+}

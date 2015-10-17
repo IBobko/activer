@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-
 import ru.todo100.activer.model.AccountFriendRelationItem;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.util.InputError;
@@ -36,8 +35,7 @@ public class AccountService extends ServiceAbstract
 
 	public AccountItem get(Integer id)
 	{
-		Session session = getSession();
-		return session.get(this.getItemClass(), id);
+		return getSession().get(this.getItemClass(), id);
 	}
 
 	public void save(AccountItem account)
@@ -65,7 +63,10 @@ public class AccountService extends ServiceAbstract
 		}
 		return null;
 	}
-  /** TODO переттащить это все в фасад **/
+
+	/**
+	 * TODO переттащить это все в фасад
+	 **/
 	public AccountItem saveByRequest(HttpServletRequest request) throws InputError
 	{
 		String email = request.getParameter("email");
@@ -120,18 +121,19 @@ public class AccountService extends ServiceAbstract
 	public void addFriend(AccountItem account, Integer friendId)
 	{
 		final AccountFriendRelationItem accountFriendRelationItem = new AccountFriendRelationItem();
-		accountFriendRelationItem.setAccountId(account.getId().intValue());
-		accountFriendRelationItem.setFriendAccountId(friendId);
+		accountFriendRelationItem.setAccount(account);
+		accountFriendRelationItem.setFriendAccount(get(friendId));
 		accountFriendRelationService.save(accountFriendRelationItem);
 	}
 
-	public List<AccountItem> getFriends(Integer accountId)
+	public List<AccountItem> getFriends(AccountItem account)
 	{
-		final List<AccountFriendRelationItem> friendsRelation = accountFriendRelationService.getFriends(accountId);
+		final List<AccountFriendRelationItem> friendsRelation = accountFriendRelationService.getFriends(account);
 		final List<AccountItem> result = new ArrayList<>();
+
 		for (AccountFriendRelationItem friend : friendsRelation)
 		{
-			final AccountItem friendAccount = get(friend.getFriendAccountId());
+			final AccountItem friendAccount = friend.getFriendAccount();
 			result.add(friendAccount);
 		}
 		return result;

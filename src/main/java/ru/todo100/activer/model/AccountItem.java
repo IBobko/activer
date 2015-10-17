@@ -2,6 +2,7 @@ package ru.todo100.activer.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +17,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.NaturalId;
 
 @Entity
 @Table(name = "account")
@@ -29,6 +31,8 @@ public class AccountItem extends Item
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+
+	@NaturalId
 	@Column(name = "account_username")
 	private String  username;
 	@Column(name = "account_password")
@@ -39,6 +43,19 @@ public class AccountItem extends Item
 	private String  firstName;
 	@Column(name = "account_lastname")
 	private String  lastName;
+
+	public Set<AccountFriendRelationItem> getFriends()
+	{
+		return friends;
+	}
+
+	public void setFriends(final Set<AccountFriendRelationItem> friends)
+	{
+		this.friends = friends;
+	}
+
+	@OneToMany(mappedBy = "account")
+	private Set<AccountFriendRelationItem> friends;
 
 	public Integer getId()
 	{

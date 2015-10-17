@@ -103,7 +103,7 @@ public class ProfilePageController
 
 		ProfileData profile = profilePopulator.populate(account);
 
-		List<AccountItem> friends = accountService.getFriends(account.getId());
+		List<AccountItem> friends = accountService.getFriends(account);
 		List<ProfileData> friendsData = new ArrayList<>();
 		for (AccountItem friend : friends)
 		{
@@ -326,7 +326,7 @@ public class ProfilePageController
 	{
 		final AccountItem account = accountService.get(id);
 		ProfileData profile = profilePopulator.populate(account);
-		List<AccountItem> friends = accountService.getFriends(account.getId().intValue());
+		List<AccountItem> friends = accountService.getFriends(account);
 		List<ProfileData> friendsData = new ArrayList<>();
 		for (AccountItem friend : friends)
 		{
