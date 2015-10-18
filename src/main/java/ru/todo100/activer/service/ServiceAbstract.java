@@ -25,7 +25,7 @@ abstract public class ServiceAbstract {
 		return session;
 	}
 	
-	final public void delete(Long id) {
+	final public void delete(Integer id) {
 		Object object = getSession().get(getItemClass(), id);
 		if (object!=null) {
 			getSession().delete(object);

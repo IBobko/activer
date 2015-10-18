@@ -79,9 +79,6 @@ public class ProfilePageController
 	private MarkRelationService markRelationService;
 
 	@Autowired
-	private PhotoStrategy photoStrategy;
-
-	@Autowired
 	private WallService wallService;
 
 	@Autowired
@@ -133,8 +130,6 @@ public class ProfilePageController
 		changeProfileForm.setFirstName(account.getFirstName());
 		changeProfileForm.setLastName(account.getLastName());
 
-		System.out.println(changeProfileForm.getFacePhoto());
-
 		model.addAttribute("changeProfileForm", changeProfileForm);
 
 		if (request.getMethod().equals("POST"))
@@ -159,13 +154,6 @@ public class ProfilePageController
 			else
 			{
 				accountService.save(account);
-
-				if (!changeProfileForm.getFacePhoto().isEmpty())
-				{
-					System.out.println("Start");
-					System.out.println(photoStrategy.saveFile(changeProfileForm.getFacePhoto()));
-				}
-
 				model.addAttribute("success", true);
 			}
 		}

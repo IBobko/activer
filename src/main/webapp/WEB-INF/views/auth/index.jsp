@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <style type="text/css">
     th, td {
         padding: 5px;
@@ -16,14 +17,15 @@
             </ul>
         </div>
     </c:if>
-    <form action="<c:url value="/j_spring_security_check"/>" method="post">
+    <c:url value="/login" var="login"/>
+    <form:form action="${login}" method="post">
         <table style="width:100%;border:none">
             <tr>
                 <td><label for="username">Логин:</label></td>
-                <td><input type="text" name="j_username" id="username" value="" class='form-control'/></td>
+                <td><input type="text" name="username" id="username" value="" class='form-control'/></td>
             <tr>
                 <td><label for="password">Пароль</label></td>
-                <td><input type="password" name="j_password" id="password" value="" class='form-control'/></td>
+                <td><input type="password" name="password" id="password" value="" class='form-control'/></td>
             </tr>
             <tr>
                 <td></td>
@@ -38,7 +40,7 @@
             </tr>
 
         </table>
-    </form>
+    </form:form>
 </div>
 
 	

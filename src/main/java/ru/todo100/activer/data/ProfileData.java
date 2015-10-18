@@ -11,6 +11,18 @@ public class ProfileData
 	private String  firstName;
 	private String  lastName;
 	private String  facePhotoUrl;
+
+	public String getPhoto60x60()
+	{
+		return photo60x60;
+	}
+
+	public void setPhoto60x60(final String photo60x60)
+	{
+		this.photo60x60 = photo60x60;
+	}
+
+	private String            photo60x60;
 	private List<ProfileData> friends;
 
 	public List<ProfileData> getFriends()

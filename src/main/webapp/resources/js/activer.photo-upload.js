@@ -27,7 +27,7 @@ window.ACTIVER.PhotoUpload = {
                 };
 
 
-                $.post("/test/",{'resizedImage':this.result},function(data){
+                $.post("/photo/original",{'resizedImage':this.result},function(data){
                     image.src = data;
                 });
             };

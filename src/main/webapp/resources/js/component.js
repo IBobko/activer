@@ -197,7 +197,7 @@ var resizeableImage = function(target) {
 
         var imageData = crop_canvas.toDataURL("image/png");
 
-        $.post("/test/", {'resizedImage': imageData}, function (data) {
+        $.post("/photo/crop", {'resizedImage': imageData}, function (data) {
             console.log(data);
         });
     };

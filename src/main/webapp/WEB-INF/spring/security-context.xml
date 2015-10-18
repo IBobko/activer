@@ -8,6 +8,7 @@
                         ">
 
     <http use-expressions="true">
+        <csrf disabled="true"/>
         <form-login
                 login-page="/auth"
                 authentication-failure-url="/auth/loginfail"
@@ -16,14 +17,16 @@
                 />
         <logout logout-success-url="/"/>
     </http>
+
     <authentication-manager>
-        <authentication-provider>
+        <authentication-provider >
             <jdbc-user-service
                     data-source-ref="dataSource"
                     users-by-username-query="select account_username, account_password,true from account where account_username = ?;"
                     authorities-by-username-query="select account_username, authority_role from authority where account_username = ?"/>
         </authentication-provider>
     </authentication-manager>
+
 
 
     <beans:bean id="authSuccessHandler" class="ru.todo100.activer.AuthSuccessHandler">

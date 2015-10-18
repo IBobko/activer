@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.RandomStringUtils;
 
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,35 +20,45 @@ import ru.todo100.activer.util.MailBean;
 @RequestMapping(value = "/auth")
 public class AuthPageController
 {
+
 	@Autowired
 	private AccountService accountService;
 	@Autowired
-	private MailBean mail;
-	
+	private MailBean       mail;
+
 	@RequestMapping(value = "")
-	public String index() {
+	public String index()
+	{
+
+
 		return "auth/index";
 	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
-	public String signup() {
+	public String signup()
+	{
 		return "auth/signup";
 	}
-	
+
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public String signupPost(HttpServletRequest request, Model model) {
-		try {
+	public String signupPost(HttpServletRequest request, Model model)
+	{
+		try
+		{
 			AccountItem account = accountService.saveByRequest(request);
 			//mail.sendCompleteSignUp(account);
-			return "auth/done";			
-		} catch (InputError e) {
-			model.addAttribute("ie",e);
+			return "auth/done";
+		}
+		catch (InputError e)
+		{
+			model.addAttribute("ie", e);
 			return "auth/signup";
 		}
 	}
-	
+
 	@RequestMapping(value = "/loginfail")
-	public String loginfail(Model model) {
+	public String loginfail(Model model)
+	{
 		InputError ie = new InputError();
 		ie.addError("Login or password incorrect");
 		model.addAttribute("ie",ie);

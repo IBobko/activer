@@ -1,28 +1,16 @@
 package ru.todo100.activer.form;
 
-import org.springframework.web.multipart.MultipartFile;
-
 /**
  * @author Igor Bobko
  */
+@SuppressWarnings("unused")
 public class ChangeProfileForm
 {
-	private String        firstName;
-	private String        lastName;
-	private String        password;
-	private String        repeatPassword;
-	private String        email;
-	private MultipartFile facePhoto;
-
-	public MultipartFile getFacePhoto()
-	{
-		return facePhoto;
-	}
-
-	public void setFacePhoto(final MultipartFile facePhoto)
-	{
-		this.facePhoto = facePhoto;
-	}
+	private String firstName;
+	private String lastName;
+	private String password;
+	private String repeatPassword;
+	private String email;
 
 	public String getEmail()
 	{

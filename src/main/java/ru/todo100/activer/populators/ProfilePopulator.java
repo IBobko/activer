@@ -34,6 +34,7 @@ public class ProfilePopulator implements Populator<AccountItem,ProfileData>
 			profileData.setFacePhotoUrl(facePhoto.getPath());
 		File f = new File(facePhoto.getPath());
 		profileData.setFacePhotoUrl(f.getParent() + "/" + "thumb_" + f.getName());
+			profileData.setPhoto60x60(f.getParent() + "/" + "60x60_" + f.getName());
 	}
 		return profileData;
 	}
