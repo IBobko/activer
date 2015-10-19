@@ -1,5 +1,6 @@
 package ru.todo100.activer.controller;
 
+import java.security.Principal;
 import java.util.GregorianCalendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,17 +34,20 @@ public class WallWebSocketController
 
 	@MessageMapping("/wall/{id}")
 	@SendTo("/wall1/{id}")
-	public MessageData listenWall(@DestinationVariable final Integer id, final MessageData messageData)
+	public MessageData listenWall(@DestinationVariable final Integer id, final MessageData messageData,Principal principal)
 	{
 		if (StringUtils.isEmpty(messageData.getText())) {
 			return new MessageData();
 		}
 
 		final AccountItem account = accountService.get(id);
+		final AccountItem currentAccount = accountService.get(principal.getName());
 		WallItem post = new WallItem();
 		post.setAccountId(account.getId());
 		post.setText(messageData.getText());
 		post.setAddedDate(new GregorianCalendar());
+		post.setSender(currentAccount.getId());
+
 		wallService.save(post);
 		return wallPopulator.populate(post);
 	}

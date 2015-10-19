@@ -3,8 +3,9 @@
 <%@ attribute name="markType" required="true" type="java.lang.String"%>
 <%@ attribute name="marks" required="true" type="java.util.List"%>
 
+
 <div class="well">
-    <ol>
+    <ol reversed start="100">
     <c:forEach items="${marks}" var="mark">
         <li>
         <div>
@@ -13,4 +14,5 @@
         </li>
         </c:forEach>
     </ol>
+    ...
 </div>

@@ -23,26 +23,28 @@ import org.hibernate.annotations.NaturalId;
 @Table(name = "account")
 public class AccountItem extends Item
 {
-	@Fetch(value = FetchMode.SUBSELECT)
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "account_username", referencedColumnName = "account_username")
-	List<AuthorityItem> authoritys;
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	@Fetch(value = FetchMode.SUBSELECT)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "account_username", referencedColumnName = "account_username")
+	private List<AuthorityItem> authoritys;
 	@NaturalId
 	@Column(name = "account_username")
-	private String  username;
+	private String username;
 	@Column(name = "account_password")
-	private String  password;
+	private String password;
 	@Column(name = "account_email")
-	private String  email;
+	private String email;
 	@Column(name = "account_firstname")
-	private String  firstName;
+	private String firstName;
 	@Column(name = "account_lastname")
-	private String  lastName;
+	private String lastName;
+	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+	private Set<AccountFriendRelationItem> friends;
 
 	public Set<AccountFriendRelationItem> getFriends()
 	{
@@ -53,9 +55,6 @@ public class AccountItem extends Item
 	{
 		this.friends = friends;
 	}
-
-	@OneToMany(mappedBy = "account")
-	private Set<AccountFriendRelationItem> friends;
 
 	public Integer getId()
 	{

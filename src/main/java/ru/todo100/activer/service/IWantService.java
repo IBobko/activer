@@ -3,6 +3,7 @@ package ru.todo100.activer.service;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import ru.todo100.activer.form.IWantForm;
@@ -48,6 +49,6 @@ public class IWantService extends ServiceAbstract
 
 	public List<IWantItem> getByAccount(final Integer id)
 	{
-		return getCriteria().add(Restrictions.eq("account.id", id)).list();
+		return getCriteria().add(Restrictions.eq("account.id", id)).addOrder(Order.desc("addedDate")).setMaxResults(10).list();
 	}
 }

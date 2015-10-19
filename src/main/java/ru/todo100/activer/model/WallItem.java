@@ -19,13 +19,26 @@ public class WallItem extends Item
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Integer  id;
 	@Column(name = "account_id")
-	private Integer accountId;
+	private Integer  accountId;
 	@Column(name = "text")
-	private String  text;
+	private String   text;
 	@Column(name = "added_date")
 	private Calendar addedDate;
+
+	@Column(name = "sender_id")
+	private Integer sender;
+
+	public Integer getSender()
+	{
+		return sender;
+	}
+
+	public void setSender(final Integer sender)
+	{
+		this.sender = sender;
+	}
 
 	public Calendar getAddedDate()
 	{

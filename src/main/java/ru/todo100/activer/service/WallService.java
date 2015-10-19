@@ -6,7 +6,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import ru.todo100.activer.model.Item;
-import ru.todo100.activer.model.MarkItem;
 import ru.todo100.activer.model.WallItem;
 
 /**
@@ -20,9 +19,10 @@ public class WallService extends ServiceAbstract
 		return WallItem.class;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<WallItem> getAllByAccount(Integer accountId) {
 		return this.getCriteria().add(Restrictions.eq("accountId", accountId))
-						.addOrder(Order.desc("addedDate"))
+						.addOrder(Order.desc("addedDate")).setMaxResults(10)
 		           .list();
 	}
 }

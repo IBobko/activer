@@ -24,9 +24,15 @@
     <script type="text/javascript" src="/resources/sockjs-0.3.4.js"></script>
     <script type="text/javascript" src="/resources/stomp.js"></script>
     <script>
+
+
         if (window.ACTIVER == undefined) {
             window.ACTIVER = {};
         }
+
+        $.getJSON( "/js/data.json", function( data ) {
+            window.ACTIVER.Data = data;
+        });
 
         $(function(){
             $.each(window.ACTIVER,function(i,o){

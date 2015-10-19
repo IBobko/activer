@@ -26,6 +26,7 @@
           <file>file://$MODULE_DIR$/src/main/webapp/WEB-INF/spring/root-context.xml</file>
           <file>file://$MODULE_DIR$/src/main/webapp/WEB-INF/spring/security-context.xml</file>
           <file>file://$MODULE_DIR$/src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</file>
+          <file>file://$MODULE_DIR$/src/main/webapp/WEB-INF/spring/facade-context.xml</file>
         </fileset>
       </configuration>
     </facet>
@@ -123,10 +124,9 @@
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.4" level="project" />
     <orderEntry type="library" name="Maven: org.json:json:20131018" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.6.2" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.6.2" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.6.2" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.13" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.13" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:2.6.1" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.6.1" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.6.1" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.6.0" level="project" />
   </component>
 </module>

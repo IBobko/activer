@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import ru.todo100.activer.data.ICanData;
 import ru.todo100.activer.data.IWantData;
+import ru.todo100.activer.data.MessageAccountData;
 import ru.todo100.activer.data.MessageData;
 import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.facade.ICanFacade;
@@ -46,7 +47,6 @@ import ru.todo100.activer.service.IWantService;
 import ru.todo100.activer.service.MarkRelationService;
 import ru.todo100.activer.service.MarkService;
 import ru.todo100.activer.service.WallService;
-import ru.todo100.activer.strategy.PhotoStrategy;
 import ru.todo100.activer.util.InputError;
 
 @Controller
@@ -112,9 +112,9 @@ public class ProfilePageController
 		}
 		profile.setFriends(friendsData);
 		model.addAttribute("profile", profile);
-		model.addAttribute("cans", iCanService.getAll());
+		model.addAttribute("cans", iCanService.getByAccount(account.getId()));
 		populatePersonOfPage(model, account);
-		model.addAttribute("wants", iWantService.getAll());
+		model.addAttribute("wants", iWantService.getByAccount(account.getId()));
 		return "profile/index";
 	}
 
@@ -354,7 +354,20 @@ public class ProfilePageController
 			final MessageData data = wallPopulator.populate(item);
 			wall.add(data);
 		}
+		model.addAttribute("wallTemplate", generateWallTemplate());
 		model.addAttribute("wall",wall);
+	}
+
+	public MessageData generateWallTemplate() {
+		final MessageData template = new MessageData();
+		template.setText("%text%");
+		final MessageAccountData sender = new MessageAccountData();
+		sender.setFirstName("%firstName%");
+		sender.setLastName("%lastName%");
+		sender.setPhoto60x60("%photo60x60%");
+		template.setDate("%date%");
+		template.setSender(sender);
+		return template;
 	}
 
 }

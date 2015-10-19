@@ -1,5 +1,7 @@
 package ru.todo100.activer.model;
 
+import java.util.Calendar;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,9 +27,22 @@ public class ICanItem extends Item
 	@JoinColumn(name = "account_id", referencedColumnName = "id")
 	private AccountItem account;
 	@Column(name = "ican_title")
-	private String title;
+	private String      title;
 	@Column(name = "ican_description")
-	private String description;
+	private String      description;
+
+	public Calendar getAddedDate()
+	{
+		return addedDate;
+	}
+
+	public void setAddedDate(final Calendar addedDate)
+	{
+		this.addedDate = addedDate;
+	}
+
+	@Column(name = "added_date")
+	private Calendar addedDate;
 
 	public Integer getId()
 	{
