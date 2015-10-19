@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="activerlist" default="view">
+    <target name="view">
+        <copy todir="/home/igor/apache-tomcat-8.0.24/webapps/ROOT/WEB-INF/views">
+            <fileset dir="/home/igor/tort/3dplenty-master/src/main/webapp/WEB-INF/views"/>
+        </copy>
+        <copy todir="/home/igor/apache-tomcat-8.0.24/webapps/ROOT/WEB-INF/tags">
+            <fileset dir="/home/igor/tort/3dplenty-master/src/main/webapp/WEB-INF/tags"/>
+        </copy>
+        <copy todir="/home/igor/apache-tomcat-8.0.24/webapps/ROOT/resources">
+            <fileset dir="/home/igor/tort/3dplenty-master/src/main/webapp/resources"/>
+        </copy>
+
+
+        <copy file="/home/igor/tort/3dplenty-master/target/classes/ru/todo100/activer/controller/PhotoPageController.class"
+              todir="/home/igor/apache-tomcat-8.0.24/webapps/ROOT/WEB-INF/classes/ru/todo100/activer/controller"/>
+
+    </target>
+</project>
