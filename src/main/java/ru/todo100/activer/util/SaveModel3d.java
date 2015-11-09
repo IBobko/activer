@@ -22,17 +22,16 @@ public class SaveModel3d {
 	@Autowired
 	public Model3dService model3dService;
 	
-	@Autowired
-	Startup initApplication;
+//	@Autowired
+//	Startup initApplication;
 	
 	@Autowired
 	public AccountService accountService;
-	
-	@Autowired
-	ParameterService parameterService;
-	
 	public ServletContext servletContext;
 	public InputError inputErrors = new InputError();
+	@Autowired
+	ParameterService parameterService;
+
 	public Long save(HttpServletRequest request,Part images[],Part file) throws InputError {
 		inputErrors.getErrors().clear();
 		Model3dItem item = generateModel3dItem(request,file);

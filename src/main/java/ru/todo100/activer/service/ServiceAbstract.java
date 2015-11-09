@@ -4,6 +4,7 @@ package ru.todo100.activer.service;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.Session;
+import org.hibernate.internal.SessionFactoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 

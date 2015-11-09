@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--suppress SpringInjectionValueStyleInspection, SpringModelInspection -->
 <beans
-	xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns="http://www.springframework.org/schema/beans"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
@@ -26,8 +26,7 @@
 			<value>com.mysql.jdbc.Driver</value>
 		</property>
 		<property name="url">
-			<value>jdbc:mysql://localhost:3306/${db.database}?characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull
-			</value>
+			<value>jdbc:mysql://localhost:3306/${db.database}?characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull</value>
 		</property>
 		<property name="username">
 			<value>${db.username}</value>
@@ -54,10 +53,10 @@
 		</property>
 	</bean>
 	<!-- Classes for work of db tables -->
-	<bean
-		id="initApplication"
-		class="ru.todo100.activer.util.Startup"
-        lazy-init="false" />
+	<!--<bean-->
+		<!--id="initApplication"-->
+		<!--class="ru.todo100.activer.util.Startup"-->
+        <!--lazy-init="false" />-->
 	<bean
 		id="serviceAbstract"
 		class="ru.todo100.activer.service.ServiceAbstract"

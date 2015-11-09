@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/cube3d.todo100.ru.iml" filepath="$PROJECT_DIR$/cube3d.todo100.ru.iml" />
+      <module fileurl="file://$PROJECT_DIR$/exp/exp.iml" filepath="$PROJECT_DIR$/exp/exp.iml" />
     </modules>
   </component>
 </project>
