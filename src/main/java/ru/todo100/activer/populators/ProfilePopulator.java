@@ -17,12 +17,14 @@ public class ProfilePopulator implements Populator<AccountItem,ProfileData>
 	@Autowired
 	private PhotoService photoService;
 
-
-
 	@Override
 	public ProfileData populate(final AccountItem accountItem)
 	{
-		PhotoItem facePhoto = photoService.getByAccount(accountItem.getId().intValue());
+		if (accountItem == null)
+		{
+			return null;
+		}
+		final PhotoItem facePhoto = photoService.getByAccount(accountItem.getId());
 
 		ProfileData profileData = new ProfileData();
 		profileData.setFirstName(accountItem.getFirstName());

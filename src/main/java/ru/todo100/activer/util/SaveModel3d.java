@@ -14,13 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.todo100.activer.model.Model3dItem;
 import ru.todo100.activer.model.Model3dPictureItem;
 import ru.todo100.activer.service.AccountService;
-import ru.todo100.activer.service.Model3dService;
+//import ru.todo100.activer.service.Model3dService;
 import ru.todo100.activer.service.ParameterService;
 
 
 public class SaveModel3d {	
-	@Autowired
-	public Model3dService model3dService;
+//	@Autowired
+//	public Model3dService model3dService;
 	
 //	@Autowired
 //	Startup initApplication;
@@ -39,7 +39,7 @@ public class SaveModel3d {
 		if (inputErrors.getErrors().size() != 0) {
 			throw inputErrors;
 		}
-		model3dService.save(item);
+//		model3dService.save(item);
 		/*
 		setParentIdForPictures(pictures, item.getId());
 		item.setPictures(pictures);

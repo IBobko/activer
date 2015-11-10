@@ -2,9 +2,8 @@ package ru.todo100.activer.util;
 
 import java.util.LinkedList;
 
-@SuppressWarnings("serial")
-public class InputError extends Throwable{
-	private LinkedList<String> errors = new LinkedList<String>();
+public class InputError extends Throwable {
+	private LinkedList<String> errors = new LinkedList<>();
 	public LinkedList<String> getErrors() {
 		return errors;
 	}

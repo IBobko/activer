@@ -53,26 +53,12 @@
 		</property>
 	</bean>
 	<!-- Classes for work of db tables -->
-	<!--<bean-->
-		<!--id="initApplication"-->
-		<!--class="ru.todo100.activer.util.Startup"-->
-        <!--lazy-init="false" />-->
+
 	<bean
 		id="serviceAbstract"
 		class="ru.todo100.activer.service.ServiceAbstract"
 		abstract="true" />
-	<bean
-		id="parameterService"
-		class="ru.todo100.activer.service.ParameterService"
-		parent="serviceAbstract" />
-	<bean
-		id="model3dService"
-		class="ru.todo100.activer.service.Model3dService"
-		parent="serviceAbstract" />
-	<bean
-		id="categoryService"
-		class="ru.todo100.activer.service.CategoryService"
-		parent="serviceAbstract" />
+
 	<bean
 		id="accountService"
 		class="ru.todo100.activer.service.AccountService"
@@ -110,19 +96,13 @@
 		  class="ru.todo100.activer.service.IWantService"
 		  parent="serviceAbstract"/>
 
-	<bean id="photoService" class="ru.todo100.activer.service.PhotoService"/>
+	<bean id="photoService" class="ru.todo100.activer.service.PhotoService" parent="serviceAbstract"/>
 
-	<bean id="messageService" class="ru.todo100.activer.service.MessageService" />
+	<bean id="messageService" class="ru.todo100.activer.service.MessageService" parent="serviceAbstract"/>
 
-
-	<bean
-		id="saveModel3d"
-		class="ru.todo100.activer.util.SaveModel3d" />
 	<!-- end classes -->
 
-
 	<bean id="addingStandartItemsFilter" class="ru.todo100.activer.filter.AddingStandartItemsFilter" />
-
 
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.yandex.ru" />
@@ -170,7 +150,6 @@
 
 	<bean id="messagePopulator" class="ru.todo100.activer.populators.ProfilePopulator"/>
 
-
 	<bean id="markRelationService" class="ru.todo100.activer.service.MarkRelationService"/>
 
 	<bean id="markFacade" class="ru.todo100.activer.facade.MarkFacade"/>
@@ -183,13 +162,9 @@
 
 	<bean id="accountFriendRelationService" class="ru.todo100.activer.service.AccountFriendRelationService"/>
 
-
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
 		<property name="defaultLocale" value="en" />
 	</bean>
-
-	<bean id="iCanFacade" class="ru.todo100.activer.facade.impl.ICanFacadeImpl"/>
-	<bean id="iWantFacade" class="ru.todo100.activer.facade.impl.IWantFacadeImpl"/>
 
 	<!-- Facades -->
 	<import resource="facade-context.xml" />

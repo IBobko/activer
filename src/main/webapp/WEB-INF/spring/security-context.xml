@@ -27,8 +27,6 @@
         </authentication-provider>
     </authentication-manager>
 
-
-
     <beans:bean id="authSuccessHandler" class="ru.todo100.activer.AuthSuccessHandler">
         <beans:property name="defaultTargetUrl" value="/profile"/>
     </beans:bean>

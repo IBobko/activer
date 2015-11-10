@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ru.todo100.activer.model.Item;
 
-@Transactional
+@Transactional()
 abstract public class ServiceAbstract {
 	@Autowired
 	private SessionFactory sessionFactory;
