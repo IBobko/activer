@@ -3,6 +3,7 @@ package ru.todo100.activer.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -100,7 +101,7 @@ public class ProfilePageController
 
 		ProfileData profile = profilePopulator.populate(account);
 
-		List<AccountItem> friends = accountService.getFriends(account);
+		Set<AccountItem> friends = account.getFriends();
 		List<ProfileData> friendsData = new ArrayList<>();
 		for (AccountItem friend : friends)
 		{
@@ -314,7 +315,7 @@ public class ProfilePageController
 	{
 		final AccountItem account = accountService.get(id);
 		ProfileData profile = profilePopulator.populate(account);
-		List<AccountItem> friends = accountService.getFriends(account);
+		Set<AccountItem> friends = account.getFriends();
 		List<ProfileData> friendsData = new ArrayList<>();
 		for (AccountItem friend : friends)
 		{

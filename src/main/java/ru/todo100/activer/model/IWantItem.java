@@ -10,26 +10,31 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>
  */
+@SuppressWarnings({"JpaDataSourceORMInspection", "unused"})
 @Entity
-@Table(name="iwant")
-public class IWantItem  extends Item
+@Table(name = "iwant")
+public class IWantItem extends Item
 {
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-
 	@ManyToOne
-	@JoinColumn(name = "account_id", referencedColumnName = "id")
+	@JoinColumn(name = "account_id")
 	private AccountItem account;
-	@Column(name = "iwant_title")
-	private String      title;
-	@Column(name = "iwant_description")
-	private String      description;
+
+	@NotNull
+	@Column(name = "iwant_title", nullable = false)
+	private String title;
+
+/*	@NotNull*/
+	@Column(name = "iwant_description", nullable = false)
+	private String description;
+
+/*	@NotNull*/
+	@Column(name = "added_date",nullable = false)
+	private Calendar addedDate;
 
 	public Calendar getAddedDate()
 	{
@@ -39,19 +44,6 @@ public class IWantItem  extends Item
 	public void setAddedDate(final Calendar addedDate)
 	{
 		this.addedDate = addedDate;
-	}
-
-	@Column(name = "added_date")
-	private Calendar addedDate;
-
-	public Integer getId()
-	{
-		return id;
-	}
-
-	public void setId(final Integer id)
-	{
-		this.id = id;
 	}
 
 	public AccountItem getAccount()

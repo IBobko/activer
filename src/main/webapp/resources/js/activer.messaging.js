@@ -4,12 +4,12 @@ if (window.ACTIVER == undefined) {
 
 window.ACTIVER.Dialog = {
   stompClient: null,
-  init:function() {
+  init: function() {
     var that = this;
     $('#messages').scrollTop($('#messages').height());
     $("#dialogForm").submit(function () {
-      var text = document.getElementById('text').value
-      that.stompClient.send("/message1/" + window.ACTIVER.Data.profile.id, {}, JSON.stringify({'accountTo': window.ACTIVER.Data.browseProfile.id, 'text': text}));
+      var text = this.querySelector("#text").value
+      that.stompClient.send(window.ACTIVER.context_path + "/message1/" + window.ACTIVER.Data.profile.id, {}, JSON.stringify({'accountDataTo': window.ACTIVER.Data.browseProfile, 'text': text}));
       document.getElementById('text').value = "";
       return false;
     });
@@ -17,7 +17,7 @@ window.ACTIVER.Dialog = {
   },
   connect: function() {
     var that = this;
-    var socket = new SockJS('/message1/' + window.ACTIVER.Data.profile.id);
+    var socket = new SockJS(window.ACTIVER.context_path + '/message1/' + window.ACTIVER.Data.profile.id);
     this.stompClient = Stomp.over(socket);
     this.stompClient.connect({}, function (frame) {
       that.stompClient.subscribe('/message2/' + window.ACTIVER.Data.profile.id, function (greeting) {

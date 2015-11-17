@@ -7,12 +7,9 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import ru.todo100.activer.form.ICanForm;
-import ru.todo100.activer.form.IWantForm;
 import ru.todo100.activer.model.AccountItem;
-import ru.todo100.activer.model.CategoryItem;
 import ru.todo100.activer.model.ICanItem;
 import ru.todo100.activer.model.Item;
-import ru.todo100.activer.model.Model3dItem;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>

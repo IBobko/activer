@@ -8,25 +8,30 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author Igor Bobko
  */
+@SuppressWarnings({"JpaDataSourceORMInspection", "unused"})
 @Entity
 @Table(name = "message")
 public class MessageItem extends Item
 {
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	@Column(name = "account_from")
+	@NotNull
+	@Column(name = "account_from",nullable = false)
 	private Integer accountFrom;
-	@Column(name = "account_to")
+
+	@NotNull
+	@Column(name = "account_to",nullable = false)
 	private Integer accountTo;
-	@Column(name = "text")
+
+	@NotNull
+	@Column(name = "text",nullable = false)
 	private String  text;
-	@Column(name = "added_date")
+
+	@NotNull
+	@Column(name = "added_date",nullable = false)
 	private Calendar addedDate;
 
 	public Calendar getAddedDate()
@@ -37,16 +42,6 @@ public class MessageItem extends Item
 	public void setAddedDate(final Calendar addedDate)
 	{
 		this.addedDate = addedDate;
-	}
-
-	public Integer getId()
-	{
-		return id;
-	}
-
-	public void setId(final Integer id)
-	{
-		this.id = id;
 	}
 
 	public Integer getAccountFrom()

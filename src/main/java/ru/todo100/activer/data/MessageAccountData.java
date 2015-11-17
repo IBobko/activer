@@ -5,6 +5,7 @@ package ru.todo100.activer.data;
  */
 public class MessageAccountData
 {
+	private Integer id;
 	private String firstName;
 	private String lastName;
 	private String photo60x60;
@@ -38,5 +39,15 @@ public class MessageAccountData
 	public void setFirstName(final String firstName)
 	{
 		this.firstName = firstName;
+	}
+
+	public Integer getId()
+	{
+		return id;
+	}
+
+	public void setId(final Integer id)
+	{
+		this.id = id;
 	}
 }

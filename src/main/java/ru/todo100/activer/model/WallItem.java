@@ -4,30 +4,41 @@ import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author Igor Bobko
  */
+@SuppressWarnings({"JpaDataSourceORMInspection", "unused"})
 @Entity
 @Table(name = "wall")
 public class WallItem extends Item
 {
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer  id;
-	@Column(name = "account_id")
-	private Integer  accountId;
-	@Column(name = "text")
+	@NotNull
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "account_id",nullable = false)
+	private AccountItem account;
+
+	@NotNull
+	@Column(name = "text",nullable = false)
 	private String   text;
-	@Column(name = "added_date")
+
+	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "added_date",nullable = false)
 	private Calendar addedDate;
 
-	@Column(name = "sender_id")
+	@NotNull
+	@Column(name = "sender_id",nullable = false)
 	private Integer sender;
 
 	public Integer getSender()
@@ -50,24 +61,14 @@ public class WallItem extends Item
 		this.addedDate = addedDate;
 	}
 
-	public Integer getId()
+	public AccountItem getAccount()
 	{
-		return id;
+		return account;
 	}
 
-	public void setId(final Integer id)
+	public void setAccount(final AccountItem account)
 	{
-		this.id = id;
-	}
-
-	public Integer getAccountId()
-	{
-		return accountId;
-	}
-
-	public void setAccountId(final Integer accountId)
-	{
-		this.accountId = accountId;
+		this.account = account;
 	}
 
 	public String getText()

@@ -1,31 +1,23 @@
 package ru.todo100.activer.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
- * @author igor
+ * @author Igor Bobko
  */
-@Table(name="want_mark")
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
+@Table(name = "want_mark")
 public class WantMarkItem extends Item
 {
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long   id;
-//	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//	@JoinColumn(name = "model3d_id", referencedColumnName = "id")
-
-	@Column(name = "want_mark_name")
+	@NotNull
+	@Column(name = "want_mark_name",nullable = false)
 	private String markName;
 
 	public String getMarkName()
@@ -38,14 +30,5 @@ public class WantMarkItem extends Item
 		this.markName = markName;
 	}
 
-	public Long getId()
-	{
-		return id;
-	}
-
-	public void setId(final Long id)
-	{
-		this.id = id;
-	}
 
 }

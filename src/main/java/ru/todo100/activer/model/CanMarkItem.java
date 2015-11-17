@@ -6,20 +6,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author igor
  */
-@Table(name="can_mark")
+@SuppressWarnings("JpaDataSourceORMInspection")
+@Table(name = "can_mark")
 @Entity
 public class CanMarkItem extends Item
 {
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
-	@Column(name = "can_mark_name")
+	@NotNull
+	@Column(name = "can_mark_name",nullable = false)
 	private String markName;
 
 	public String getMarkName()
@@ -31,15 +29,4 @@ public class CanMarkItem extends Item
 	{
 		this.markName = markName;
 	}
-
-	public Long getId()
-	{
-		return id;
-	}
-
-	public void setId(final Long id)
-	{
-		this.id = id;
-	}
-
 }

@@ -9,45 +9,39 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="authority")
-@SuppressWarnings(value="all")
-public class AuthorityItem extends Item{
-	@Id
-    @Column(name = "id")
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+@Table(name = "authority")
+@SuppressWarnings(value = "all")
+public class AuthorityItem extends Item
+{
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "account_username", referencedColumnName = "account_username")
+	private AccountItem account;
 
-	public Long getId() {
-		return id;
-	}
+	@NotNull
+	@Column(name = "authority_role",nullable = false)
+	private String role;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="account_username",referencedColumnName="account_username")
-	AccountItem account;
-	
-	@Column(name="authority_role")
-	String role;
-
-	
-	public AccountItem getAccount() {
+	public AccountItem getAccount()
+	{
 		return account;
 	}
 
-	public void setAccount(AccountItem account) {
+	public void setAccount(AccountItem account)
+	{
 		this.account = account;
 	}
 
-	public String getRole() {
+	public String getRole()
+	{
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(String role)
+	{
 		this.role = role;
 	}
-	
+
 }

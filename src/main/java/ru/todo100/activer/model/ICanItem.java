@@ -10,25 +10,26 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>
  */
+@SuppressWarnings({"JpaDataSourceORMInspection", "unused"})
 @Entity
 @Table(name = "ican")
 public class ICanItem extends Item
 {
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-
 	@ManyToOne
-	@JoinColumn(name = "account_id", referencedColumnName = "id")
+	@JoinColumn(name = "account_id")
 	private AccountItem account;
-	@Column(name = "ican_title")
+
+	@NotNull
+	@Column(name = "ican_title",nullable = false)
 	private String      title;
-	@Column(name = "ican_description")
+
+	@NotNull
+	@Column(name = "ican_description",nullable = false)
 	private String      description;
 
 	public Calendar getAddedDate()
@@ -43,16 +44,6 @@ public class ICanItem extends Item
 
 	@Column(name = "added_date")
 	private Calendar addedDate;
-
-	public Integer getId()
-	{
-		return id;
-	}
-
-	public void setId(final Integer id)
-	{
-		this.id = id;
-	}
 
 	public AccountItem getAccount()
 	{

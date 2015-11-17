@@ -1,17 +1,15 @@
 package ru.todo100.activer.service;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import ru.todo100.activer.model.AccountFriendRelationItem;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.util.InputError;
 import ru.todo100.activer.util.MailBean;
@@ -19,8 +17,6 @@ import ru.todo100.activer.util.MailBean;
 @SuppressWarnings(value = {"unchecked"})
 public class AccountService extends ServiceAbstract
 {
-	@Autowired
-	private AccountFriendRelationService accountFriendRelationService;
 
 	public List<AccountItem> getAll()
 	{
@@ -120,22 +116,8 @@ public class AccountService extends ServiceAbstract
 
 	public void addFriend(AccountItem account, Integer friendId)
 	{
-		final AccountFriendRelationItem accountFriendRelationItem = new AccountFriendRelationItem();
-		accountFriendRelationItem.setAccount(account);
-		accountFriendRelationItem.setFriendAccount(get(friendId));
-		accountFriendRelationService.save(accountFriendRelationItem);
+		account.getFriends().add(get(friendId));
+		save(account);
 	}
 
-	public List<AccountItem> getFriends(AccountItem account)
-	{
-		final List<AccountFriendRelationItem> friendsRelation = accountFriendRelationService.getFriends(account);
-		final List<AccountItem> result = new ArrayList<>();
-
-		for (AccountFriendRelationItem friend : friendsRelation)
-		{
-			final AccountItem friendAccount = friend.getFriendAccount();
-			result.add(friendAccount);
-		}
-		return result;
-	}
 }

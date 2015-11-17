@@ -6,35 +6,30 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author Igor Bobko
  */
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "mark_relation")
 public class MarkRelationItem extends Item
 {
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
 
-	@Column(name = "mark_id")
+	@NotNull
+	@Column(name = "mark_id",nullable = false)
 	private Integer markId;
-	@Column(name = "relation_id")
+
+	@NotNull
+	@Column(name = "relation_id",nullable = false)
 	private Integer relationId;
-	@Column(name = "CW")
+
+	@NotNull
+	@Column(name = "CW",nullable = false)
 	private Boolean CW;
 
-	public Integer getId()
-	{
-		return id;
-	}
 
-	public void setId(final Integer id)
-	{
-		this.id = id;
-	}
 
 	public Integer getMarkId()
 	{

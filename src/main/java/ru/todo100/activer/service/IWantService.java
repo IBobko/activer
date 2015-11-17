@@ -25,13 +25,15 @@ public class IWantService extends ServiceAbstract
 
 	public IWantItem add(final AccountItem accountItem, final IWantForm iWantForm)
 	{
-		final IWantItem item = new IWantItem();
+		Session session = getSession();
+		final IWantItem item = session.get(IWantItem.class,iWantForm.getId());
+		//final IWantItem item = new IWantItem();
 		item.setAccount(accountItem);
 		item.setDescription(iWantForm.getDescription());
 		item.setTitle(iWantForm.getTitle());
 		item.setId(iWantForm.getId());
-		Session session = getSession();
 		session.saveOrUpdate(item);
+		session.getTransaction().commit();
 		return item;
 	}
 

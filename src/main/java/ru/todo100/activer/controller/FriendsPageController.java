@@ -1,9 +1,7 @@
 package ru.todo100.activer.controller;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,9 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import ru.todo100.activer.data.ProfileData;
-import ru.todo100.activer.model.AccountFriendRelationItem;
+import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.populators.ProfilePopulator;
-import ru.todo100.activer.service.AccountFriendRelationService;
 import ru.todo100.activer.service.AccountService;
 
 /**
@@ -24,9 +21,6 @@ import ru.todo100.activer.service.AccountService;
 public class FriendsPageController
 {
 	@Autowired
-	private AccountFriendRelationService accountFriendRelationService;
-
-	@Autowired
 	private AccountService accountService;
 
 	@Autowired
@@ -36,13 +30,13 @@ public class FriendsPageController
 	public String index(final Model model)
 	{
 
-		Set<AccountFriendRelationItem> friends = accountService.getCurrentAccount().getFriends();
+		Set<AccountItem> friends = accountService.getCurrentAccount().getFriends();
 
 		Set<ProfileData> friendsData = new HashSet<>();
 
-		for (AccountFriendRelationItem friend : friends)
+		for (AccountItem friend : friends)
 		{
-			ProfileData friendData = profilePopulator.populate(friend.getFriendAccount());
+			ProfileData friendData = profilePopulator.populate(friend);
 			friendsData.add(friendData);
 		}
 

@@ -12,58 +12,61 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.NaturalId;
 
+@SuppressWarnings({"JpaDataSourceORMInspection", "unused"})
 @Entity
 @Table(name = "account")
 public class AccountItem extends Item
 {
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-
 	@Fetch(value = FetchMode.SUBSELECT)
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "account_username", referencedColumnName = "account_username")
-	private List<AuthorityItem> authoritys;
-	@NaturalId
-	@Column(name = "account_username")
-	private String username;
-	@Column(name = "account_password")
-	private String password;
-	@Column(name = "account_email")
-	private String email;
-	@Column(name = "account_firstname")
-	private String firstName;
-	@Column(name = "account_lastname")
-	private String lastName;
-	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
-	private Set<AccountFriendRelationItem> friends;
+	private List<AuthorityItem>            authoritys;
 
-	public Set<AccountFriendRelationItem> getFriends()
+	@NaturalId
+	@NotNull
+	@Column(name = "account_username",nullable = false)
+	private String                         username;
+
+	@NotNull
+	@Column(name = "account_password",nullable = false)
+	private String                         password;
+
+	@NotNull
+	@Column(name = "account_email",nullable = false)
+	private String                         email;
+
+	@NotNull
+	@Column(name = "account_firstname",nullable = false)
+	private String                         firstName;
+	@NotNull
+	@Column(name = "account_lastname",nullable = false)
+	private String                         lastName;
+
+	@ManyToMany
+	@JoinTable(name = "account_friend_relation",
+			joinColumns = @JoinColumn(name="account_id",nullable = false),
+			inverseJoinColumns = @JoinColumn(name="friend_account_id",nullable = false)
+	)
+	private Set<AccountItem> friends;
+
+	public Set<AccountItem> getFriends()
 	{
 		return friends;
 	}
 
-	public void setFriends(final Set<AccountFriendRelationItem> friends)
+	public void setFriends(final Set<AccountItem> friends)
 	{
 		this.friends = friends;
-	}
-
-	public Integer getId()
-	{
-		return id;
-	}
-
-	public void setId(Integer id)
-	{
-		this.id = id;
 	}
 
 	@SuppressWarnings("unchecked")

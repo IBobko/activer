@@ -30,16 +30,17 @@
             window.ACTIVER = {};
         }
 
-        $.getJSON( "/js/data.json", function( data ) {
-            window.ACTIVER.Data = data;
-        });
-
-        $(function(){
-            $.each(window.ACTIVER,function(i,o){
-                if (o.init != undefined) {
-                    o.init();
-                }
-            })
+        window.ACTIVER.context_path = "<% out.print(getServletConfig().getServletContext().getContextPath());%>";
+        window.ACTIVER.Data = {};
+        $.getJSON( "<c:url value="/js/data.json"/>", function( data ) {
+            for (var attrname in data) { window.ACTIVER.Data[attrname] = data[attrname]; }
+            $(function(){
+                $.each(window.ACTIVER,function(i,o){
+                    if (o.init != undefined) {
+                        o.init();
+                    }
+                })
+            });
         });
 
     </script>

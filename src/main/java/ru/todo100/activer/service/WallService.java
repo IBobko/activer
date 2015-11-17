@@ -1,5 +1,6 @@
 package ru.todo100.activer.service;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -21,8 +22,9 @@ public class WallService extends ServiceAbstract
 
 	@SuppressWarnings("unchecked")
 	public List<WallItem> getAllByAccount(Integer accountId) {
-		return this.getCriteria().add(Restrictions.eq("accountId", accountId))
-						.addOrder(Order.desc("addedDate")).setMaxResults(10)
-		           .list();
+		List result = this.getCriteria().add(Restrictions.eq("account.id", accountId))
+						.addOrder(Order.desc("addedDate")).setMaxResults(10).list();
+		return Collections.checkedList(result,WallItem.class);
 	}
 }
+

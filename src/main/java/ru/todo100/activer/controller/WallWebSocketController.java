@@ -43,7 +43,7 @@ public class WallWebSocketController
 		final AccountItem account = accountService.get(id);
 		final AccountItem currentAccount = accountService.get(principal.getName());
 		WallItem post = new WallItem();
-		post.setAccountId(account.getId());
+		post.setAccount(account);
 		post.setText(messageData.getText());
 		post.setAddedDate(new GregorianCalendar());
 		post.setSender(currentAccount.getId());

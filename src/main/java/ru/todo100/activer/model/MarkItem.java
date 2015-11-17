@@ -6,18 +6,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "mark")
 public class MarkItem extends Item
 {
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	@Column(name = "mark_name")
+	@NotNull
+	@Column(name = "mark_name",nullable = false)
 	private String  name;
-	@Column(name = "mark_count")
+
+	@NotNull
+	@Column(name = "mark_count",nullable = false)
 	private Integer count;
 
 	public Integer getCount()
@@ -39,15 +40,4 @@ public class MarkItem extends Item
 	{
 		this.name = name;
 	}
-
-	public Integer getId()
-	{
-		return id;
-	}
-
-	public void setId(Integer id)
-	{
-		this.id = id;
-	}
-
 }

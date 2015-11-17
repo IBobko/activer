@@ -2,18 +2,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="profile" tagdir="/WEB-INF/tags/profile" %>
 
-<script src="/resources/sockjs-0.3.4.js"></script>
-<script src="/resources/stomp.js"></script>
-<script src="/resources/js/activer.messaging.js"></script>
+<script src="<c:url value="/resources/js/activer.messaging.js"/>"></script>
 
 <script type="text/javascript">
-window.ACTIVER.Data = {
-    profile: {
-        id: '${myProfile.id}'
-    },
-    browseProfile: {
+window.ACTIVER.Data.browseProfile = {
         id: '${friend.id}'
-    }
 };
 </script>
 

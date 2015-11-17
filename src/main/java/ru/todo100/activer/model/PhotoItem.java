@@ -8,36 +8,31 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author Igor Bobko
  */
+@SuppressWarnings({"JpaDataSourceORMInspection", "unused"})
 @Entity
 @Table(name="photo")
 public class PhotoItem extends Item
 {
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer  id;
-	@Column(name = "account_id")
+	@NotNull
+	@Column(name = "account_id",nullable = false)
 	private Integer  account;
-	@Column(name = "path")
+
+	@NotNull
+	@Column(name = "path",nullable = false)
 	private String   path;
-	@Column(name = "type")
+
+	@NotNull
+	@Column(name = "type",nullable = false)
 	private String   type;
-	@Column(name = "added_date")
+
+	@NotNull
+	@Column(name = "added_date",nullable = false)
 	private Calendar addedDate;
-
-	public Integer getId()
-	{
-		return id;
-	}
-
-	public void setId(final Integer id)
-	{
-		this.id = id;
-	}
 
 	public Integer getAccount()
 	{

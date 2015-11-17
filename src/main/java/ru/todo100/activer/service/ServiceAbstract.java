@@ -10,12 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ru.todo100.activer.model.Item;
 
-@Transactional()
+@Transactional
 abstract public class ServiceAbstract {
 	@Autowired
 	private SessionFactory sessionFactory;
 	abstract public Class<? extends Item> getItemClass();
-	
+
 	public Criteria getCriteria() {
 		Criteria criteria = getSession().createCriteria(getItemClass());
 		return criteria;
@@ -23,6 +23,7 @@ abstract public class ServiceAbstract {
 	
 	public Session getSession() {
 		Session session = sessionFactory.getCurrentSession();
+		session.beginTransaction();
 		return session;
 	}
 	

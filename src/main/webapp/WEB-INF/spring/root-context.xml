@@ -49,6 +49,8 @@
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
 				<prop key="hibernate.max_fetch_depth">3</prop>
 				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.current_session_context_class">thread</prop>
+				<prop key="hibernate.enable_lazy_load_no_trans">true</prop>
 			</props>
 		</property>
 	</bean>
@@ -66,26 +68,6 @@
 	<bean
 		id="markService"
 		class="ru.todo100.activer.service.MarkService"
-		parent="serviceAbstract" />
-	<bean
-		id="wishService"
-		class="ru.todo100.activer.service.WishService"
-		parent="serviceAbstract" />
-	<bean
-		id="accountBuyService"
-		class="ru.todo100.activer.service.AccountBuyService"
-		parent="serviceAbstract" />
-	<bean
-		id="orderService"
-		class="ru.todo100.activer.service.OrderService"
-		parent="serviceAbstract" />
-	<bean
-		id="blogService"
-		class="ru.todo100.activer.service.BlogService"
-		parent="serviceAbstract" />
-	<bean
-		id="countryService"
-		class="ru.todo100.activer.service.CountryService"
 		parent="serviceAbstract" />
 
 	<bean id="iCanService"
@@ -159,8 +141,6 @@
 	<bean id="photoStrategy" class="ru.todo100.activer.strategy.PhotoStrategy">
 		<property name="pathToSave" value="/resources/photos"/>
 	</bean>
-
-	<bean id="accountFriendRelationService" class="ru.todo100.activer.service.AccountFriendRelationService"/>
 
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
 		<property name="defaultLocale" value="en" />

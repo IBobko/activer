@@ -30,7 +30,7 @@ public class ProfilePopulator implements Populator<AccountItem,ProfileData>
 		profileData.setFirstName(accountItem.getFirstName());
 		profileData.setLastName(accountItem.getLastName());
 
-		profileData.setId(accountItem.getId().intValue());
+		profileData.setId(accountItem.getId());
 
 		if (facePhoto != null) {
 			profileData.setFacePhotoUrl(facePhoto.getPath());

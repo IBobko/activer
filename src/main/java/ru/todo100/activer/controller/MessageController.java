@@ -9,8 +9,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.socket.TextMessage;
 
 import ru.todo100.activer.data.MessageAccountData;
 import ru.todo100.activer.data.MessageData;
@@ -37,6 +40,7 @@ import ru.todo100.activer.service.MessageService;
 @Controller
 public class MessageController
 {
+
 	@Autowired
 	private MessageService messageService;
 
@@ -49,47 +53,56 @@ public class MessageController
 	@Autowired
 	private ProfilePopulator profilePopulator;
 
-	@MessageMapping("/message1/{id}")
+	@MessageMapping("/message1/1")
 	@SendTo("/message2/{id}")
-	public MessageData message(final MessageData messageData, Principal principal)
+	public MessageData message(final TextMessage messageData/*, Principal principal*/)
 	{
-		MessageItem messageItem = new MessageItem();
-		messageItem.setAccountTo(messageData.getAccountTo());
-		AccountItem accountItem = accountService.get(principal.getName());
-		messageItem.setAccountFrom(accountItem.getId().intValue());
-		messageItem.setText(messageData.getText());
-		messageItem.setAddedDate(new GregorianCalendar());
-		messageService.save(messageItem);
-		AccountItem accountTo = accountService.get(messageData.getAccountTo());
-		MessageAccountData accountDataTo = new MessageAccountData();
-		accountDataTo.setFirstName(accountTo.getFirstName());
-		accountDataTo.setLastName(accountTo.getLastName());
-		messageData.setAccountDataTo(accountDataTo);
-
-		MessageAccountData accountDataFrom = new MessageAccountData();
-		accountDataFrom.setFirstName(accountItem.getFirstName());
-		accountDataFrom.setLastName(accountItem.getLastName());
-		messageData.setSender(accountDataFrom);
-
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
-		messageData.setDate(format.format(new GregorianCalendar().getTime()));
-
-		template.convertAndSend("/message2/" + messageData.getAccountTo(), messageData);
-
-		return messageData;
+		System.out.println(messageData);
+//		MessageItem messageItem = new MessageItem();
+//		messageItem.setAccountTo(messageData.getAccountDataTo().getId());
+//		AccountItem accountItem = accountService.get(principal.getName());
+//		messageItem.setAccountFrom(accountItem.getId().intValue());
+//		messageItem.setText(messageData.getText());
+//		messageItem.setAddedDate(new GregorianCalendar());
+//		messageService.save(messageItem);
+//		AccountItem accountTo = accountService.get(messageData.getAccountTo());
+//		MessageAccountData accountDataTo = new MessageAccountData();
+//		accountDataTo.setFirstName(accountTo.getFirstName());
+//		accountDataTo.setLastName(accountTo.getLastName());
+//		messageData.setAccountDataTo(accountDataTo);
+//
+//		MessageAccountData accountDataFrom = new MessageAccountData();
+//		accountDataFrom.setFirstName(accountItem.getFirstName());
+//		accountDataFrom.setLastName(accountItem.getLastName());
+//		messageData.setSender(accountDataFrom);
+//
+//		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
+//		messageData.setDate(format.format(new GregorianCalendar().getTime()));
+//
+//		template.convertAndSend("/message2/" + messageData.getAccountTo(), messageData);
+//
+//		return messageData;
+		return null;
 	}
 
 	@RequestMapping("/message")
 	public String index(final Model model)
 	{
-		final List<AccountItem> friends = accountService.getFriends(accountService.getCurrentAccount());
-		model.addAttribute("friends", friends);
+		System.out.println("Hey! Hello world!!!");
+		final Set<AccountItem> friends = accountService.getCurrentAccount().getFriends();
+		final Set<ProfileData> friendsData = new HashSet<>();
+		for (AccountItem friend:friends) {
+			friendsData.add(profilePopulator.populate(friend));
+		}
+		model.addAttribute("friends", friendsData);
 		return "message/index";
 	}
 
 	@RequestMapping("/message/{id:\\d+}")
 	public String profileMessage(final Model model, @PathVariable Integer id)
 	{
+		System.out.println("hello world!!!");
+
 		/** Добавить кэширование **/
 		final List<MessageData> messageData = new ArrayList<>();
 		List<MessageItem> messageItems = messageService.getLastDialogs(id);
