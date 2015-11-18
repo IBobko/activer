@@ -5,6 +5,6 @@
              http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
              version="2.1">
     <persistence-unit name="activer">
-
+        <mapping-file>META-INF/ormap.xml</mapping-file>
     </persistence-unit>
 </persistence>

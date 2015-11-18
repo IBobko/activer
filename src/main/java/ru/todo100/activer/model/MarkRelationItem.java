@@ -16,7 +16,19 @@ import javax.validation.constraints.NotNull;
 @Table(name = "mark_relation")
 public class MarkRelationItem extends Item
 {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
+	public Integer getId()
+	{
+		return id;
+	}
+
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
 	@NotNull
 	@Column(name = "mark_id",nullable = false)
 	private Integer markId;

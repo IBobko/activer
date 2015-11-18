@@ -23,6 +23,19 @@ import javax.validation.constraints.NotNull;
 @Table(name = "wall")
 public class WallItem extends Item
 {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
+	public Integer getId()
+	{
+		return id;
+	}
+
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "account_id",nullable = false)

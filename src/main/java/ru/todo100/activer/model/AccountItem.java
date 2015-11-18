@@ -25,7 +25,7 @@ import org.hibernate.annotations.NaturalId;
 @SuppressWarnings({"JpaDataSourceORMInspection", "unused"})
 @Entity
 @Table(name = "account")
-public class AccountItem extends Item
+public class AccountItem extends DateChanges
 {
 	@Fetch(value = FetchMode.SUBSELECT)
 	@OneToMany(cascade = CascadeType.ALL)

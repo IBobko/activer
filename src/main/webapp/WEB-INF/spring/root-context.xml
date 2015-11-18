@@ -11,8 +11,8 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd"
 >
-    <context:annotation-config  />
-    <tx:annotation-driven />
+    <context:annotation-config />
+
     <mvc:annotation-driven />
     <import resource="security-context.xml" />
 
@@ -36,10 +36,6 @@
 		</property>
 	</bean>
 
-	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory"/>
-		<property name="nestedTransactionAllowed" value="true" />
-	</bean>
 
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
@@ -54,33 +50,43 @@
 			</props>
 		</property>
 	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+
+
+	<bean id="decorator" class="ru.todo100.activer.dao.Decorator"/>
+
 	<!-- Classes for work of db tables -->
 
 	<bean
 		id="serviceAbstract"
-		class="ru.todo100.activer.service.ServiceAbstract"
+		class="ru.todo100.activer.dao.AbstractDao"
 		abstract="true" />
 
 	<bean
 		id="accountService"
-		class="ru.todo100.activer.service.AccountService"
+		class="ru.todo100.activer.dao.AccountDao"
 		parent="serviceAbstract" />
 	<bean
 		id="markService"
-		class="ru.todo100.activer.service.MarkService"
+		class="ru.todo100.activer.dao.MarkDao"
 		parent="serviceAbstract" />
 
 	<bean id="iCanService"
-		  class="ru.todo100.activer.service.ICanService"
+		  class="ru.todo100.activer.dao.ICanDao"
 		  parent="serviceAbstract"/>
 
 	<bean id="iWantService"
-		  class="ru.todo100.activer.service.IWantService"
+		  class="ru.todo100.activer.dao.IWantDao"
 		  parent="serviceAbstract"/>
 
-	<bean id="photoService" class="ru.todo100.activer.service.PhotoService" parent="serviceAbstract"/>
+	<bean id="photoService" class="ru.todo100.activer.dao.PhotoDao" parent="serviceAbstract"/>
 
-	<bean id="messageService" class="ru.todo100.activer.service.MessageService" parent="serviceAbstract"/>
+	<bean id="messageService" class="ru.todo100.activer.dao.MessageDao" parent="serviceAbstract"/>
 
 	<!-- end classes -->
 
@@ -132,11 +138,11 @@
 
 	<bean id="messagePopulator" class="ru.todo100.activer.populators.ProfilePopulator"/>
 
-	<bean id="markRelationService" class="ru.todo100.activer.service.MarkRelationService"/>
+	<bean id="markRelationService" class="ru.todo100.activer.dao.MarkRelationDao"/>
 
 	<bean id="markFacade" class="ru.todo100.activer.facade.MarkFacade"/>
 
-	<bean id="wallService" class="ru.todo100.activer.service.WallService"/>
+	<bean id="wallService" class="ru.todo100.activer.dao.WallDao"/>
 
 	<bean id="photoStrategy" class="ru.todo100.activer.strategy.PhotoStrategy">
 		<property name="pathToSave" value="/resources/photos"/>

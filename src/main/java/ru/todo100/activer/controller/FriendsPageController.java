@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.populators.ProfilePopulator;
-import ru.todo100.activer.service.AccountService;
+import ru.todo100.activer.dao.AccountDao;
 
 /**
  * @author Igor Bobko
@@ -21,7 +21,7 @@ import ru.todo100.activer.service.AccountService;
 public class FriendsPageController
 {
 	@Autowired
-	private AccountService accountService;
+	private AccountDao accountService;
 
 	@Autowired
 	private ProfilePopulator profilePopulator;

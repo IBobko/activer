@@ -6,6 +6,7 @@ import javax.persistence.Id;
 
 public class MarkItemGroup extends Item
 {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;

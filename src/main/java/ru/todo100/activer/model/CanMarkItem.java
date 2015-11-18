@@ -16,6 +16,19 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class CanMarkItem extends Item
 {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
+	public Integer getId()
+	{
+		return id;
+	}
+
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
 	@NotNull
 	@Column(name = "can_mark_name",nullable = false)
 	private String markName;

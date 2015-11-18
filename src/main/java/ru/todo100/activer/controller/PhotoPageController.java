@@ -17,13 +17,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,8 +32,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
 
 import ru.todo100.activer.model.PhotoItem;
-import ru.todo100.activer.service.AccountService;
-import ru.todo100.activer.service.PhotoService;
+import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.dao.PhotoDao;
 import ru.todo100.activer.strategy.PhotoStrategy;
 
 /**
@@ -47,11 +45,11 @@ public class PhotoPageController
 {
 
 	@Autowired
-	private PhotoStrategy  photoStrategy;
+	private PhotoStrategy photoStrategy;
 	@Autowired
-	private PhotoService   photoService;
+	private PhotoDao      photoService;
 	@Autowired
-	private AccountService accountService;
+	private AccountDao    accountService;
 
 	@RequestMapping(value = "/crop", method = RequestMethod.POST)
 	void crop(final HttpServletRequest request) throws Base64DecodingException, IOException

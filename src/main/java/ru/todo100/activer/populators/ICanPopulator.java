@@ -24,8 +24,8 @@ import ru.todo100.activer.data.MarkData;
 import ru.todo100.activer.model.ICanItem;
 import ru.todo100.activer.model.MarkItem;
 import ru.todo100.activer.model.MarkRelationItem;
-import ru.todo100.activer.service.MarkRelationService;
-import ru.todo100.activer.service.MarkService;
+import ru.todo100.activer.dao.MarkRelationDao;
+import ru.todo100.activer.dao.MarkDao;
 
 /**
  * @author Igor Bobko
@@ -33,10 +33,10 @@ import ru.todo100.activer.service.MarkService;
 public class ICanPopulator implements Populator<ICanItem, ICanData>
 {
 	@Autowired
-	private MarkRelationService markRelationService;
+	private MarkRelationDao markRelationService;
 
 	@Autowired
-	private MarkService markService;
+	private MarkDao markService;
 
 	@Override
 	public ICanData populate(final ICanItem iCanItem)

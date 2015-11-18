@@ -18,11 +18,11 @@ import ru.todo100.activer.model.ICanItem;
 import ru.todo100.activer.model.IWantItem;
 import ru.todo100.activer.model.MarkItem;
 import ru.todo100.activer.model.MarkRelationItem;
-import ru.todo100.activer.service.AccountService;
-import ru.todo100.activer.service.ICanService;
-import ru.todo100.activer.service.IWantService;
-import ru.todo100.activer.service.MarkRelationService;
-import ru.todo100.activer.service.MarkService;
+import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.dao.ICanDao;
+import ru.todo100.activer.dao.IWantDao;
+import ru.todo100.activer.dao.MarkRelationDao;
+import ru.todo100.activer.dao.MarkDao;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>
@@ -34,19 +34,19 @@ import ru.todo100.activer.service.MarkService;
 public class SearchPageController
 {
 	@Autowired
-	private MarkService markService;
+	private MarkDao markService;
 
 	@Autowired
-	private MarkRelationService markRelationService;
+	private MarkRelationDao markRelationService;
 
 	@Autowired
-	private AccountService accountService;
+	private AccountDao accountService;
 
 	@Autowired
-	private ICanService iCanService;
+	private ICanDao iCanService;
 
 	@Autowired
-	private IWantService iWantService;
+	private IWantDao iWantService;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String canSearch(Model model, @RequestParam("s") String s)

@@ -71,7 +71,10 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/webapp" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
-      <excludeFolder url="file://$MODULE_DIR$/target" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/annotations" isTestSource="false" generated="true" />
+      <excludeFolder url="file://$MODULE_DIR$/target/ROOT" />
+      <excludeFolder url="file://$MODULE_DIR$/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/target/dependency" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="inheritedJdk" />
@@ -103,7 +106,7 @@
     <orderEntry type="library" name="Maven: javax.inject:javax.inject:1" level="project" />
     <orderEntry type="library" name="Maven: javax:javaee-web-api:7.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet.jsp:jsp-api:2.1" level="project" />
-    <orderEntry type="library" name="Maven: javax.servlet:jstl:1.2" level="project" />
+    <orderEntry type="library" exported="" name="Maven: javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:1.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.7" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-extras:3.0.5" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-core:3.0.5" level="project" />
@@ -167,5 +170,6 @@
     <orderEntry type="library" name="Maven: com.goldmansachs:gs-collections-api:5.1.0" level="project" />
     <orderEntry type="library" name="Maven: com.lmax:disruptor:3.3.0" level="project" />
     <orderEntry type="library" name="Maven: org.reactivestreams:reactive-streams:1.0.0.RC3" level="project" />
+    <orderEntry type="library" name="dependency" level="project" />
   </component>
 </module>

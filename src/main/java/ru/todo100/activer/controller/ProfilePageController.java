@@ -2,17 +2,26 @@ package ru.todo100.activer.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.FlushMode;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.SessionHolder;
+import org.springframework.orm.hibernate5.SpringSessionSynchronization;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -42,12 +51,13 @@ import ru.todo100.activer.populators.ICanPopulator;
 import ru.todo100.activer.populators.IWantPopulator;
 import ru.todo100.activer.populators.ProfilePopulator;
 import ru.todo100.activer.populators.WallPopulator;
-import ru.todo100.activer.service.AccountService;
-import ru.todo100.activer.service.ICanService;
-import ru.todo100.activer.service.IWantService;
-import ru.todo100.activer.service.MarkRelationService;
-import ru.todo100.activer.service.MarkService;
-import ru.todo100.activer.service.WallService;
+import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.dao.Decorator;
+import ru.todo100.activer.dao.ICanDao;
+import ru.todo100.activer.dao.IWantDao;
+import ru.todo100.activer.dao.MarkRelationDao;
+import ru.todo100.activer.dao.MarkDao;
+import ru.todo100.activer.dao.WallDao;
 import ru.todo100.activer.util.InputError;
 
 @Controller
@@ -56,13 +66,13 @@ import ru.todo100.activer.util.InputError;
 public class ProfilePageController
 {
 	@Autowired
-	private AccountService accountService;
+	private AccountDao accountService;
 
 	@Autowired
-	private ICanService iCanService;
+	private ICanDao iCanService;
 
 	@Autowired
-	private IWantService iWantService;
+	private IWantDao iWantService;
 
 	@Autowired
 	private ICanPopulator iCanPopulator;
@@ -74,13 +84,13 @@ public class ProfilePageController
 	private IWantPopulator iWantPopulator;
 
 	@Autowired
-	private MarkService markService;
+	private MarkDao markService;
 
 	@Autowired
-	private MarkRelationService markRelationService;
+	private MarkRelationDao markRelationService;
 
 	@Autowired
-	private WallService wallService;
+	private WallDao wallService;
 
 	@Autowired
 	private ProfilePopulator profilePopulator;
@@ -211,7 +221,7 @@ public class ProfilePageController
 	@RequestMapping(value = "/add_i_want", method = RequestMethod.POST)
 	public String doAddIWant(@ModelAttribute IWantForm iWantForm)
 	{
-
+		System.out.println("i'm here!!!!");
 		final AccountItem accountItem = accountService.getCurrentAccount();
 		iWantService.add(accountItem, iWantForm);
 		return "redirect:/profile";
@@ -263,9 +273,21 @@ public class ProfilePageController
 		return "redirect:/profile";
 	}
 
+	@Autowired
+	PlatformTransactionManager transactionManager;
+
+
+//	@PersistenceContext
+//	EntityManager entityManager;
+
+	@Autowired
+	Decorator decorator;
+
 	@RequestMapping(value = "/edit_i_want/{id}", method = RequestMethod.GET)
 	public String editIWant(Model model, @PathVariable("id") Integer id)
 	{
+	//	decorator.f();
+
 		final IWantItem iWantModel = iWantService.get(id);
 		final IWantData data = iWantPopulator.populate(iWantModel);
 		final IWantForm form = new IWantForm();
@@ -278,11 +300,22 @@ public class ProfilePageController
 		return "profile/i_want_form";
 	}
 
+	@Autowired
+	SessionFactory sessionFactory;
+
 	@RequestMapping(value = "/edit_i_want/{id}", method = RequestMethod.POST)
 	public String doEditIWant(@ModelAttribute IWantForm iWantForm, @PathVariable("id") String id)
 	{
 		final AccountItem accountItem = accountService.getCurrentAccount();
-		IWantItem wantItem = iWantService.add(accountItem, iWantForm);
+
+		final IWantItem wantItem = new IWantItem();
+		wantItem.setAccount(accountItem);
+		wantItem.setDescription(iWantForm.getDescription());
+		wantItem.setTitle(iWantForm.getTitle());
+		wantItem.setCreatedDate(new GregorianCalendar());
+		wantItem.setId(Integer.parseInt(id));
+		sessionFactory.getCurrentSession().beginTransaction();
+		iWantService.save(wantItem);
 
 		String[] marks = StringUtils.tokenizeToStringArray(iWantForm.getMarks(), ",", true, true);
 
@@ -308,6 +341,65 @@ public class ProfilePageController
 			}
 		}
 		return "redirect:/profile";
+	}
+
+
+	public Session currentSession() throws HibernateException
+	{
+		Object value = TransactionSynchronizationManager.getResource(this.sessionFactory);
+		if (value instanceof Session) {
+			return (Session) value;
+		}
+		else if (value instanceof SessionHolder) {
+			SessionHolder sessionHolder = (SessionHolder) value;
+			Session session = sessionHolder.getSession();
+			if (!sessionHolder.isSynchronizedWithTransaction() &&
+					TransactionSynchronizationManager.isSynchronizationActive()) {
+				TransactionSynchronizationManager.registerSynchronization(
+						new SpringSessionSynchronization(sessionHolder, this.sessionFactory, false));
+				sessionHolder.setSynchronizedWithTransaction(true);
+				// Switch to FlushMode.AUTO, as we have to assume a thread-bound Session
+				// with FlushMode.MANUAL, which needs to allow flushing within the transaction.
+				FlushMode flushMode = session.getFlushMode();
+				if (flushMode.equals(FlushMode.MANUAL) &&
+						!TransactionSynchronizationManager.isCurrentTransactionReadOnly()) {
+					session.setFlushMode(FlushMode.AUTO);
+					sessionHolder.setPreviousFlushMode(flushMode);
+				}
+			}
+			return session;
+		}
+
+//		if (this.transactionManager != null) {
+//			try {
+//				if (this.transactionManager.getStatus() == Status.STATUS_ACTIVE) {
+//					Session session = this.jtaSessionContext.currentSession();
+//					if (TransactionSynchronizationManager.isSynchronizationActive()) {
+//						TransactionSynchronizationManager.registerSynchronization(new SpringFlushSynchronization(session));
+//					}
+//					return session;
+//				}
+//			}
+//			catch (SystemException ex) {
+//				throw new HibernateException("JTA TransactionManager found but status check failed", ex);
+//			}
+//		}
+
+		if (TransactionSynchronizationManager.isSynchronizationActive()) {
+			Session session = this.sessionFactory.openSession();
+			if (TransactionSynchronizationManager.isCurrentTransactionReadOnly()) {
+				session.setFlushMode(FlushMode.MANUAL);
+			}
+			SessionHolder sessionHolder = new SessionHolder(session);
+			TransactionSynchronizationManager.registerSynchronization(
+					new SpringSessionSynchronization(sessionHolder, this.sessionFactory, true));
+			TransactionSynchronizationManager.bindResource(this.sessionFactory, sessionHolder);
+			sessionHolder.setSynchronizedWithTransaction(true);
+			return session;
+		}
+		else {
+			throw new HibernateException("Could not obtain transaction-synchronized Session for current thread");
+		}
 	}
 
 	@RequestMapping(value = "/id{id:\\d+}", method = RequestMethod.GET)

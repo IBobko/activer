@@ -20,6 +20,19 @@ import javax.validation.constraints.NotNull;
 @Table(name = "ican")
 public class ICanItem extends Item
 {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
+	public Integer getId()
+	{
+		return id;
+	}
+
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
 	@ManyToOne
 	@JoinColumn(name = "account_id")
 	private AccountItem account;

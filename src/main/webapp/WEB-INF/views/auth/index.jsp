@@ -1,13 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<style type="text/css">
-    th, td {
-        padding: 5px;
-    }
-</style>
 
-<div class="well" style="width:350px;margin:0 auto">
+<div id="entrance" class="well">
     <c:if test="${ie != null}">
         <div class="alert alert-danger">
             <ul>
@@ -38,7 +33,6 @@
                     <a href="<c:url value="/auth/signup"/>" class="btn btn-default">Регистрация</a>
                 </td>
             </tr>
-
         </table>
     </form:form>
 </div>

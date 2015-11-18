@@ -18,6 +18,19 @@ import javax.validation.constraints.NotNull;
 @Table(name="photo")
 public class PhotoItem extends Item
 {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
+	public Integer getId()
+	{
+		return id;
+	}
+
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
 	@NotNull
 	@Column(name = "account_id",nullable = false)
 	private Integer  account;

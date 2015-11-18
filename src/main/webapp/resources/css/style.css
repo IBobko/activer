@@ -54,3 +54,11 @@ img {
 	border:0;
 }
 
+/* Entrance page */
+#entrance th, td {
+	padding: 5px;
+}
+#entrance {
+	width: 352px;
+	margin: 0 auto;
+}

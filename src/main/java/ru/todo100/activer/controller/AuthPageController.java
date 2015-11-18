@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import ru.todo100.activer.model.AccountItem;
-import ru.todo100.activer.service.AccountService;
+import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.util.InputError;
 import ru.todo100.activer.util.MailBean;
 
@@ -20,9 +20,9 @@ public class AuthPageController
 {
 
 	@Autowired
-	private AccountService accountService;
+	private AccountDao accountService;
 	@Autowired
-	private MailBean       mail;
+	private MailBean   mail;
 
 	@RequestMapping(value = "")
 	public String index()

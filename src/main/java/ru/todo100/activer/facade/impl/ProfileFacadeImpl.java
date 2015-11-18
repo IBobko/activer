@@ -6,7 +6,7 @@ import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.facade.ProfileFacade;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.populators.ProfilePopulator;
-import ru.todo100.activer.service.AccountService;
+import ru.todo100.activer.dao.AccountDao;
 
 /**
  *
@@ -16,7 +16,7 @@ import ru.todo100.activer.service.AccountService;
 public class ProfileFacadeImpl implements ProfileFacade
 {
 	@Autowired
-	private AccountService accountService;
+	private AccountDao accountService;
 
 	@Autowired
 	private ProfilePopulator profilePopulator;

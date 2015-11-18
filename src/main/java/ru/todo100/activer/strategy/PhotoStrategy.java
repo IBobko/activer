@@ -18,8 +18,8 @@ import javax.imageio.ImageIO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ru.todo100.activer.model.PhotoItem;
-import ru.todo100.activer.service.AccountService;
-import ru.todo100.activer.service.PhotoService;
+import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.dao.PhotoDao;
 
 /**
  * @author Igor Bobko
@@ -28,11 +28,11 @@ public class PhotoStrategy
 {
 	private static final int IMG_WIDTH = 250;
 	//private static final int IMG_HEIGHT = 170;
-	private String         pathToSave;
+	private String     pathToSave;
 	@Autowired
-	private AccountService accountService;
+	private AccountDao accountService;
 	@Autowired
-	private PhotoService   photoService;
+	private PhotoDao   photoService;
 
 	public static void resize(File original, File dest, String extension)
 	{

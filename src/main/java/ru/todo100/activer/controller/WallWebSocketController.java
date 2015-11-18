@@ -14,8 +14,8 @@ import ru.todo100.activer.data.MessageData;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.WallItem;
 import ru.todo100.activer.populators.WallPopulator;
-import ru.todo100.activer.service.AccountService;
-import ru.todo100.activer.service.WallService;
+import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.dao.WallDao;
 
 /**
  * @author Igor Bobko
@@ -24,13 +24,13 @@ import ru.todo100.activer.service.WallService;
 public class WallWebSocketController
 {
 	@Autowired
-	private AccountService accountService;
+	private AccountDao accountService;
 
 	@Autowired
 	private WallPopulator wallPopulator;
 
 	@Autowired
-	private WallService wallService;
+	private WallDao wallService;
 
 	@MessageMapping("/wall/{id}")
 	@SendTo("/wall1/{id}")

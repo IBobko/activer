@@ -16,6 +16,19 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings(value = "all")
 public class AuthorityItem extends Item
 {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
+	public Integer getId()
+	{
+		return id;
+	}
+
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "account_username", referencedColumnName = "account_username")
 	private AccountItem account;

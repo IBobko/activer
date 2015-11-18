@@ -4,17 +4,11 @@ package ru.todo100.activer.controller;
  * @author Igor Bobko
  */
 
-import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -24,8 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.socket.TextMessage;
 
 import ru.todo100.activer.data.MessageAccountData;
@@ -34,21 +26,21 @@ import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.MessageItem;
 import ru.todo100.activer.populators.ProfilePopulator;
-import ru.todo100.activer.service.AccountService;
-import ru.todo100.activer.service.MessageService;
+import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.dao.MessageDao;
 
 @Controller
 public class MessageController
 {
 
 	@Autowired
-	private MessageService messageService;
+	private MessageDao messageService;
 
 	@Autowired
 	private SimpMessagingTemplate template;
 
 	@Autowired
-	private AccountService accountService;
+	private AccountDao accountService;
 
 	@Autowired
 	private ProfilePopulator profilePopulator;

@@ -9,7 +9,7 @@ import ru.todo100.activer.data.ICanData;
 import ru.todo100.activer.facade.ICanFacade;
 import ru.todo100.activer.model.ICanItem;
 import ru.todo100.activer.populators.ICanPopulator;
-import ru.todo100.activer.service.ICanService;
+import ru.todo100.activer.dao.ICanDao;
 
 /**
  * @author Igor Bobko
@@ -19,7 +19,7 @@ public class ICanFacadeImpl implements ICanFacade
 	@Autowired
 	private ICanPopulator iCanPopulator;
 	@Autowired
-	private ICanService   iCanService;
+	private ICanDao       iCanService;
 
 	public List<ICanData> getByAccount(Integer id){
 		final List<ICanItem> iCanItems = iCanService.getByAccount(id);

@@ -76,7 +76,5 @@
 			</beans:bean>
 		</mvc:interceptor>
 	</mvc:interceptors>
-	<tx:annotation-driven />
-
 
 </beans:beans>

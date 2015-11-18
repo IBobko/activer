@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.PhotoItem;
-import ru.todo100.activer.service.PhotoService;
+import ru.todo100.activer.dao.PhotoDao;
 
 /**
  * @author Igor Bobko
@@ -15,7 +15,7 @@ import ru.todo100.activer.service.PhotoService;
 public class ProfilePopulator implements Populator<AccountItem,ProfileData>
 {
 	@Autowired
-	private PhotoService photoService;
+	private PhotoDao photoService;
 
 	@Override
 	public ProfileData populate(final AccountItem accountItem)

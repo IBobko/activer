@@ -10,8 +10,8 @@ import ru.todo100.activer.data.MessageData;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.PhotoItem;
 import ru.todo100.activer.model.WallItem;
-import ru.todo100.activer.service.AccountService;
-import ru.todo100.activer.service.PhotoService;
+import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.dao.PhotoDao;
 
 /**
  * @author Igor Bobko
@@ -19,10 +19,10 @@ import ru.todo100.activer.service.PhotoService;
 public class WallPopulator implements Populator<WallItem, MessageData>
 {
 	@Autowired
-	private AccountService accountService;
+	private AccountDao accountService;
 
 	@Autowired
-	private PhotoService photoService;
+	private PhotoDao photoService;
 
 	@Override
 	public MessageData populate(final WallItem wallItem)
