@@ -21,8 +21,9 @@
     <script type="text/javascript" src="<c:url value="/resources/js/jquery-1.10.2.min.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/activer.photo-upload.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
-    <script type="text/javascript" src="/resources/sockjs-0.3.4.js"></script>
-    <script type="text/javascript" src="/resources/stomp.js"></script>
+    <script type="text/javascript" src="<c:url value="/resources/sockjs-0.3.4.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/resources/stomp.js"/>"></script>
+
     <script>
 
 

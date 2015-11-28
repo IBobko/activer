@@ -47,7 +47,7 @@ public class MessageController
 
 	@MessageMapping("/message1/1")
 	@SendTo("/message2/{id}")
-	public MessageData message(final TextMessage messageData/*, Principal principal*/)
+	public MessageData message(final MessageData messageData/*, Principal principal*/)
 	{
 		System.out.println(messageData);
 //		MessageItem messageItem = new MessageItem();

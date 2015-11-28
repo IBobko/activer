@@ -8,8 +8,8 @@ window.ACTIVER.Dialog = {
     var that = this;
     $('#messages').scrollTop($('#messages').height());
     $("#dialogForm").submit(function () {
-      var text = this.querySelector("#text").value
-      that.stompClient.send(window.ACTIVER.context_path + "/message1/" + window.ACTIVER.Data.profile.id, {}, JSON.stringify({'accountDataTo': window.ACTIVER.Data.browseProfile, 'text': text}));
+      var text = this.querySelector("#text").value;
+      that.stompClient.send("/message1/" + window.ACTIVER.Data.profile.id, {}, JSON.stringify({'accountDataTo': window.ACTIVER.Data.browseProfile, 'text': text}));
       document.getElementById('text').value = "";
       return false;
     });
@@ -20,6 +20,7 @@ window.ACTIVER.Dialog = {
     var socket = new SockJS(window.ACTIVER.context_path + '/message1/' + window.ACTIVER.Data.profile.id);
     this.stompClient = Stomp.over(socket);
     this.stompClient.connect({}, function (frame) {
+      console.log(frame);
       that.stompClient.subscribe('/message2/' + window.ACTIVER.Data.profile.id, function (greeting) {
         var message = JSON.parse(greeting.body);
         if (message.text == null || message.text == undefined || message.text == ""){

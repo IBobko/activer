@@ -2,6 +2,8 @@ package ru.todo100.activer.dao;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
@@ -12,6 +14,7 @@ import ru.todo100.activer.model.PhotoItem;
  * @author Igor Bobko <limit-speed@yandex.ru>
  */
 @SuppressWarnings("unchecked")
+@Transactional
 public class PhotoDao extends AbstractDao
 {
 	@Override

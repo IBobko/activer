@@ -5,13 +5,13 @@ import java.util.GregorianCalendar;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import ru.todo100.activer.model.DateChanges;
 import ru.todo100.activer.model.Item;
-
-abstract public class AbstractDao
+@SuppressWarnings({"unchecked"})
+abstract public class AbstractDao<T>
 {
 	private SessionFactory sessionFactory;
 
@@ -48,11 +48,10 @@ abstract public class AbstractDao
 			getSession().delete(object);
 		}
 	}
-
+	@Transactional
 	public void save(Item item)
 	{
 		final Session session = getSession();
-		final Transaction tx = session.beginTransaction();
 		if (item.getId() != null)
 		{
 			session.merge(item);
@@ -65,6 +64,5 @@ abstract public class AbstractDao
 			}
 			session.persist(item);
 		}
-		tx.commit();
 	}
 }

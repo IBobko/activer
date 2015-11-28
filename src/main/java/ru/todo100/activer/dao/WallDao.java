@@ -3,6 +3,8 @@ package ru.todo100.activer.dao;
 import java.util.Collections;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
@@ -12,6 +14,7 @@ import ru.todo100.activer.model.WallItem;
 /**
  * @author Igor Bobko
  */
+@Transactional
 public class WallDao extends AbstractDao
 {
 	@Override

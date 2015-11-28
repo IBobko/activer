@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,13 +19,20 @@ import ru.todo100.activer.model.Item;
  * @author Igor Bobko <limit-speed@yandex.ru>
  */
 @SuppressWarnings({"unchecked", "JpaQlInspection"})
-@Transactional(propagation = Propagation.NEVER)
-public class IWantDao extends AbstractDao
+@Transactional
+public class IWantDao extends AbstractDao<IWantItem>
 {
 	@Override
 	public Class<? extends Item> getItemClass()
 	{
 		return IWantItem.class;
+	}
+
+	@Transactional(readOnly = true)
+	public IWantItem get(Integer id)
+	{
+		final Session session = getSessionFactory().getCurrentSession();
+		return  (IWantItem) session.get(getItemClass(), id);
 	}
 
 	public IWantItem add(final AccountItem accountItem, final IWantForm iWantForm)
@@ -42,14 +50,6 @@ public class IWantDao extends AbstractDao
 	{
 		final Session session = getSession();
 		return session.createQuery("from IWantItem c").list();
-	}
-
-	public IWantItem get(Integer id)
-	{
-		final Session session = getSessionFactory().openSession();
-		IWantItem item = (IWantItem) session.get(this.getItemClass(), id);
-		session.close();
-		return item;
 	}
 
 	public List<IWantItem> getByAccount(final Integer id)

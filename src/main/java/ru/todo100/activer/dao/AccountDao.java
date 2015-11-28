@@ -4,6 +4,7 @@ package ru.todo100.activer.dao;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -15,6 +16,7 @@ import ru.todo100.activer.util.InputError;
 import ru.todo100.activer.util.MailBean;
 
 @SuppressWarnings(value = {"unchecked"})
+@Transactional
 public class AccountDao extends AbstractDao
 {
 

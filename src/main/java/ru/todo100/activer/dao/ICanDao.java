@@ -2,6 +2,8 @@ package ru.todo100.activer.dao;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -15,6 +17,7 @@ import ru.todo100.activer.model.Item;
  * @author Igor Bobko <limit-speed@yandex.ru>
  */
 @SuppressWarnings({"JpaQlInspection", "unchecked"})
+@Transactional
 public class ICanDao extends AbstractDao
 {
 

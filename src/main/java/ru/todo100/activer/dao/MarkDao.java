@@ -1,10 +1,12 @@
 package ru.todo100.activer.dao;
 
+import javax.transaction.Transactional;
+
 import org.hibernate.criterion.Restrictions;
 
 import ru.todo100.activer.model.Item;
 import ru.todo100.activer.model.MarkItem;
-
+@Transactional
 public class MarkDao extends AbstractDao
 {
 	@Override

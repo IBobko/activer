@@ -52,7 +52,6 @@ import ru.todo100.activer.populators.IWantPopulator;
 import ru.todo100.activer.populators.ProfilePopulator;
 import ru.todo100.activer.populators.WallPopulator;
 import ru.todo100.activer.dao.AccountDao;
-import ru.todo100.activer.dao.Decorator;
 import ru.todo100.activer.dao.ICanDao;
 import ru.todo100.activer.dao.IWantDao;
 import ru.todo100.activer.dao.MarkRelationDao;
@@ -280,13 +279,11 @@ public class ProfilePageController
 //	@PersistenceContext
 //	EntityManager entityManager;
 
-	@Autowired
-	Decorator decorator;
+
 
 	@RequestMapping(value = "/edit_i_want/{id}", method = RequestMethod.GET)
 	public String editIWant(Model model, @PathVariable("id") Integer id)
 	{
-	//	decorator.f();
 
 		final IWantItem iWantModel = iWantService.get(id);
 		final IWantData data = iWantPopulator.populate(iWantModel);
@@ -314,7 +311,6 @@ public class ProfilePageController
 		wantItem.setTitle(iWantForm.getTitle());
 		wantItem.setCreatedDate(new GregorianCalendar());
 		wantItem.setId(Integer.parseInt(id));
-		sessionFactory.getCurrentSession().beginTransaction();
 		iWantService.save(wantItem);
 
 		String[] marks = StringUtils.tokenizeToStringArray(iWantForm.getMarks(), ",", true, true);
@@ -340,6 +336,7 @@ public class ProfilePageController
 				markService.save(item);
 			}
 		}
+
 		return "redirect:/profile";
 	}
 

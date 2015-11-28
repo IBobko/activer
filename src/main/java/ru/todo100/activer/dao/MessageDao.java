@@ -3,6 +3,8 @@ package ru.todo100.activer.dao;
 import java.util.Collections;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
@@ -14,6 +16,7 @@ import ru.todo100.activer.model.MessageItem;
 /**
  * @author Igor Bobko
  */
+@Transactional
 public class MessageDao extends AbstractDao
 {
 	@Override
