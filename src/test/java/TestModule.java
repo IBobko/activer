@@ -39,7 +39,7 @@ public class TestModule {
 
 
         SchemaExport gen = new SchemaExport((MetadataImplementor)metadata.buildMetadata());
-        gen.setOutputFile("C://Users/User/1.sql");
+        //gen.setOutputFile("C://Users/User/1.sql");
         gen.setDelimiter(";");
         gen.execute(true, false, false, false);
 
