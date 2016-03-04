@@ -353,7 +353,7 @@
                     </components>
                     <glassfishDirectory>/home/igor/app/glassfish4</glassfishDirectory>
                     <domain>
-                        <name>${project.artifactId}</name>
+                        <name>domain1</name>
                         <adminPort>4848</adminPort>
                         <httpPort>9090</httpPort>
                         <httpsPort>4343</httpsPort>
