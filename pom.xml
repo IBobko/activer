@@ -337,8 +337,19 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.glassfish</groupId>
+                <artifactId>maven-embedded-glassfish-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                    <app>${project.build.directory}/${build.finalName}.war</app>
+                    <autoDelete>true</autoDelete>
+                    <port>9090</port>
+                    <contextRoot>ROOT</contextRoot>
+                </configuration>
+            </plugin>
         </plugins>
+
         <finalName>ROOT</finalName>
     </build>
 </project>
