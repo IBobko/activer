@@ -351,7 +351,7 @@
                             <artifact>${project.build.directory}/artifacts/${project.build.finalName}.war</artifact>
                         </component>
                     </components>
-                    <glassfishDirectory>/home/igor/app/glassgish4</glassfishDirectory>
+                    <glassfishDirectory>/home/igor/app/glassfish4</glassfishDirectory>
                     <domain>
                         <name>${project.artifactId}</name>
                         <adminPort>4848</adminPort>
