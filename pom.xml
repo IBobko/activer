@@ -356,10 +356,6 @@
                         <name>domain1</name>
                         <adminPort>4848</adminPort>
                         <httpPort>9090</httpPort>
-                        <httpsPort>4343</httpsPort>
-                        <iiopPort>3700</iiopPort>
-                        <jmsPort>7676</jmsPort>
-                        <reuse>false</reuse>
                     </domain>
                     <adminPassword>admin</adminPassword>
                 </configuration>
