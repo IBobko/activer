@@ -352,7 +352,15 @@
                         </component>
                     </components>
                     <glassfishDirectory>/home/igor/app/glassgish4</glassfishDirectory>
-                    <domain>domain1</domain>
+                    <domain>
+                        <name>${project.artifactId}</name>
+                        <adminPort>4848</adminPort>
+                        <httpPort>9090</httpPort>
+                        <httpsPort>4343</httpsPort>
+                        <iiopPort>3700</iiopPort>
+                        <jmsPort>7676</jmsPort>
+                        <reuse>false</reuse>
+                    </domain>
                 </configuration>
             </plugin>
         </plugins>
