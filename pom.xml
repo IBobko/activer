@@ -361,6 +361,7 @@
                         <jmsPort>7676</jmsPort>
                         <reuse>false</reuse>
                     </domain>
+                    <adminPassword>admin</adminPassword>
                 </configuration>
             </plugin>
         </plugins>
