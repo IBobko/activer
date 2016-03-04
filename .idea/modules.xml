@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/cube3d.todo100.ru.iml" filepath="$PROJECT_DIR$/cube3d.todo100.ru.iml" />
-      <module fileurl="file://$PROJECT_DIR$/exp/exp.iml" filepath="$PROJECT_DIR$/exp/exp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/activer.iml" filepath="$PROJECT_DIR$/.idea/activer.iml" />
     </modules>
   </component>
 </project>

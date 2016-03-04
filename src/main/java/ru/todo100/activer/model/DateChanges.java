@@ -23,7 +23,7 @@ import javax.persistence.MappedSuperclass;
  * @author Igor Bobko
  */
 @MappedSuperclass
-public class DateChanges extends Item
+public abstract class DateChanges extends Item
 {
 	@Column(name="created_date")
 	private Calendar createdDate;

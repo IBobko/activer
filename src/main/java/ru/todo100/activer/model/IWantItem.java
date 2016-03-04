@@ -2,13 +2,7 @@ package ru.todo100.activer.model;
 
 import java.util.Calendar;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -20,6 +14,11 @@ import javax.validation.constraints.NotNull;
 @Table(name = "iwant")
 public class IWantItem extends DateChanges
 {
+	@Id
+	@SequenceGenerator(name = "default_gen", sequenceName = "iwant_seq", allocationSize = 1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "default_gen")
+	private Integer id;
+
 	@ManyToOne
 	@JoinColumn(name = "account_id")
 	private AccountItem account;
@@ -79,5 +78,15 @@ public class IWantItem extends DateChanges
 		//	@PreUpdate
 	void g() {
 		System.out.println("--------------------ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+	}
+
+	@Override
+	public Integer getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(Integer id) {
+		this.id = id;
 	}
 }

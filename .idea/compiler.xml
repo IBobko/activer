@@ -19,13 +19,21 @@
       </profile>
       <profile default="false" name="Annotation profile for cube3d.todo100.ru" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="cube3d.todo100.ru" />
       </profile>
+      <profile default="false" name="Annotation profile for activer" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="activer" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="activer" target="1.7" />
       <module name="cube3d.todo100.ru" target="1.7" />
     </bytecodeTargetLevel>
   </component>

@@ -1,39 +1,21 @@
 package ru.todo100.activer.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "authority")
 @SuppressWarnings(value = "all")
-public class AuthorityItem extends Item
+public class AuthorityItem implements java.io.Serializable
 {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
 
-	public Integer getId()
-	{
-		return id;
-	}
-
-	public void setId(Integer id)
-	{
-		this.id = id;
-	}
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "account_username", referencedColumnName = "account_username")
+	@Id
 	private AccountItem account;
 
 	@NotNull
+	@Id
 	@Column(name = "authority_role",nullable = false)
 	private String role;
 

@@ -2,12 +2,7 @@ package ru.todo100.activer.model;
 
 import java.util.Calendar;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -19,7 +14,8 @@ import javax.validation.constraints.NotNull;
 public class MessageItem extends Item
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@SequenceGenerator(name = "default_gen", sequenceName = "message_seq", allocationSize = 1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "default_gen")
 	private Integer id;
 
 	public Integer getId()

@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * @author Igor Bobko
@@ -15,16 +16,14 @@ import javax.persistence.Table;
 @SuppressWarnings({"JpaDataSourceORMInspection", "JpaAttributeTypeInspection"})
 @Entity
 @Table(name = "account_friend_relation")
-public class AccountFriendRelationItem extends Item
+public class AccountFriendRelationItem implements Serializable
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-
 	@OneToOne
 	@JoinColumn(name = "account_id")
 	private AccountItem account;
 
+	@Id
 	@OneToOne
 	@JoinColumn(name = "friend_account_id")
 	private AccountItem friendAccount;
@@ -47,15 +46,5 @@ public class AccountFriendRelationItem extends Item
 	public void setFriendAccount(final AccountItem friendAccount)
 	{
 		this.friendAccount = friendAccount;
-	}
-
-	public Integer getId()
-	{
-		return id;
-	}
-
-	public void setId(final Integer id)
-	{
-		this.id = id;
 	}
 }

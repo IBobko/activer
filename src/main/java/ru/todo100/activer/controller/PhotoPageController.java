@@ -16,7 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Base64;
+//import java.util.Base64;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
+//import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
 
 import ru.todo100.activer.model.PhotoItem;
 import ru.todo100.activer.dao.AccountDao;
@@ -52,12 +52,12 @@ public class PhotoPageController
 	private AccountDao    accountService;
 
 	@RequestMapping(value = "/crop", method = RequestMethod.POST)
-	void crop(final HttpServletRequest request) throws Base64DecodingException, IOException
+	void crop(final HttpServletRequest request) throws /*Base64DecodingException,*/ IOException
 	{
 
 		final String image = request.getParameter("resizedImage");
 		final String imageDataBytes = image.substring(image.indexOf(",") + 1);
-		final InputStream stream = new ByteArrayInputStream(Base64.getDecoder().decode(imageDataBytes.getBytes()));
+		final InputStream stream = new ByteArrayInputStream(null/*Base64.getDecoder().decode(imageDataBytes.getBytes())*/);
 
 		BufferedImage i = ImageIO.read(stream);
 		//
@@ -117,11 +117,11 @@ public class PhotoPageController
 	}
 
 	@RequestMapping("/original")
-	void original(final HttpServletRequest request, final HttpServletResponse response) throws Base64DecodingException, IOException
+	void original(final HttpServletRequest request, final HttpServletResponse response) throws /*Base64DecodingException,*/ IOException
 	{
 		final String image = request.getParameter("resizedImage");
 		final String imageDataBytes = image.substring(image.indexOf(",") + 1);
-		final InputStream stream = new ByteArrayInputStream(Base64.getDecoder().decode(imageDataBytes.getBytes()));
+		final InputStream stream = new ByteArrayInputStream(null/*Base64.getDecoder().decode(imageDataBytes.getBytes())*/);
 
 		BufferedImage i = ImageIO.read(stream);
 
