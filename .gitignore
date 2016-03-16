@@ -1,2 +1,7 @@
+#Ignore Intellij IDEA files
 .idea/
 *.iml
+
+#Ignore output files
+target/
+
