@@ -354,14 +354,14 @@
                             <artifact>${project.build.directory}/${project.build.finalName}.war</artifact>
                         </component>
                     </components>
-                    <glassfishDirectory>/home/igor/app/glassfish4/glassfish</glassfishDirectory>
+                    <glassfishDirectory>C:\Server\glassfish4/glassfish</glassfishDirectory>
                     <domain>
                         <name>domain1</name>
                         <adminPort>4848</adminPort>
-                        <httpPort>9090</httpPort>
+                        <httpPort>18080</httpPort>
                     </domain>
                     <user>admin</user>
-                    <adminPassword>admin</adminPassword>
+                    <adminPassword>123456</adminPassword>
                 </configuration>
             </plugin>
         </plugins>
