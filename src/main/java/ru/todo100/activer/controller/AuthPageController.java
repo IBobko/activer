@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.model.PromoCodeItem;
+import ru.todo100.activer.service.PromoService;
+import ru.todo100.activer.service.ReferService;
 import ru.todo100.activer.util.InputError;
 import ru.todo100.activer.util.MailService;
 
@@ -20,8 +23,29 @@ public class AuthPageController
 {
 	@Autowired
 	private AccountDao accountService;
+
 	@Autowired
 	private MailService mail;
+	@Autowired
+	private PromoService promoService;
+	@Autowired
+	private ReferService referService;
+
+	public PromoService getPromoService() {
+		return promoService;
+	}
+
+	public void setPromoService(PromoService promoService) {
+		this.promoService = promoService;
+	}
+
+	public ReferService getReferService() {
+		return referService;
+	}
+
+	public void setReferService(ReferService referService) {
+		this.referService = referService;
+	}
 
 	@RequestMapping(value = "")
 	public String index()
@@ -30,11 +54,27 @@ public class AuthPageController
 	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
-	public String signup(HttpServletRequest request)
+	public String signup(HttpServletRequest request,Model model)
 	{
 		String refer = request.getParameter("refer");
 		String promo = request.getParameter("promo");
-		return "auth/signup";
+
+		AccountItem referAccount = getReferService().getUserByRefer(refer);
+		if (referAccount != null) {
+			model.addAttribute("referAccount",refer);
+			return "auth/signup";
+		}
+
+		PromoCodeItem promoCode = getPromoService().getPromo(promo);
+		if (promoCode != null && promoCode.getUsed() == null) {
+			if (promoCode.getUsed() == null) {
+				model.addAttribute("promo",promoCode);
+				return "auth/signup";
+			} else {
+				model.addAttribute("promoUsed",promoCode);
+			}
+		}
+		return "auth/deny";
 	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
