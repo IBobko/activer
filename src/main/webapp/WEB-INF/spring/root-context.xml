@@ -88,6 +88,12 @@
 
 	<bean id="messageService" class="ru.todo100.activer.dao.MessageDao" parent="serviceAbstract"/>
 
+
+	<bean
+			id="promocodeService"
+			class="ru.todo100.activer.service.PromoServiceImpl"
+			parent="serviceAbstract" />
+
 	<!-- end classes -->
 
 	<bean id="addingStandartItemsFilter" class="ru.todo100.activer.filter.AddingStandartItemsFilter" />
@@ -95,11 +101,11 @@
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.yandex.ru" />
 		<property name="username" value="support@todo100.ru" />
-		<property name="password" value="3361243" />
+		<property name="password" value="123456" />
 		<property name="javaMailProperties">
 			<props>
 				<prop key="mail.smtp.ssl.enable">true</prop>
-				<prop key="mail.smtp.from">support@3dplenty.com</prop>
+				<prop key="mail.smtp.from">support@todo100.ru</prop>
 			</props>
 		</property>
 	</bean>
@@ -110,14 +116,14 @@
 				<prop key="resource.loader">file</prop>
 				<prop key="file.resource.loader.class">org.apache.velocity.runtime.resource.loader.FileResourceLoader
 				</prop>
-				<prop key="file.resource.loader.path">/</prop>
+				<prop key="file.resource.loader.path">C:\Users\User\IdeaProjects2\activer\src\main\webapp</prop>
 				<prop key="file.resource.loader.cache">false</prop>
 				<prop key="file.resource.loader.modificationCheckInterval">0</prop>
 			</props>
 		</property>
 	</bean>
 
-	<bean id="mailBean" class="ru.todo100.activer.util.MailBean">
+	<bean id="mailService" class="ru.todo100.activer.util.MailService">
 		<property name="mailSender" ref="mailSender" />
 		<property name="velocityEngine" ref="velocityEngine" />
 	</bean>

@@ -13,7 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.util.InputError;
-import ru.todo100.activer.util.MailBean;
+import ru.todo100.activer.util.MailService;
 
 @SuppressWarnings(value = {"unchecked"})
 @Transactional
@@ -79,7 +79,7 @@ public class AccountDao extends AbstractDao
 			ie.addError("E-mail is empty");
 		}
 
-		if (!MailBean.isValidEmailAddress(email))
+		if (!MailService.isValidEmailAddress(email))
 		{
 			ie.addError("E-mail is invalid");
 		}

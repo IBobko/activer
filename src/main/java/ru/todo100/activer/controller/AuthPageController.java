@@ -12,17 +12,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.util.InputError;
-import ru.todo100.activer.util.MailBean;
+import ru.todo100.activer.util.MailService;
 
 @Controller
 @RequestMapping(value = "/auth")
 public class AuthPageController
 {
-
 	@Autowired
 	private AccountDao accountService;
 	@Autowired
-	private MailBean   mail;
+	private MailService mail;
 
 	@RequestMapping(value = "")
 	public String index()
@@ -42,7 +41,7 @@ public class AuthPageController
 		try
 		{
 			AccountItem account = accountService.saveByRequest(request);
-			//mail.sendCompleteSignUp(account);
+			mail.sendCompleteSignUp(account);
 			return "auth/done";
 		}
 		catch (InputError e)

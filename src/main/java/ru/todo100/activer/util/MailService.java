@@ -15,7 +15,7 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import ru.todo100.activer.model.AccountItem;
 
-public class MailBean {
+public class MailService {
 	private JavaMailSenderImpl mailSender;
 	private VelocityEngine velocityEngine;
 	
@@ -27,26 +27,21 @@ public class MailBean {
 		this.velocityEngine = velocityEngine;
 	}
 
-	@Autowired
-	private ServletContext servletContext;
-	
 	public void sendCompleteSignUp(final AccountItem account){
 		MimeMessagePreparator preparator = new MimeMessagePreparator(){
 			@Override
 			public void prepare(MimeMessage mimeMessage) throws Exception {
 				MimeMessageHelper message = new MimeMessageHelper(mimeMessage,true);
-	            message.setTo(account.getEmail());
-	            message.setFrom("no-replay@3dplenty.com");
-	            message.setSubject("Registration on 3dplenty.com");
-	            Map<String, String> model = new HashMap<String, String>();
+				message.setFrom("support@todo100.ru");
+				message.setTo(account.getEmail());
+				message.setSubject("Registration on todo100.ru");
+	            Map<String, Object> model = new HashMap<>();
 	            model.put("fullName", account.getFirstName() + " " + account.getLastName());
-	            model.put("login", account.getUsername());/*	            String text = VelocityEngineUtils.mergeTemplateIntoString(
-	               velocityEngine, servletContext.getRealPath("/WEB-INF/velocity/email/forgot.vm"), model);*/
-/*	            message.setText(text, true);
-	            model.put("password", account.getPassword());
-//	            String text = VelocityEngineUtils.mergeTemplateIntoString(
-//	               velocityEngine, servletContext.getRealPath("/WEB-INF/velocity/email/registration.vm"), model);
-	            message.setText(text, true);*/
+	            model.put("login", account.getUsername());
+				model.put("password", account.getPassword());
+				String text = VelocityEngineUtils.mergeTemplateIntoString(
+	               velocityEngine, "\\WEB-INF\\velocity\\email\\registration.vm","UTF-8", model);
+	            message.setText(text, true);
 			}
 		};
 		mailSender.send(preparator);
@@ -86,11 +81,4 @@ public class MailBean {
 		this.mailSender = mailSender;
 	}
 
-	public ServletContext getServletContext() {
-		return servletContext;
-	}
-
-	public void setServletContext(ServletContext servletContext) {
-		this.servletContext = servletContext;
-	}	
 }

@@ -15,11 +15,11 @@ public class TestModule {
         System.out.println("hello");
 
 
-
-        MetadataSources metadata = new MetadataSources(
-                new StandardServiceRegistryBuilder()
-                        .applySetting("hibernate.dialect", org.hibernate.dialect.Oracle8iDialect.class)
-                        .build());
+//
+//        MetadataSources metadata = new MetadataSources(
+//                new StandardServiceRegistryBuilder()
+//                        .applySetting("hibernate.dialect", org.hibernate.dialect.Oracle8iDialect.class)
+//                        .build());
 
         //metadata.addAnnotatedClass(AuthorityItem.class);
         //metadata.addAnnotatedClass(AccountItem.class);
@@ -36,12 +36,12 @@ public class TestModule {
 
 
 
-
-
-        SchemaExport gen = new SchemaExport((MetadataImplementor)metadata.buildMetadata());
-        //gen.setOutputFile("C://Users/User/1.sql");
-        gen.setDelimiter(";");
-        gen.execute(true, false, false, false);
+//
+//
+//        SchemaExport gen = new SchemaExport((MetadataImplementor)metadata.buildMetadata());
+//        //gen.setOutputFile("C://Users/User/1.sql");
+//        gen.setDelimiter(";");
+//        gen.execute(true, false, false, false);
 
         System.out.println("test");
     }
