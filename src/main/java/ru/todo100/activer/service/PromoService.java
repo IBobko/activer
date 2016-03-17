@@ -1,4 +1,4 @@
-package ru.todo100.activer.service.impl;
+package ru.todo100.activer.service;
 
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.PromoCodeItem;
@@ -23,6 +23,11 @@ public interface PromoService {
        Возвращает новый промо аккаунта c таким-то кодом
    */
     PromoCodeItem removePromo(String code);
+
+    /*
+   Возвращает новый промо аккаунта c таким-то кодом
+*/
+    PromoCodeItem getPromo(String code);
 
     /*
       Возвращает владельца промо

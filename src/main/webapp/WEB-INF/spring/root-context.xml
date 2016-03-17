@@ -30,7 +30,7 @@
 			<value>oracle.jdbc.driver.OracleDriver</value>
 		</property>
 		<property name="url">
-			<value>jdbc:oracle:thin:@todo100.ru:1521:orcl</value>
+			<value>jdbc:oracle:thin:@192.168.1.65:1521:orcl</value>
 		</property>
 		<property name="username">
 			<value>C##activer</value>
@@ -71,6 +71,7 @@
 		id="accountService"
 		class="ru.todo100.activer.dao.AccountDao"
 		parent="serviceAbstract" />
+
 	<bean
 		id="markService"
 		class="ru.todo100.activer.dao.MarkDao"
@@ -91,7 +92,7 @@
 
 	<bean
 			id="promocodeService"
-			class="ru.todo100.activer.service.PromoServiceImpl"
+			class="ru.todo100.activer.service.impl.PromoServiceImpl"
 			parent="serviceAbstract" />
 
 	<!-- end classes -->
@@ -116,7 +117,7 @@
 				<prop key="resource.loader">file</prop>
 				<prop key="file.resource.loader.class">org.apache.velocity.runtime.resource.loader.FileResourceLoader
 				</prop>
-				<prop key="file.resource.loader.path">C:\Users\User\IdeaProjects2\activer\src\main\webapp</prop>
+				<prop key="file.resource.loader.path">/</prop>
 				<prop key="file.resource.loader.cache">false</prop>
 				<prop key="file.resource.loader.modificationCheckInterval">0</prop>
 			</props>
@@ -157,6 +158,8 @@
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
 		<property name="defaultLocale" value="en" />
 	</bean>
+
+	<bean id="referService" class="ru.todo100.activer.service.impl.ReferServiceImpl"/>
 
 	<!-- Facades -->
 	<import resource="facade-context.xml" />

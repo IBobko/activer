@@ -2,7 +2,6 @@ import org.hibernate.tool.schema.TargetType;
 import org.junit.Assert;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +11,8 @@ import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.AuthorityItem;
 import ru.todo100.activer.model.PromoCodeItem;
-import ru.todo100.activer.service.impl.PromoService;
+import ru.todo100.activer.service.PromoService;
+import ru.todo100.activer.service.ReferService;
 import ru.todo100.activer.util.MailService;
 
 import java.util.EnumSet;
@@ -62,16 +62,51 @@ public class MailTest {
         System.out.println(promoService.generateNewPromo(accountItem));
     }
 
-    @Test
+    //@Test
     public void showAccountsPromo() {
         PromoService promoService = (PromoService)applicationContext.getBean("promocodeService");
         AccountItem accountItem = getTestAccount2();
 
         for (PromoCodeItem promoCodeItem : promoService.getAccountPromos(accountItem))
         {
-            System.out.println(promoCodeItem.getOwner().getEmail());
+            System.out.println(promoCodeItem);
         }
 
+    }
+
+
+    //@Test
+    public void checkPromo() {
+        PromoService promoService = (PromoService)applicationContext.getBean("promocodeService");
+        PromoCodeItem promo = promoService.getPromo("7565");
+        if (promo != null && promo.getUsed() == null) {
+            System.out.println("Промо найден и он свободен");
+        }
+
+        PromoCodeItem promo2 = promoService.getPromo("7566");
+        if (promo2 == null) {
+            System.out.println("Промо не найден");
+        }
+
+
+//        AccountItem accountItem = getTestAccount2();
+//
+//        for (PromoCodeItem promoCodeItem : promoService.getAccountPromos(accountItem))
+//        {
+//            System.out.println(promoCodeItem);
+//        }
+
+    }
+
+    @Test
+    public void referTest() {
+        ReferService referService = (ReferService)applicationContext.getBean("referService");
+        AccountItem account = referService.getUserByRefer("jKitrS");
+        if (account != null) {
+            System.out.println(account  + " Пользователь с такой реферальной ссылкой найден");
+        } else {
+            System.out.println("Пользователь с такой реферальной ссылкой не найден");
+        }
     }
 
     private AccountItem getTestAccount2() {

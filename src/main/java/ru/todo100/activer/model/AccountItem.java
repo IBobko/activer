@@ -15,136 +15,137 @@ import org.hibernate.annotations.NaturalId;
 @Entity
 @Table(name = "account")
 
-public class AccountItem extends DateChanges
-{
-	@Id
-	@SequenceGenerator(name = "default_gen", sequenceName = "account_seq", allocationSize = 1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "default_gen")
-	private Integer id;
+public class AccountItem extends DateChanges {
+    @Id
+    @SequenceGenerator(name = "default_gen", sequenceName = "account_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")
+    private Integer id;
+    @NotNull
+    @Column(name = "account_refer_code", nullable = false)
+    private String referCode;
+    @NotNull
+    @Column(name = "account_used_refer_code", nullable = false)
+    private String usedReferCode;
+    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_username", referencedColumnName = "account_username")
+    private List<AuthorityItem> authoritys;
+    @NaturalId
+    @NotNull
+    @Column(name = "account_username", nullable = false)
+    private String username;
+    @NotNull
+    @Column(name = "account_password", nullable = false)
+    private String password;
+    @NotNull
+    @Column(name = "account_email", nullable = false)
+    private String email;
+    @NotNull
+    @Column(name = "account_firstname", nullable = false)
+    private String firstName;
+    @NotNull
+    @Column(name = "account_lastname", nullable = false)
+    private String lastName;
+    @ManyToMany
+    @JoinTable(name = "account_friend_relation",
+            joinColumns = @JoinColumn(name = "account_id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "friend_account_id", nullable = false)
+    )
+    private Set<AccountItem> friends;
 
-	public Integer getId()
-	{
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setId(Integer id)
-	{
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
+    public String getUsedReferCode() {
+        return usedReferCode;
+    }
 
-	@Fetch(value = FetchMode.SUBSELECT)
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "account_username", referencedColumnName = "account_username")
-	private List<AuthorityItem>            authoritys;
+    public void setUsedReferCode(String usedReferCode) {
+        this.usedReferCode = usedReferCode;
+    }
 
-	@NaturalId
-	@NotNull
-	@Column(name = "account_username",nullable = false)
-	private String                         username;
+    public Set<AccountItem> getFriends() {
+        return friends;
+    }
 
-	@NotNull
-	@Column(name = "account_password",nullable = false)
-	private String                         password;
+    public void setFriends(final Set<AccountItem> friends) {
+        this.friends = friends;
+    }
 
-	@NotNull
-	@Column(name = "account_email",nullable = false)
-	private String                         email;
+    @SuppressWarnings("unchecked")
+    public void addRole(String role) {
+        if (authoritys == null) {
+            authoritys = new ArrayList();
+        }
+        AuthorityItem item = new AuthorityItem();
+        item.setRole(role);
+        item.setAccount(this);
+        authoritys.add(item);
+    }
 
-	@NotNull
-	@Column(name = "account_firstname",nullable = false)
-	private String                         firstName;
-	@NotNull
-	@Column(name = "account_lastname",nullable = false)
-	private String                         lastName;
+    public List<AuthorityItem> getAuthoritys() {
+        return authoritys;
+    }
 
-	@ManyToMany
-	@JoinTable(name = "account_friend_relation",
-			joinColumns = @JoinColumn(name="account_id",nullable = false),
-			inverseJoinColumns = @JoinColumn(name="friend_account_id",nullable = false)
-	)
-	private Set<AccountItem> friends;
+    public void setAuthoritys(final List<AuthorityItem> authoritys) {
+        this.authoritys = authoritys;
+    }
 
-	public Set<AccountItem> getFriends()
-	{
-		return friends;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setFriends(final Set<AccountItem> friends)
-	{
-		this.friends = friends;
-	}
+    public void setUsername(final String username) {
+        this.username = username;
+    }
 
-	@SuppressWarnings("unchecked")
-	public void addRole(String role)
-	{
-		if (authoritys == null)
-		{
-			authoritys = new ArrayList();
-		}
-		AuthorityItem item = new AuthorityItem();
-		item.setRole(role);
-		item.setAccount(this);
-		authoritys.add(item);
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public List<AuthorityItem> getAuthoritys()
-	{
-		return authoritys;
-	}
+    public void setPassword(final String password) {
+        this.password = password;
+    }
 
-	public void setAuthoritys(final List<AuthorityItem> authoritys)
-	{
-		this.authoritys = authoritys;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getUsername()
-	{
-		return username;
-	}
+    public void setEmail(final String email) {
+        this.email = email;
+    }
 
-	public void setUsername(final String username)
-	{
-		this.username = username;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public String getPassword()
-	{
-		return password;
-	}
+    public void setFirstName(final String firstName) {
+        this.firstName = firstName;
+    }
 
-	public void setPassword(final String password)
-	{
-		this.password = password;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public String getEmail()
-	{
-		return email;
-	}
+    public void setLastName(final String lastName) {
+        this.lastName = lastName;
+    }
 
-	public void setEmail(final String email)
-	{
-		this.email = email;
-	}
+    public String toString() {
+        return "[(" + getEmail() + ") " + getFirstName() + " " + getLastName() + "]";
+    }
 
-	public String getFirstName()
-	{
-		return firstName;
-	}
+    public String getReferCode() {
+        return referCode;
+    }
 
-	public void setFirstName(final String firstName)
-	{
-		this.firstName = firstName;
-	}
+    public void setReferCode(String referCode) {
+        this.referCode = referCode;
+    }
 
-	public String getLastName()
-	{
-		return lastName;
-	}
-
-	public void setLastName(final String lastName)
-	{
-		this.lastName = lastName;
-	}
 }

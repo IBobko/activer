@@ -1,6 +1,6 @@
 <html>
 <body>
-<h3>Hi, ${fullName}! Welcome to the 3dplenty.com!</h3>
+<h3>Hi, ${fullName}! Welcome to the todo100.ru!</h3>
 <div>
 <strong>Your login:</strong> ${login}<br/>
 <strong>Your password:</strong> ${password}<br/>

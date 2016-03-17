@@ -30,8 +30,10 @@ public class AuthPageController
 	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
-	public String signup()
+	public String signup(HttpServletRequest request)
 	{
+		String refer = request.getParameter("refer");
+		String promo = request.getParameter("promo");
 		return "auth/signup";
 	}
 

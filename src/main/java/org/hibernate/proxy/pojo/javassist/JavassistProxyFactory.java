@@ -20,8 +20,6 @@ import org.hibernate.internal.util.ReflectHelper;
 import org.hibernate.internal.util.collections.ArrayHelper;
 import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.proxy.ProxyFactory;
-import org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer;
-import org.hibernate.proxy.pojo.javassist.SerializableProxy;
 import org.hibernate.type.CompositeType;
 
 public class JavassistProxyFactory implements ProxyFactory, Serializable {
@@ -80,7 +78,7 @@ public class JavassistProxyFactory implements ProxyFactory, Serializable {
         try {
             HibernateProxy t = (HibernateProxy)this.proxyClass.newInstance();
             ((ProxyObject)t).setHandler(initializer);
-            //initializer.constructed();
+            initializer.constructed();
             return t;
         } catch (Throwable var5) {
             LOG.error(LOG.javassistEnhancementFailed(this.entityName), var5);
@@ -96,7 +94,7 @@ public class JavassistProxyFactory implements ProxyFactory, Serializable {
             Class t = factory.createClass();
             HibernateProxy message1 = (HibernateProxy)t.newInstance();
             ((Proxy)message1).setHandler(initializer);
-            //initializer.constructed();
+            initializer.constructed();
             return message1;
         } catch (Throwable var5) {
             String message = LOG.javassistEnhancementFailed(serializableProxy.getEntityName());

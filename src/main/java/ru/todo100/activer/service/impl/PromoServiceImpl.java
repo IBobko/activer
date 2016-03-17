@@ -1,17 +1,13 @@
-package ru.todo100.activer.service;
+package ru.todo100.activer.service.impl;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Transactional;
 import ru.todo100.activer.dao.AbstractDao;
 import ru.todo100.activer.model.AccountItem;
-import ru.todo100.activer.model.DateChanges;
 import ru.todo100.activer.model.Item;
 import ru.todo100.activer.model.PromoCodeItem;
-import ru.todo100.activer.service.impl.PromoService;
+import ru.todo100.activer.service.PromoService;
 
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -19,16 +15,22 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
-public class PromoServiceImpl extends AbstractDao implements PromoService{
+public class PromoServiceImpl extends AbstractDao implements PromoService {
 
     final static int MAX_PROMO = 9999;
+
+    @Transactional
+    @Override
+    public PromoCodeItem getPromo(String code) {
+        return (PromoCodeItem) getCriteria().add(Restrictions.eq("code",code)).uniqueResult();
+    }
 
 
     @Transactional
     @Override
     public List<PromoCodeItem> getAccountPromos(AccountItem accountItem) {
 
-        return getCriteria().list();
+        return getCriteria().add(Restrictions.eq("owner",accountItem)).list();
     }
 
     @Transactional
