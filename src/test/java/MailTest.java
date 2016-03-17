@@ -98,7 +98,7 @@ public class MailTest {
 
     }
 
-    @Test
+    //@Test
     public void referTest() {
         ReferService referService = (ReferService)applicationContext.getBean("referService");
         AccountItem account = referService.getUserByRefer("jKitrS");
