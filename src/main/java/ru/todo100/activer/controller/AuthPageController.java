@@ -77,7 +77,7 @@ public class AuthPageController
 				return "auth/signup";
 			}
 		}
-		return "auth/deny";
+		return "auth/signup";
 	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
