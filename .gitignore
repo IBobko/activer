@@ -5,6 +5,11 @@
 #Ignore output files
 target/
 out/
+
+#Ignore local properties
 local.properties
+
+#Ignore rebel
+rebel.xml
 
 
