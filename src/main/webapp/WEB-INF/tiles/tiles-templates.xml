@@ -43,10 +43,11 @@
 	<definition name="auth/forgot" extends="base-template">
     	<put-attribute name="content" value="/WEB-INF/views/auth/forgot.jsp" />
 	</definition>
-	
-	<definition name="profile/index" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/profile/index.jsp" />
+
+	<definition name="profile/index" template="/WEB-INF/views/profile/index.jsp">
+
 	</definition>
+
 	
 	<definition name="profile/change" extends="base-template">
     	<put-attribute name="content" value="/WEB-INF/views/profile/change.jsp" />
