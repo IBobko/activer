@@ -20,10 +20,10 @@ public class AccountItem extends DateChanges {
     @SequenceGenerator(name = "default_gen", sequenceName = "account_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")
     private Integer id;
-    @NotNull
+
     @Column(name = "account_refer_code", nullable = false)
     private String referCode;
-    @NotNull
+
     @Column(name = "account_used_refer_code", nullable = false)
     private String usedReferCode;
     @Fetch(value = FetchMode.SUBSELECT)

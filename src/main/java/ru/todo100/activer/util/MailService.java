@@ -18,7 +18,10 @@ import ru.todo100.activer.model.AccountItem;
 public class MailService {
 	private JavaMailSenderImpl mailSender;
 	private VelocityEngine velocityEngine;
-	
+
+	@Autowired
+	ServletContext servletContext;
+
 	public VelocityEngine getVelocityEngine() {
 		return velocityEngine;
 	}
@@ -39,6 +42,8 @@ public class MailService {
 	            model.put("fullName", account.getFirstName() + " " + account.getLastName());
 	            model.put("login", account.getUsername());
 				model.put("password", account.getPassword());
+
+
 				String text = VelocityEngineUtils.mergeTemplateIntoString(
 	               velocityEngine, "\\WEB-INF\\velocity\\email\\registration.vm","UTF-8", model);
 	            message.setText(text, true);

@@ -6,9 +6,11 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import ru.todo100.activer.form.RegisterForm;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.model.PromoCodeItem;
@@ -56,33 +58,34 @@ public class AuthPageController
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public String signup(HttpServletRequest request,Model model)
 	{
-		String refer = request.getParameter("refer");
-		String promo = request.getParameter("promo");
+		RegisterForm registerForm = new RegisterForm();
+		model.addAttribute("registerForm",registerForm);
+		final String refer = request.getParameter("referCode");
+		final String promo = request.getParameter("promoCode");
 
-		AccountItem referAccount = getReferService().getUserByRefer(refer);
+		final AccountItem referAccount = getReferService().getUserByRefer(refer);
 		if (referAccount != null) {
-			model.addAttribute("referAccount",refer);
+			registerForm.setRefer(refer);
+			model.addAttribute("referAccount",referAccount);
 			return "auth/signup";
 		}
 
-		PromoCodeItem promoCode = getPromoService().getPromo(promo);
+		final PromoCodeItem promoCode = getPromoService().getPromo(promo);
 		if (promoCode != null && promoCode.getUsed() == null) {
+			registerForm.setPromo(promo);
 			if (promoCode.getUsed() == null) {
-				model.addAttribute("promo",promoCode);
 				return "auth/signup";
-			} else {
-				model.addAttribute("promoUsed",promoCode);
 			}
 		}
 		return "auth/deny";
 	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public String signupPost(HttpServletRequest request, Model model)
+	public String signupPost(@ModelAttribute RegisterForm registerForm, HttpServletRequest request, Model model)
 	{
 		try
 		{
-			AccountItem account = accountService.saveByRequest(request);
+			AccountItem account = accountService.saveForm(registerForm);
 			mail.sendCompleteSignUp(account);
 			return "auth/done";
 		}
