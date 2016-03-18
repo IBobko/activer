@@ -15,7 +15,7 @@
     <import resource="security-context.xml" />
 	<context:annotation-config />
 
-	<context:property-placeholder location="/WEB-INF/local.properties" ignore-unresolvable="true" />
+	<context:property-placeholder location="/WEB-INF/local_.properties" ignore-unresolvable="true" />
 
 	<context:property-placeholder location="/WEB-INF/servlet.properties" />
 
