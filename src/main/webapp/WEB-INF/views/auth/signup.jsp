@@ -15,9 +15,22 @@
                 </ul>
             </div>
         </c:if>
-        <tiles:insertTemplate template="/WEB-INF/views/auth/form.jsp">
-            <tiles:putAttribute name="account" value="${account}"/>
-        </tiles:insertTemplate>
+        <div class="form-group">
+            <label for="promoCode">Промо-код</label>
+            <input type="text" class="form-control" id="promoCode" placeholder="Код" name="promoCode"/>
+        </div>
+        <div class="form-group">
+            <label for="firstNameInput">Имя</label>
+            <input type="text" class="form-control" id="firstNameInput" placeholder="Введите имя" name="firstName"/>
+        </div>
+        <div class="form-group">
+            <label for="lastNameInput">Фамилия</label>
+            <input type="text" class="form-control" id="lastNameInput" placeholder="Введите фамилию" name="lastName"/>
+        </div>
+        <div class="form-group">
+            <label for="emailInput">Email</label>
+            <input type="email" class="form-control" id="emailInput" placeholder="Введите email" name="email"/>
+        </div>
         <br/>
     </div>
     <button type="submit" class="btn btn-default">Зарегистрироваться</button>

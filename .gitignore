@@ -5,4 +5,6 @@
 #Ignore output files
 target/
 out/
+local.properties
+
 

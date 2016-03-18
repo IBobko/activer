@@ -16,7 +16,6 @@ import ru.todo100.activer.service.ReferService;
  */
 public class ReferServiceImpl implements ReferService {
 
-
     @Autowired
     AccountDao accountDao;
 
