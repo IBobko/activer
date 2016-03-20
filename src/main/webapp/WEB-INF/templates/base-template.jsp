@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<%@ taglib prefix="main" tagdir="/WEB-INF/tags/main" %>
+
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
 
     <meta charset="utf-8">
@@ -32,10 +35,14 @@
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+
+
+
     <![endif]-->
 
     <script type="text/javascript" src="<c:url value="/resources/js/jquery-1.10.2.min.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/resources/js/activer.photo-upload.js"/>"></script>
+
     <script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/sockjs-0.3.4.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/stomp.js"/>"></script>
@@ -63,10 +70,65 @@
 
     </script>
 </head>
+
 <body>
-    <tiles:insertAttribute name="content"/>
-<div id="popupWindow" style="position:absolute;display:none; width:300px; height:300px;background:#3f51b5">
+
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <nav class="navbar navbar-default navbar-sidebar">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button id="sidebar-toggle" type="button" class="navbar-toggle">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand my-navbar-brand" href="#">
+                        <img alt="Brand" src="<c:url value="/resources/img/logo.png"/>">
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <main:leftmenu/>
+
+        <button class="btn btn-sm text-uppercase premium"><span class="fa fa-star-o"></span> премиум-аккаунт</button>
+        <p class="copyright">on/off line <span class="fa fa-copyright"></span> 2016</p>
+    </div>
+    <!-- /Sidebar -->
+
+    <!-- Page content -->
+    <div id="page-content-wrapper" class="container-fluid">
+        <!-- Navbar -->
+        <main:topmenu/>
+        <!-- /Navbar -->
+        <tiles:insertAttribute name="content"/>
+    </div>
+    <!-- /Page content -->
+
+</div>
+<!-- /#wrapper -->
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
+
+<!-- Menu Toggle Script -->
+<script>
+    $("#sidebar-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+</script>
+<div id="popupWindow" style="z-index:100000; top:10px; left:10px; position:absolute;display:none; width:300px; height:300px;background:#3f51b5">
     Этот пользователеь хочет добавить вас в други
 </div>
 </body>
+
 </html>
+

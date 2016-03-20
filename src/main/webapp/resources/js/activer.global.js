@@ -17,7 +17,7 @@ window.ACTIVER.Global = {
         //alert("init");
     },
     submit: function(data){
-        that.stompClient.send("/global", {}, JSON.stringify(data));
+        this.stompClient.send("/actions", {}, JSON.stringify(data));
 
         //var that = this;
         //$('#messages').scrollTop($('#messages').height());

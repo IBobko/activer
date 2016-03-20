@@ -103,9 +103,11 @@ public class ProfilePageController
 	@Autowired
 	private IWantFacade iWantFacade;
 
-	@RequestMapping(value = "", method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	public String index(Model model)
 	{
+
+
 		final AccountItem account = accountService.getCurrentAccount();
 
 		ProfileData profile = profilePopulator.populate(account);
@@ -122,9 +124,9 @@ public class ProfilePageController
 		}
 		profile.setFriends(friendsData);
 		model.addAttribute("profile", profile);
-		model.addAttribute("cans", iCanService.getByAccount(account.getId()));
+
 		populatePersonOfPage(model, account);
-		model.addAttribute("wants", iWantService.getByAccount(account.getId()));
+
 		return "profile/index";
 	}
 
@@ -418,9 +420,7 @@ public class ProfilePageController
 
 
 
-		model.addAttribute("account", profile);
-		model.addAttribute("cans", iCanFacade.getByAccount(id));
-		model.addAttribute("wants",iWantFacade.getByAccount(id));
+		model.addAttribute("profile", profile);
 
 		populatePersonOfPage(model,account);
 		return "profile/index";

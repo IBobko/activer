@@ -9,7 +9,7 @@
 
 
 
-	<definition name="base-template" template="/WEB-INF/templates/base-template_.jsp">
+	<definition name="base-template" template="/WEB-INF/templates/base-template.jsp">
     	<put-attribute name="title" value="Activer" />
     	<put-attribute name="header" value="/WEB-INF/templates/header.jsp" />
     	<put-attribute name="content" value="" />
@@ -51,8 +51,8 @@
     	<put-attribute name="content" value="/WEB-INF/views/auth/forgot.jsp" />
 	</definition>
 
-	<definition name="profile/index" template="/WEB-INF/views/profile/index.jsp">
-
+	<definition name="profile/index" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/profile/index.jsp" />
 	</definition>
 
 	
