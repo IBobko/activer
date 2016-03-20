@@ -168,5 +168,7 @@
 		<put-attribute name="content" value="/WEB-INF/views/settings/trips.jsp"/>
 	</definition>
 
-	
+	<definition name="admin/index" template="/WEB-INF/views/admin/index.jsp">
+
+	</definition>
 </tiles-definitions> 

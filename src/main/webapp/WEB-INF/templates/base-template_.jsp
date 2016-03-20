@@ -39,6 +39,7 @@
     <script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/sockjs-0.3.4.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/stomp.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/resources/js/activer.global.js"/>"></script>
 
     <script>
 
@@ -64,5 +65,8 @@
 </head>
 <body>
     <tiles:insertAttribute name="content"/>
+<div id="popupWindow" style="position:absolute;display:none; width:300px; height:300px;background:#3f51b5">
+    Этот пользователеь хочет добавить вас в други
+</div>
 </body>
 </html>

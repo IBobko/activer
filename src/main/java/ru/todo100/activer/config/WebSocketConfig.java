@@ -21,6 +21,7 @@ class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer
 		/* There is a built-in interceptor for passing HTTP session attributes to the WebSocket session. */
 		registry.addEndpoint("/message1/{id}").withSockJS();//.setInterceptors(new HttpSessionHandshakeInterceptor());
 		registry.addEndpoint("/wall/{id}").withSockJS();//.setInterceptors(new HttpSessionHandshakeInterceptor());
+		registry.addEndpoint("/global/{id}").withSockJS();//.setInterceptors(new HttpSessionHandshakeInterceptor());
 	}
 
 	@Override
