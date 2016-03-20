@@ -74,7 +74,6 @@ public class MessageController
 //		messageData.setDate(format.format(new GregorianCalendar().getTime()));
 //
 		template.convertAndSend("/message2/" + messageData.getAccountTo(), messageData);
-		template.convertAndSend("/message2/" + messageData.getAccountTo(), messageData);
 
 		return messageData;
 	}

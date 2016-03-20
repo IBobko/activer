@@ -9,7 +9,7 @@
 
 
 
-	<definition name="base-template" template="/WEB-INF/templates/base-template.jsp">
+	<definition name="base-template" template="/WEB-INF/templates/base-template_.jsp">
     	<put-attribute name="title" value="Activer" />
     	<put-attribute name="header" value="/WEB-INF/templates/header.jsp" />
     	<put-attribute name="content" value="" />
@@ -150,6 +150,22 @@
 
 	<definition name="test/test" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/test/test.jsp"/>
+	</definition>
+
+	<definition name="settings/index" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/settings/index.jsp"/>
+	</definition>
+
+	<definition name="settings/dreams" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/settings/dreams.jsp"/>
+	</definition>
+
+	<definition name="settings/interests" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/settings/interests.jsp"/>
+	</definition>
+
+	<definition name="settings/trips" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/settings/trips.jsp"/>
 	</definition>
 
 	
