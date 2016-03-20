@@ -4,6 +4,7 @@ package ru.todo100.activer.controller;
  * @author Igor Bobko
  */
 
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -47,34 +48,35 @@ public class MessageController
 
 	@MessageMapping("/message1/1")
 	@SendTo("/message2/{id}")
-	public MessageData message(final MessageData messageData/*, Principal principal*/)
+	public MessageData message(final MessageData messageData, Principal principal)
 	{
 		System.out.println(messageData);
 //		MessageItem messageItem = new MessageItem();
 //		messageItem.setAccountTo(messageData.getAccountDataTo().getId());
-//		AccountItem accountItem = accountService.get(principal.getName());
+		AccountItem accountItem = accountService.get(principal.getName());
 //		messageItem.setAccountFrom(accountItem.getId().intValue());
 //		messageItem.setText(messageData.getText());
 //		messageItem.setAddedDate(new GregorianCalendar());
 //		messageService.save(messageItem);
-//		AccountItem accountTo = accountService.get(messageData.getAccountTo());
-//		MessageAccountData accountDataTo = new MessageAccountData();
-//		accountDataTo.setFirstName(accountTo.getFirstName());
-//		accountDataTo.setLastName(accountTo.getLastName());
-//		messageData.setAccountDataTo(accountDataTo);
+		messageData.setAccountTo(1);
+		AccountItem accountTo = accountService.get(messageData.getAccountTo());
+		MessageAccountData accountDataTo = new MessageAccountData();
+		accountDataTo.setFirstName(accountTo.getFirstName());
+		accountDataTo.setLastName(accountTo.getLastName());
+		messageData.setAccountDataTo(accountDataTo);
 //
-//		MessageAccountData accountDataFrom = new MessageAccountData();
-//		accountDataFrom.setFirstName(accountItem.getFirstName());
-//		accountDataFrom.setLastName(accountItem.getLastName());
-//		messageData.setSender(accountDataFrom);
+		MessageAccountData accountDataFrom = new MessageAccountData();
+		accountDataFrom.setFirstName(accountItem.getFirstName());
+		accountDataFrom.setLastName(accountItem.getLastName());
+		messageData.setSender(accountDataFrom);
 //
 //		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
 //		messageData.setDate(format.format(new GregorianCalendar().getTime()));
 //
-//		template.convertAndSend("/message2/" + messageData.getAccountTo(), messageData);
-//
-//		return messageData;
-		return null;
+		template.convertAndSend("/message2/" + messageData.getAccountTo(), messageData);
+		template.convertAndSend("/message2/" + messageData.getAccountTo(), messageData);
+
+		return messageData;
 	}
 
 	@RequestMapping("/message")

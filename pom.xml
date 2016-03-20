@@ -11,8 +11,8 @@
     <version>1.0.0-BUILD-SNAPSHOT</version>
     <properties>
         <java-version>1.6</java-version>
-        <org.springframework-version>4.2.1.RELEASE</org.springframework-version>
-        <org.springframework-version-security>4.0.2.RELEASE</org.springframework-version-security>
+        <org.springframework-version>4.2.5.RELEASE</org.springframework-version>
+        <org.springframework-version-security>4.0.4.RELEASE</org.springframework-version-security>
         <org.aspectj-version>1.6.10</org.aspectj-version>
         <org.slf4j-version>1.6.6</org.slf4j-version>
         <tyrus-version>1.8</tyrus-version>
@@ -216,6 +216,12 @@
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
+            <version>7.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
             <version>7.0</version>
         </dependency>
 
