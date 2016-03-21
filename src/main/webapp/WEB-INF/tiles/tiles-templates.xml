@@ -168,6 +168,26 @@
 		<put-attribute name="content" value="/WEB-INF/views/settings/trips.jsp"/>
 	</definition>
 
+	<definition name="gifts/index" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/gifts/index.jsp"/>
+	</definition>
+
+	<definition name="news/index" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/news/index.jsp"/>
+	</definition>
+
+	<definition name="dating/index" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/dating/index.jsp"/>
+	</definition>
+
+	<definition name="videos/index" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/videos/index.jsp"/>
+	</definition>
+
+	<definition name="photos/index" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/photos/index.jsp"/>
+	</definition>
+
 	<definition name="admin/index" template="/WEB-INF/views/admin/index.jsp">
 
 	</definition>

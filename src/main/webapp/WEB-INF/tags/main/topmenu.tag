@@ -4,9 +4,9 @@
 <!-- Navbar -->
 <nav class="navbar navbar-default navbar-static-top my-navbar-top">
     <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Новости</a></li>
-        <li><a href="#">Знакомства</a></li>
-        <li><a href="#">Подарки</a></li>
+        <li class="active"><a href="<c:url value="/news/"/>">Новости</a></li>
+        <li><a href="<c:url value="/dating/"/>">Знакомства</a></li>
+        <li><a href="<c:url value="/gifts/"/>">Подарки</a></li>
         <li><a href="<c:url value="/settings/"/>">Настройки</a></li>
         <button type="button" class="btn btn-default navbar-btn navbar-right">Выход</button>
     </ul>

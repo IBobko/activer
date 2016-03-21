@@ -9,7 +9,7 @@
         </a>
     </li>
     <li>
-        <a href="#">
+        <a href="<c:url value="/friend"/>">
             <span class="fa fa-smile-o"></span>
             Друзья
         </a>
@@ -21,13 +21,13 @@
         </a>
     </li>
     <li>
-        <a href="#">
+        <a href="<c:url value="/photos/"/>">
             <span class="fa fa-photo"></span>
             Фотографии<span class="badge">3</span>
         </a>
     </li>
     <li>
-        <a href="#">
+        <a href="<c:url value="/videos/"/>">
             <span class="fa fa-play-circle"></span>
             Видео
         </a>
