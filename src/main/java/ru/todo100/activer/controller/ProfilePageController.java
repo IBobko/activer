@@ -57,6 +57,7 @@ import ru.todo100.activer.dao.IWantDao;
 import ru.todo100.activer.dao.MarkRelationDao;
 import ru.todo100.activer.dao.MarkDao;
 import ru.todo100.activer.dao.WallDao;
+import ru.todo100.activer.service.PhotoService;
 import ru.todo100.activer.util.InputError;
 
 @Controller
@@ -103,12 +104,18 @@ public class ProfilePageController
 	@Autowired
 	private IWantFacade iWantFacade;
 
+	@Autowired
+	private PhotoService photoService1;
+
+
 	@RequestMapping(method = RequestMethod.GET)
 	public String index(Model model)
 	{
 
 
 		final AccountItem account = accountService.getCurrentAccount();
+
+		String photo = photoService1.getPhoto(account.getId());
 
 		ProfileData profile = profilePopulator.populate(account);
 
@@ -124,7 +131,7 @@ public class ProfilePageController
 		}
 		profile.setFriends(friendsData);
 		model.addAttribute("profile", profile);
-
+		model.addAttribute("photo", photo);
 		populatePersonOfPage(model, account);
 
 		return "profile/index";
@@ -418,9 +425,10 @@ public class ProfilePageController
 		}
 		profile.setFriends(friendsData);
 
-
+		String photo =  photoService1.getPhoto(profile.getId());
 
 		model.addAttribute("profile", profile);
+		model.addAttribute("photo", photo);
 
 		populatePersonOfPage(model,account);
 		return "profile/index";

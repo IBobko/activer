@@ -147,6 +147,7 @@
 
 	<bean id="referService" class="ru.todo100.activer.service.impl.ReferServiceImpl"/>
 
+	<bean id="photoService1" class="ru.todo100.activer.service.impl.PhotoServiceImpl"></bean>
 	<!-- Facades -->
 	<import resource="facade-context.xml" />
 </beans>
