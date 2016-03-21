@@ -188,6 +188,18 @@
 		<put-attribute name="content" value="/WEB-INF/views/photos/index.jsp"/>
 	</definition>
 
+	<definition name="private/index" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/private/index.jsp"/>
+	</definition>
+
+	<definition name="themes/index" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/themes/index.jsp"/>
+	</definition>
+
+	<definition name="safety/index" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/safety/index.jsp"/>
+	</definition>
+
 	<definition name="admin/index" template="/WEB-INF/views/admin/index.jsp">
 
 	</definition>

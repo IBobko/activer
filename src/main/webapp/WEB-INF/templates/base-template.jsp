@@ -86,7 +86,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand my-navbar-brand" href="#">
+                    <a class="navbar-brand my-navbar-brand" href="<c:url value="/profile"/>">
                         <img alt="Brand" src="<c:url value="/resources/img/logo.png"/>">
                     </a>
                 </div>
