@@ -45,7 +45,7 @@
                 <span class="fa fa-user"></span>
                 Информация</a></div>
                 <ul style="list-style:none">
-                    <li><a href="<c:url value="/settings/"/>">Общее</a></li>
+                    <li><a href="<c:url value="/settings"/>">Общее</a></li>
                     <li><a href="<c:url value="/settings/interests"/>">Интересы</a></li>
                     <li><a href="<c:url value="/settings/trips"/>">Путешествия</a></li>
                     <li><a href="<c:url value="/settings/dreams"/>">Мечты</a></li>

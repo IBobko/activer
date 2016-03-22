@@ -1,29 +1,26 @@
 package ru.todo100.activer.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.NaturalId;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Set;
+
 @SuppressWarnings({"JpaDataSourceORMInspection", "unused"})
 @Entity
 @Table(name = "account")
-
 public class AccountItem extends DateChanges {
     @Id
     @SequenceGenerator(name = "default_gen", sequenceName = "account_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")
     private Integer id;
-
     @Column(name = "account_refer_code", nullable = false)
     private String referCode;
-
     @Column(name = "account_used_refer_code", nullable = false)
     private String usedReferCode;
     @Fetch(value = FetchMode.SUBSELECT)
@@ -52,6 +49,72 @@ public class AccountItem extends DateChanges {
             inverseJoinColumns = @JoinColumn(name = "friend_account_id", nullable = false)
     )
     private Set<AccountItem> friends;
+    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    private List<EducationItem> educationItems;
+    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    private List<JobItem> jobItems;
+    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    private List<ChildrenItem> childrenItems;
+    @Column(name = "account_sex")
+    private Integer sex;
+    @Column(name = "account_birthdate")
+    private Calendar birthdate;
+    @Column(name = "account_maritalstatus")
+    private Integer maritalStatus;
+
+    public List<EducationItem> getEducationItems() {
+        return educationItems;
+    }
+
+    public void setEducationItems(List<EducationItem> educationItems) {
+        this.educationItems = educationItems;
+    }
+
+    public List<JobItem> getJobItems() {
+        return jobItems;
+    }
+
+    public void setJobItems(List<JobItem> jobItems) {
+        this.jobItems = jobItems;
+    }
+
+    public List<ChildrenItem> getChildrenItems() {
+        return childrenItems;
+    }
+
+    public void setChildrenItems(List<ChildrenItem> childrenItems) {
+        this.childrenItems = childrenItems;
+    }
+
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
+
+    public Calendar getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(Calendar birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public Integer getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public void setMaritalStatus(Integer maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
 
     public Integer getId() {
         return id;

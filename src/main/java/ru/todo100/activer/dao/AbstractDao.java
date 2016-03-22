@@ -26,7 +26,7 @@ abstract public class AbstractDao<T>
 		this.sessionFactory = sessionFactory;
 	}
 
-	abstract public Class<? extends Item> getItemClass();
+	abstract public Class getItemClass();
 
 	public Criteria getCriteria()
 	{

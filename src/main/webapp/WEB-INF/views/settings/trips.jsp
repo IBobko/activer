@@ -2,6 +2,4 @@
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-
-
-<h1>КОНТЕНТ ЗДЕСЬ!!!</h1>
+<h4 style="color:#337ab7;font-weight:bold">Путешествия</h4>
