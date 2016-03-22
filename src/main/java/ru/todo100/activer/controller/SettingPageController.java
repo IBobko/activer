@@ -220,7 +220,7 @@ public class SettingPageController {
         File file2 = new File(photo.getName());
         FileUtils.writeByteArrayToFile(file2, photo.getBytes());
         org.apache.http.entity.FileEntity file = new org.apache.http.entity.FileEntity(file2);
-        HttpPost httppost = new HttpPost("http://todo100.ru:18080/static/upload");
+        HttpPost httppost = new HttpPost("http://192.168.1.65:18080/static/upload");
         FileBody file111 = new FileBody(file2);
         //MultipartEntity multipartEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
         mpEntity.addPart("image", new FileBody(file2, photo.getContentType()));
