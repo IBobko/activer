@@ -129,6 +129,7 @@ public class ProfilePageController
 				friendsData.add(friendData);
 			}
 		}
+
 		profile.setFriends(friendsData);
 		model.addAttribute("profile", profile);
 		model.addAttribute("photo", photo);

@@ -22,5 +22,5 @@ package ru.todo100.activer.populators;
  */
 public interface Populator<SOURCE,TARGET>
 {
-	public TARGET populate(SOURCE source);
+	TARGET populate(final SOURCE source);
 }

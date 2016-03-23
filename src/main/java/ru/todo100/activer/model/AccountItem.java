@@ -67,6 +67,18 @@ public class AccountItem extends DateChanges {
     private Calendar birthdate;
     @Column(name = "account_maritalstatus")
     private Integer maritalStatus;
+    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    private List<InterestItem> interestItems;
+
+    public List<InterestItem> getInterestItems() {
+        return interestItems;
+    }
+
+    public void setInterestItems(List<InterestItem> interestItems) {
+        this.interestItems = interestItems;
+    }
 
     public List<EducationItem> getEducationItems() {
         return educationItems;

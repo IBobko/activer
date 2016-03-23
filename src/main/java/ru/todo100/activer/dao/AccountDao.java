@@ -80,6 +80,11 @@ public class AccountDao extends AbstractDao
 	}
 
 
+	public void deleteOldInterests() {
+		getSession().createSQLQuery("DELETE FROM INTEREST WHERE account_id is null").executeUpdate();
+	}
+
+
 
 	/**
 	 * TODO переттащить это все в фасад

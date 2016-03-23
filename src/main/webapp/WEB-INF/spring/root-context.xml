@@ -131,9 +131,15 @@
 
 	<bean id="wallPopulator" class="ru.todo100.activer.populators.WallPopulator"/>
 
+	<bean id="interestPopulator" class="ru.todo100.activer.populators.InterestPopulator"/>
+
 	<bean id="profilePopulator" class="ru.todo100.activer.populators.ProfilePopulator"/>
 
 	<bean id="messagePopulator" class="ru.todo100.activer.populators.ProfilePopulator"/>
+
+	<bean id="educationPopulator" class="ru.todo100.activer.populators.EducationPopulator"/>
+	<bean id="jobPopulator" class="ru.todo100.activer.populators.JobPopulator"/>
+	<bean id="childrenPopulator" class="ru.todo100.activer.populators.ChildrenPopulator"/>
 
 	<bean id="markRelationService" class="ru.todo100.activer.dao.MarkRelationDao"/>
 

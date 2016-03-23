@@ -13,17 +13,17 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreProtocolPNames;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.CountryDao;
+import ru.todo100.activer.data.InterestData;
 import ru.todo100.activer.form.*;
 import ru.todo100.activer.model.*;
+import ru.todo100.activer.populators.InterestPopulator;
 import ru.todo100.activer.service.PhotoService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -47,6 +47,8 @@ public class SettingPageController {
     private PhotoService photoService1;
     @Autowired
     private AccountDao accountService;
+    @Autowired
+    private InterestPopulator interestPopulator;
 
     public CountryDao getCountryDao() {
         return countryDao;
@@ -160,8 +162,8 @@ public class SettingPageController {
             education.setFaculty(childrenEducationJobForm.getEducationForm().getFaculty());
             education.setUniversity(childrenEducationJobForm.getEducationForm().getUniversity());
 
-            for (CountryItem country: getCountries()) {
-                if (country.getCode().equals(childrenEducationJobForm.getEducationForm().getCountry())){
+            for (CountryItem country : getCountries()) {
+                if (country.getCode().equals(childrenEducationJobForm.getEducationForm().getCountry())) {
                     education.setCountry(country);
                 }
             }
@@ -208,7 +210,6 @@ public class SettingPageController {
         return "redirect:/settings";
     }
 
-
     @RequestMapping(value = "/uploadphoto", method = RequestMethod.POST)
     public String uploadPhoto(HttpServletResponse res, @RequestParam(value = "photo", required = false) MultipartFile photo) throws IOException {
 
@@ -240,11 +241,50 @@ public class SettingPageController {
 
     }
 
+    public InterestPopulator getInterestPopulator() {
+        return interestPopulator;
+    }
 
-    @RequestMapping("/interests")
+    public void setInterestPopulator(InterestPopulator interestPopulator) {
+        this.interestPopulator = interestPopulator;
+    }
+
+    @RequestMapping(value = "/interests", method = RequestMethod.GET)
     public String interests(Model model) {
         model.addAttribute("pageType", "settings");
+
+        final AccountItem account = accountService.getCurrentAccount();
+
+        List<InterestItem> interestsItems = account.getInterestItems();
+        List<InterestData> interests = new ArrayList<>();
+        if (interestsItems != null) {
+            for (InterestItem item: interestsItems) {
+                interests.add(getInterestPopulator().populate(item));
+            }
+        }
+        model.addAttribute("interests",interests);
         return "settings/interests";
+    }
+
+    @RequestMapping(value = "/interests", method = RequestMethod.POST)
+    @ResponseBody
+    @Transactional
+    public void interestsPost(InterestForm interestForm) {
+        List<InterestItem> interests = new ArrayList<>();
+        if (interestForm.getTags() != null) {
+            for (String interest : interestForm.getTags()) {
+                InterestItem interestItem = new InterestItem();
+                interestItem.setName(interest);
+                interests.add(interestItem);
+            }
+
+        }
+        final AccountItem account = accountService.getCurrentAccount();
+
+        account.setInterestItems(interests);
+        accountService.save(account);
+        accountService.deleteOldInterests();
+
     }
 
     @RequestMapping("/trips")

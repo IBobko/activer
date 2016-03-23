@@ -5,73 +5,113 @@ import java.util.List;
 /**
  * @author Igor Bobko
  */
-public class ProfileData
-{
-	private Integer id;
-	private String  firstName;
-	private String  lastName;
-	private String  facePhotoUrl;
+public class ProfileData {
+    private Integer id;
+    private String firstName;
+    private String lastName;
+    private String facePhotoUrl;
+    private String birthDate;
+    private String photo60x60;
+    private List<ProfileData> friends;
+    private EducationData education;
+    private JobData job;
+    private ChildrenData children;
+    private Integer maritalStatus;
+    private List<InterestData> interests;
 
-	public String getPhoto60x60()
-	{
-		return photo60x60;
-	}
+    public List<InterestData> getInterests() {
+        return interests;
+    }
 
-	public void setPhoto60x60(final String photo60x60)
-	{
-		this.photo60x60 = photo60x60;
-	}
+    public void setInterests(List<InterestData> interests) {
+        this.interests = interests;
+    }
 
-	private String            photo60x60;
-	private List<ProfileData> friends;
+    public Integer getMaritalStatus() {
+        return maritalStatus;
+    }
 
-	public List<ProfileData> getFriends()
-	{
-		return friends;
-	}
+    public void setMaritalStatus(Integer maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
 
-	public void setFriends(final List<ProfileData> friends)
-	{
-		this.friends = friends;
-	}
+    public JobData getJob() {
+        return job;
+    }
 
-	public String getFacePhotoUrl()
-	{
-		return facePhotoUrl;
-	}
+    public void setJob(JobData job) {
+        this.job = job;
+    }
 
-	public void setFacePhotoUrl(final String facePhotoUrl)
-	{
-		this.facePhotoUrl = facePhotoUrl;
-	}
+    public ChildrenData getChildren() {
+        return children;
+    }
 
-	public Integer getId()
-	{
-		return id;
-	}
+    public void setChildren(ChildrenData children) {
+        this.children = children;
+    }
 
-	public void setId(final Integer id)
-	{
-		this.id = id;
-	}
+    public EducationData getEducation() {
+        return education;
+    }
 
-	public String getLastName()
-	{
-		return lastName;
-	}
+    public void setEducation(EducationData education) {
+        this.education = education;
+    }
 
-	public void setLastName(final String lastName)
-	{
-		this.lastName = lastName;
-	}
+    public String getBirthDate() {
+        return birthDate;
+    }
 
-	public String getFirstName()
-	{
-		return firstName;
-	}
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
 
-	public void setFirstName(final String firstName)
-	{
-		this.firstName = firstName;
-	}
+    public String getPhoto60x60() {
+        return photo60x60;
+    }
+
+    public void setPhoto60x60(final String photo60x60) {
+        this.photo60x60 = photo60x60;
+    }
+
+    public List<ProfileData> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(final List<ProfileData> friends) {
+        this.friends = friends;
+    }
+
+    public String getFacePhotoUrl() {
+        return facePhotoUrl;
+    }
+
+    public void setFacePhotoUrl(final String facePhotoUrl) {
+        this.facePhotoUrl = facePhotoUrl;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(final Integer id) {
+        this.id = id;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(final String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(final String firstName) {
+        this.firstName = firstName;
+    }
 }
