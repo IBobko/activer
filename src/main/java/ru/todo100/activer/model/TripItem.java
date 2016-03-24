@@ -14,11 +14,21 @@ public class TripItem {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name="country_code")
+    @JoinColumn(name = "country_code")
     private CountryItem country;
 
-    @Column(name="trip_year")
+    @Column(name = "trip_year")
     private Integer year;
+    @Column(name = "trip_city")
+    private String city;
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     public Integer getYear() {
         return year;

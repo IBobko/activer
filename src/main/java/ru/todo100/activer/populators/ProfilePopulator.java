@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.todo100.activer.dao.PhotoDao;
 import ru.todo100.activer.data.InterestData;
 import ru.todo100.activer.data.ProfileData;
+import ru.todo100.activer.data.TripData;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.InterestItem;
 import ru.todo100.activer.model.PhotoItem;
+import ru.todo100.activer.model.TripItem;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -28,10 +30,21 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
     private ChildrenPopulator childrenPopulator;
 
     private InterestPopulator interestPopulator;
+    private TripPopulator tripPopulator;
+
+    public TripPopulator getTripPopulator() {
+        return tripPopulator;
+    }
+
+    @Autowired
+    public void setTripPopulator(TripPopulator tripPopulator) {
+        this.tripPopulator = tripPopulator;
+    }
 
     public InterestPopulator getInterestPopulator() {
         return interestPopulator;
     }
+
     @Autowired
     public void setInterestPopulator(InterestPopulator interestPopulator) {
         this.interestPopulator = interestPopulator;
@@ -91,14 +104,21 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
             profileData.setChildren(getChildrenPopulator().populate(accountItem.getChildrenItems().get(0)));
         }
 
-
+        final List<InterestData> interests = new ArrayList<>();
         if (accountItem.getInterestItems() != null) {
-            List<InterestData> interests= new ArrayList<>();
-            for (InterestItem item: accountItem.getInterestItems()) {
+            for (InterestItem item : accountItem.getInterestItems()) {
                 interests.add(getInterestPopulator().populate(item));
             }
-            profileData.setInterests(interests);
         }
+        profileData.setInterests(interests);
+
+        final List<TripData> tripDatas = new ArrayList<>();
+        if (accountItem.getTripItems() != null) {
+            for (TripItem item : accountItem.getTripItems()) {
+                tripDatas.add(getTripPopulator().populate(item));
+            }
+        }
+        profileData.setTrips(tripDatas);
 
         if (facePhoto != null) {
             profileData.setFacePhotoUrl(facePhoto.getPath());

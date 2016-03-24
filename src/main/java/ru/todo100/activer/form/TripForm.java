@@ -1,21 +1,17 @@
-package ru.todo100.activer.data;
+package ru.todo100.activer.form;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
-public class TripData {
-    private Integer id;
+public class TripForm {
+    @NotNull
     private String country;
-    private String city;
+    @NotNull
     private Integer year;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    @NotNull
+    private String city;
 
     public String getCountry() {
         return country;
@@ -25,19 +21,19 @@ public class TripData {
         this.country = country;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
     public Integer getYear() {
         return year;
     }
 
     public void setYear(Integer year) {
         this.year = year;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

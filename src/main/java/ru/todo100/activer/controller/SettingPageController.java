@@ -12,6 +12,8 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreProtocolPNames;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -21,11 +23,14 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.CountryDao;
 import ru.todo100.activer.data.InterestData;
+import ru.todo100.activer.data.TripData;
 import ru.todo100.activer.form.*;
 import ru.todo100.activer.model.*;
 import ru.todo100.activer.populators.InterestPopulator;
+import ru.todo100.activer.populators.TripPopulator;
 import ru.todo100.activer.service.PhotoService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.File;
@@ -39,6 +44,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/settings")
+@PreAuthorize("isAuthenticated()")
 public class SettingPageController {
 
     private CountryDao countryDao;
@@ -287,11 +293,70 @@ public class SettingPageController {
 
     }
 
-    @RequestMapping("/trips")
+    public TripPopulator getTripPopulator() {
+        return tripPopulator;
+    }
+    @Autowired
+    public void setTripPopulator(TripPopulator tripPopulator) {
+        this.tripPopulator = tripPopulator;
+    }
+
+
+    private TripPopulator tripPopulator;
+
+    @RequestMapping(value = "/trips",method = RequestMethod.GET)
     public String trips(Model model) {
         model.addAttribute("pageType", "settings");
+
+        final TripForm tripForm = new TripForm();
+        model.addAttribute("tripForm", tripForm);
+
+        final List<TripData> trips = new ArrayList<>();
+        final AccountItem account = accountService.getCurrentAccount();
+        if (account.getTripItems() != null) {
+            for (final TripItem trip : account.getTripItems()) {
+                trips.add(getTripPopulator().populate(trip));
+            }
+        }
+        model.addAttribute("trips", trips);
         return "settings/trips";
     }
+
+    @RequestMapping(value = "/trips",method = RequestMethod.POST)
+    public String tripsPost(@Valid TripForm tripForm, BindingResult bindingResult) {
+        if (!bindingResult.hasErrors()) {
+            final AccountItem account = accountService.getCurrentAccount();
+            final TripItem tripItem = new TripItem();
+            tripItem.setCity(tripForm.getCity());
+            tripItem.setYear(tripForm.getYear());
+
+            for (final CountryItem country : getCountries()) {
+                if (country.getCode().equals(tripForm.getCountry())) {
+                    tripItem.setCountry(country);
+                }
+            }
+            final List<TripItem> trips;
+            if (account.getTripItems() != null) {
+                trips = account.getTripItems();
+            } else {
+                trips = new ArrayList<>();
+                account.setTripItems(trips);
+            }
+            trips.add(tripItem);
+            accountService.save(account);
+        }
+        return "redirect:/settings/trips";
+    }
+
+    @RequestMapping(value = "/trips/remove",method = RequestMethod.GET)
+    public String tripsPost(HttpServletRequest request) {
+        try {
+            Integer id = Integer.parseInt(request.getParameter("trip"));
+            accountService.deleteTrip(id);
+        } catch (NumberFormatException ignored) {}
+        return "redirect:/settings/trips";
+    }
+
 
     @RequestMapping("/dreams")
     public String dreams(Model model) {

@@ -1,10 +1,7 @@
 package ru.todo100.activer.dao;
 
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -20,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import ru.todo100.activer.form.RegisterForm;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.PromoCodeItem;
+import ru.todo100.activer.model.TripItem;
 import ru.todo100.activer.service.PromoService;
 import ru.todo100.activer.service.ReferService;
 import ru.todo100.activer.util.InputError;
@@ -166,4 +164,16 @@ public class AccountDao extends AbstractDao
 
 	@Autowired
 	PromoService promoService;
+
+	public void deleteTrip(Integer id) {
+		final AccountItem account = getCurrentAccount();
+		if (account.getTripItems() != null) {
+			for (TripItem trip : account.getTripItems()) {
+				if (Objects.equals(trip.getId(), id)) {
+					account.getTripItems().remove(trip);
+					break;
+				}
+			}
+		}
+	}
 }

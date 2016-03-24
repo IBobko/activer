@@ -26,7 +26,7 @@ public class AccountItem extends DateChanges {
     @Fetch(value = FetchMode.SUBSELECT)
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_username", referencedColumnName = "account_username")
-    private List<AuthorityItem> authoritys;
+    private List<AuthorityItem> authorities;
     @NaturalId
     @NotNull
     @Column(name = "account_username", nullable = false)
@@ -68,9 +68,26 @@ public class AccountItem extends DateChanges {
     @Column(name = "account_maritalstatus")
     private Integer maritalStatus;
     @Fetch(value = FetchMode.SUBSELECT)
-    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private List<InterestItem> interestItems;
+
+    /*
+    orphanRemoval = true
+    It means that if you delete items from collection that item will be deleted from database.
+    */
+    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "account_id")
+    private List<TripItem> tripItems;
+
+    public List<TripItem> getTripItems() {
+        return tripItems;
+    }
+
+    public void setTripItems(List<TripItem> tripItems) {
+        this.tripItems = tripItems;
+    }
 
     public List<InterestItem> getInterestItems() {
         return interestItems;
@@ -154,21 +171,21 @@ public class AccountItem extends DateChanges {
 
     @SuppressWarnings("unchecked")
     public void addRole(String role) {
-        if (authoritys == null) {
-            authoritys = new ArrayList();
+        if (authorities == null) {
+            authorities = new ArrayList();
         }
         AuthorityItem item = new AuthorityItem();
         item.setRole(role);
         item.setAccount(this);
-        authoritys.add(item);
+        authorities.add(item);
     }
 
-    public List<AuthorityItem> getAuthoritys() {
-        return authoritys;
+    public List<AuthorityItem> getAuthorities() {
+        return authorities;
     }
 
-    public void setAuthoritys(final List<AuthorityItem> authoritys) {
-        this.authoritys = authoritys;
+    public void setAuthorities(final List<AuthorityItem> authorities) {
+        this.authorities = authorities;
     }
 
     public String getUsername() {

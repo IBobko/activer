@@ -9,6 +9,13 @@ import ru.todo100.activer.model.TripItem;
 public class TripPopulator implements Populator<TripItem, TripData> {
     @Override
     public TripData populate(TripItem tripItem) {
-        return null;
+        final TripData tripData = new TripData();
+        tripData.setId(tripItem.getId());
+        tripData.setCity(tripItem.getCity());
+        tripData.setYear(tripItem.getYear());
+        if (tripItem.getCountry() != null) {
+            tripData.setCountry(tripItem.getCountry().getName());
+        }
+        return tripData;
     }
 }

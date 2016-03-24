@@ -75,6 +75,10 @@
 		  class="ru.todo100.activer.dao.CountryDao"
 		  parent="serviceAbstract"/>
 
+	<bean id="tripDao"
+		  class="ru.todo100.activer.dao.TripDao"
+		  parent="serviceAbstract"/>
+
 	<bean id="photoService" class="ru.todo100.activer.dao.PhotoDao" parent="serviceAbstract"/>
 
 	<bean id="messageService" class="ru.todo100.activer.dao.MessageDao" parent="serviceAbstract"/>
@@ -136,6 +140,8 @@
 	<bean id="profilePopulator" class="ru.todo100.activer.populators.ProfilePopulator"/>
 
 	<bean id="messagePopulator" class="ru.todo100.activer.populators.ProfilePopulator"/>
+
+	<bean id="tripPopulator" class="ru.todo100.activer.populators.TripPopulator"/>
 
 	<bean id="educationPopulator" class="ru.todo100.activer.populators.EducationPopulator"/>
 	<bean id="jobPopulator" class="ru.todo100.activer.populators.JobPopulator"/>

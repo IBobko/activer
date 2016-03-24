@@ -42,10 +42,11 @@ abstract public class AbstractDao<T>
 
 	final public void delete(Integer id)
 	{
-		Object object = getSession().get(getItemClass(), id);
+		final Object object = getSession().load(getItemClass(), id);
 		if (object != null)
 		{
 			getSession().delete(object);
+			getSession().flush();
 		}
 	}
 	@Transactional

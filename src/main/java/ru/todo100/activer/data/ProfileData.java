@@ -3,7 +3,7 @@ package ru.todo100.activer.data;
 import java.util.List;
 
 /**
- * @author Igor Bobko
+ * @author Igor Bobko <limit-speed@yandex.ru>.
  */
 public class ProfileData {
     private Integer id;
@@ -18,6 +18,15 @@ public class ProfileData {
     private ChildrenData children;
     private Integer maritalStatus;
     private List<InterestData> interests;
+    private List<TripData> trips;
+
+    public List<TripData> getTrips() {
+        return trips;
+    }
+
+    public void setTrips(List<TripData> trips) {
+        this.trips = trips;
+    }
 
     public List<InterestData> getInterests() {
         return interests;
