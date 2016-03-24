@@ -90,7 +90,9 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         profileData.setLastName(accountItem.getLastName());
 
         profileData.setId(accountItem.getId());
-        profileData.setBirthDate(simpleDateFormat.format(accountItem.getBirthdate().getTime()));
+        if (accountItem.getBirthdate() != null) {
+            profileData.setBirthDate(simpleDateFormat.format(accountItem.getBirthdate().getTime()));
+        }
 
         if (accountItem.getEducationItems() != null && accountItem.getEducationItems().size() > 0) {
             profileData.setEducation(getEducationPopulator().populate(accountItem.getEducationItems().get(0)));

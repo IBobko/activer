@@ -8,7 +8,7 @@
         <li <c:if test="${pageType == 'datings'}">class="active"</c:if>><a href="<c:url value="/dating/"/>">Знакомства</a></li>
         <li <c:if test="${pageType == 'gifts'}">class="active"</c:if>><a href="<c:url value="/gifts/"/>">Подарки</a></li>
         <li <c:if test="${pageType == 'settings'}">class="active"</c:if>><a href="<c:url value="/settings"/>">Настройки</a></li>
-        <button type="button" class="btn btn-default navbar-btn navbar-right">Выход</button>
+        <button type="button" onclick="document.location='<c:url value="/logout"/>';" class="btn btn-default navbar-btn navbar-right">Выход</button>
     </ul>
 </nav>
 
