@@ -67,6 +67,7 @@ public class AccountItem extends DateChanges {
     private Calendar birthdate;
     @Column(name = "account_maritalstatus")
     private Integer maritalStatus;
+
     @Fetch(value = FetchMode.SUBSELECT)
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
@@ -79,7 +80,24 @@ public class AccountItem extends DateChanges {
     @Fetch(value = FetchMode.SUBSELECT)
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "account_id")
+    private List<DreamItem> dreamItems;
+
+    /*
+    orphanRemoval = true
+    It means that if you delete items from collection that item will be deleted from database.
+    */
+    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "account_id")
     private List<TripItem> tripItems;
+
+    public List<DreamItem> getDreamItems() {
+        return dreamItems;
+    }
+
+    public void setDreamItems(List<DreamItem> dreamItems) {
+        this.dreamItems = dreamItems;
+    }
 
     public List<TripItem> getTripItems() {
         return tripItems;

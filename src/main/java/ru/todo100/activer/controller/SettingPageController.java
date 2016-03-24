@@ -3,16 +3,13 @@ package ru.todo100.activer.controller;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.NumberFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,10 +19,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.CountryDao;
+import ru.todo100.activer.data.DreamData;
 import ru.todo100.activer.data.InterestData;
 import ru.todo100.activer.data.TripData;
 import ru.todo100.activer.form.*;
 import ru.todo100.activer.model.*;
+import ru.todo100.activer.populators.DreamPopulator;
 import ru.todo100.activer.populators.InterestPopulator;
 import ru.todo100.activer.populators.TripPopulator;
 import ru.todo100.activer.service.PhotoService;
@@ -55,6 +54,7 @@ public class SettingPageController {
     private AccountDao accountService;
     @Autowired
     private InterestPopulator interestPopulator;
+    private TripPopulator tripPopulator;
 
     public CountryDao getCountryDao() {
         return countryDao;
@@ -218,33 +218,19 @@ public class SettingPageController {
 
     @RequestMapping(value = "/uploadphoto", method = RequestMethod.POST)
     public String uploadPhoto(HttpServletResponse res, @RequestParam(value = "photo", required = false) MultipartFile photo) throws IOException {
-
-        HttpClient httpclient = new DefaultHttpClient();
-        httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
-
-        MultipartEntity mpEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-
-        File file2 = new File(photo.getName());
-        FileUtils.writeByteArrayToFile(file2, photo.getBytes());
-        org.apache.http.entity.FileEntity file = new org.apache.http.entity.FileEntity(file2);
-        HttpPost httppost = new HttpPost("http://192.168.1.65:18080/static/upload");
-        FileBody file111 = new FileBody(file2);
-        //MultipartEntity multipartEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-        mpEntity.addPart("image", new FileBody(file2, photo.getContentType()));
-        httppost.setEntity(mpEntity);
-
-        HttpResponse response = httpclient.execute(httppost);
-
-
-        StringWriter writer = new StringWriter();
+        final HttpClient httpclient = HttpClientBuilder.create().build();
+        final MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        final File file = new File(photo.getName());
+        FileUtils.writeByteArrayToFile(file, photo.getBytes());
+        final HttpPost httppost = new HttpPost("http://todo100.ru:18080/static/upload");
+        builder.addPart("image", new FileBody(file, ContentType.create(photo.getContentType())));
+        httppost.setEntity(builder.build());
+        final HttpResponse response = httpclient.execute(httppost);
+        final StringWriter writer = new StringWriter();
         IOUtils.copy(response.getEntity().getContent(), writer, "UTF-8");
-        String theString = writer.toString();
-        res.getWriter().println(theString);
-
-
+        final String theString = writer.toString();
         photoService1.setPhoto(accountService.getCurrentAccount().getId(), theString);
         return "redirect:/profile";
-
     }
 
     public InterestPopulator getInterestPopulator() {
@@ -264,11 +250,11 @@ public class SettingPageController {
         List<InterestItem> interestsItems = account.getInterestItems();
         List<InterestData> interests = new ArrayList<>();
         if (interestsItems != null) {
-            for (InterestItem item: interestsItems) {
+            for (InterestItem item : interestsItems) {
                 interests.add(getInterestPopulator().populate(item));
             }
         }
-        model.addAttribute("interests",interests);
+        model.addAttribute("interests", interests);
         return "settings/interests";
     }
 
@@ -296,15 +282,13 @@ public class SettingPageController {
     public TripPopulator getTripPopulator() {
         return tripPopulator;
     }
+
     @Autowired
     public void setTripPopulator(TripPopulator tripPopulator) {
         this.tripPopulator = tripPopulator;
     }
 
-
-    private TripPopulator tripPopulator;
-
-    @RequestMapping(value = "/trips",method = RequestMethod.GET)
+    @RequestMapping(value = "/trips", method = RequestMethod.GET)
     public String trips(Model model) {
         model.addAttribute("pageType", "settings");
 
@@ -322,7 +306,7 @@ public class SettingPageController {
         return "settings/trips";
     }
 
-    @RequestMapping(value = "/trips",method = RequestMethod.POST)
+    @RequestMapping(value = "/trips", method = RequestMethod.POST)
     public String tripsPost(@Valid TripForm tripForm, BindingResult bindingResult) {
         if (!bindingResult.hasErrors()) {
             final AccountItem account = accountService.getCurrentAccount();
@@ -348,61 +332,103 @@ public class SettingPageController {
         return "redirect:/settings/trips";
     }
 
-    @RequestMapping(value = "/trips/remove",method = RequestMethod.GET)
+    @RequestMapping(value = "/trips/remove", method = RequestMethod.GET)
     public String tripsPost(HttpServletRequest request) {
         try {
             Integer id = Integer.parseInt(request.getParameter("trip"));
             accountService.deleteTrip(id);
-        } catch (NumberFormatException ignored) {}
+        } catch (NumberFormatException ignored) {
+        }
         return "redirect:/settings/trips";
     }
+
+    public DreamPopulator getDreamPopulator() {
+        return dreamPopulator;
+    }
+
+    @Autowired
+    public void setDreamPopulator(DreamPopulator dreamPopulator) {
+        this.dreamPopulator = dreamPopulator;
+    }
+
+
+    private DreamPopulator dreamPopulator;
 
 
     @RequestMapping("/dreams")
     public String dreams(Model model) {
         model.addAttribute("pageType", "settings");
+        final DreamForm dreamForm = new DreamForm();
+        model.addAttribute("dreamForm", dreamForm);
+        final AccountItem account = accountService.getCurrentAccount();
+        final List<DreamData> dreams = new ArrayList<>();
+        if (account.getDreamItems() != null){
+            for (DreamItem dreamItem: account.getDreamItems()) {
+                final DreamData dreamData = getDreamPopulator().populate(dreamItem);
+                dreams.add(dreamData);
+            }
+        }
+        model.addAttribute("dreams", dreams);
         return "settings/dreams";
     }
 
-    // HTTP POST request
-    private void sendFile() throws Exception {
-/*
-        String url = "https://selfsolve.apple.com/wcResults.do";
-        URL obj = new URL(url);
-        HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+    @RequestMapping(value = "/dreams/upload", method = RequestMethod.POST)
+    public String dreamsUpload(@Valid DreamForm dreamForm, BindingResult bindingResult) throws IOException {
+        if (!bindingResult.hasErrors()) {
+            final AccountItem account = accountService.getCurrentAccount();
 
-        //add reuqest header
-        con.setRequestMethod("POST");
-        con.setRequestProperty("User-Agent", USER_AGENT);
-        con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+            DreamItem dreamItem = null;
+            if (dreamForm.getId() != null) {
+                if (account.getDreamItems() != null) {
+                    for (DreamItem item: account.getDreamItems()) {
+                        if (item.getId().equals(dreamForm.getId())){
+                            dreamItem = item;
+                        }
+                    }
+                }
+            }
 
-        String urlParameters = "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345";
+            if (dreamItem == null) {
+                dreamItem = new DreamItem();
+            }
 
-        // Send post request
-        con.setDoOutput(true);
-        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-        wr.writeBytes(urlParameters);
-        wr.flush();
-        wr.close();
+            dreamItem.setName(dreamForm.getText());
 
-        int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'POST' request to URL : " + url);
-        System.out.println("Post parameters : " + urlParameters);
-        System.out.println("Response Code : " + responseCode);
-
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
+            if (dreamForm.getPhoto() != null && !dreamForm.getPhoto().isEmpty()) {
+                final HttpClient httpclient = HttpClientBuilder.create().build();
+                final MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+                final File file = new File(dreamForm.getPhoto().getName());
+                FileUtils.writeByteArrayToFile(file, dreamForm.getPhoto().getBytes());
+                final HttpPost httppost = new HttpPost("http://todo100.ru:18080/static/upload");
+                builder.addPart("image", new FileBody(file, ContentType.create(dreamForm.getPhoto().getContentType())));
+                httppost.setEntity(builder.build());
+                final HttpResponse response = httpclient.execute(httppost);
+                final StringWriter writer = new StringWriter();
+                IOUtils.copy(response.getEntity().getContent(), writer, "UTF-8");
+                final String theString = writer.toString();
+                System.out.println(theString);
+                dreamItem.setPhoto(theString);
+            }
+            final List<DreamItem> dreamItems;
+            if (account.getDreamItems() !=null) {
+                dreamItems = account.getDreamItems();
+            } else {
+                dreamItems = new ArrayList<>();
+                account.setDreamItems(dreamItems);
+            }
+            dreamItems.add(dreamItem);
+            accountService.save(account);
         }
-        in.close();
-
-        //print result
-        System.out.println(response.toString());
-*/
+        return "redirect:/settings/dreams";
     }
 
+    @RequestMapping(value = "/dreams/remove")
+    public String removeDream(final HttpServletRequest request) {
+        try {
+            Integer id = Integer.parseInt(request.getParameter("dream"));
+            accountService.deleteDream(id);
+        } catch (NumberFormatException ignored) {
+        }
+        return  "redirect:/settings/dreams";
+    }
 }

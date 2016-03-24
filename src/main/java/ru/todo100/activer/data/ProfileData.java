@@ -19,6 +19,15 @@ public class ProfileData {
     private Integer maritalStatus;
     private List<InterestData> interests;
     private List<TripData> trips;
+    private List<DreamData> dreams;
+
+    public List<DreamData> getDreams() {
+        return dreams;
+    }
+
+    public void setDreams(List<DreamData> dreams) {
+        this.dreams = dreams;
+    }
 
     public List<TripData> getTrips() {
         return trips;

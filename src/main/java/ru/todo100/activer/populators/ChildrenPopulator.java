@@ -8,7 +8,7 @@ import ru.todo100.activer.model.ChildrenItem;
  */
 public class ChildrenPopulator implements Populator<ChildrenItem, ChildrenData> {
     @Override
-    public ChildrenData populate(ChildrenItem childrenItem) {
+    public ChildrenData populate(final ChildrenItem childrenItem) {
         final ChildrenData childrenData = new ChildrenData();
         childrenData.setName(childrenItem.getChildrenName());
         childrenData.setYear(childrenItem.getBirthdateYear());

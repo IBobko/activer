@@ -2,13 +2,11 @@ package ru.todo100.activer.populators;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.todo100.activer.dao.PhotoDao;
+import ru.todo100.activer.data.DreamData;
 import ru.todo100.activer.data.InterestData;
 import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.data.TripData;
-import ru.todo100.activer.model.AccountItem;
-import ru.todo100.activer.model.InterestItem;
-import ru.todo100.activer.model.PhotoItem;
-import ru.todo100.activer.model.TripItem;
+import ru.todo100.activer.model.*;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -31,6 +29,16 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
 
     private InterestPopulator interestPopulator;
     private TripPopulator tripPopulator;
+    private DreamPopulator dreamPopulator;
+
+    public DreamPopulator getDreamPopulator() {
+        return dreamPopulator;
+    }
+
+    @Autowired
+    public void setDreamPopulator(DreamPopulator dreamPopulator) {
+        this.dreamPopulator = dreamPopulator;
+    }
 
     public TripPopulator getTripPopulator() {
         return tripPopulator;
@@ -113,6 +121,14 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
             }
         }
         profileData.setInterests(interests);
+
+        final List<DreamData> dreams = new ArrayList<>();
+        if (accountItem.getDreamItems() != null) {
+            for (DreamItem item : accountItem.getDreamItems()) {
+                dreams.add(getDreamPopulator().populate(item));
+            }
+        }
+        profileData.setDreams(dreams);
 
         final List<TripData> tripDatas = new ArrayList<>();
         if (accountItem.getTripItems() != null) {

@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import ru.todo100.activer.form.RegisterForm;
 import ru.todo100.activer.model.AccountItem;
+import ru.todo100.activer.model.DreamItem;
 import ru.todo100.activer.model.PromoCodeItem;
 import ru.todo100.activer.model.TripItem;
 import ru.todo100.activer.service.PromoService;
@@ -171,6 +172,18 @@ public class AccountDao extends AbstractDao
 			for (TripItem trip : account.getTripItems()) {
 				if (Objects.equals(trip.getId(), id)) {
 					account.getTripItems().remove(trip);
+					break;
+				}
+			}
+		}
+	}
+
+	public void deleteDream(Integer id) {
+		final AccountItem account = getCurrentAccount();
+		if (account.getDreamItems() != null) {
+			for (DreamItem dream : account.getDreamItems()) {
+				if (Objects.equals(dream.getId(), id)) {
+					account.getDreamItems().remove(dream);
 					break;
 				}
 			}

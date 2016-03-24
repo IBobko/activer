@@ -9,7 +9,7 @@ import ru.todo100.activer.model.EducationItem;
 public class EducationPopulator implements Populator<EducationItem,EducationData> {
     @Override
     public EducationData populate(final EducationItem educationItem) {
-        EducationData educationData = new EducationData();
+        final EducationData educationData = new EducationData();
         educationData.setCity(educationItem.getCity());
         educationData.setYear(educationItem.getEndYear());
         educationData.setCountry(educationItem.getCountry().getName());

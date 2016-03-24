@@ -8,7 +8,7 @@ import ru.todo100.activer.model.TripItem;
  */
 public class TripPopulator implements Populator<TripItem, TripData> {
     @Override
-    public TripData populate(TripItem tripItem) {
+    public TripData populate(final TripItem tripItem) {
         final TripData tripData = new TripData();
         tripData.setId(tripItem.getId());
         tripData.setCity(tripItem.getCity());

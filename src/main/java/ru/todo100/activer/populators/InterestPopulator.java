@@ -8,7 +8,7 @@ import ru.todo100.activer.model.InterestItem;
  */
 public class InterestPopulator implements Populator<InterestItem,InterestData> {
     @Override
-    public InterestData populate(InterestItem interestItem) {
+    public InterestData populate(final InterestItem interestItem) {
         final InterestData interestData = new InterestData();
         interestData.setName(interestItem.getName());
         interestData.setId(interestItem.getId());

@@ -142,6 +142,7 @@
 	<bean id="messagePopulator" class="ru.todo100.activer.populators.ProfilePopulator"/>
 
 	<bean id="tripPopulator" class="ru.todo100.activer.populators.TripPopulator"/>
+	<bean id="dreamPopulator" class="ru.todo100.activer.populators.DreamPopulator"/>
 
 	<bean id="educationPopulator" class="ru.todo100.activer.populators.EducationPopulator"/>
 	<bean id="jobPopulator" class="ru.todo100.activer.populators.JobPopulator"/>
