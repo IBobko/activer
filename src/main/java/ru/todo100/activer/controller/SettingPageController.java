@@ -222,7 +222,7 @@ public class SettingPageController {
         final MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         final File file = new File(photo.getName());
         FileUtils.writeByteArrayToFile(file, photo.getBytes());
-        final HttpPost httppost = new HttpPost("http://todo100.ru:18080/static/upload");
+        final HttpPost httppost = new HttpPost("http://192.168.1.65:18080/static/upload");
         builder.addPart("image", new FileBody(file, ContentType.create(photo.getContentType())));
         httppost.setEntity(builder.build());
         final HttpResponse response = httpclient.execute(httppost);
@@ -399,7 +399,7 @@ public class SettingPageController {
                 final MultipartEntityBuilder builder = MultipartEntityBuilder.create();
                 final File file = new File(dreamForm.getPhoto().getName());
                 FileUtils.writeByteArrayToFile(file, dreamForm.getPhoto().getBytes());
-                final HttpPost httppost = new HttpPost("http://todo100.ru:18080/static/upload");
+                final HttpPost httppost = new HttpPost("http://192.168.1.65:18080/static/upload");
                 builder.addPart("image", new FileBody(file, ContentType.create(dreamForm.getPhoto().getContentType())));
                 httppost.setEntity(builder.build());
                 final HttpResponse response = httpclient.execute(httppost);
