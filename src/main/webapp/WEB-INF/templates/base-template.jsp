@@ -1,3 +1,4 @@
+<%--suppress JSUnresolvedLibraryURL --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -58,7 +59,11 @@
         window.ACTIVER.context_path = "<% out.print(getServletConfig().getServletContext().getContextPath());%>";
         window.ACTIVER.Data = {};
         $.getJSON( "<c:url value="/js/data.json"/>", function( data ) {
-            for (var attrname in data) { window.ACTIVER.Data[attrname] = data[attrname]; }
+            for (var attrname in data) {
+                if (data.hasOwnProperty(attrname)) {
+                    window.ACTIVER.Data[attrname] = data[attrname];
+                }
+            }
             $(function(){
                 $.each(window.ACTIVER,function(i,o){
                     if (o.init != undefined) {
@@ -112,11 +117,6 @@
 </div>
 <!-- /#wrapper -->
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
 
 <!-- Menu Toggle Script -->
 <script>

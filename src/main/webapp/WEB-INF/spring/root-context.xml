@@ -95,12 +95,12 @@
 
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.yandex.ru" />
-		<property name="username" value="support@todo100.ru" />
+		<property name="username" value="support@onoffline.ru" />
 		<property name="password" value="123456" />
 		<property name="javaMailProperties">
 			<props>
 				<prop key="mail.smtp.ssl.enable">true</prop>
-				<prop key="mail.smtp.from">support@todo100.ru</prop>
+				<prop key="mail.smtp.from">support@onoffline.ru</prop>
 			</props>
 		</property>
 	</bean>
@@ -164,7 +164,9 @@
 
 	<bean id="referService" class="ru.todo100.activer.service.impl.ReferServiceImpl"/>
 
-	<bean id="photoService1" class="ru.todo100.activer.service.impl.PhotoServiceImpl"></bean>
+	<bean id="settingService" class="ru.todo100.activer.dao.SettingDao"/>
+
+	<bean id="photoService1" class="ru.todo100.activer.service.impl.PhotoServiceImpl"/>
 	<!-- Facades -->
 	<import resource="facade-context.xml" />
 </beans>

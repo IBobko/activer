@@ -58,15 +58,9 @@
             </a>
         </li>
         <li>
-            <a href="<c:url value="/private/"/>">
+            <a href="<c:url value="/private"/>">
                 <span class="fa fa-photo"></span>
                 Приватность
-            </a>
-        </li>
-        <li>
-            <a href="<c:url value="/themes"/>">
-                <span class="fa fa-play-circle"></span>
-                Тема профиля
             </a>
         </li>
     </ul>

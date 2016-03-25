@@ -1,16 +1,34 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: User
-  Date: 21.03.2016
-  Time: 13:26
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
+<%--suppress XmlDuplicatedId --%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-</body>
-</html>
+<link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet">
+<link href="<c:url value="/resources/css/highlight.css"/>" rel="stylesheet">
+<link href="<c:url value="/resources/css/bootstrap-switch.css"/>" rel="stylesheet">
+<link href="http://getbootstrap.com/assets/css/docs.min.css" rel="stylesheet">
+<script src="<c:url value="/resources/js/bootstrap-switch.js"/>"></script>
+
+<script src="<c:url value="/resources/js/highlight.js"/>"></script>
+
+
+<h3 style="color:#337ab7;font-weight:bold">Приватность</h3>
+Функции данного раздела доступны только премиум пользователям
+<p>
+    <form:form method="post" commandName="privateForm">
+        <form:checkbox path="showOnline" id="switch-state"
+                    /> не показывать другим пользователям, что я on-line
+        <br/>
+        <form:checkbox path="showPremium" id="switch-state"
+                    /> не показывать другим пользователям, что я Premium
+        <br/>
+        <input type="submit" value="Сохранить"/>
+    </form:form>
+</p>
+
+<script src="<c:url value="/resources/js/main.js"/>"></script>
+
+Вы активировали Premium аккаунт 15.03.2016. Если вы хотите узнать о подробностях и возможностях Premium
+аккаунта, пожалуйста нажмите на кнопку ниже.
+<br/>
+<button>Кнопка ниже</button>
