@@ -6,9 +6,6 @@
 <!--suppress ALL -->
 <tiles-definitions>
 
-
-
-
 	<definition name="base-template" template="/WEB-INF/templates/base-template.jsp">
     	<put-attribute name="title" value="Activer" />
     	<put-attribute name="header" value="/WEB-INF/templates/header.jsp" />
@@ -200,7 +197,6 @@
 		<put-attribute name="content" value="/WEB-INF/views/safety/index.jsp"/>
 	</definition>
 
-	<definition name="admin/index" template="/WEB-INF/views/admin/index.jsp">
+	<definition name="admin/index" template="/WEB-INF/views/admin/index.jsp"/>
 
-	</definition>
 </tiles-definitions> 
