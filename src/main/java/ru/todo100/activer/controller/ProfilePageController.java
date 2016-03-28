@@ -35,8 +35,6 @@ import ru.todo100.activer.data.IWantData;
 import ru.todo100.activer.data.MessageAccountData;
 import ru.todo100.activer.data.MessageData;
 import ru.todo100.activer.data.ProfileData;
-import ru.todo100.activer.facade.ICanFacade;
-import ru.todo100.activer.facade.IWantFacade;
 import ru.todo100.activer.facade.MarkFacade;
 import ru.todo100.activer.form.ChangeProfileForm;
 import ru.todo100.activer.form.ICanForm;
@@ -97,12 +95,6 @@ public class ProfilePageController
 
 	@Autowired
 	private WallPopulator wallPopulator;
-
-	@Autowired
-	private ICanFacade iCanFacade;
-
-	@Autowired
-	private IWantFacade iWantFacade;
 
 	@Autowired
 	private PhotoService photoService1;
