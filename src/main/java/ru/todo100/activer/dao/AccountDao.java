@@ -3,7 +3,6 @@ package ru.todo100.activer.dao;
 
 import java.util.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.apache.commons.lang.RandomStringUtils;

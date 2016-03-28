@@ -28,15 +28,16 @@ public class AuthPageController
 
 	@Autowired
 	private MailService mail;
-	@Autowired
+
 	private PromoService promoService;
-	@Autowired
+
 	private ReferService referService;
 
 	public PromoService getPromoService() {
 		return promoService;
 	}
 
+	@Autowired
 	public void setPromoService(PromoService promoService) {
 		this.promoService = promoService;
 	}
@@ -45,6 +46,7 @@ public class AuthPageController
 		return referService;
 	}
 
+	@Autowired
 	public void setReferService(ReferService referService) {
 		this.referService = referService;
 	}
@@ -55,6 +57,7 @@ public class AuthPageController
 		return "auth/index";
 	}
 
+	/* @todo Возможно стоит внедрить форму */
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public String signup(HttpServletRequest request,Model model)
 	{
@@ -80,8 +83,9 @@ public class AuthPageController
 		return "auth/signup";
 	}
 
+	/* @todo Внедрить binding result */
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public String signupPost(@ModelAttribute RegisterForm registerForm, HttpServletRequest request, Model model)
+	public String signupPost(@ModelAttribute RegisterForm registerForm, Model model)
 	{
 		try
 		{
@@ -96,6 +100,7 @@ public class AuthPageController
 		}
 	}
 
+	/* @todo Внедрить redirect */
 	@RequestMapping(value = "/loginfail")
 	public String loginfail(Model model)
 	{
@@ -111,6 +116,7 @@ public class AuthPageController
 		return "auth/forgot";
 	}
 
+	/* @todo Передавать все проверки по возможно binding */
 	@RequestMapping(value = "/forgot", method = RequestMethod.POST)
 	public String forgotPost(HttpServletRequest request, Model model)
 	{
@@ -137,17 +143,5 @@ public class AuthPageController
 	public String denied()
 	{
 		return "auth/denied";
-	}
-
-	@RequestMapping(value = "/agreement/commission")
-	public String commision()
-	{
-		return "auth/agree/commission";
-	}
-
-	@RequestMapping(value = "/agreement/buysell")
-	public String buysell()
-	{
-		return "auth/agree/buysell";
 	}
 }
