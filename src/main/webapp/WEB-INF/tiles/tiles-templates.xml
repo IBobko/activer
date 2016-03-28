@@ -81,10 +81,6 @@
     	<put-attribute name="content" value="/WEB-INF/views/mysql/index.jsp" />
 	</definition>
 	
-	<definition name="mysql/sqlfile" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/mysql/sqlfile.jsp" />
-	</definition>
-	
 	<definition name="mysql/tables" extends="base-template">
     	<put-attribute name="content" value="/WEB-INF/views/mysql/tables.jsp" />
 	</definition>
@@ -121,13 +117,6 @@
 		<put-attribute name="content" value="/WEB-INF/views/search/index.jsp" />
 	</definition>
 
-	<definition name="auth/agree/commission" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/auth/agreement-commision.jsp" />
-	</definition>
-	
-	<definition name="auth/agree/buysell" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/auth/agreement-buysell.jsp" />
-	</definition>
 
 	<definition name="message/index" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/message/index.jsp" />
