@@ -117,6 +117,24 @@
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
+
+    if (window.ACTIVER.Global.onPRIVATE_MESSAGE == null) {
+        window.ACTIVER.Global.onPRIVATE_MESSAGE = function(data){
+//            var post = $('#templatePost').html();
+//            post = post.replace("%firstName%",data.from.firstName);
+//            post = post.replace("%lastName%",data.from.lastName);
+//            post = post.replace("%text%",data.message);
+//            $('#messages').append(post);
+//            $('#messages').scrollTop($('#messages').height());
+
+            var link = "<a href=\"" + window.ACTIVER.context_path + "/message/" +  data.from.id + "\">сюда</a>";
+
+            $('#popupWindow').html(data.from.firstName + " " +data.from.lastName+ " прислал личное сообщение. Кликните "+link+", чтобы пообщаться");
+            $('#popupWindow').show();
+        };
+    }
+
+
 </script>
     <div id="popupWindow"
          style="z-index:100000; top:10px; left:10px; position:absolute;display:none; width:300px; height:300px;background:#3f51b5">

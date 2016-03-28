@@ -37,6 +37,29 @@ public class MessageDao extends AbstractDao
 		return messageItems;
 	}
 
+
+	@SuppressWarnings("unchecked")
+	public List<MessageItem> getDialog(Integer person1, Integer person2)
+	{
+		return getCriteria().add(
+				Restrictions.or(
+						Restrictions.and(
+								Restrictions.eq("accountFrom",person1),Restrictions.eq("accountTo",person2)
+		),Restrictions.and(
+								Restrictions.eq("accountFrom",person2),Restrictions.eq("accountTo",person1)
+				))).addOrder(Order.desc("addedDate")).setFetchSize(20).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<MessageItem> getDialogs(Integer person1)
+	{
+		return getCriteria().add(
+				Restrictions.or(
+								Restrictions.eq("accountFrom",person1),Restrictions.eq("accountTo",person1)
+						)).addOrder(Order.desc("addedDate")).setFetchSize(20).list();
+	}
+
+
 	/**
 	 * Gets last messages
 	 *

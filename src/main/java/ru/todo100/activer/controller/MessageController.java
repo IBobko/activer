@@ -6,10 +6,7 @@ package ru.todo100.activer.controller;
 
 import java.security.Principal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -98,7 +95,8 @@ public class MessageController
 
 		/** Добавить кэширование **/
 		final List<MessageData> messageData = new ArrayList<>();
-		List<MessageItem> messageItems = messageService.getLastDialogs(id);
+		AccountItem accountItem = accountService.getCurrentAccount();
+		List<MessageItem> messageItems = messageService.getDialog(id,accountItem.getId());
 		for (MessageItem item : messageItems)
 		{
 			final MessageData data = new MessageData();
@@ -118,6 +116,10 @@ public class MessageController
 		ProfileData friendData = profilePopulator.populate(friend);
 		model.addAttribute("friend", friendData);
 		model.addAttribute("myProfile", accountService.getCurrentAccount());
+
+
+		Collections.reverse(messageData);
+
 		model.addAttribute("lastMessages", messageData);
 		model.addAttribute("templatePost",generateTemplateMessageData());
 		return "message/communicate";

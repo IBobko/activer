@@ -32,7 +32,10 @@
                 <hr>
                 <div>
                     <a href="<c:url value="/profile/id${item.id}"/>">${item.firstName}&nbsp;${item.lastName}</a>
+                    <br/>
+                    <a href="<c:url value="/message/${item.id}"/>">Отправить сообщение</a>
                 </div>
+                <hr/>
             </c:forEach>
         </div>
     </div>

@@ -17,7 +17,7 @@
             </a>
         </li>
         <li>
-            <a href="<c:url value="/message/2"/>">
+            <a href="<c:url value="/message"/>">
                 <span class="fa fa-envelope-o"></span>
                 Сообщения<span class="badge">12</span>
             </a>

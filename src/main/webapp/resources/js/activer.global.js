@@ -14,7 +14,7 @@ window.ACTIVER.Global = {
         this.connect();
     },
     submit: function(data){
-        this.stompClient.send("/actions", {}, JSON.stringify(data));
+        this.stompClient.send("/actions",{},JSON.stringify(data));
     },
     connect: function() {
         var that = this;
@@ -22,11 +22,14 @@ window.ACTIVER.Global = {
         this.stompClient = Stomp.over(socket);
         this.stompClient.connect({}, function (frame) {
             console.log(frame);
-            that.stompClient.subscribe('/global2', function (greeting) {
+            that.stompClient.subscribe('/user/global2', function (greeting) {
                 var result = JSON.parse(greeting.body);
+                if (that.onPRIVATE_MESSAGE != null) {
+                    that.onPRIVATE_MESSAGE(result);
+                }
                 console.log(result);
-                $("#popupWindow").css("display","block");
             });
         });
-    }
+    },
+    onPRIVATE_MESSAGE:null
 };
