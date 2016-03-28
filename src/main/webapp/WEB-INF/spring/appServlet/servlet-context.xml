@@ -4,18 +4,13 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:websocket="http://www.springframework.org/schema/websocket"
-	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
-		http://www.springframework.org/schema/websocket
-        http://www.springframework.org/schema/websocket/spring-websocket.xsd
 		"
 >
 	<context:property-placeholder location="/WEB-INF/servlet.properties" />
@@ -29,9 +24,7 @@
 	<resources
 		mapping="/resources/**"
 		location="/resources/" />
-	<resources
-			mapping="/res2/**"
-			location="/res2/" />
+
 	<context:component-scan base-package="ru.todo100.activer.controller" />
 
 	<context:component-scan base-package="ru.todo100.activer.config"/>
@@ -79,12 +72,5 @@
 			</beans:bean>
 		</mvc:interceptor>
 	</mvc:interceptors>
-
-	<websocket:handlers>
-		<websocket:mapping path="/myHandler" handler="myHandler"/>
-		<websocket:sockjs/>
-	</websocket:handlers>
-
-	<beans:bean id="myHandler" class="ru.todo100.activer.MyHandler"/>
 
 </beans:beans>

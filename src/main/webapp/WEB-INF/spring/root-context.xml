@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--suppress SpringModelInspection -->
 <beans
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xmlns:tx="http://www.springframework.org/schema/tx"
@@ -91,8 +90,6 @@
 
 	<!-- end classes -->
 
-	<bean id="addingStandartItemsFilter" class="ru.todo100.activer.filter.AddingStandartItemsFilter" />
-
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.yandex.ru" />
 		<property name="username" value="support@onoffline.ru" />
@@ -105,15 +102,12 @@
 		</property>
 	</bean>
 
-	<bean id="velocityEngine" class="ru.todo100.activer.MyVelocityEngine">
+	<bean id="velocityEngine" class="ru.todo100.activer.velocity.Engine">
 		<constructor-arg index="0" ref="servletContext"/>
 		<property name="velocityProperties">
 			<props>
 				<prop key="resource.loader">webapp</prop>
 				<prop key="webapp.resource.loader.class">org.apache.velocity.tools.view.WebappResourceLoader</prop>
-				<!--<prop key="file.resource.loader.path">C:\Users\User\IdeaProjects2\activer\src\main\webapp</prop>-->
-				<!--<prop key="file.resource.loader.cache">false</prop>-->
-				<!--<prop key="file.resource.loader.modificationCheckInterval">0</prop>-->
 			</props>
 		</property>
 	</bean>
@@ -125,8 +119,8 @@
 
 	<!-- Localization -->
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-		<property name="basename" value="classpath:messages" />
-		<property name="defaultEncoding" value="utf-8" />
+		<!--property name="basename" value="classpath*:WEB-INF.messages" /-->
+		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
 
 	<bean id="markPopulator" class="ru.todo100.activer.populators.MarkPopulator"/>

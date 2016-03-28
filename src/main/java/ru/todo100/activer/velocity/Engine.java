@@ -1,4 +1,4 @@
-package ru.todo100.activer;
+package ru.todo100.activer.velocity;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.VelocityException;
@@ -8,11 +8,11 @@ import javax.servlet.ServletContext;
 import java.io.IOException;
 
 /**
- * @author Igor Bobko <ibobko@beeline.ru>.
+ * @author Igor Bobko <limit-speeed@yandex.ru>.
  */
-public class MyVelocityEngine extends VelocityEngineFactoryBean {
+public class Engine extends VelocityEngineFactoryBean {
     ServletContext servletContext;
-    public MyVelocityEngine(ServletContext servletContext){
+    public Engine(ServletContext servletContext){
         super();
         this.servletContext = servletContext;
     }
