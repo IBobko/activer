@@ -15,6 +15,7 @@ import java.security.Principal;
  */
 @Controller
 public class GlobalListenerController {
+
     @Autowired
     private SimpMessagingTemplate template;
 
@@ -34,10 +35,10 @@ public class GlobalListenerController {
         PacketMessageData messageData = new PacketMessageData();
         template.convertAndSend("/global2/1", messageData);
 
-        template.convertAndSend("/global2/1", messageData);
+        //template.convertAndSend("/global2/1", messageData);
 
 
-        //template.convertAndSendToUser(principal.getName(),"");
+        template.convertAndSendToUser(principal.getName(),"/global2",messageData);
 
 
     }

@@ -13,7 +13,6 @@
         <java-version>1.6</java-version>
         <org.springframework-version>4.2.5.RELEASE</org.springframework-version>
         <org.springframework-version-security>4.0.4.RELEASE</org.springframework-version-security>
-        <org.aspectj-version>1.6.10</org.aspectj-version>
         <org.slf4j-version>1.6.6</org.slf4j-version>
         <tyrus-version>1.8</tyrus-version>
     </properties>
