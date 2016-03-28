@@ -12,6 +12,14 @@ import java.io.Serializable;
 @Entity
 @Table(name="setting")
 public class SettingItem implements Serializable {
+    public Integer getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Integer accountId) {
+        this.accountId = accountId;
+    }
+
     @Id
     @Column(name="account_id")
     private Integer accountId;

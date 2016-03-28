@@ -3,15 +3,15 @@ package ru.todo100.activer.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import ru.todo100.activer.data.MessageData;
+import ru.todo100.activer.data.PacketMessageData;
+import ru.todo100.activer.data.ReceiveMessageData;
 
 import java.security.Principal;
 
 /**
- * Created by igor on 20.03.16.
+ * @author Igor Bobko <limit-speed@yandex.ru>.
  */
 @Controller
 public class GlobalListenerController {
@@ -19,10 +19,26 @@ public class GlobalListenerController {
     private SimpMessagingTemplate template;
 
     @MessageMapping("/actions")
-    public MessageData message(Message message, Principal principal)
-    {
-        template.convertAndSend("/global2/1","Пользователь хочет добавить вас в други");
+    public void message(final Message<ReceiveMessageData> message, final Principal principal) {
+        switch (message.getPayload().getType()) {
+            case "private-message": /*todo something*/
+                break;
+            case "add-to-friend": /*todo something*/
+                break;
+            case "like-message": /*todo something*/
+                break;
+            case "wall-message": /*todo something*/
+                break;
+        }
 
-        return null;
+        PacketMessageData messageData = new PacketMessageData();
+        template.convertAndSend("/global2/1", messageData);
+
+        template.convertAndSend("/global2/1", messageData);
+
+
+        //template.convertAndSendToUser(principal.getName(),"");
+
+
     }
 }

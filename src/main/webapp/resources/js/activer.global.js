@@ -4,6 +4,11 @@ if (window.ACTIVER == undefined) {
 
 window.ACTIVER.Global = {
     stompClient: null,
+    message: {
+        to: null,
+        message: null,
+        type: null
+    },
     init: function() {
         //var that = this;
         //$('#messages').scrollTop($('#messages').height());
@@ -35,6 +40,10 @@ window.ACTIVER.Global = {
         this.stompClient.connect({}, function (frame) {
             console.log(frame);
             that.stompClient.subscribe('/global2/' + window.ACTIVER.Data.profile.id, function (greeting) {
+                //noinspection JSUnusedLocalSymbols
+                var result = JSON.parse(greeting.body);
+
+
                 //alert(greeting);
                 $("#popupWindow").css("display","block");
             });

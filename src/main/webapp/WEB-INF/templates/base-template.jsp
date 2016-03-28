@@ -24,7 +24,8 @@
     <link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet">
 
     <!-- Fonts -->
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&subset=latin,cyrillic' rel='stylesheet'
+          type='text/css'>
 
     <!-- Custom CSS -->
     <link href="<c:url value="/resources/css/styles.css"/>" rel="stylesheet">
@@ -36,10 +37,6 @@
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-
-
-
-
     <![endif]-->
 
     <script type="text/javascript" src="<c:url value="/resources/js/jquery-1.10.2.min.js"/>"></script>
@@ -49,8 +46,7 @@
     <script type="text/javascript" src="<c:url value="/resources/stomp.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/activer.global.js"/>"></script>
 
-    <script>
-
+    <script type="text/javascript">
 
         if (window.ACTIVER == undefined) {
             window.ACTIVER = {};
@@ -58,14 +54,14 @@
 
         window.ACTIVER.context_path = "<% out.print(getServletConfig().getServletContext().getContextPath());%>";
         window.ACTIVER.Data = {};
-        $.getJSON( "<c:url value="/js/data.json"/>", function( data ) {
+        $.getJSON("<c:url value="/js/data.json"/>", function (data) {
             for (var attrname in data) {
                 if (data.hasOwnProperty(attrname)) {
                     window.ACTIVER.Data[attrname] = data[attrname];
                 }
             }
-            $(function(){
-                $.each(window.ACTIVER,function(i,o){
+            $(function () {
+                $.each(window.ACTIVER, function (i, o) {
                     if (o.init != undefined) {
                         o.init();
                     }
@@ -79,7 +75,6 @@
 <body>
 
 <div id="wrapper">
-
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
         <nav class="navbar navbar-default navbar-sidebar">
@@ -97,9 +92,7 @@
                 </div>
             </div>
         </nav>
-
         <main:leftmenu/>
-
         <button class="btn btn-sm text-uppercase premium"><span class="fa fa-star-o"></span> премиум-аккаунт</button>
         <p class="copyright">on/off line <span class="fa fa-copyright"></span> 2016</p>
     </div>
@@ -119,16 +112,16 @@
 
 
 <!-- Menu Toggle Script -->
-<script>
-    $("#sidebar-toggle").click(function(e) {
+<script type="text/javascript">
+    $("#sidebar-toggle").click(function (e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
 </script>
-<div id="popupWindow" style="z-index:100000; top:10px; left:10px; position:absolute;display:none; width:300px; height:300px;background:#3f51b5">
-    Этот пользователеь хочет добавить вас в други
-</div>
+    <div id="popupWindow"
+         style="z-index:100000; top:10px; left:10px; position:absolute;display:none; width:300px; height:300px;background:#3f51b5">
+        Этот пользователеь хочет добавить вас в други
+    </div>
 </body>
-
 </html>
 
