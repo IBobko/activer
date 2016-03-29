@@ -6,9 +6,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
- * @author Igor Bobko
+ * @author Igor Bobko <limit-speed@yandex.ru>.
  */
-@SuppressWarnings({"JpaDataSourceORMInspection", "unused"})
+@SuppressWarnings({"unused"})
 @Entity
 @Table(name = "message")
 public class MessageItem extends Item

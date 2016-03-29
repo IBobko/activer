@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.socket.TextMessage;
 
+import ru.todo100.activer.data.DialogData;
 import ru.todo100.activer.data.MessageAccountData;
 import ru.todo100.activer.data.MessageData;
 import ru.todo100.activer.data.ProfileData;
@@ -30,7 +31,6 @@ import ru.todo100.activer.dao.MessageDao;
 @Controller
 public class MessageController
 {
-
 	@Autowired
 	private MessageDao messageService;
 
@@ -78,13 +78,55 @@ public class MessageController
 	@RequestMapping("/message")
 	public String index(final Model model)
 	{
-		System.out.println("Hey! Hello world!!!");
-		final Set<AccountItem> friends = accountService.getCurrentAccount().getFriends();
-		final Set<ProfileData> friendsData = new HashSet<>();
-		for (AccountItem friend:friends) {
-			friendsData.add(profilePopulator.populate(friend));
+		AccountItem accountItem = accountService.getCurrentAccount();
+
+//		final Set<AccountItem> friends = accountService.getCurrentAccount().getFriends();
+//		final Set<ProfileData> friendsData = new HashSet<>();
+//		for (AccountItem friend:friends) {
+//			friendsData.add(profilePopulator.populate(friend));
+//		}
+
+
+
+
+
+		final List<MessageItem> messageItems = messageService.getDialogs(accountItem.getId());
+
+		final List<DialogData> dialogData = new ArrayList<>();
+
+		for (MessageItem item : messageItems)
+		{
+			final MessageData data = new MessageData();
+			final AccountItem from = accountService.get(item.getAccountFrom());
+			final MessageAccountData sender = new MessageAccountData();
+			sender.setFirstName(from.getFirstName());
+			sender.setLastName(from.getLastName());
+			sender.setId(item.getAccountFrom());
+			data.setSender(sender);
+			data.setText(item.getText());
+
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
+			data.setDate(format.format(item.getAddedDate().getTime()));
+			DialogData dd = new DialogData();
+			dialogData.add(dd);
+			dd.setLastMessage(data);
+
+			if (item.getAccountTo().equals(accountItem.getId())) {
+
+				dd.setOwner(sender);
+			} else {
+				final AccountItem to = accountService.get(item.getAccountTo());
+				final MessageAccountData to1 = new MessageAccountData();
+				to1.setFirstName(to.getFirstName());
+				to1.setLastName(to.getLastName());
+				to1.setId(item.getAccountTo());
+				dd.setOwner(to1);
+			}
+
 		}
-		model.addAttribute("friends", friendsData);
+
+		model.addAttribute("dialogs", dialogData);
+
 		return "message/index";
 	}
 

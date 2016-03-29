@@ -1,14 +1,13 @@
 package ru.todo100.activer.dao;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.hibernate.Criteria;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.*;
 
 import ru.todo100.activer.model.Item;
 import ru.todo100.activer.model.MessageItem;
@@ -53,10 +52,29 @@ public class MessageDao extends AbstractDao
 	@SuppressWarnings("unchecked")
 	public List<MessageItem> getDialogs(Integer person1)
 	{
-		return getCriteria().add(
+		final ArrayList<Object[]> result = (ArrayList<Object[]>)getCriteria().add(
 				Restrictions.or(
 								Restrictions.eq("accountFrom",person1),Restrictions.eq("accountTo",person1)
-						)).addOrder(Order.desc("addedDate")).setFetchSize(20).list();
+						)).setProjection(Projections.projectionList()
+						.add(Projections.groupProperty("accountFrom"))
+						.add(Projections.groupProperty("accountTo"))
+				).list();
+
+		final ArrayList<MessageItem> dialogs = new ArrayList<>();
+
+		for (Object[] row: result){
+			MessageItem messageItem = (MessageItem)getCriteria().add(Restrictions.and(Restrictions.eq("accountFrom",row[0]),Restrictions.eq("accountTo",row[1]))).addOrder(Order.desc("addedDate")).setMaxResults(1).uniqueResult();
+			for (MessageItem item: dialogs) {
+				if ((item.getAccountFrom() == row[0] && item.getAccountTo() == row[1]) ||
+						(item.getAccountFrom() == row[1] && item.getAccountTo() == row[0])) {
+					if (item.getAddedDate().getTime().getTime() < messageItem.getAddedDate().getTime().getTime()) {
+						dialogs.remove(item);
+					}
+				}
+			}
+			dialogs.add(messageItem);
+		}
+		return dialogs;
 	}
 
 
