@@ -2,6 +2,7 @@ package ru.todo100.activer.dao;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -64,11 +65,14 @@ public class MessageDao extends AbstractDao
 
 		for (Object[] row: result){
 			MessageItem messageItem = (MessageItem)getCriteria().add(Restrictions.and(Restrictions.eq("accountFrom",row[0]),Restrictions.eq("accountTo",row[1]))).addOrder(Order.desc("addedDate")).setMaxResults(1).uniqueResult();
-			for (MessageItem item: dialogs) {
+
+			Iterator<MessageItem> it = dialogs.iterator();
+			while(it.hasNext()) {
+				final MessageItem item = it.next();
 				if ((item.getAccountFrom() == row[0] && item.getAccountTo() == row[1]) ||
 						(item.getAccountFrom() == row[1] && item.getAccountTo() == row[0])) {
 					if (item.getAddedDate().getTime().getTime() < messageItem.getAddedDate().getTime().getTime()) {
-						dialogs.remove(item);
+						it.remove();
 					}
 				}
 			}
