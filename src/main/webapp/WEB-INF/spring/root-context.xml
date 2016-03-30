@@ -161,6 +161,9 @@
 	<bean id="settingService" class="ru.todo100.activer.dao.SettingDao"/>
 
 	<bean id="photoService1" class="ru.todo100.activer.service.impl.PhotoServiceImpl"/>
+
+	<bean id="friendDao" class="ru.todo100.activer.dao.FriendDao"/>
+
 	<!-- Facades -->
 	<import resource="facade-context.xml" />
 </beans>

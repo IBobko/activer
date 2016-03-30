@@ -1,8 +1,6 @@
 package ru.todo100.activer.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -10,10 +8,10 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
- * @author Igor Bobko
+ * @author Igor Bobko <limit-speed@yandex.ru>.
  */
 
-@SuppressWarnings({"JpaDataSourceORMInspection", "JpaAttributeTypeInspection"})
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "account_friend_relation")
 public class AccountFriendRelationItem implements Serializable

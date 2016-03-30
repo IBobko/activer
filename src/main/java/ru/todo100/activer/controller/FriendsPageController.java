@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RequestMethod;
+import ru.todo100.activer.dao.FriendDao;
+import ru.todo100.activer.data.FriendData;
 import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.populators.ProfilePopulator;
@@ -28,22 +30,15 @@ public class FriendsPageController
 	@Autowired
 	private ProfilePopulator profilePopulator;
 
+	@Autowired
+	private FriendDao friendDao;
+
 	@RequestMapping
 	public String index(final Model model)
 	{
-
-		Set<AccountItem> friends = accountService.getCurrentAccount().getFriends();
-
-		Set<ProfileData> friendsData = new HashSet<>();
-
-		for (AccountItem friend : friends)
-		{
-			ProfileData friendData = profilePopulator.populate(friend);
-			friendsData.add(friendData);
-		}
-
-		model.addAttribute("friends", friendsData);
-
+		final AccountItem accountItem = accountService.getCurrentAccount();
+		final FriendData friends = friendDao.getFriends(accountItem.getId());
+		model.addAttribute("friendData",friends);
 		return "friend/index";
 	}
 

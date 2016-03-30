@@ -11,17 +11,32 @@
     </ul>
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="friends">
-
-        </div>
-        <div role="tabpanel" class="tab-pane" id="outFriends">
-            <c:forEach items="${friends}" var="friend">
+            <c:forEach items="${friendData.friends}" var="friend">
                 <hr/>
-                <div><img src="${friend.photo60x60}">
+                <div>
                     <a href="<c:url value="/profile/id${friend.id}"/>">${friend.firstName}&nbsp;${friend.lastName}</a>
                 </div>
             </c:forEach>
         </div>
-        <div role="tabpanel" class="tab-pane" id="inFriends">...</div>
+        <div role="tabpanel" class="tab-pane" id="outFriends">
+            <c:forEach items="${friendData.outRequest}" var="friend">
+                <hr/>
+                <div>
+                    <a href="<c:url value="/profile/id${friend.id}"/>">${friend.firstName}&nbsp;${friend.lastName}</a>
+                    <a onclick="addToFriend(${friend.id})" href="#">Добавить в друзья</a>
+                </div>
+            </c:forEach>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="inFriends">
+            <c:forEach items="${friendData.inRequest}" var="friend">
+                <hr/>
+                <div>
+                    <a href="<c:url value="/profile/id${friend.id}"/>">${friend.firstName}&nbsp;${friend.lastName}</a>
+                    <a onclick="addToFriend(${friend.id})" href="#">Добавить в друзья</a>
+                </div>
+            </c:forEach>
+
+        </div>
 
         <div role="tabpanel" class="tab-pane" id="searchFriends">
             <form method="post">
@@ -34,9 +49,25 @@
                     <a href="<c:url value="/profile/id${item.id}"/>">${item.firstName}&nbsp;${item.lastName}</a>
                     <br/>
                     <a href="<c:url value="/message/${item.id}"/>">Отправить сообщение</a>
+                    <a onclick="addToFriend(${item.id})" href="#">Добавить в друзья</a>
                 </div>
                 <hr/>
             </c:forEach>
         </div>
     </div>
 </div>
+<script>
+    function addToFriend(id) {
+        alert("Добавление в други" + id);
+        var data = window.ACTIVER.Global.message;
+        data.type = "ADD_TO_FRIEND";
+        data.to = id;
+        window.ACTIVER.Global.submit(data);
+    }
+
+    if (window.ACTIVER.Global.onPRIVATE_MESSAGE == null) {
+        window.ACTIVER.Global.onPRIVATE_MESSAGE = function(data){
+            alert("запрос отправлен");
+        }
+    }
+</script>

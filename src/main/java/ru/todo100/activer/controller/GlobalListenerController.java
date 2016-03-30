@@ -7,6 +7,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.dao.FriendDao;
 import ru.todo100.activer.dao.MessageDao;
 import ru.todo100.activer.data.MessageAccountData;
 import ru.todo100.activer.data.PacketMessageData;
@@ -29,6 +30,9 @@ public class GlobalListenerController {
 
     @Autowired
     private SimpMessagingTemplate template;
+
+    @Autowired
+    private FriendDao friendDao;
 
     @Autowired
     private MessageDao messageDao;
@@ -77,6 +81,11 @@ public class GlobalListenerController {
             messageItem.setText(message.getMessage());
             messageDao.save(messageItem);
 
+        }
+
+        if (message.getType().equals("ADD_TO_FRIEND")) {
+            final AccountItem from = accountService.get(principal.getName());
+            friendDao.addRequest(from.getId(),message.getTo());
         }
 
     }
