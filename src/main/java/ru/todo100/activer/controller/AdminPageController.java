@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by igor on 20.03.16.
+ * @author Igor Bobko <limit-speed@yandex.ru>.
  */
 @Controller
 public class AdminPageController {
@@ -16,6 +16,7 @@ public class AdminPageController {
     private SimpMessagingTemplate template;
     @RequestMapping("/admin")
     public String admin(HttpServletRequest request) {
+
 
         String subscribe = request.getParameter("subscribe");
 

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
-<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                     xsi:schemaLocation="http://jakarta.apache.org/log4j/ ">
-
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/' debug="true">
     <!-- Appenders -->
     <appender name="console" class="org.apache.log4j.ConsoleAppender">
         <param name="Target" value="System.out"/>
@@ -11,45 +9,9 @@
         </layout>
     </appender>
 
-    <appender name="DB" class="org.apache.log4j.jdbc.JDBCAppender">
-        <param name="URL" value="jdbc:mysql://localhost:3306/leader"/>
-        <param name="driver" value="com.mysql.jdbc.Driver"/>
-        <param name="user" value="root"/>
-        <param name="password" value="root"/>
-        <param name="quoteReplace" value="true"/>
-        <param name="sql" value="insert into leader_logs (log) VALUES(&quot;%-5p: %c - %m%n&quot;)"/>
-    </appender>
-
-
-    <!-- 3rdparty Loggers -->
-    <logger name="org.springframework.core">
-        <level value="info"/>
-    </logger>
-
-    <logger name="org.springframework.beans">
-        <level value="info"/>
-    </logger>
-
-    <logger name="org.springframework.context">
-        <level value="info"/>
-    </logger>
-
-    <logger name="org.springframework.web">
-        <level value="info"/>
-    </logger>
-
-    <!-- Root Logger -->
     <root>
-        <priority value="warn"/>
+        <priority value="info"/>
         <appender-ref ref="console"/>
     </root>
-<!--    <logger name="org.springframework.transaction">
-        <level value="debug"/>
-    </logger>
-
-    <logger name="org.springframework.orm.hibernate5.HibernateTransactionManager">
-        <level value="debug"/>
-    </logger>-->
-
 
 </log4j:configuration>

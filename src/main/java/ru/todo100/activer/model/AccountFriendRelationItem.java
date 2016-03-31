@@ -1,10 +1,7 @@
 package ru.todo100.activer.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -18,11 +15,13 @@ public class AccountFriendRelationItem implements Serializable
 {
 	@Id
 	@OneToOne
+	@NotNull
 	@JoinColumn(name = "account_id")
 	private AccountItem account;
 
 	@Id
 	@OneToOne
+	@NotNull
 	@JoinColumn(name = "friend_account_id")
 	private AccountItem friendAccount;
 
@@ -44,5 +43,20 @@ public class AccountFriendRelationItem implements Serializable
 	public void setFriendAccount(final AccountItem friendAccount)
 	{
 		this.friendAccount = friendAccount;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		final AccountFriendRelationItem that = (AccountFriendRelationItem) o;
+		return account.equals(that.account) && friendAccount.equals(that.friendAccount);
+	}
+
+	@Override
+	public int hashCode() {
+		int result = account.hashCode();
+		result = 31 * result + friendAccount.hashCode();
+		return result;
 	}
 }

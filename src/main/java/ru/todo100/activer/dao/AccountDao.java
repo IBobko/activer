@@ -1,10 +1,6 @@
 package ru.todo100.activer.dao;
 
 
-import java.util.*;
-
-import javax.transaction.Transactional;
-
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
@@ -12,7 +8,6 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-
 import ru.todo100.activer.form.RegisterForm;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.DreamItem;
@@ -23,10 +18,19 @@ import ru.todo100.activer.service.ReferService;
 import ru.todo100.activer.util.InputError;
 import ru.todo100.activer.util.MailService;
 
-@SuppressWarnings(value = {"unchecked"})
+import javax.transaction.Transactional;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Objects;
+
+@SuppressWarnings(value = {"unchecked", "SqlResolve"})
 @Transactional
 public class AccountDao extends AbstractDao
 {
+	@Autowired
+	private ReferService referService;
+	@Autowired
+	private PromoService promoService;
 
 	public List<AccountItem> getAll()
 	{
@@ -63,13 +67,14 @@ public class AccountDao extends AbstractDao
 	public AccountItem getCurrentAccount()
 	{
 		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth != null && auth.isAuthenticated())
-		{
-			return get(auth.getName());
+		if (auth != null && auth.isAuthenticated()) {
+			final AccountItem accountItem = get(auth.getName());
+			accountItem.setLastActivity(new GregorianCalendar());
+			save(accountItem);
+			return accountItem;
 		}
 		return null;
 	}
-
 
 	public void addFriend(AccountItem account, Integer friendId)
 	{
@@ -77,19 +82,9 @@ public class AccountDao extends AbstractDao
 		save(account);
 	}
 
-
 	public void deleteOldInterests() {
 		getSession().createSQLQuery("DELETE FROM INTEREST WHERE account_id is null").executeUpdate();
 	}
-
-
-
-	/**
-	 * TODO переттащить это все в фасад
-	 **/
-
-	@Autowired
-	ReferService referService;
 
 	public AccountItem saveForm(RegisterForm registerForm) throws InputError {
 		String password = RandomStringUtils.randomAlphanumeric(6);
@@ -161,9 +156,6 @@ public class AccountDao extends AbstractDao
 		}
 		return account;
 	}
-
-	@Autowired
-	PromoService promoService;
 
 	public void deleteTrip(Integer id) {
 		final AccountItem account = getCurrentAccount();

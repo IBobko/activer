@@ -73,6 +73,8 @@ public class AccountItem extends DateChanges {
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private List<InterestItem> interestItems;
 
+    @Column(name = "account_last_activity")
+    private Calendar lastActivity;
     /*
     orphanRemoval = true
     It means that if you delete items from collection that item will be deleted from database.
@@ -81,7 +83,6 @@ public class AccountItem extends DateChanges {
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "account_id")
     private List<DreamItem> dreamItems;
-
     /*
     orphanRemoval = true
     It means that if you delete items from collection that item will be deleted from database.
@@ -90,6 +91,14 @@ public class AccountItem extends DateChanges {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "account_id")
     private List<TripItem> tripItems;
+
+    public Calendar getLastActivity() {
+        return lastActivity;
+    }
+
+    public void setLastActivity(Calendar lastActivity) {
+        this.lastActivity = lastActivity;
+    }
 
     public List<DreamItem> getDreamItems() {
         return dreamItems;
