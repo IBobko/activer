@@ -20,6 +20,15 @@ public class ProfileData {
     private List<InterestData> interests;
     private List<TripData> trips;
     private List<DreamData> dreams;
+    private boolean isOnline;
+
+    public boolean isOnline() {
+        return isOnline;
+    }
+
+    public void setOnline(boolean online) {
+        isOnline = online;
+    }
 
     public List<DreamData> getDreams() {
         return dreams;

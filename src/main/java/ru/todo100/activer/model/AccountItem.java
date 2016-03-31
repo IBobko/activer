@@ -6,10 +6,7 @@ import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @SuppressWarnings({"JpaDataSourceORMInspection", "unused"})
 @Entity
@@ -265,6 +262,11 @@ public class AccountItem extends DateChanges {
 
     public void setReferCode(String referCode) {
         this.referCode = referCode;
+    }
+
+    public boolean getIsOnline() {
+        final Calendar calendar = getLastActivity();
+        return calendar != null && new GregorianCalendar().getTimeInMillis() - calendar.getTimeInMillis() <= 300000;
     }
 
 }

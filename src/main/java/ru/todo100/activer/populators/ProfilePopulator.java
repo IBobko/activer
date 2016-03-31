@@ -17,7 +17,7 @@ import java.util.List;
  * @author Igor Bobko
  */
 public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
     @Autowired
     private PhotoDao photoService;
 
@@ -31,7 +31,7 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
     private TripPopulator tripPopulator;
     private DreamPopulator dreamPopulator;
 
-    public DreamPopulator getDreamPopulator() {
+    private DreamPopulator getDreamPopulator() {
         return dreamPopulator;
     }
 
@@ -40,7 +40,7 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         this.dreamPopulator = dreamPopulator;
     }
 
-    public TripPopulator getTripPopulator() {
+    private TripPopulator getTripPopulator() {
         return tripPopulator;
     }
 
@@ -49,7 +49,7 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         this.tripPopulator = tripPopulator;
     }
 
-    public InterestPopulator getInterestPopulator() {
+    private InterestPopulator getInterestPopulator() {
         return interestPopulator;
     }
 
@@ -58,7 +58,7 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         this.interestPopulator = interestPopulator;
     }
 
-    public ChildrenPopulator getChildrenPopulator() {
+    private ChildrenPopulator getChildrenPopulator() {
         return childrenPopulator;
     }
 
@@ -68,7 +68,7 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
     }
 
 
-    public JobPopulator getJobPopulator() {
+    private JobPopulator getJobPopulator() {
         return jobPopulator;
     }
 
@@ -77,7 +77,7 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         this.jobPopulator = jobPopulator;
     }
 
-    public EducationPopulator getEducationPopulator() {
+    private EducationPopulator getEducationPopulator() {
         return educationPopulator;
     }
 
@@ -96,6 +96,8 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         final ProfileData profileData = new ProfileData();
         profileData.setFirstName(accountItem.getFirstName());
         profileData.setLastName(accountItem.getLastName());
+
+        profileData.setOnline(accountItem.getIsOnline());
 
         profileData.setId(accountItem.getId());
         if (accountItem.getBirthdate() != null) {
