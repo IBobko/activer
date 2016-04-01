@@ -1,7 +1,6 @@
 package ru.todo100.activer.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -51,6 +50,40 @@ public class GlobalListenerController {
 //        }
 
         if (message.getType().equals("PRIVATE_MESSAGE")) {
+
+            final PacketMessageData messageData = new PacketMessageData();
+
+
+            final AccountItem from = accountService.get(principal.getName());
+            messageData.setFrom(getMessageAccountData(from));
+            final AccountItem to = accountService.get(message.getTo());
+            messageData.setTo(getMessageAccountData(to));
+            messageData.setDate(new GregorianCalendar());
+            messageData.setMessage(message.getMessage());
+
+            //AccountItem to = accountService.get()
+            //messageData.setFrom(getMessageAccountData(from));
+
+
+            //template.convertAndSend("/global2/1", messageData);
+
+            //template.convertAndSend("/global2/1", messageData);
+
+            template.convertAndSendToUser(principal.getName(), "/global2", messageData);
+
+            // template.convertAndSend("/global2",messageData);
+
+            MessageItem messageItem = new MessageItem();
+            messageItem.setAccountFrom(from.getId());
+            messageItem.setAccountTo(to.getId());
+            messageItem.setAddedDate(new GregorianCalendar());
+            messageItem.setText(message.getMessage());
+            messageDao.save(messageItem);
+
+        }
+
+
+        if (message.getType().equals("DATING")) {
 
             final PacketMessageData messageData = new PacketMessageData();
 

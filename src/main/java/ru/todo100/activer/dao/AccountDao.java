@@ -19,9 +19,11 @@ import ru.todo100.activer.util.InputError;
 import ru.todo100.activer.util.MailService;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
 @SuppressWarnings(value = {"unchecked", "SqlResolve"})
 @Transactional
@@ -167,6 +169,18 @@ public class AccountDao extends AbstractDao
 				}
 			}
 		}
+	}
+
+	public AccountItem getRandomOnlineAccount() {
+		final List<BigDecimal> result = getSession().createSQLQuery(
+				"select id from (select id,extract( day from diff )*24*60*60*1000 + " +
+						" extract( hour from diff )*60*60*1000 + " +
+						" extract( minute from diff )*60*1000 + " +
+						" round(extract( second from diff )*1000) total_milliseconds " +
+						"from (select id,(systimestamp - ACCOUNT_LAST_ACTIVITY) diff from ACCOUNT)) where total_milliseconds < 10906720").list();
+
+		final Integer index = ThreadLocalRandom.current().nextInt(0, result.size());
+		return getSession().load(AccountItem.class, result.get(index).intValue());
 	}
 
 	public void deleteDream(Integer id) {

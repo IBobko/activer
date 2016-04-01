@@ -7,5 +7,5 @@ public enum PopupMessageType {
     PRIVATE_MESSAGE,
     WALL_MESSAGE,
     FRIEND_REQUEST,
-    MADE_LIKE
+    DATING, MADE_LIKE
 }

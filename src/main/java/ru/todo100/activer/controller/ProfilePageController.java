@@ -1,14 +1,5 @@
 package ru.todo100.activer.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.hibernate.FlushMode;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -24,39 +15,28 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import ru.todo100.activer.data.ICanData;
-import ru.todo100.activer.data.IWantData;
-import ru.todo100.activer.data.MessageAccountData;
-import ru.todo100.activer.data.MessageData;
-import ru.todo100.activer.data.ProfileData;
+import org.springframework.web.bind.annotation.*;
+import ru.todo100.activer.dao.*;
+import ru.todo100.activer.data.*;
 import ru.todo100.activer.facade.MarkFacade;
 import ru.todo100.activer.form.ChangeProfileForm;
 import ru.todo100.activer.form.ICanForm;
 import ru.todo100.activer.form.IWantForm;
-import ru.todo100.activer.model.AccountItem;
-import ru.todo100.activer.model.ICanItem;
-import ru.todo100.activer.model.IWantItem;
-import ru.todo100.activer.model.MarkItem;
-import ru.todo100.activer.model.MarkRelationItem;
-import ru.todo100.activer.model.WallItem;
+import ru.todo100.activer.model.*;
 import ru.todo100.activer.populators.ICanPopulator;
 import ru.todo100.activer.populators.IWantPopulator;
 import ru.todo100.activer.populators.ProfilePopulator;
 import ru.todo100.activer.populators.WallPopulator;
-import ru.todo100.activer.dao.AccountDao;
-import ru.todo100.activer.dao.ICanDao;
-import ru.todo100.activer.dao.IWantDao;
-import ru.todo100.activer.dao.MarkRelationDao;
-import ru.todo100.activer.dao.MarkDao;
-import ru.todo100.activer.dao.WallDao;
 import ru.todo100.activer.service.PhotoService;
 import ru.todo100.activer.util.InputError;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 @PreAuthorize("isAuthenticated()")
@@ -64,47 +44,37 @@ import ru.todo100.activer.util.InputError;
 public class ProfilePageController
 {
 	@Autowired
+	PlatformTransactionManager transactionManager;
+	@Autowired
+	SessionFactory sessionFactory;
+	@Autowired
 	private AccountDao accountService;
-
 	@Autowired
 	private ICanDao iCanService;
-
 	@Autowired
 	private IWantDao iWantService;
-
 	@Autowired
 	private ICanPopulator iCanPopulator;
-
 	@Autowired
 	private MarkFacade markFacade;
-
 	@Autowired
 	private IWantPopulator iWantPopulator;
-
 	@Autowired
 	private MarkDao markService;
-
 	@Autowired
 	private MarkRelationDao markRelationService;
-
 	@Autowired
 	private WallDao wallService;
-
 	@Autowired
 	private ProfilePopulator profilePopulator;
-
 	@Autowired
 	private WallPopulator wallPopulator;
-
 	@Autowired
 	private PhotoService photoService1;
-
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String index(Model model)
 	{
-
-
 		final AccountItem account = accountService.getCurrentAccount();
 
 		String photo = photoService1.getPhoto(account.getId());
@@ -242,6 +212,10 @@ public class ProfilePageController
 		return "profile/i_can_form";
 	}
 
+
+//	@PersistenceContext
+//	EntityManager entityManager;
+
 	@RequestMapping(value = "/edit_i_can/{id}", method = RequestMethod.POST)
 	public String doEditICan(@ModelAttribute ICanForm iCanForm, @PathVariable("id") String id)
 	{
@@ -274,15 +248,6 @@ public class ProfilePageController
 		return "redirect:/profile";
 	}
 
-	@Autowired
-	PlatformTransactionManager transactionManager;
-
-
-//	@PersistenceContext
-//	EntityManager entityManager;
-
-
-
 	@RequestMapping(value = "/edit_i_want/{id}", method = RequestMethod.GET)
 	public String editIWant(Model model, @PathVariable("id") Integer id)
 	{
@@ -298,9 +263,6 @@ public class ProfilePageController
 		model.addAttribute("iWantForm", form);
 		return "profile/i_want_form";
 	}
-
-	@Autowired
-	SessionFactory sessionFactory;
 
 	@RequestMapping(value = "/edit_i_want/{id}", method = RequestMethod.POST)
 	public String doEditIWant(@ModelAttribute IWantForm iWantForm, @PathVariable("id") String id)

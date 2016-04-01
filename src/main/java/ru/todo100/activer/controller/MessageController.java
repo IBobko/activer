@@ -35,6 +35,17 @@ public class MessageController {
     @Autowired
     private ProfilePopulator profilePopulator;
 
+    public static MessageData generateTemplateMessageData() {
+        final MessageData template = new MessageData();
+        template.setText("%text%");
+        final MessageAccountData sender = new MessageAccountData();
+        sender.setFirstName("%firstName%");
+        sender.setLastName("%lastName%");
+        template.setDate("%date%");
+        template.setSender(sender);
+        return template;
+    }
+
     @RequestMapping("/message")
     public String index(final Model model) {
         AccountItem accountItem = accountService.getCurrentAccount();
@@ -110,16 +121,5 @@ public class MessageController {
         model.addAttribute("lastMessages", messageData);
         model.addAttribute("templatePost", generateTemplateMessageData());
         return "message/communicate";
-    }
-
-    public MessageData generateTemplateMessageData() {
-        final MessageData template = new MessageData();
-        template.setText("%text%");
-        final MessageAccountData sender = new MessageAccountData();
-        sender.setFirstName("%firstName%");
-        sender.setLastName("%lastName%");
-        template.setDate("%date%");
-        template.setSender(sender);
-        return template;
     }
 }

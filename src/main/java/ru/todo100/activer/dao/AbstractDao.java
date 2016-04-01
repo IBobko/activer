@@ -1,15 +1,14 @@
 package ru.todo100.activer.dao;
 
-import java.util.GregorianCalendar;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
 import ru.todo100.activer.model.DateChanges;
 import ru.todo100.activer.model.Item;
+
+import java.util.GregorianCalendar;
 @SuppressWarnings({"unchecked"})
 abstract public class AbstractDao<T>
 {
@@ -40,7 +39,7 @@ abstract public class AbstractDao<T>
 		return getSessionFactory().getCurrentSession();
 	}
 
-	final public void delete(Integer id)
+	public void delete(Integer id)
 	{
 		final Object object = getSession().load(getItemClass(), id);
 		if (object != null)

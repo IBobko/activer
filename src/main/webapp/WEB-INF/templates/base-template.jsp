@@ -120,6 +120,15 @@
 
     if (window.ACTIVER.Global.onPRIVATE_MESSAGE == null) {
         window.ACTIVER.Global.onPRIVATE_MESSAGE = function(data){
+
+            if (data.type == "DATING") {
+                var link = "<a href=\"" + window.ACTIVER.context_path + "/dating/?dialog=" + data.from.id + "\">сюда</a>";
+                $('#popupWindow').html("Вас для ананимного общения! быстрее присоединяйтесь. Кликните " + link + ", чтобы пообщаться");
+                $('#popupWindow').show();
+                return;
+            }
+
+
 //            var post = $('#templatePost').html();
 //            post = post.replace("%firstName%",data.from.firstName);
 //            post = post.replace("%lastName%",data.from.lastName);
