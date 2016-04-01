@@ -1,16 +1,19 @@
 package ru.todo100.activer.model;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @SuppressWarnings({"JpaDataSourceORMInspection", "unused"})
 @Entity
 @Table(name = "account")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AccountItem extends DateChanges {
     @Id
     @SequenceGenerator(name = "default_gen", sequenceName = "account_seq", allocationSize = 1)
