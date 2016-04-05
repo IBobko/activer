@@ -20,7 +20,6 @@
     </ul>
 </c:if>
 
-
 <c:if test="${pageType == 'register'}">
     <ul class="sidebar-nav">
         <li>
@@ -37,8 +36,6 @@
         </li>
     </ul>
 </c:if>
-
-
 
 <c:if test="${pageType == null}">
     <ul class="sidebar-nav">
