@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 /**
  * @author Igor Bobko
  */
-@SuppressWarnings({"JpaDataSourceORMInspection", "unused"})
 @Entity
 @Table(name = "wall")
 public class WallItem extends Item

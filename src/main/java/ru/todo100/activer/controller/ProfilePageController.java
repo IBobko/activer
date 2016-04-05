@@ -67,10 +67,15 @@ public class ProfilePageController
 	private WallDao wallService;
 	@Autowired
 	private ProfilePopulator profilePopulator;
-	@Autowired
-	private WallPopulator wallPopulator;
+
 	@Autowired
 	private PhotoService photoService1;
+
+	@Autowired
+	private WallDao wallDao;
+
+	@Autowired
+	private WallPopulator wallPopulator;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String index(Model model)
@@ -95,6 +100,7 @@ public class ProfilePageController
 		profile.setFriends(friendsData);
 		model.addAttribute("profile", profile);
 		model.addAttribute("photo", photo);
+
 		populatePersonOfPage(model, account);
 
 		return "profile/index";
