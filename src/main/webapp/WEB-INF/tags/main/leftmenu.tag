@@ -6,7 +6,7 @@
 <c:if test="${pageType == 'auth'}">
     <ul class="sidebar-nav">
         <li class="active">
-            <a href="<c:url value="/auth/"/>">
+            <a href="<c:url value="/auth"/>">
                 <span class="fa fa-user"></span>
                 Авторизация
             </a>

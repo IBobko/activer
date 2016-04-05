@@ -1,8 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" trimDirectiveWhitespaces="true" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<h1>Password Recovery</h1>
+<h1>Восстановление пароля</h1>
 <hr/>
 <div style="width:300px;">
+    <%--@elvariable id="ie" type="ru.todo100.activer.util.InputError"--%>
     <c:if test="${ie != null}">
         <div class="alert alert-danger">
             <ul>

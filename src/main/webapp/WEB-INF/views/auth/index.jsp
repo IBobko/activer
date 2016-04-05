@@ -1,8 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%--suppress XmlPathReference --%>
+<%@ page language="java" trimDirectiveWhitespaces="true" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <div id="entrance" class="well">
+    <%--@elvariable id="ie" type="ru.todo100.activer.util.InputError"--%>
     <c:if test="${ie != null}">
         <div class="alert alert-danger">
             <ul>
@@ -23,8 +25,8 @@
                 <td><input type="password" name="password" id="password" value="" class='form-control'/></td>
             </tr>
             <tr>
-                <td>Remember Me:</td>
-                <td><input type="checkbox" name="remember-me"/></td>
+                <td>Запомнить меня</td>
+                <td><input type="checkbox" name="remember-me" title="Запомнить меня"/></td>
             </tr>
             <tr>
                 <td></td>
