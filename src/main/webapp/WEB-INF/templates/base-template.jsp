@@ -1,19 +1,17 @@
-<%--suppress JSUnresolvedLibraryURL --%>
+<%--suppress XmlPathReference,JSUnresolvedLibraryURL --%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="main" tagdir="/WEB-INF/tags/main" %>
 
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ru">
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="">
 
     <title>On\Off Line</title>
 
@@ -52,7 +50,7 @@
             window.ACTIVER = {};
         }
 
-        window.ACTIVER.context_path = "<% out.print(getServletConfig().getServletContext().getContextPath());%>";
+        window.ACTIVER.context_path = "${pageContext.servletContext.contextPath}";
         window.ACTIVER.Data = {};
         $.getJSON("<c:url value="/js/data.json"/>", function (data) {
             for (var attrname in data) {
@@ -110,7 +108,6 @@
 </div>
 <!-- /#wrapper -->
 
-
 <!-- Menu Toggle Script -->
 <script type="text/javascript">
     $("#sidebar-toggle").click(function (e) {
@@ -119,7 +116,7 @@
     });
 
     if (window.ACTIVER.Global.onPRIVATE_MESSAGE == null) {
-        window.ACTIVER.Global.onPRIVATE_MESSAGE = function(data){
+        window.ACTIVER.Global.onPRIVATE_MESSAGE = function (data) {
 
             if (data.type == "DATING") {
                 var link = "<a href=\"" + window.ACTIVER.context_path + "/dating/?dialog=" + data.from.id + "\">сюда</a>";
@@ -128,27 +125,18 @@
                 return;
             }
 
-
-//            var post = $('#templatePost').html();
-//            post = post.replace("%firstName%",data.from.firstName);
-//            post = post.replace("%lastName%",data.from.lastName);
-//            post = post.replace("%text%",data.message);
-//            $('#messages').append(post);
-//            $('#messages').scrollTop($('#messages').height());
-
-            var link = "<a href=\"" + window.ACTIVER.context_path + "/message/" +  data.from.id + "\">сюда</a>";
-
-            $('#popupWindow').html(data.from.firstName + " " +data.from.lastName+ " прислал личное сообщение. Кликните "+link+", чтобы пообщаться");
-            $('#popupWindow').show();
+            if (data.type == "PRIVATE_MESSAGE") {
+                var link = "<a href=\"" + window.ACTIVER.context_path + "/message/" + data.from.id + "\">сюда</a>";
+                $('#popupWindow').html(data.from.firstName + " " + data.from.lastName + " прислал личное сообщение. Кликните " + link + ", чтобы пообщаться");
+                $('#popupWindow').show();
+            }
         };
     }
-
-
 </script>
-    <div id="popupWindow"
-         style="z-index:100000; top:10px; left:10px; position:absolute;display:none; width:300px; height:300px;background:#3f51b5">
-        Этот пользователеь хочет добавить вас в други
-    </div>
+<div id="popupWindow"
+     style="z-index:100000; top:10px; left:10px; position:absolute;display:none; width:300px; height:300px;background:#5d7fb5">
+
+</div>
 </body>
 </html>
 
