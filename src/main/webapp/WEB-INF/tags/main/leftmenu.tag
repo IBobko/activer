@@ -1,6 +1,44 @@
-<%@ tag language="java" pageEncoding="UTF-8" %>
+<%--suppress XmlPathReference --%>
+<%@ tag language="java" trimDirectiveWhitespaces="true" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ attribute name="pageType" required="false" type="java.lang.String" %>
+
+<c:if test="${pageType == 'auth'}">
+    <ul class="sidebar-nav">
+        <li class="active">
+            <a href="<c:url value="/auth/"/>">
+                <span class="fa fa-user"></span>
+                Авторизация
+            </a>
+        </li>
+        <li>
+            <a href="<c:url value="/auth/signup"/>">
+                <span class="fa fa-smile-o"></span>
+                Регистрация
+            </a>
+        </li>
+    </ul>
+</c:if>
+
+
+<c:if test="${pageType == 'register'}">
+    <ul class="sidebar-nav">
+        <li>
+            <a href="<c:url value="/auth/"/>">
+                <span class="fa fa-user"></span>
+                Авторизация
+            </a>
+        </li>
+        <li class="active">
+            <a href="<c:url value="/auth/signup"/>">
+                <span class="fa fa-smile-o"></span>
+                Регистрация
+            </a>
+        </li>
+    </ul>
+</c:if>
+
+
 
 <c:if test="${pageType == null}">
     <ul class="sidebar-nav">
@@ -65,4 +103,3 @@
         </li>
     </ul>
 </c:if>
-

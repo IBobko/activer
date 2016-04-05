@@ -1,7 +1,5 @@
 package ru.todo100.activer.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,15 +7,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
+import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.form.RegisterForm;
 import ru.todo100.activer.model.AccountItem;
-import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.model.PromoCodeItem;
 import ru.todo100.activer.service.PromoService;
 import ru.todo100.activer.service.ReferService;
 import ru.todo100.activer.util.InputError;
 import ru.todo100.activer.util.MailService;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping(value = "/auth")
@@ -51,9 +50,10 @@ public class AuthPageController
 		this.referService = referService;
 	}
 
-	@RequestMapping(value = "")
-	public String index()
+	@RequestMapping
+	public String index(final Model model)
 	{
+		model.addAttribute("pageType", "auth");
 		return "auth/index";
 	}
 
@@ -61,6 +61,7 @@ public class AuthPageController
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public String signup(HttpServletRequest request,Model model)
 	{
+		model.addAttribute("pageType", "register");
 		RegisterForm registerForm = new RegisterForm();
 		model.addAttribute("registerForm",registerForm);
 		final String refer = request.getParameter("referCode");
@@ -87,6 +88,7 @@ public class AuthPageController
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public String signupPost(@ModelAttribute RegisterForm registerForm, Model model)
 	{
+		model.addAttribute("pageType", "register");
 		try
 		{
 			AccountItem account = accountService.saveForm(registerForm);
@@ -104,6 +106,7 @@ public class AuthPageController
 	@RequestMapping(value = "/loginfail")
 	public String loginfail(Model model)
 	{
+		model.addAttribute("pageType", "register");
 		InputError ie = new InputError();
 		ie.addError("Login or password incorrect");
 		model.addAttribute("ie", ie);
@@ -111,8 +114,9 @@ public class AuthPageController
 	}
 
 	@RequestMapping(value = "/forgot", method = RequestMethod.GET)
-	public String forgot()
+	public String forgot(final Model model)
 	{
+		model.addAttribute("pageType", "forgot");
 		return "auth/forgot";
 	}
 
@@ -120,6 +124,7 @@ public class AuthPageController
 	@RequestMapping(value = "/forgot", method = RequestMethod.POST)
 	public String forgotPost(HttpServletRequest request, Model model)
 	{
+		model.addAttribute("pageType", "forgot");
 		String email = request.getParameter("email");
 		AccountItem account = accountService.getByEmail(email);
 		if (account != null)
@@ -140,8 +145,9 @@ public class AuthPageController
 	}
 
 	@RequestMapping(value = "/denied")
-	public String denied()
+	public String denied(final Model model)
 	{
+		model.addAttribute("pageType", "denied");
 		return "auth/denied";
 	}
 }

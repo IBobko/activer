@@ -13,28 +13,23 @@
     	<put-attribute name="footer" value="/WEB-INF/templates/footer.jsp" />
 	</definition>
 
-	<definition name="auth/deny" extends="base-template">
-		<put-attribute name="content" value="/WEB-INF/views/auth/deny.jsp" />
+	<!-- Authorization and Registration -->
+	<definition name="auth/index" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/auth/index.jsp"/>
 	</definition>
+
+	<definition name="auth/denied" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/auth/denied.jsp"/>
+	</definition>
+
+	<definition name="auth/signup" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/auth/signup.jsp"/>
+	</definition>
+
 
 	<definition name="index/index" extends="base-template">
     	<put-attribute name="content" value="/WEB-INF/views/index/index.jsp" />
 	</definition>
-
-
-
-	<definition name="auth/index" template="/WEB-INF/views/auth/index.jsp">
-
-	</definition>
-
-	<definition name="auth/denied" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/auth/denied.jsp" />
-	</definition>
-	
-	<definition name="auth/signup" template="/WEB-INF/views/auth/signup.jsp">
-
-	</definition>
-
 
 	<definition name="index/index" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/auth/signup.jsp" />
