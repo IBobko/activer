@@ -5,8 +5,9 @@
 
 <style type="text/css">
     #entrance {
-        margin: 200px auto 0;
+        margin: 100px auto 0;
         width: 370px;
+        height: 310px;
     }
 
     label {
@@ -24,7 +25,7 @@
         vertical-align: bottom;
         position: relative;
         top: -1px;
-        *overflow: hidden;
+        overflow: hidden;
     }
 
     button[type="submit"] {
