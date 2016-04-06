@@ -3,7 +3,46 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<div id="entrance" class="well">
+<style type="text/css">
+    #entrance {
+        margin: 200px auto 0;
+        width: 370px;
+    }
+
+    label {
+        display: block;
+        padding-left: 15px;
+        text-indent: -15px;
+        color: #2aabd2;
+    }
+
+    input[type="checkbox"] {
+        width: 13px;
+        height: 13px;
+        padding: 0;
+        margin: 2px;
+        vertical-align: bottom;
+        position: relative;
+        top: -1px;
+        *overflow: hidden;
+    }
+
+    button[type="submit"] {
+        font-size: 10px;
+        font-weight: bold;
+        color: #fff;
+        background-color: #2f40a0;
+        text-transform: uppercase;
+        border-radius: 30px;
+        border: none;
+        padding: 10px 15px;
+    }
+</style>
+
+
+<div id="entrance">
+    <h4 style="color: #3F51B5;font-weight:bold; text-align: center">Добро пожаловать</h4>
+    <div style="text-align: center;font-weight:bold;">Для авторизации в сети пожалуйста заполните поля ниже:</div>
     <%--@elvariable id="ie" type="ru.todo100.activer.util.InputError"--%>
     <c:if test="${ie != null}">
         <div class="alert alert-danger">
@@ -14,31 +53,22 @@
             </ul>
         </div>
     </c:if>
-    <c:url value="/login" var="login"/>
-    <form action="${login}" method="post">
-        <table style="width:100%;border:none">
-            <tr>
-                <td><label for="username">Логин:</label></td>
-                <td><input type="text" name="username" id="username" value="" class='form-control'/></td>
-            <tr>
-                <td><label for="password">Пароль</label></td>
-                <td><input type="password" name="password" id="password" value="" class='form-control'/></td>
-            </tr>
-            <tr>
-                <td>Запомнить меня</td>
-                <td><input type="checkbox" name="remember-me" title="Запомнить меня"/></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="submit" name="login" value="Войти" class='btn btn-default'/></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td style="text-align: center">
-                    <a href="<c:url value="/auth/forgot"/>" class="btn btn-default">Забыли пароль</a>
-                    <a href="<c:url value="/auth/signup"/>" class="btn btn-default">Регистрация</a>
-                </td>
-            </tr>
-        </table>
+    <form action="<c:url value="/login"/>" method="post">
+        <div style="padding:10px 0">
+            <input type="text" placeholder="E-mail" name="username" id="username" class='form-control'/>
+        </div>
+        <div style="padding:10px 0">
+            <input type="password" placeholder="Пароль" name="password" id="password" class='form-control'/>
+        </div>
+        <div style="padding:10px 0; text-align: center">
+            <label><input type="checkbox" name="remember-me" title="Запомнить меня"/> Запомнить меня</label>
+        </div>
+        <div style="text-align: center">
+            <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-log-in">&nbsp;</span>Войти
+            </button>
+        </div>
+        <div style="padding:10px 0;text-align: center;">
+            <a href="<c:url value="/auth/forgot"/>" style="color: #2aabd2">Забыли пароль</a>
+        </div>
     </form>
 </div>

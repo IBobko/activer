@@ -91,7 +91,7 @@
             </div>
         </nav>
         <main:leftmenu/>
-        <button class="btn btn-sm text-uppercase premium"><span class="fa fa-star-o"></span> премиум-аккаунт</button>
+        <!--button class="btn btn-sm text-uppercase premium"><span class="fa fa-star-o"></span> премиум-аккаунт</button-->
         <p class="copyright">on/off line <span class="fa fa-copyright"></span> 2016</p>
     </div>
     <!-- /Sidebar -->
