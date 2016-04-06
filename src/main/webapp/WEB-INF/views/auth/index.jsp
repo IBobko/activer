@@ -65,8 +65,7 @@
             <label><input type="checkbox" name="remember-me" title="Запомнить меня"/> Запомнить меня</label>
         </div>
         <div style="text-align: center">
-            <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-log-in">&nbsp;</span>Войти
-            </button>
+            <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-log-in">&nbsp;</span>Войти</button>
         </div>
         <div style="padding:10px 0;text-align: center;">
             <a href="<c:url value="/auth/forgot"/>" style="color: #2aabd2">Забыли пароль</a>

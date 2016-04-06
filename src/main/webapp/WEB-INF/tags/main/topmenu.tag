@@ -5,6 +5,10 @@
     <c:when test="${pageType == 'auth'}">
 
     </c:when>
+    <c:when test="${pageType == 'register'}">
+        <nav class="navbar navbar-default navbar-static-top my-navbar-top" style="height: 53px">
+        </nav>
+    </c:when>
     <c:otherwise>
         <!-- Navbar -->
         <nav class="navbar navbar-default navbar-static-top my-navbar-top">
