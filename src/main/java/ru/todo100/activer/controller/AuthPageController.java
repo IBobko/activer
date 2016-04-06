@@ -62,7 +62,7 @@ public class AuthPageController
 	public String signup(HttpServletRequest request,Model model)
 	{
 		model.addAttribute("pageType", "register");
-		RegisterForm registerForm = new RegisterForm();
+		final RegisterForm registerForm = new RegisterForm();
 		model.addAttribute("registerForm",registerForm);
 		final String refer = request.getParameter("referCode");
 		final String promo = request.getParameter("promoCode");

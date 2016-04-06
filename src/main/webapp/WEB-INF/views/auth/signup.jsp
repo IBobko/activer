@@ -1,3 +1,4 @@
+<%--suppress XmlDuplicatedId,CssUnusedSymbol --%>
 <%@ page language="java" trimDirectiveWhitespaces="true" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -12,7 +13,13 @@
         border-radius: 30px;
         border: none;
         padding: 10px 15px;
+        letter-spacing: 3px;
     }
+
+    #page-content-wrapper{
+        font-weight: normal;
+    }
+
 </style>
 
 <h4 style="color: #3F51B5;font-weight:bold; text-align: center">Добро пожаловать</h4>
@@ -89,7 +96,7 @@
                 <table>
                     <tr>
                         <td style="background: url(<c:url
-                                value="/resources/img/romb.png"/>);color:white;width:21px;height:24px;text-align: center">
+                                value="/resources/img/rhombus.png"/>);color:white;width:21px;height:24px;text-align: center">
                             1
                         </td>
                         <td style="font-size:16px;color: #3F51B5;font-weight:bold; letter-spacing: 3px">
@@ -105,7 +112,7 @@
                 <table>
                     <tr>
                         <td style="background: url(<c:url
-                                value="/resources/img/romb.png"/>);color:white;width:21px;height:24px;text-align: center">
+                                value="/resources/img/rhombus.png"/>);color:white;width:21px;height:24px;text-align: center">
                             2
                         </td>
                         <td style="font-size:16px;color: #3F51B5;font-weight:bold; letter-spacing: 3px">&nbsp;Подарки и
@@ -123,7 +130,7 @@
                 <table>
                     <tr>
                         <td style="background: url(<c:url
-                                value="/resources/img/romb.png"/>);color:white;width:21px;height:24px;text-align: center">
+                                value="/resources/img/rhombus.png"/>);color:white;width:21px;height:24px;text-align: center">
                             3
                         </td>
                         <td style="font-size:16px;color: #3F51B5;font-weight:bold; letter-spacing: 3px">&nbsp;Рефералы и
@@ -139,7 +146,7 @@
                 <table>
                     <tr>
                         <td style="background: url(<c:url
-                                value="/resources/img/romb.png"/>);color:white;width:21px;height:24px;text-align: center">
+                                value="/resources/img/rhombus.png"/>);color:white;width:21px;height:24px;text-align: center">
                             4
                         </td>
                         <td style="font-size:16px;color: #3F51B5;font-weight:bold; letter-spacing: 3px">&nbsp;Розыгрыши
@@ -157,7 +164,7 @@
                 <table>
                     <tr>
                         <td style="background: url(<c:url
-                                value="/resources/img/romb.png"/>);color:white;width:21px;height:24px;text-align: center">
+                                value="/resources/img/rhombus.png"/>);color:white;width:21px;height:24px;text-align: center">
                             5
                         </td>
                         <td style="font-size:16px;color: #3F51B5;font-weight:bold; letter-spacing: 3px">&nbsp;Бизнес-съезды</td>
