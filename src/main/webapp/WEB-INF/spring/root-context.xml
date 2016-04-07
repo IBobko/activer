@@ -66,10 +66,6 @@
 		class="ru.todo100.activer.dao.MarkDao"
 		parent="serviceAbstract" />
 
-	<bean id="iCanService"
-		  class="ru.todo100.activer.dao.ICanDao"
-		  parent="serviceAbstract"/>
-
 	<bean id="iWantService"
 		  class="ru.todo100.activer.dao.IWantDao"
 		  parent="serviceAbstract"/>
@@ -127,8 +123,6 @@
 		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
 
-	<bean id="markPopulator" class="ru.todo100.activer.populators.MarkPopulator"/>
-	<bean id="iCanPopulator" class="ru.todo100.activer.populators.ICanPopulator"/>
 	<bean id="iWantPopulator" class="ru.todo100.activer.populators.IWantPopulator"/>
 
 	<bean id="wallPopulator" class="ru.todo100.activer.populators.WallPopulator"/>

@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "account_photo")
 public class AccountPhotoItem extends Item {
     @Id
-    @SequenceGenerator(name = "default_gen", sequenceName = "photo_seq", allocationSize = 1)
+    @SequenceGenerator(name = "default_gen", sequenceName = "ACCOUNT_PHOTO_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")
     @Column(name = "photo_id")
     private Integer id;
