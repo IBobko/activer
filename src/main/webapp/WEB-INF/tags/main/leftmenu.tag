@@ -37,6 +37,23 @@
     </ul>
 </c:if>
 
+<c:if test="${pageType == 'forgot'}">
+    <ul class="sidebar-nav">
+        <li>
+            <a href="<c:url value="/auth/"/>">
+                <span class="fa fa-user"></span>
+                Авторизация
+            </a>
+        </li>
+        <li>
+            <a href="<c:url value="/auth/signup"/>">
+                <span class="fa fa-smile-o"></span>
+                Регистрация
+            </a>
+        </li>
+    </ul>
+</c:if>
+
 <c:if test="${pageType == null}">
     <ul class="sidebar-nav">
         <li class="active">

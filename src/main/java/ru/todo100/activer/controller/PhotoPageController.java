@@ -1,11 +1,20 @@
 package ru.todo100.activer.controller;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.dao.PhotoDao;
+import ru.todo100.activer.model.AccountPhotoItem;
+import ru.todo100.activer.strategy.PhotoStrategy;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
@@ -16,25 +25,9 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+
 //import java.util.Base64;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 //import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
-
-import ru.todo100.activer.model.PhotoItem;
-import ru.todo100.activer.dao.AccountDao;
-import ru.todo100.activer.dao.PhotoDao;
-import ru.todo100.activer.strategy.PhotoStrategy;
 
 /**
  * @author Igor Bobko
@@ -50,6 +43,34 @@ public class PhotoPageController
 	private PhotoDao      photoService;
 	@Autowired
 	private AccountDao    accountService;
+
+	public static ConvolveOp getGaussianBlurFilter(int radius, boolean horizontal) {
+		if (radius < 1) {
+			throw new IllegalArgumentException("Radius must be >= 1");
+		}
+		int size = radius * 2 + 1;
+		float[] data = new float[size];
+		float sigma = radius / 3.0f;
+		float twoSigmaSquare = 2.0f * sigma * sigma;
+		float sigmaRoot = (float) Math.sqrt(twoSigmaSquare * Math.PI);
+		float total = 0.0f;
+		for (int i = -radius; i <= radius; i++) {
+			float distance = i * i;
+			int index = i + radius;
+			data[index] = (float) Math.exp(-distance / twoSigmaSquare) / sigmaRoot;
+			total += data[index];
+		}
+		for (int i = 0; i < data.length; i++) {
+			data[i] /= total;
+		}
+		Kernel kernel = null;
+		if (horizontal) {
+			kernel = new Kernel(size, 1, data);
+		} else {
+			kernel = new Kernel(1, size, data);
+		}
+		return new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
+	}
 
 	@RequestMapping(value = "/crop", method = RequestMethod.POST)
 	void crop(final HttpServletRequest request) throws /*Base64DecodingException,*/ IOException
@@ -111,7 +132,7 @@ public class PhotoPageController
 		{
 			request.getSession().removeAttribute("originalFileName");
 			final String path = photoStrategy.getPathToSave() + "/" + originalFileName;
-			final PhotoItem photo = (PhotoItem) photoService.getCriteria().add(Restrictions.eq("path", path)).uniqueResult();
+			final AccountPhotoItem photo = (AccountPhotoItem) photoService.getCriteria().add(Restrictions.eq("path", path)).uniqueResult();
 			photoService.delete(photo.getId());
 		}
 	}
@@ -167,41 +188,6 @@ public class PhotoPageController
 		RenderingHints hints = new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		BufferedImageOp bright = new ConvolveOp(new Kernel(1, 1, brightKernel), ConvolveOp.EDGE_NO_OP, hints);
 
-	}
-
-	public static ConvolveOp getGaussianBlurFilter(int radius, boolean horizontal)
-	{
-		if (radius < 1)
-		{
-			throw new IllegalArgumentException("Radius must be >= 1");
-		}
-		int size = radius * 2 + 1;
-		float[] data = new float[size];
-		float sigma = radius / 3.0f;
-		float twoSigmaSquare = 2.0f * sigma * sigma;
-		float sigmaRoot = (float) Math.sqrt(twoSigmaSquare * Math.PI);
-		float total = 0.0f;
-		for (int i = -radius; i <= radius; i++)
-		{
-			float distance = i * i;
-			int index = i + radius;
-			data[index] = (float) Math.exp(-distance / twoSigmaSquare) / sigmaRoot;
-			total += data[index];
-		}
-		for (int i = 0; i < data.length; i++)
-		{
-			data[i] /= total;
-		}
-		Kernel kernel = null;
-		if (horizontal)
-		{
-			kernel = new Kernel(size, 1, data);
-		}
-		else
-		{
-			kernel = new Kernel(1, size, data);
-		}
-		return new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
 	}
 
 }

@@ -1,14 +1,12 @@
 package ru.todo100.activer.dao;
 
-import java.util.List;
-
-import javax.transaction.Transactional;
-
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-
+import ru.todo100.activer.model.AccountPhotoItem;
 import ru.todo100.activer.model.Item;
-import ru.todo100.activer.model.PhotoItem;
+
+import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>
@@ -20,13 +18,13 @@ public class PhotoDao extends AbstractDao
 	@Override
 	public Class<? extends Item> getItemClass()
 	{
-		return PhotoItem.class;
+		return AccountPhotoItem.class;
 	}
 
-	public PhotoItem getByAccount(Integer account_id)
+	public AccountPhotoItem getByAccount(Integer account_id)
 	{
-		final List<PhotoItem> photos = this.getCriteria()
-		                             .add(Restrictions.eq("account", account_id))
+		final List<AccountPhotoItem> photos = this.getCriteria()
+				.add(Restrictions.eq("account", account_id))
 		                             .addOrder(Order.desc("addedDate"))
 		                             .list();
 		if (photos.size() > 0)

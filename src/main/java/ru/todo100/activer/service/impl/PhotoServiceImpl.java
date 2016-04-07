@@ -1,32 +1,28 @@
 package ru.todo100.activer.service.impl;
 
-import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.transaction.annotation.Transactional;
+import ru.todo100.activer.model.AccountPhotoItem;
 import ru.todo100.activer.service.PhotoService;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
- * @author Igor Bobko <ibobko@beeline.ru>.
+ * @author Igor Bobko <limit-speed@yandex.ru>.
  */
-@javax.transaction.Transactional
+@Transactional
 public class PhotoServiceImpl implements PhotoService {
 
     @Autowired
-    SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
 
     @Override
-    @javax.transaction.Transactional
     public void setPhoto(Integer accountId, String photoName) {
-        Long id = System.currentTimeMillis();
-
-        final SQLQuery s =sessionFactory.
-                getCurrentSession().
-                createSQLQuery("INSERT INTO account_photo (photo_id,account_id,photo_name) VALUES('"+id+"','"+accountId+"','"+photoName+"')");
-        s.executeUpdate();
+        final AccountPhotoItem photoItem = new AccountPhotoItem();
+        photoItem.setAccount(accountId);
+        photoItem.setName(photoName);
+        sessionFactory.getCurrentSession().save(photoItem);
     }
 
     @Override

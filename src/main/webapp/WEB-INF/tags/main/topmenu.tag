@@ -9,6 +9,10 @@
         <nav class="navbar navbar-default navbar-static-top my-navbar-top" style="height: 53px">
         </nav>
     </c:when>
+    <c:when test="${pageType == 'forgot'}">
+        <nav class="navbar navbar-default navbar-static-top my-navbar-top" style="height: 53px">
+        </nav>
+    </c:when>
     <c:otherwise>
         <!-- Navbar -->
         <nav class="navbar navbar-default navbar-static-top my-navbar-top">

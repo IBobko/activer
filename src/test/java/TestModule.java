@@ -1,17 +1,6 @@
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.boot.spi.MetadataImplementor;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
-import ru.todo100.activer.model.*;
 
-import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
  * @author Igor Bobko <ibobko@beeline.ru>.
@@ -34,7 +23,7 @@ public class TestModule {
         //metadata.addAnnotatedClass(ICanItem.class);
         //metadata.addAnnotatedClass(IWantItem.class);
         //metadata.addAnnotatedClass(MessageItem.class);
-        //metadata.addAnnotatedClass(PhotoItem.class);
+        //metadata.addAnnotatedClass(AccountPhotoItem.class);
         //metadata.addAnnotatedClass(WallItem.class);
 
 
@@ -83,7 +72,7 @@ public class TestModule {
 //        //metadata.addAnnotatedClass(ICanItem.class);
 //        //metadata.addAnnotatedClass(IWantItem.class);
 //        //metadata.addAnnotatedClass(MessageItem.class);
-//        //metadata.addAnnotatedClass(PhotoItem.class);
+//        //metadata.addAnnotatedClass(AccountPhotoItem.class);
 //        //metadata.addAnnotatedClass(WallItem.class);
 //
 //

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Igor Bobko
+ * @author Igor Bobko <limit-speed@yandex.ru>.
  */
 public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -91,7 +91,7 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         if (accountItem == null) {
             return null;
         }
-        final PhotoItem facePhoto = photoService.getByAccount(accountItem.getId());
+        final AccountPhotoItem facePhoto = photoService.getByAccount(accountItem.getId());
 
         final ProfileData profileData = new ProfileData();
         profileData.setFirstName(accountItem.getFirstName());
@@ -141,8 +141,8 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         profileData.setTrips(tripDatas);
 
         if (facePhoto != null) {
-            profileData.setFacePhotoUrl(facePhoto.getPath());
-            File f = new File(facePhoto.getPath());
+            profileData.setFacePhotoUrl(facePhoto.getName());
+            File f = new File(facePhoto.getName());
             profileData.setFacePhotoUrl(f.getParent() + "/" + "thumb_" + f.getName());
             profileData.setPhoto60x60(f.getParent() + "/" + "60x60_" + f.getName());
         }

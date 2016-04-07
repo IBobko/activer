@@ -1,25 +1,15 @@
 package ru.todo100.activer.strategy;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.awt.image.FilteredImageSource;
-import java.awt.image.ImageFilter;
-import java.awt.image.ImageProducer;
-import java.awt.image.RGBImageFilter;
-import java.io.File;
-import java.io.IOException;
-import java.util.GregorianCalendar;
-
-import javax.imageio.ImageIO;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
-import ru.todo100.activer.model.PhotoItem;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.PhotoDao;
+import ru.todo100.activer.model.AccountPhotoItem;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Igor Bobko
@@ -119,12 +109,12 @@ public class PhotoStrategy
 		String filename = java.util.UUID.randomUUID().toString() + ".png";
 		String name = getClass().getResource("/../../").getPath() + getPathToSave() + "/" + filename;
 
-		PhotoItem photoItem = new PhotoItem();
-		photoItem.setAccount(accountService.getCurrentAccount().getId());
-		photoItem.setPath(getPathToSave() + "/" + filename);
-		photoItem.setType("face");
-		photoItem.setAddedDate(new GregorianCalendar());
-		photoService.save(photoItem);
+		AccountPhotoItem accountPhotoItem = new AccountPhotoItem();
+		accountPhotoItem.setAccount(accountService.getCurrentAccount().getId());
+		accountPhotoItem.setName(getPathToSave() + "/" + filename);
+
+//		accountPhotoItem.setAddedDate(new GregorianCalendar());
+		photoService.save(accountPhotoItem);
 		ImageIO.write(file, "png", new File(name));
 
 		resize(new File(name), new File(getClass().getResource("/../../").getPath() + getPathToSave() + "/thumb_" + filename),
@@ -142,12 +132,12 @@ public class PhotoStrategy
 		//				stream.write(bytes);
 		//				stream.close();
 		//
-		//				PhotoItem photoItem = new PhotoItem();
-		//				photoItem.setAccount(accountService.getCurrentAccount().getId().intValue());
-		//				photoItem.setPath(getPathToSave() + "/" + randomFileName);
-		//				photoItem.setType("face");
-		//				photoItem.setAddedDate(new GregorianCalendar());
-		//				photoService.save(photoItem);
+		//				AccountPhotoItem accountPhotoItem = new AccountPhotoItem();
+		//				accountPhotoItem.setAccount(accountService.getCurrentAccount().getId().intValue());
+		//				accountPhotoItem.setPath(getPathToSave() + "/" + randomFileName);
+		//				accountPhotoItem.setType("face");
+		//				accountPhotoItem.setAddedDate(new GregorianCalendar());
+		//				photoService.save(accountPhotoItem);
 		//				resize(
 		//								new File(name),
 		//								new File(getClass().getResource("/../../").getPath() + getPathToSave() + "/thumb_" + randomFileName),
