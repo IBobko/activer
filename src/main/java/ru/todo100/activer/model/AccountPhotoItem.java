@@ -2,6 +2,7 @@ package ru.todo100.activer.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Calendar;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
@@ -35,13 +36,9 @@ public class AccountPhotoItem extends Item {
 //	private String avatarPath;
 
 
-//	@NotNull
-//	@Column(name = "type",nullable = false)
-//	private String type;
-
-//	@NotNull
-//	@Column(name = "added_date",nullable = false)
-//	private Calendar addedDate;
+	@NotNull
+	@Column(name = "added_date",nullable = false)
+	private Calendar addedDate;
 
     public Integer getAccount() {
         return account;
@@ -59,13 +56,13 @@ public class AccountPhotoItem extends Item {
         this.name = name;
     }
 
-//	public Calendar getAddedDate()
-//	{
-//		return addedDate;
-//	}
+	public Calendar getAddedDate()
+	{
+		return addedDate;
+	}
 
-//	public void setAddedDate(final Calendar addedDate)
-//	{
-//		this.addedDate = addedDate;
-//	}
+	public void setAddedDate(final Calendar addedDate)
+	{
+		this.addedDate = addedDate;
+	}
 }

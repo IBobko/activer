@@ -117,8 +117,8 @@ public class GlobalListenerController {
         }
 
         if (message.getType().equals("ADD_TO_FRIEND")) {
-            final AccountItem from = accountService.get(principal.getName());
-            friendDao.addRequest(from.getId(),message.getTo());
+            //final AccountItem from = accountService.get(principal.getName());
+            //friendDao.addRequest(from.getId(),message.getTo());
         }
 
     }

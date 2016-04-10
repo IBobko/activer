@@ -78,10 +78,12 @@
 		  class="ru.todo100.activer.dao.TripDao"
 		  parent="serviceAbstract"/>
 
+
 	<bean id="photoService" class="ru.todo100.activer.dao.PhotoDao" parent="serviceAbstract"/>
 
 	<bean id="messageService" class="ru.todo100.activer.dao.MessageDao" parent="serviceAbstract"/>
 
+	<bean id="friendsService" class="ru.todo100.activer.service.impl.FriendsServiceImpl"/>
 
 	<bean
 			id="promocodeService"

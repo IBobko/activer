@@ -48,7 +48,8 @@ public class MessageController {
 
     @RequestMapping("/message")
     public String index(final Model model) {
-        AccountItem accountItem = accountService.getCurrentAccount();
+        model.addAttribute("pageType","message");
+        final AccountItem accountItem = accountService.getCurrentAccount();
         final List<MessageItem> messageItems = messageService.getDialogs(accountItem.getId());
 
         final List<DialogData> dialogData = new ArrayList<>();
@@ -90,7 +91,7 @@ public class MessageController {
 
     @RequestMapping("/message/{id:\\d+}")
     public String profileMessage(final Model model, @PathVariable Integer id) {
-        System.out.println("hello world!!!");
+        model.addAttribute("pageType","message");
 
         /** Добавить кэширование **/
         final List<MessageData> messageData = new ArrayList<>();

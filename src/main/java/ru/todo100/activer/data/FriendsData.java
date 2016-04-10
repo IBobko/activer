@@ -2,12 +2,13 @@ package ru.todo100.activer.data;
 
 import ru.todo100.activer.model.AccountItem;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
-public class FriendData {
+public class FriendsData implements Serializable{
     private List<AccountItem> friends;
     private List<AccountItem> outRequest;
     private List<AccountItem> inRequest;

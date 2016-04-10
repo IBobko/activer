@@ -147,9 +147,6 @@
 		<put-attribute name="content" value="/WEB-INF/views/videos/index.jsp"/>
 	</definition>
 
-	<definition name="photos/index" extends="base-template">
-		<put-attribute name="content" value="/WEB-INF/views/photos/index.jsp"/>
-	</definition>
 
 	<definition name="private/index" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/private/index.jsp"/>
@@ -164,5 +161,25 @@
 	</definition>
 
 	<definition name="admin/index" template="/WEB-INF/views/admin/index.jsp"/>
+
+	<definition name="photos/photo" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/photos/photo.jsp"/>
+	</definition>
+
+
+	<definition name="photos/another" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/photos/another.jsp"/>
+	</definition>
+
+
+	<definition name="photos/index" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/photos/index.jsp"/>
+	</definition>
+
+
+	<definition name="photos/add" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/photos/add.jsp"/>
+	</definition>
+
 
 </tiles-definitions> 

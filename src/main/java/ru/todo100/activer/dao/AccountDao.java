@@ -7,6 +7,8 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import ru.todo100.activer.form.RegisterForm;
 import ru.todo100.activer.model.AccountItem;
@@ -69,7 +71,15 @@ public class AccountDao extends AbstractDao
 	public AccountItem getCurrentAccount()
 	{
 		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
 		if (auth != null && auth.isAuthenticated()) {
+
+			for (final GrantedAuthority authority: auth.getAuthorities()) {
+				if (authority.getAuthority().equals("ROLE_ANONYMOUS")) {
+					return null;
+				}
+			}
+
 			final AccountItem accountItem = get(auth.getName());
 			accountItem.setLastActivity(new GregorianCalendar());
 			save(accountItem);

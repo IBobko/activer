@@ -32,7 +32,7 @@
             <div class="media-body">
                 <a href="javascript:window.ACTIVER.Global.submit({action:'add-to-friend','id':1});">Добавить в
                     друзья</a>
-                <h4 class="media-heading">${profile.firstName} ${profile.lastName}'27</h4>
+                <h4 class="media-heading">${profile.firstName}&nbsp;${profile.lastName}'27</h4>
                 <table class="table">
                     <tr>
                         <td>Дата рождения:</td>

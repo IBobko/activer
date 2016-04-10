@@ -24,9 +24,7 @@ public class PhotoDao extends AbstractDao
 	public AccountPhotoItem getByAccount(Integer account_id)
 	{
 		final List<AccountPhotoItem> photos = this.getCriteria()
-				.add(Restrictions.eq("account", account_id))
-		                             .addOrder(Order.desc("addedDate"))
-		                             .list();
+				.add(Restrictions.eq("account", account_id)).addOrder(Order.desc("addedDate")).list();
 		if (photos.size() > 0)
 		{
 			return photos.get(0);

@@ -2,7 +2,7 @@ package ru.todo100.activer.dao;
 
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Transactional;
-import ru.todo100.activer.data.FriendData;
+import ru.todo100.activer.data.FriendsData;
 import ru.todo100.activer.model.AccountFriendRelationItem;
 import ru.todo100.activer.model.AccountItem;
 
@@ -20,48 +20,53 @@ public class FriendDao extends AbstractDao  {
         return AccountFriendRelationItem.class;
     }
 
-    public FriendData getFriends(Integer accountId) {
-        List<AccountFriendRelationItem> items1 =
-                getCriteria().add(Restrictions.eq("account.id",accountId)).list();
 
-        List<AccountFriendRelationItem> items2 =
-                getCriteria().add(Restrictions.eq("friendAccount.id",accountId)).list();
+    public FriendsData getFriends(Integer accountId) {
+        @SuppressWarnings("unchecked")
+        final List<AccountFriendRelationItem> outRelations = getCriteria().add(Restrictions.eq("account.id",accountId)).list();
 
-        List<AccountItem> friends = new ArrayList<>();
-        List<AccountItem> outRequest = new ArrayList<>();
-        List<AccountItem> inRequest = new ArrayList<>();
+        @SuppressWarnings("unchecked")
+        final List<AccountFriendRelationItem> inRelations = getCriteria().add(Restrictions.eq("friendAccount.id",accountId)).list();
+
+
+        final List<AccountItem> friends = new ArrayList<>();
+        final List<AccountItem> outRequest = new ArrayList<>();
+        final List<AccountItem> inRequest = new ArrayList<>();
 
         HashSet<AccountFriendRelationItem> deletedIn = new HashSet<>();
         HashSet<AccountFriendRelationItem> deletedOut = new HashSet<>();
 
-        for (AccountFriendRelationItem item: items1) {
-            for (AccountFriendRelationItem item2: items2) {
-                if (item.getFriendAccount().getId().equals(item2.getAccount().getId())) {
-                    friends.add(item.getFriendAccount());
-                    deletedIn.add(item);
-                    deletedOut.add(item2);
+        for (final AccountFriendRelationItem outRelation: outRelations) {
+            boolean find = false;
+
+            for (final AccountFriendRelationItem inRelation: inRelations) {
+                if (outRelation.getFriendAccount().getId().equals(inRelation.getAccount().getId())) {
+                    friends.add(outRelation.getFriendAccount());
+                    find = true;
+                    deletedIn.add(outRelation);
+                    deletedOut.add(inRelation);
                     break;
                 }
             }
         }
 
-        for (AccountFriendRelationItem item: items1) {
+        for (AccountFriendRelationItem item: outRelations) {
             if (!deletedIn.contains(item)) {
                 inRequest.add(item.getFriendAccount());
             }
         }
 
-        for (AccountFriendRelationItem item: items2) {
+        for (AccountFriendRelationItem item: inRelations) {
             if (!deletedOut.contains(item)) {
                 outRequest.add(item.getAccount());
             }
         }
 
-        final FriendData friendData = new FriendData();
-        friendData.setFriends(friends);
-        friendData.setOutRequest(outRequest);
-        friendData.setInRequest(inRequest);
-        return friendData;
+        final FriendsData friendsData = new FriendsData();
+        friendsData.setFriends(friends);
+        friendsData.setOutRequest(outRequest);
+        friendsData.setInRequest(inRequest);
+        return friendsData;
     }
 
     public void addRequest(Integer accountId, Integer FriendId) {
@@ -74,6 +79,13 @@ public class FriendDao extends AbstractDao  {
 
         getSession().save(item);
 
+    }
+
+    public void delete(Integer accountId, Integer friendId) {
+        final AccountFriendRelationItem friend = (AccountFriendRelationItem) getCriteria()
+                .add(Restrictions.and(Restrictions.eq("account.id", accountId),Restrictions.eq("friendAccount.id", friendId)))
+                .uniqueResult();
+        getSession().delete(friend);
     }
 
 
