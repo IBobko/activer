@@ -16,7 +16,7 @@ body #sidebar-wrapper .navbar-sidebar {
 }
 body #sidebar-wrapper .navbar-sidebar .container-fluid {
   height: 53px;
-  padding: 0px;
+  padding: 0;
 }
 body #sidebar-wrapper .navbar-sidebar .container-fluid .navbar-header {
   height: 100%;
@@ -40,8 +40,8 @@ body #sidebar-wrapper .navbar-sidebar .container-fluid .navbar-header .navbar-to
 }
 body #sidebar-wrapper .navbar-sidebar .container-fluid .navbar-header .my-navbar-brand {
   position: static;
-  padding-top: 0px;
-  padding-bottom: 0px;
+  padding-top: 0;
+  padding-bottom: 0;
   margin-left: 15px;
 }
 body #sidebar-wrapper .navbar-sidebar .container-fluid .navbar-header .my-navbar-brand img {
@@ -141,8 +141,8 @@ body #page-content-wrapper .my-navbar-top ul li {
 }
 @media (max-width: 970px) {
   body #page-content-wrapper .my-navbar-top ul li {
-    margin-left: 0px;
-    margin-right: 0px;
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 body #page-content-wrapper .my-navbar-top ul li a {
@@ -198,6 +198,9 @@ body #page-content-wrapper .info-panel li a:focus {
   color: #3f51b5;
   border-radius: 30px;
 }
+
+/* About Me */
+
 body #page-content-wrapper .about-me p.status-line {
   text-align: right;
   color: #8c99e2;
@@ -234,6 +237,9 @@ body #page-content-wrapper .about-me .media .media-body .table tbody > tr > td .
 body #page-content-wrapper .about-me .media .media-body .table tbody > tr > td .zodiac:focus {
   text-decoration: none;
 }
+
+/* Photos */
+
 body #page-content-wrapper .photos button.upload-photo {
   font-weight: bold;
   color: #fff;
@@ -246,24 +252,24 @@ body #page-content-wrapper .photos button.upload-photo {
   padding-left: 5px;
   padding-right: 5px;
   background-color: #3f51b5;
-  border: 0px;
+  border: 0;
   border-radius: 0;
 }
 body #page-content-wrapper .photos button.upload-photo:before {
   top: 0;
-  left: 0px;
+  left: 0;
   content: "";
   position: absolute;
-  border-right: 28.00px solid transparent;
+  border-right: 28px solid transparent;
   border-top: 49px solid white;
   border-bottom: 49px solid white;
 }
 body #page-content-wrapper .photos button.upload-photo:after {
   top: 0;
-  right: 0px;
+  right: 0;
   content: "";
   position: absolute;
-  border-left: 28.00px solid transparent;
+  border-left: 28px solid transparent;
   border-top: 49px solid white;
   border-bottom: 49px solid white;
 }
@@ -283,6 +289,9 @@ body #page-content-wrapper .photos .gallery img {
   display: inline-block;
   margin-right: 10px;
 }
+
+/* Interests */
+
 body #page-content-wrapper .interests p.status-line {
   text-align: left;
 }
@@ -310,7 +319,7 @@ body #page-content-wrapper .interests ul li button:focus {
 body #page-content-wrapper .interests ul li a {
   border-radius: 40px;
   background-color: #e4e7f7;
-  padding-top: 5.5px;
+  padding-top: 5px;
 }
 body #page-content-wrapper .interests ul li a:hover,
 body #page-content-wrapper .interests ul li a:focus {
@@ -323,6 +332,9 @@ body #page-content-wrapper .interests ul li a:before {
   position: relative;
   top: 4px;
 }
+
+/* Travels */
+
 body #page-content-wrapper .travels ul {
   height: calc(25px * 7);
   margin-top: 30px;
@@ -342,7 +354,7 @@ body #page-content-wrapper .travels ul {
 }
 @media (max-width: 991px) {
   body #page-content-wrapper .travels ul {
-    margin-top: 0px;
+    margin-top: 0;
     height: calc(20px * 7);
   }
 }
@@ -366,6 +378,9 @@ body #page-content-wrapper .travels ul li a:hover,
 body #page-content-wrapper .travels ul li a:focus {
   text-decoration: none;
 }
+
+/* Dreams */
+
 body #page-content-wrapper .dreams {
   font-size: 13px;
 }
@@ -380,6 +395,8 @@ body #page-content-wrapper .dreams .media .media-body a:hover,
 body #page-content-wrapper .dreams .media .media-body a:focus {
   text-decoration: none;
 }
+
+/* Thoughts */
 body #page-content-wrapper .thoughts .media-list {
   columns: 2;
   -webkit-columns: 2;
@@ -444,4 +461,26 @@ body #page-content-wrapper .thoughts .media-list .media-body p {
   font-size: 12px;
   font-weight: 600;
   color: #111111;
+}
+
+/* Custom from Igor Bobko */
+
+.std-button{
+  font-size: 10px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #2f40a0;
+  text-transform: uppercase;
+  border-radius: 30px;
+  border: none;
+  padding: 10px 15px;
+  letter-spacing: 3px;
+}
+
+
+.title {
+  font-size: 18px;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #3f51b3;
 }

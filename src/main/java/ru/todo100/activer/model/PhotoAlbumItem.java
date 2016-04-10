@@ -7,20 +7,42 @@ import javax.validation.constraints.NotNull;
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
 @Entity
-@Table(name="photo_album")
+@Table(name = "photo_album")
 public class PhotoAlbumItem {
     @Id
     @SequenceGenerator(name = "default_gen", sequenceName = "photo_album_seq", allocationSize = 1)
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "default_gen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")
     public Integer id;
 
     @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "description", nullable = false)
+    private String description;
+
+    @Column(name = "photo_id", nullable = false)
+    private Integer photoId;
+
     @NotNull
     @Column(name = "account_id", nullable = false)
     private Integer accountId;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getPhotoId() {
+        return photoId;
+    }
+
+    public void setPhotoId(Integer photoId) {
+        this.photoId = photoId;
+    }
 
     public Integer getId() {
         return id;

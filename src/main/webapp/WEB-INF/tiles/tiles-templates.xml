@@ -170,8 +170,14 @@
 
 	<definition name="admin/index" template="/WEB-INF/views/admin/index.jsp"/>
 
+	<!-- Photos -->
+
 	<definition name="photos/photo" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/photos/photo.jsp"/>
+	</definition>
+
+	<definition name="photos/edit" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/photos/edit.jsp"/>
 	</definition>
 
 

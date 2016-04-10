@@ -78,6 +78,9 @@
 		  class="ru.todo100.activer.dao.TripDao"
 		  parent="serviceAbstract"/>
 
+	<bean id="photoAlbumDao"
+		  class="ru.todo100.activer.dao.PhotoAlbumDao"
+		  parent="serviceAbstract"/>
 
 	<bean id="photoService" class="ru.todo100.activer.dao.PhotoDao" parent="serviceAbstract"/>
 

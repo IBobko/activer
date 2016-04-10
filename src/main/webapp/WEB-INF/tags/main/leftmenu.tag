@@ -193,6 +193,46 @@
 </c:if>
 
 
+<c:if test="${pageType == 'photos'}">
+    <ul class="sidebar-nav">
+        <li>
+            <a href="<c:url value="/profile"/>">
+                <span class="fa fa-user"></span>
+                Моя страница
+            </a>
+        </li>
+        <li>
+            <a href="<c:url value="/friend"/>">
+                <span class="fa fa-smile-o"></span>
+                Друзья
+
+                <c:if test="${friendsData.outRequest.size() > 0}">
+                    <span class="badge">${friendsData.outRequest.size()}</span>
+                </c:if>
+
+            </a>
+        </li>
+        <li>
+            <a href="<c:url value="/message"/>">
+                <span class="fa fa-envelope-o"></span>
+                Сообщения<span class="badge">12</span>
+            </a>
+        </li>
+        <li class="active">
+            <a href="<c:url value="/photos/"/>">
+                <span class="fa fa-photo"></span>
+                Фотографии<span class="badge">3</span>
+            </a>
+        </li>
+        <li>
+            <a href="<c:url value="/videos/"/>">
+                <span class="fa fa-play-circle"></span>
+                Видео
+            </a>
+        </li>
+    </ul>
+</c:if>
+
 
 
 
