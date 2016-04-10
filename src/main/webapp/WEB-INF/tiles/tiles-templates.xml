@@ -143,6 +143,14 @@
 		<put-attribute name="content" value="/WEB-INF/views/dating/index.jsp"/>
 	</definition>
 
+	<definition name="dating/flirt" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/dating/flirt.jsp"/>
+	</definition>
+
+	<definition name="dating/dispute" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/dating/dispute.jsp"/>
+	</definition>
+
 	<definition name="videos/index" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/videos/index.jsp"/>
 	</definition>

@@ -40,6 +40,7 @@ public class DatingPageController {
 
     @RequestMapping("/")
     public String index(HttpServletRequest request, Model model) {
+        model.addAttribute("pageType","dating");
         try {
             Integer dialog = Integer.parseInt(request.getParameter("dialog"));
             model.addAttribute("dialog", dialog);
@@ -48,6 +49,32 @@ public class DatingPageController {
         model.addAttribute("templatePost", MessageController.generateTemplateMessageData());
         return "dating/index";
     }
+
+    @RequestMapping("/flirt")
+    public String flirt(HttpServletRequest request, Model model) {
+        model.addAttribute("pageType","dating");
+        try {
+            Integer dialog = Integer.parseInt(request.getParameter("dialog"));
+            model.addAttribute("dialog", dialog);
+        } catch (NumberFormatException ignored) {
+        }
+        model.addAttribute("templatePost", MessageController.generateTemplateMessageData());
+        return "dating/flirt";
+    }
+
+    @RequestMapping("/dispute")
+    public String dispute(HttpServletRequest request, Model model) {
+        model.addAttribute("pageType","dating");
+        try {
+            Integer dialog = Integer.parseInt(request.getParameter("dialog"));
+            model.addAttribute("dialog", dialog);
+        } catch (NumberFormatException ignored) {
+        }
+        model.addAttribute("templatePost", MessageController.generateTemplateMessageData());
+        return "dating/dispute";
+    }
+
+
 
     @ResponseBody
     @RequestMapping("/search")
