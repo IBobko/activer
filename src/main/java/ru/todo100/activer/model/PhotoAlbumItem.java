@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "photo_album")
-public class PhotoAlbumItem {
+public class PhotoAlbumItem extends Item {
     @Id
     @SequenceGenerator(name = "default_gen", sequenceName = "photo_album_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")

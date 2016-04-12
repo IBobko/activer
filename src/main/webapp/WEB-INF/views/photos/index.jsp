@@ -25,6 +25,11 @@
     <li>Все фотографии</li>
 </ul>
 
+<ul>
+    <c:forEach items="${albums}" var="album">
+        ${album}
+    </c:forEach>
+</ul>
 
 
 <a href="<c:url value="/photos/add"/>">Добавить</a>

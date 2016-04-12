@@ -56,11 +56,12 @@
             <table>
                 <tr>
                     <td>Название альбома</td>
-                    <td><input type="text" class="form-control"/></td>
+                    <td><form:input path="name" type="text" class="form-control"/></td>
                 </tr>
                 <tr>
                     <td>Описание альбома</td>
-                    <td><textarea class="form-control" style="width:500px;height:200px"></textarea></td>
+                    <td><form:textarea path="description" class="form-control"
+                                       style="width:500px;height:200px"></form:textarea></td>
                 </tr>
                 <tr>
                     <td></td>

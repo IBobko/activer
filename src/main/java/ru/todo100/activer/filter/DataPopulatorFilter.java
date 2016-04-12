@@ -5,7 +5,10 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.filter.GenericFilterBean;
 import ru.todo100.activer.service.FriendsService;
 
-import javax.servlet.*;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
@@ -25,7 +28,6 @@ public class DataPopulatorFilter extends GenericFilterBean {
                     getBean("friendsService");
 
             servletRequest.setAttribute("friendsData", friendsService.getFriendData(((HttpServletRequest) servletRequest).getSession()));
-            System.out.println("I'm working");
         } catch(Exception ignored){}
         try {
             filterChain.doFilter(servletRequest, servletResponse);

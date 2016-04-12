@@ -1,12 +1,11 @@
 <html>
 <body>
-<h3>Hi, ${fullName}! Welcome to the todo100.ru!</h3>
+<h3>Hi, ${fullName}! Welcome to the onoffline!</h3>
 <div>
-<strong>Your login:</strong> ${login}<br/>
-<strong>Your password:</strong> ${password}<br/>
+    <strong>Your login:</strong> ${login}<br/>
+    <strong>Your password:</strong> ${password}<br/>
 </div>
 <div>Enjoy!</div>
-<div><a href="http://todo100.ru:18080/ROOT">http://todo100.ru:18080/ROOT</a></div>
+<div><a href="http://onoffline.ru/">http://onoffline.ru/</a></div>
 </body>
-
 </html>
