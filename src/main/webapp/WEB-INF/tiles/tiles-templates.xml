@@ -180,16 +180,13 @@
 		<put-attribute name="content" value="/WEB-INF/views/photos/edit.jsp"/>
 	</definition>
 
-
-	<definition name="photos/another" extends="base-template">
-		<put-attribute name="content" value="/WEB-INF/views/photos/another.jsp"/>
+	<definition name="photos/album" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/photos/album.jsp"/>
 	</definition>
-
 
 	<definition name="photos/index" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/photos/index.jsp"/>
 	</definition>
-
 
 	<definition name="photos/add" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/photos/add.jsp"/>

@@ -32,4 +32,5 @@ public class PhotoDao extends AbstractDao
 			return null;
 		}
 	}
+
 }

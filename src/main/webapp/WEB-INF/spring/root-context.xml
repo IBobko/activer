@@ -145,6 +145,9 @@
 	<bean id="jobPopulator" class="ru.todo100.activer.populators.JobPopulator"/>
 	<bean id="childrenPopulator" class="ru.todo100.activer.populators.ChildrenPopulator"/>
 
+
+	<bean id="photosDao" class="ru.todo100.activer.dao.PhotosDao"/>
+
 	<bean id="markRelationService" class="ru.todo100.activer.dao.MarkRelationDao"/>
 
 	<bean id="markFacade" class="ru.todo100.activer.facade.MarkFacade"/>
