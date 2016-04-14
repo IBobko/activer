@@ -58,6 +58,12 @@ public class AdminPageController {
         Integer accountId = accountService.getCurrentAccount().getId();
         final List<AccountItem> partners = getPartnerService().getPartners(accountId);
         model.addAttribute("partners", partners);
+
+        List<AccountItem> accounts = accountService.getAll();
+
+        model.addAttribute("accounts",accounts);
+
+
         return "admin/creator";
     }
 

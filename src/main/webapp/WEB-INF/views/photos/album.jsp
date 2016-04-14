@@ -18,21 +18,6 @@
         list-style: none;
         margin: 0 50px 20px 0;
     }
-    /*#albums {*/
-        /*margin:0px;*/
-        /*padding:0px;*/
-    /*}*/
-
-    /*#albums li {*/
-        /*width: 350px;*/
-        /*!*background-color: #2aabd2;*!*/
-        /*list-style: none;*/
-        /*text-align: center;*/
-        /*border: 3px solid #e4e4e4;*/
-        /*height:250px;*/
-        /*float:left;*/
-        /*margin-right:30px;*/
-    /*}*/
 </style>
 <a href="<c:url value="/photos"/>" class="std-button btn btn-default" style="float:left"><span
         class="glyphicon glyphicon-arrow-left"></span>&nbsp;Назад</a>
@@ -52,18 +37,3 @@
         </li>
     </c:forEach>
 </ul>
-
-<script>
-
-    function goToAlbum(id) {
-        document.location = "<c:url value="/photos/album"/>" + id;
-    }
-
-    function albumIn(id){
-        $('#album' + id).find('.descriptionWindow').show();
-    }
-
-    function albumOut(id){
-        $('#album' + id).find('.descriptionWindow').hide();
-    }
-</script>

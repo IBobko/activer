@@ -1,10 +1,12 @@
 <%@ page language="java" trimDirectiveWhitespaces="true" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<c:forEach items="${partners}" var="partner">
-    ${partner}<br/>
+<table class="table table-hover">
+<c:forEach items="${accounts}" var="account">
+    <tr>
+        <td>${account}</td>
+    </tr>
 </c:forEach>
-
+</table>
 <pre>
 Сводная по партгерам
 -по аналогии с партнерской админкой выводим всех зареганных на сайте людей (партнеров)
