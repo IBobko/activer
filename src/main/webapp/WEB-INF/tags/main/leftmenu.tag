@@ -1,4 +1,5 @@
 <%--suppress XmlPathReference --%>
+<%--@elvariable id="friendsData" type="ru.todo100.activer.data.FriendsData"--%>
 <%@ tag language="java" trimDirectiveWhitespaces="true" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ attribute name="pageType" required="false" type="java.lang.String" %>
@@ -260,6 +261,47 @@
             <a href="<c:url value="/private"/>">
                 <span class="fa fa-photo"></span>
                 Приватность
+            </a>
+        </li>
+    </ul>
+</c:if>
+
+
+<c:if test="${pageType == 'videos'}">
+    <ul class="sidebar-nav">
+        <li>
+            <a href="<c:url value="/profile"/>">
+                <span class="fa fa-user"></span>
+                Моя страница
+            </a>
+        </li>
+        <li>
+            <a href="<c:url value="/friend"/>">
+                <span class="fa fa-smile-o"></span>
+                Друзья
+
+                <c:if test="${friendsData.outRequest.size() > 0}">
+                    <span class="badge">${friendsData.outRequest.size()}</span>
+                </c:if>
+
+            </a>
+        </li>
+        <li>
+            <a href="<c:url value="/message"/>">
+                <span class="fa fa-envelope-o"></span>
+                Сообщения<span class="badge">12</span>
+            </a>
+        </li>
+        <li>
+            <a href="<c:url value="/photos/"/>">
+                <span class="fa fa-photo"></span>
+                Фотографии<span class="badge">3</span>
+            </a>
+        </li>
+        <li class="active">
+            <a href="<c:url value="/videos/"/>">
+                <span class="fa fa-play-circle"></span>
+                Видео
             </a>
         </li>
     </ul>

@@ -155,6 +155,9 @@
 		<put-attribute name="content" value="/WEB-INF/views/videos/index.jsp"/>
 	</definition>
 
+	<definition name="videos/edit" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/videos/edit.jsp"/>
+	</definition>
 
 	<definition name="private/index" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/private/index.jsp"/>
