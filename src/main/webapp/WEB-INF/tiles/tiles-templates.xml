@@ -173,6 +173,13 @@
 
 	<definition name="admin/index" template="/WEB-INF/views/admin/index.jsp"/>
 
+	<definition name="admin/partner" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/partner.jsp"/>
+	</definition>
+
+	<definition name="admin/creator" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/creator.jsp"/>
+	</definition>
 	<!-- Photos -->
 
 	<definition name="photos/photo" extends="base-template">
@@ -194,6 +201,5 @@
 	<definition name="photos/add" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/photos/add.jsp"/>
 	</definition>
-
 
 </tiles-definitions> 
