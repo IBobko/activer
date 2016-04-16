@@ -1,6 +1,7 @@
 package ru.todo100.activer.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -84,7 +85,8 @@ public class AdminPageController {
         return "admin/partner";
     }
 
-    private final Integer COUNT_PER_PAGE = 2;
+    @Value("${admin.partner.perpage}")
+    private Integer COUNT_PER_PAGE;
 
     @ResponseBody
     @RequestMapping("/partnerPaged")
