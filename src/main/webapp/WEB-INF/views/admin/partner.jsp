@@ -1,8 +1,12 @@
 <%@ page language="java" trimDirectiveWhitespaces="true" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%@ taglib prefix="admin" tagdir="/WEB-INF/tags/admin" %>
+
+
 <style>
-    .modal-open {
-        padding-right: 0 !important;
+
+    .modal-open {        padding-right: 0 !important;
     }
 
     html {
@@ -92,10 +96,11 @@
 уровень партнера (1-6)
 уровень тех кто приглашает (2-5)
     </pre>
-
-<table class="table table-hover">
+<div id="partnerListWrapper">
+<table class="table table-hover" id="partnerList">
+    <thead>
     <tr>
-        <td>Имя</td>
+        <td  style="width:226px">Имя</td>
         <td>Уровень</td>
         <td>Пригласивший (уровень)</td>
         <td>Приглашенных</td>
@@ -103,17 +108,53 @@
         <td>Заработано</td>
         <td>Моя прибыль</td>
     </tr>
-    <c:forEach items="${partners}" var="partner">
+    </thead>
+    <tbody>
+    <c:forEach items="${pagedData.elements}" var="partner">
         <tr>
-            <td><a href="<c:url value="/profile/id${partner.id}"/>">${partner.firstName}&nbsp;${partner.lastName}</a>
-            </td>
-            <td>2</td>
-            <td>Бобко Игорь (1)</td>
-            <td>2</td>
-            <td>2</td>
-            <td>700$</td>
-            <td>200$</td>
-
+            <admin:partner_line partner="${partner}" />
         </tr>
     </c:forEach>
+    </tbody>
 </table>
+</div>
+
+<nav>
+    <ul class="pagination" id="partnerListPaged">
+        <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+        <c:forEach var="i" begin="1" end="${pagedData.count}">
+            <li id="partnerListPagedItem${i}" <c:if test="${pagedData.page == i-1}">class="active"</c:if>><a href="javascript:return false" onclick="page(${i-1})">${i}</a></li>
+        </c:forEach>
+
+        <li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+    </ul>
+</nav>
+
+<script>
+    function page(p) {
+        var data = {
+            page: p
+        };
+        var partnerList = $('#partnerList tbody');
+        $('#partnerListWrapper').css('height',$('#partnerListWrapper').height() + "px");
+        partnerList.html('');
+        $("#partnerListPaged [class='active']").removeClass('active');
+        $("#partnerListPagedItem" + (p+1)).addClass('active');
+        $.get("<c:url value="/admin/partnerPaged"/>",data,function(response){
+            for (index in response.elements) {
+                console.log(response.elements[index]);
+                var line = $('#partnerLine').val();
+                line = line.replace("#id",response.elements[index].id);
+                line = line.replace("#name",response.elements[index].name);
+                console.log(line)
+                partnerList.append(line);
+            }
+        });
+        return false;
+    }
+</script>
+
+<textarea style="display:none" id="partnerLine">
+    <admin:partner_line />
+</textarea>
+

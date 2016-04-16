@@ -3,13 +3,16 @@ package ru.todo100.activer.dao;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import ru.todo100.activer.data.Qualifier;
 import ru.todo100.activer.form.RegisterForm;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.DreamItem;
@@ -204,4 +207,22 @@ public class AccountDao extends AbstractDao
 			}
 		}
 	}
+
+	public List<AccountItem> getByQualifier(Qualifier qualifier) {
+		Criteria criteria = getCriteria();
+		if (qualifier.getStart() != null) {
+			criteria.setFirstResult(qualifier.getStart());
+		}
+
+		if (qualifier.getCount() != null) {
+			criteria.setMaxResults(qualifier.getCount());
+		}
+		return criteria.list();
+	}
+
+	public Long getCountByQualifier(Qualifier qualifier) {
+		final Criteria criteria = getCriteria();
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
 }
