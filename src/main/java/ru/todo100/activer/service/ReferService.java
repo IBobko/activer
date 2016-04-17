@@ -2,9 +2,13 @@ package ru.todo100.activer.service;
 
 import ru.todo100.activer.model.AccountItem;
 
+import java.util.List;
+
 /**
- * Created by igor on 17.03.16.
+ * @author Igor Bobko <limit-speed@yandex.ru>.
  */
 public interface ReferService {
     AccountItem getUserByRefer(String referCode);
+    Long getCountOfUsedReferCode(String referCode);
+    List<AccountItem> getByReferCode(String referCode);
 }

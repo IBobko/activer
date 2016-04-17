@@ -93,6 +93,10 @@
 	<bean id="messageService" class="ru.todo100.activer.dao.MessageDao" parent="serviceAbstract"/>
 
 	<bean id="friendsService" class="ru.todo100.activer.service.impl.FriendsServiceImpl"/>
+	<bean id="networkListCacheIDao" class="ru.todo100.activer.dao.NetworkListCacheIDao"/>
+
+
+
 
 	<bean
 			id="promocodeService"

@@ -6,17 +6,18 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.data.PagedData;
 import ru.todo100.activer.data.PartnerData;
-import ru.todo100.activer.data.Qualifier;
+import ru.todo100.activer.data.PartnerQualifier;
 import ru.todo100.activer.form.PagedForm;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.service.PartnerService;
+import ru.todo100.activer.service.ReferService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,12 +26,15 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class AdminPageController {
+
     @Autowired
     private AccountDao accountService;
     @Autowired
     private PartnerService partnerService;
     @Autowired
     private SimpMessagingTemplate template;
+    @Value("${admin.partner.perpage}")
+    private Integer COUNT_PER_PAGE;
 
     public AccountDao getAccountService() {
         return accountService;
@@ -63,30 +67,26 @@ public class AdminPageController {
     public String creator(final Model model) {
         model.addAttribute("pageType", "admin/creator");
         Integer accountId = accountService.getCurrentAccount().getId();
-        final List<AccountItem> partners = getPartnerService().getPartners(accountId);
-        model.addAttribute("partners", partners);
+        //final List<AccountItem> partners = getPartnerService().getPartners(accountId);
+        //model.addAttribute("partners", partners);
 
         List<AccountItem> accounts = accountService.getAll();
 
-        model.addAttribute("accounts",accounts);
+        model.addAttribute("accounts", accounts);
 
 
         return "admin/creator";
     }
 
     @RequestMapping("/partner")
-    public String partner(final Model model,final PagedForm pagedForm) {
+    public String partner(final Model model, final PagedForm pagedForm, @RequestParam(name = "synch", required = false) Integer synch) {
+        if (synch != null) {
+            getPartnerService().synchronize(accountService.getCurrentAccount().getId());
+        }
         model.addAttribute("pageType", "admin/partner");
-        Integer accountId = accountService.getCurrentAccount().getId();
-        final List<AccountItem> partners = getPartnerService().getPartners(accountId);
-        model.addAttribute("partners", partners);
-        model.addAttribute("pagedData",pagedFormToPagedData(pagedForm));
-        model.addAttribute("defaultPartner",pagedFormToPagedData(pagedForm));
+        model.addAttribute("pagedData", pagedFormToPagedData(pagedForm));
         return "admin/partner";
     }
-
-    @Value("${admin.partner.perpage}")
-    private Integer COUNT_PER_PAGE;
 
     @ResponseBody
     @RequestMapping("/partnerPaged")
@@ -95,30 +95,20 @@ public class AdminPageController {
     }
 
     public PagedData pagedFormToPagedData(final PagedForm pagedForm) {
+        final Integer accountId = accountService.getCurrentAccount().getId();
+        final PartnerQualifier qualifier = new PartnerQualifier();
+        qualifier.setCount(COUNT_PER_PAGE);
+        qualifier.setStart(pagedForm.getPage() * COUNT_PER_PAGE);
+        qualifier.setOwnerAccountId(accountId);
+
+        /*@todo add filter and orders*/
+
+        final Long count = getPartnerService().getPartnersCount(qualifier);
         final PagedData<PartnerData> pagedData = new PagedData<>();
         pagedData.setPage(pagedForm.getPage());
-
-        final Qualifier qualifier = new Qualifier();
-
-        qualifier.setStart(pagedForm.getPage() * COUNT_PER_PAGE);
-        qualifier.setCount(COUNT_PER_PAGE);
-
-        List<AccountItem> accounts = accountService.getByQualifier(qualifier);
-        Long count = accountService.getCountByQualifier(qualifier);
-
-        pagedData.setCount((int)Math.ceil(count / COUNT_PER_PAGE));
-
-
-        final List<PartnerData> elements = new ArrayList<>();
-        for (AccountItem account: accounts) {
-            final PartnerData partnerData = new PartnerData();
-            partnerData.setName(account.getFirstName() + " " + account.getLastName());
-            elements.add(partnerData);
-        }
-
-        pagedData.setElements(elements);
+        pagedData.setCount((int) Math.ceil(count*1.0 / COUNT_PER_PAGE));
+        pagedData.setElements(getPartnerService().getPartners(qualifier));
         return pagedData;
     }
-
 
 }

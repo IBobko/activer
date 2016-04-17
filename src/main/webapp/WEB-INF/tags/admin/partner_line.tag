@@ -7,12 +7,12 @@
 
 <tr>
     <td><a href="<c:url value="/profile/id${partner.id}"/>">${partner.name}</a></td>
-    <td>2</td>
-    <td>Бобко Игорь (10)</td>
-    <td>2</td>
-    <td>2</td>
-    <td>700$</td>
-    <td>200$</td>
+    <td>${partner.level}</td>
+    <td>${partner.inviter} ${partner.inviterLevel}</td>
+    <td>${partner.invitedCount}</td>
+    <td>${partner.networkCount}</td>
+    <td>${partner.earned}</td>
+    <td>${partner.profit}</td>
 </tr>
 
 

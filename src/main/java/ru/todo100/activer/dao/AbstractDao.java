@@ -9,6 +9,8 @@ import ru.todo100.activer.model.DateChanges;
 import ru.todo100.activer.model.Item;
 
 import java.util.GregorianCalendar;
+import java.util.List;
+
 @SuppressWarnings({"unchecked"})
 abstract public class AbstractDao<T>
 {
@@ -65,4 +67,9 @@ abstract public class AbstractDao<T>
 			session.persist(item);
 		}
 	}
+
+	public List<T> getByQualifier() {
+		return null;
+	}
+
 }
