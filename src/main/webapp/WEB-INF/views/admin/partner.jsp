@@ -16,15 +16,6 @@
         data-target="#inviteNewParnersWindow"><span
         class="glyphicon glyphicon-plus"></span> Пригласить новых партнеров
 </button>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-
-при нажатии выводит на экран (сразу выделенную) реферальную ссылку + кнопки для расшаривания в соц сети (вк, фейс бук, одноклассники) т итпа того http://joxi.ru/xAeve47SYx8elr
-+ так же возможность ввести мыло друга что б ему на это мыло упало письмо со ссылкой для регистрации.
-
 
 <div class="modal fade" id="inviteNewParnersWindow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">

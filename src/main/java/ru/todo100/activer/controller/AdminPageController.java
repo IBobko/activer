@@ -12,10 +12,10 @@ import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.data.PagedData;
 import ru.todo100.activer.data.PartnerData;
 import ru.todo100.activer.data.PartnerQualifier;
+import ru.todo100.activer.data.Qualifier;
 import ru.todo100.activer.form.PagedForm;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.service.PartnerService;
-import ru.todo100.activer.service.ReferService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -26,15 +26,16 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class AdminPageController {
+    @Value("${admin.partner.perpage}")
+    private Integer COUNT_PER_PAGE;
 
     @Autowired
     private AccountDao accountService;
-    @Autowired
+
     private PartnerService partnerService;
     @Autowired
     private SimpMessagingTemplate template;
-    @Value("${admin.partner.perpage}")
-    private Integer COUNT_PER_PAGE;
+
 
     public AccountDao getAccountService() {
         return accountService;
@@ -48,6 +49,7 @@ public class AdminPageController {
         return partnerService;
     }
 
+    @Autowired
     public void setPartnerService(PartnerService partnerService) {
         this.partnerService = partnerService;
     }
@@ -66,7 +68,7 @@ public class AdminPageController {
     @RequestMapping("/creator")
     public String creator(final Model model) {
         model.addAttribute("pageType", "admin/creator");
-        Integer accountId = accountService.getCurrentAccount().getId();
+        //Integer accountId = accountService.getCurrentAccount().getId();
         //final List<AccountItem> partners = getPartnerService().getPartners(accountId);
         //model.addAttribute("partners", partners);
 
@@ -90,7 +92,7 @@ public class AdminPageController {
 
     @ResponseBody
     @RequestMapping("/partnerPaged")
-    public PagedData partner1(final PagedForm pagedForm) {
+    public PagedData partnerPaged(final PagedForm pagedForm) {
         return pagedFormToPagedData(pagedForm);
     }
 
@@ -102,11 +104,12 @@ public class AdminPageController {
         qualifier.setOwnerAccountId(accountId);
 
         /*@todo add filter and orders*/
-
+        qualifier.setOrder(Qualifier.Order.asc);
+        qualifier.setOrderName("accountName");
         final Long count = getPartnerService().getPartnersCount(qualifier);
         final PagedData<PartnerData> pagedData = new PagedData<>();
         pagedData.setPage(pagedForm.getPage());
-        pagedData.setCount((int) Math.ceil(count*1.0 / COUNT_PER_PAGE));
+        pagedData.setCount((int) Math.ceil(count * 1.0 / COUNT_PER_PAGE));
         pagedData.setElements(getPartnerService().getPartners(qualifier));
         return pagedData;
     }

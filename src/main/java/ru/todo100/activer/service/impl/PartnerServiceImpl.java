@@ -2,6 +2,7 @@ package ru.todo100.activer.service.impl;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import ru.todo100.activer.dao.NetworkListCacheIDao;
 import ru.todo100.activer.data.PartnerData;
 import ru.todo100.activer.data.PartnerInfo;
 import ru.todo100.activer.data.PartnerQualifier;
+import ru.todo100.activer.data.Qualifier;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.NetworkListCacheItem;
 import ru.todo100.activer.service.PartnerService;
@@ -76,7 +78,7 @@ public class PartnerServiceImpl implements PartnerService {
             partnerInfo.setEarned(new BigDecimal("1000"));
             partnerInfo.setInvitedCount(90);
             partnerInfo.setInviter("Igor Bobko");
-            partnerInfo.setName(account.getFirstName() + " " + account.getLastName());
+            partnerInfo.setName(account.getLastName() + " " + account.getFirstName());
             partnerInfo.setNetworkCount(20);
             partnerInfo.setProfit(new BigDecimal("800"));
             partnerInfo.setReferCode(account.getReferCode());
@@ -157,6 +159,16 @@ public class PartnerServiceImpl implements PartnerService {
         if (qualifier.getCount() != null) {
             criteria.setMaxResults(qualifier.getCount());
         }
+
+        if (qualifier.getOrderName()!=null && qualifier.getOrder() != null) {
+            if (qualifier.getOrder() == Qualifier.Order.asc) {
+                criteria.addOrder(Order.asc(qualifier.getOrderName()));
+            }
+            if (qualifier.getOrder() == Qualifier.Order.desc) {
+                criteria.addOrder(Order.desc(qualifier.getOrderName()));
+            }
+        }
+
 
         @SuppressWarnings("unchecked")
         final List<NetworkListCacheItem> result = criteria.list();
