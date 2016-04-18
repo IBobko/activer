@@ -90,13 +90,14 @@
     <table class="table table-hover" id="partnerList">
         <thead>
         <tr>
-            <td style="width:226px">Имя</td>
-            <td>Уровень</td>
-            <td>Пригласивший (уровень)</td>
-            <td>Приглашенных</td>
-            <td>Колчиество людей в сети</td>
-            <td>Заработано</td>
-            <td>Моя прибыль</td>
+            <td style="width:226px" data-order="accountName"><a href="javascript:sort('accountName')">Имя</a></td>
+            <td data-order="accountLevel"><a href="javascript:sort('accountLevel')">Уровень</a></td>
+            <td data-order="inviter"><a href="javascript:sort('inviter')">Пригласивший</a></td>
+            <td data-order="inviterLevel"><a href="javascript:sort('inviterLevel')">Его уровень</a></td>
+            <td data-order="invited"><a href="javascript:sort('invited')">Приглашенных</a></td>
+            <td data-order="networkCount"><a href="javascript:sort('networkCount')">Колчиество людей в сети</a></td>
+            <td data-order="earned"><a href="javascript:sort('earned')">Заработано</a></td>
+            <td data-order="profit"><a href="javascript:sort('profit')">Моя прибыль</a></td>
         </tr>
         </thead>
         <tbody>
@@ -122,29 +123,71 @@
 </nav>
 
 <script type="text/javascript">
+
+
+    window.ACTIVER.AdminPartner = {
+        list: null,
+        currentPage: ${pagedData.page},
+        init1: function (list_id) {
+            this.list = list_id;
+            $('#' + this.list + " [data-order]").on('click', function () {
+                alert("clicked");
+            });
+        },
+
+        processResponse: function (response) {
+            var line = $('#' + this.list + "-line");
+            var listObject = $('#' + this.list + " tbody");
+            for (index in response.elements) {
+                var lineBody = line.val();
+                for (key in response.elements[index]) {
+                    lineBody = lineBody.replace("#" + key, response.elements[index][key]);
+                }
+                listObject.append(lineBody);
+            }
+        },
+
+        loadData: function (data) {
+            updatePaginator(data.page);
+            var wrapper = $('#' + this.list + 'Wrapper');
+            wrapper.css('height', wrapper.height() + "px");
+            var listObject = $('#' + this.list + " tbody");
+            listObject.html('');
+            var that = this;
+            $.get("<c:url value="/admin/partnerPaged"/>", data, function (response) {
+                that.processResponse(response);
+            });
+        },
+        updatePaginator: function (page) {
+            var paginator = $('#' + this.list + "Paged");
+            var paginatorItem = $('#' + this.list + "PagedItem");
+            paginator.find("[class='active']").removeClass('active');
+            $('#' + this.list + "PagedItem" + (p + 1)).addClass('active');
+        }
+    };
+
+    window.ACTIVER.AdminPartner.init1('partnerList');
+
     function page(p) {
         var data = {
             page: p
         };
-        var partnerList = $('#partnerList tbody');
-        $('#partnerListWrapper').css('height', $('#partnerListWrapper').height() + "px");
-        partnerList.html('');
-        $("#partnerListPaged [class='active']").removeClass('active');
-        $("#partnerListPagedItem" + (p + 1)).addClass('active');
-        $.get("<c:url value="/admin/partnerPaged"/>", data, function (response) {
-            for (index in response.elements) {
-                var line = $('#partnerLine').val();
-                for (key in response.elements[index]) {
-                    line = line.replace("#" + key, response.elements[index][key]);
-                }
-                partnerList.append(line);
-            }
-        });
+        window.ACTIVER.AdminPartner.loadData(data);
+        return false;
+    }
+
+    function sort(field) {
+        var data = {
+            orderField: field,
+            orderType: 'desc'
+
+        };
+        window.ACTIVER.AdminPartner.loadData(data);
         return false;
     }
 </script>
 
-<textarea style="display:none" id="partnerLine">
+<textarea style="display:none" id="partnerList-line">
     <admin:partner_line/>
 </textarea>
 

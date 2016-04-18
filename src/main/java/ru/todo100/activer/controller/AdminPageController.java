@@ -102,6 +102,10 @@ public class AdminPageController {
         qualifier.setCount(COUNT_PER_PAGE);
         qualifier.setStart(pagedForm.getPage() * COUNT_PER_PAGE);
         qualifier.setOwnerAccountId(accountId);
+        if (pagedForm.getOrderType() != null && pagedForm.getOrderField() != null) {
+            qualifier.setOrderName(pagedForm.getOrderField());
+            qualifier.setOrder(Qualifier.Order.valueOf(pagedForm.getOrderType()));
+        }
 
         /*@todo add filter and orders*/
         qualifier.setOrder(Qualifier.Order.asc);
