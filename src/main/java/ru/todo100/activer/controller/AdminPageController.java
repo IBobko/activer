@@ -9,12 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ru.todo100.activer.dao.AccountDao;
-import ru.todo100.activer.data.PagedData;
-import ru.todo100.activer.data.PartnerData;
-import ru.todo100.activer.data.PartnerQualifier;
-import ru.todo100.activer.data.Qualifier;
+import ru.todo100.activer.data.*;
 import ru.todo100.activer.form.PagedForm;
 import ru.todo100.activer.model.AccountItem;
+import ru.todo100.activer.service.AdminAccountService;
 import ru.todo100.activer.service.PartnerService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,14 +26,21 @@ import java.util.List;
 public class AdminPageController {
     @Value("${admin.partner.perpage}")
     private Integer COUNT_PER_PAGE;
-
+    private AdminAccountService adminAccountService;
     @Autowired
     private AccountDao accountService;
-
     private PartnerService partnerService;
     @Autowired
     private SimpMessagingTemplate template;
 
+    public AdminAccountService getAdminAccountService() {
+        return adminAccountService;
+    }
+
+    @Autowired
+    public void setAdminAccountService(AdminAccountService adminAccountService) {
+        this.adminAccountService = adminAccountService;
+    }
 
     public AccountDao getAccountService() {
         return accountService;
@@ -66,7 +71,7 @@ public class AdminPageController {
     }
 
     @RequestMapping("/creator")
-    public String creator(final Model model) {
+    public String creator(final Model model, final PagedForm pagedForm) {
         model.addAttribute("pageType", "admin/creator");
         //Integer accountId = accountService.getCurrentAccount().getId();
         //final List<AccountItem> partners = getPartnerService().getPartners(accountId);
@@ -76,8 +81,26 @@ public class AdminPageController {
 
         model.addAttribute("accounts", accounts);
 
-
+        model.addAttribute("pagedData", adminAccountPagedData(pagedForm));
         return "admin/creator";
+    }
+
+    public PagedData<AdminAccountData> adminAccountPagedData(final PagedForm pagedForm) {
+        AdminAccountQualifier qualifier = new AdminAccountQualifier();
+        qualifier.setCount(COUNT_PER_PAGE);
+        qualifier.setStart(pagedForm.getPage() * COUNT_PER_PAGE);
+
+        if (pagedForm.getOrderType() != null && pagedForm.getOrderField() != null) {
+            qualifier.setOrderName(pagedForm.getOrderField());
+            qualifier.setOrder(Qualifier.Order.valueOf(pagedForm.getOrderType()));
+        }
+
+        final Long count = getAdminAccountService().getAccountsCount(qualifier);
+        final PagedData<AdminAccountData> pagedData = new PagedData<>();
+        pagedData.setPage(pagedForm.getPage());
+        pagedData.setCount((int) Math.ceil(count * 1.0 / COUNT_PER_PAGE));
+        pagedData.setElements(getAdminAccountService().getAccounts(qualifier));
+        return pagedData;
     }
 
     @RequestMapping("/partner")
@@ -89,6 +112,7 @@ public class AdminPageController {
         model.addAttribute("pagedData", pagedFormToPagedData(pagedForm));
         return "admin/partner";
     }
+
 
     @ResponseBody
     @RequestMapping("/partnerPaged")
@@ -106,10 +130,6 @@ public class AdminPageController {
             qualifier.setOrderName(pagedForm.getOrderField());
             qualifier.setOrder(Qualifier.Order.valueOf(pagedForm.getOrderType()));
         }
-
-        /*@todo add filter and orders*/
-        qualifier.setOrder(Qualifier.Order.asc);
-        qualifier.setOrderName("accountName");
         final Long count = getPartnerService().getPartnersCount(qualifier);
         final PagedData<PartnerData> pagedData = new PagedData<>();
         pagedData.setPage(pagedForm.getPage());

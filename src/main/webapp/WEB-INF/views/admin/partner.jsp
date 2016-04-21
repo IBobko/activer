@@ -1,3 +1,4 @@
+<%--suppress CssUnusedSymbol --%>
 <%@ page language="java" trimDirectiveWhitespaces="true" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="admin" tagdir="/WEB-INF/tags/admin" %>
@@ -12,6 +13,7 @@
     }
 
 </style>
+
 <button class="std-button btn btn-default" style="float:right" data-toggle="modal"
         data-target="#inviteNewParnersWindow"><span
         class="glyphicon glyphicon-plus"></span> Пригласить новых партнеров

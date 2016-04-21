@@ -88,6 +88,8 @@
 
 	<bean id="partnerService" class="ru.todo100.activer.service.impl.PartnerServiceImpl"/>
 
+	<bean id="adminAccountService" class="ru.todo100.activer.service.impl.AdminAccountServiceImpl"/>
+
 	<bean id="photoService" class="ru.todo100.activer.dao.PhotoDao" parent="serviceAbstract"/>
 
 	<bean id="messageService" class="ru.todo100.activer.dao.MessageDao" parent="serviceAbstract"/>
