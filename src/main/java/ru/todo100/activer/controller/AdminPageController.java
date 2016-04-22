@@ -5,17 +5,24 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.data.*;
+import ru.todo100.activer.form.DisputeThemeForm;
 import ru.todo100.activer.form.PagedForm;
+import ru.todo100.activer.model.DisputeThemeItem;
+import ru.todo100.activer.qualifier.DisputeThemeQualifier;
 import ru.todo100.activer.service.AdminAccountService;
+import ru.todo100.activer.service.DisputeService;
 import ru.todo100.activer.service.GiftService;
 import ru.todo100.activer.service.PartnerService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
@@ -32,6 +39,17 @@ public class AdminPageController {
     private PartnerService partnerService;
     @Autowired
     private SimpMessagingTemplate template;
+
+    private DisputeService disputeService;
+
+    public DisputeService getDisputeService() {
+        return disputeService;
+    }
+
+    @Autowired
+    public void setDisputeService(DisputeService disputeService) {
+        this.disputeService = disputeService;
+    }
 
     public GiftService getGiftService() {
         return giftService;
@@ -94,8 +112,21 @@ public class AdminPageController {
         return new PagedData<>();
     }
 
-    public PagedData<DisputeData> getDisputePageData(final PagedForm pagedForm) {
-        return new PagedData<>();
+    public PagedData<DisputeThemeData> getDisputePageData(final PagedForm pagedForm) {
+        final DisputeThemeQualifier qualifier = new DisputeThemeQualifier();
+        qualifier.setCount(COUNT_PER_PAGE);
+        qualifier.setStart(pagedForm.getPage() * COUNT_PER_PAGE);
+        if (pagedForm.getOrderType() != null && pagedForm.getOrderField() != null) {
+            qualifier.setOrderName(pagedForm.getOrderField());
+            qualifier.setOrder(Qualifier.Order.valueOf(pagedForm.getOrderType()));
+        }
+        final Long count = getDisputeService().getCountByQualifier(qualifier);
+        final List<DisputeThemeData> disputes = getDisputeService().getDataByQualifier(qualifier);
+        final PagedData<DisputeThemeData> pagedData = new PagedData<>();
+        pagedData.setPage(pagedForm.getPage());
+        pagedData.setCount((int) Math.ceil(count * 1.0 / COUNT_PER_PAGE));
+        pagedData.setElements(disputes);
+        return pagedData;
     }
 
 
@@ -117,8 +148,11 @@ public class AdminPageController {
         return "redirect:/admin/gifts";
     }
 
-    @RequestMapping("/dsipute/upload")
-    public String disputeUpload(final Model model) {
+    @RequestMapping(value = "/dispute/upload",method = RequestMethod.POST)
+    public String disputeUpload(final Model model,final DisputeThemeForm form, final BindingResult bindingResult) {
+        if (!bindingResult.hasErrors()) {
+            getDisputeService().editDispute(form);
+        }
         return "redirect:/admin/dispute";
     }
 
@@ -130,10 +164,34 @@ public class AdminPageController {
     }
 
     @RequestMapping("/dispute/add")
-    public String disputeAdd(final Model model) {
+    public String disputeAdd(final Model model,@RequestParam(required = false,defaultValue = "0") Integer id) {
         model.addAttribute("pageType", "admin/dispute/add");
+
+        final DisputeThemeForm disputeThemeForm = new DisputeThemeForm();
+        if (id != null) {
+            DisputeThemeItem dispute = getDisputeService().get(id);
+            if (dispute != null) {
+                disputeThemeForm.setId(dispute.getId());
+                disputeThemeForm.setName(dispute.getName());
+                disputeThemeForm.setPosition1(dispute.getPosition1());
+                disputeThemeForm.setPosition2(dispute.getPosition2());
+            }
+        }
+
+        model.addAttribute("disputeThemeForm",disputeThemeForm);
         return "admin/dispute/add";
     }
+
+    @RequestMapping("/dispute/delete")
+    public String deleteDispute(final Model model,@RequestParam(required = false,defaultValue = "0") Integer id) {
+        model.addAttribute("pageType", "admin/dispute/add");
+        if (id != null) {
+            getDisputeService().delete(id);
+        }
+        return "redirect:/admin/dispute";
+    }
+
+
 
     public PagedData<AdminAccountData> adminAccountPagedData(final PagedForm pagedForm) {
         AdminAccountQualifier qualifier = new AdminAccountQualifier();

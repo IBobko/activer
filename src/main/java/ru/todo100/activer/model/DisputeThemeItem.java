@@ -21,6 +21,16 @@ public class DisputeThemeItem {
 
     @Column(name = "dispute_position_2")
     private String position2;
+    @Column(name = "language")
+    private String language;
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 
     public String getName() {
         return name;

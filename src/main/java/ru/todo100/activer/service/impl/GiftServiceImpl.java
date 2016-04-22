@@ -18,4 +18,6 @@ public class GiftServiceImpl implements GiftService {
     public void setGiftDao(GiftDao giftDao) {
         this.giftDao = giftDao;
     }
+
+
 }
