@@ -306,3 +306,120 @@
         </li>
     </ul>
 </c:if>
+
+
+<c:if test="${pageType == 'admin/creator'}">
+    <ul class="sidebar-nav">
+        <li class="active">
+            <a href="<c:url value="/admin/creator"/>">
+                <span class="glyphicon glyphicon-stats"></span>
+                Статистика
+            </a>
+        </li>
+        <li>
+            <a href="<c:url value="/admin/gifts"/>">
+                <span class="fa fa-gift"></span>
+                Подарки
+            </a>
+        </li>
+        <li>
+            <a href="<c:url value="/admin/dispute"/>">
+                <span class="fa fa-comment"></span>
+                Споры
+            </a>
+        </li>
+    </ul>
+</c:if>
+
+<c:if test="${pageType == 'admin/gifts'}">
+    <ul class="sidebar-nav">
+        <li>
+            <a href="<c:url value="/admin/creator"/>">
+                <span class="glyphicon glyphicon-stats"></span>
+                Статистика
+            </a>
+        </li>
+        <li class="active">
+            <a href="<c:url value="/admin/gifts"/>">
+                <span class="fa fa-gift"></span>
+                Подарки
+            </a>
+        </li>
+        <li>
+            <a href="<c:url value="/admin/dispute"/>">
+                <span class="fa fa-photo"></span>
+                Споры
+            </a>
+        </li>
+    </ul>
+</c:if>
+
+<c:if test="${pageType == 'admin/gifts/add'}">
+    <ul class="sidebar-nav">
+        <li>
+            <a href="<c:url value="/admin/creator"/>">
+                <span class="glyphicon glyphicon-stats"></span>
+                Статистика
+            </a>
+        </li>
+        <li class="active">
+            <a href="<c:url value="/admin/gifts"/>">
+                <span class="fa fa-gift"></span>
+                Подарки
+            </a>
+        </li>
+        <li>
+            <a href="<c:url value="/admin/dispute"/>">
+                <span class="fa fa-photo"></span>
+                Споры
+            </a>
+        </li>
+    </ul>
+</c:if>
+
+<c:if test="${pageType == 'admin/dispute'}">
+    <ul class="sidebar-nav">
+        <li>
+            <a href="<c:url value="/admin/creator"/>">
+                <span class="glyphicon glyphicon-stats"></span>
+                Статистика
+            </a>
+        </li>
+        <li>
+            <a href="<c:url value="/admin/gifts"/>">
+                <span class="fa fa-gift"></span>
+                Подарки
+            </a>
+        </li>
+        <li class="active">
+            <a href="<c:url value="/admin/dispute"/>">
+                <span class="glyphicon glyphicon-comment"></span>
+                Споры
+            </a>
+        </li>
+    </ul>
+</c:if>
+
+<c:if test="${pageType == 'admin/dispute/add'}">
+    <ul class="sidebar-nav">
+        <li>
+            <a href="<c:url value="/admin/creator"/>">
+                <span class="glyphicon glyphicon-stats"></span>
+                Статистика
+            </a>
+        </li>
+        <li>
+            <a href="<c:url value="/admin/gifts"/>">
+                <span class="fa fa-gift"></span>
+                Подарки
+            </a>
+        </li>
+        <li class="active">
+            <a href="<c:url value="/admin/dispute"/>">
+                <span class="glyphicon glyphicon-comment"></span>
+                Споры
+            </a>
+        </li>
+    </ul>
+</c:if>
+

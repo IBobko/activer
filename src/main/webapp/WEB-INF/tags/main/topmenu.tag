@@ -1,3 +1,4 @@
+<%--suppress XmlPathReference --%>
 <%--@elvariable id="pageType" type="java.lang.String"--%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -29,9 +30,10 @@
                 <li <c:if test="${pageType == 'admin/partner'}">class="active"</c:if>><a
                         href="<c:url value="/admin/partner"/>">Партнер</a></li>
                 <li
-                        <c:if test="${pageType == 'admin/creator'}">class="active"</c:if>><a
+                        <c:if test="${pageType == 'admin/creator' or pageType == 'admin/gifts' or pageType == 'admin/dispute' || pageType == 'admin/gifts/add' || pageType == 'admin/dispute/add'}">class="active"</c:if>>
+                    <a
                         href="<c:url value="/admin/creator"/>">Создатель</a></li>
-                <button type="button" onclick="document.location='<c:url value="/logout"/>';"
+                <button onclick="document.location='<c:url value="/logout"/>';"
                         class="btn btn-default navbar-btn navbar-right">Выход
                 </button>
             </ul>

@@ -180,6 +180,22 @@
 	<definition name="admin/creator" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/admin/creator.jsp"/>
 	</definition>
+
+	<definition name="admin/gifts" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/gifts.jsp"/>
+	</definition>
+
+	<definition name="admin/gifts/add" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/gift_add.jsp"/>
+	</definition>
+
+	<definition name="admin/dispute" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/dispute.jsp"/>
+	</definition>
+
+	<definition name="admin/dispute/add" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/dispute_add.jsp"/>
+	</definition>
 	<!-- Photos -->
 
 	<definition name="photos/photo" extends="base-template">

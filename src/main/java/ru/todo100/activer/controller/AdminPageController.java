@@ -12,6 +12,7 @@ import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.data.*;
 import ru.todo100.activer.form.PagedForm;
 import ru.todo100.activer.service.AdminAccountService;
+import ru.todo100.activer.service.GiftService;
 import ru.todo100.activer.service.PartnerService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,12 +25,22 @@ import javax.servlet.http.HttpServletRequest;
 public class AdminPageController {
     @Value("${admin.partner.perpage}")
     private Integer COUNT_PER_PAGE;
+    private GiftService giftService;
     private AdminAccountService adminAccountService;
     @Autowired
     private AccountDao accountService;
     private PartnerService partnerService;
     @Autowired
     private SimpMessagingTemplate template;
+
+    public GiftService getGiftService() {
+        return giftService;
+    }
+
+    @Autowired
+    public void setGiftService(GiftService giftService) {
+        this.giftService = giftService;
+    }
 
     public AdminAccountService getAdminAccountService() {
         return adminAccountService;
@@ -79,6 +90,51 @@ public class AdminPageController {
         return "admin/creator";
     }
 
+    public PagedData<GiftData> getGiftPageData(final PagedForm pagedForm) {
+        return new PagedData<>();
+    }
+
+    public PagedData<DisputeData> getDisputePageData(final PagedForm pagedForm) {
+        return new PagedData<>();
+    }
+
+
+    @RequestMapping("/gifts")
+    public String gifts(final Model model, final PagedForm pagedForm) {
+        model.addAttribute("pageType", "admin/gifts");
+        model.addAttribute("pagedData", getGiftPageData(pagedForm));
+        return "admin/gifts";
+    }
+
+    @RequestMapping("/gifts/add")
+    public String giftsAdd(final Model model) {
+        model.addAttribute("pageType", "admin/gifts/add");
+        return "admin/gifts/add";
+    }
+
+    @RequestMapping("/gifts/upload")
+    public String giftsUpload(final Model model) {
+        return "redirect:/admin/gifts";
+    }
+
+    @RequestMapping("/dsipute/upload")
+    public String disputeUpload(final Model model) {
+        return "redirect:/admin/dispute";
+    }
+
+    @RequestMapping("/dispute")
+    public String dispute(final Model model, final PagedForm pagedForm) {
+        model.addAttribute("pageType", "admin/dispute");
+        model.addAttribute("pagedData", getDisputePageData(pagedForm));
+        return "admin/dispute";
+    }
+
+    @RequestMapping("/dispute/add")
+    public String disputeAdd(final Model model) {
+        model.addAttribute("pageType", "admin/dispute/add");
+        return "admin/dispute/add";
+    }
+
     public PagedData<AdminAccountData> adminAccountPagedData(final PagedForm pagedForm) {
         AdminAccountQualifier qualifier = new AdminAccountQualifier();
         qualifier.setCount(COUNT_PER_PAGE);
@@ -106,7 +162,6 @@ public class AdminPageController {
         model.addAttribute("pagedData", pagedFormToPagedData(pagedForm));
         return "admin/partner";
     }
-
 
     @ResponseBody
     @RequestMapping("/partnerPaged")

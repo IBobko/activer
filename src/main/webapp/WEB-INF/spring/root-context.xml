@@ -100,6 +100,11 @@
 
 	<bean id="adminAccountListCacheDao" class="ru.todo100.activer.dao.AdminAccountListCacheDao"/>
 
+	<bean id="giftDao" class="ru.todo100.activer.dao.GiftDao"/>
+	<bean id="giftService" class="ru.todo100.activer.service.impl.GiftServiceImpl"/>
+
+	<bean id="disputeThemeDao" class="ru.todo100.activer.dao.DisputeThemeDao"/>
+	<bean id="disputeService" class="ru.todo100.activer.service.impl.DisputeServiceImpl"/>
 
 	<bean
 			id="promocodeService"
