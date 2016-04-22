@@ -8,7 +8,8 @@
 <tr>
     <td><a href="<c:url value="/profile/id${partner.id}"/>">${partner.name}</a></td>
     <td>${partner.level}</td>
-    <td>${partner.inviter} ${partner.inviterLevel}</td>
+    <td>${partner.inviter}</td>
+    <td>${partner.inviterLevel}</td>
     <td>${partner.invitedCount}</td>
     <td>${partner.networkCount}</td>
     <td>${partner.earned}</td>

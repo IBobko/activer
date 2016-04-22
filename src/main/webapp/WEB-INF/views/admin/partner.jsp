@@ -12,6 +12,9 @@
         padding-right: 0 !important;
     }
 
+    .filter td {
+        padding: 5px;
+    }
 </style>
 
 <button class="std-button btn btn-default" style="float:right" data-toggle="modal"
@@ -74,20 +77,32 @@
     </tr>
 </table>
 
-<pre>
-    ранжирование:
-по ФИО (фамилии)
-по уровню партнера
-по уроню того кто его пригласил
-по кол-ву заработанных партнеров денег
-по кол-ву денег которые принес мне мой партнер
-</pre>
+<table style="background-color:#FAFAFA" class="filter">
+    <tr>
+        <td>уровень партнера</td>
+        <td>
+            <select>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+            </select>
+        </td>
+        <td>уровень тех кто приглашает </td>
+        <td>
+            <select>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+        </td>
+        <td><input type="button" class="std-button btn btn-default" value="Показать"/></td>
+    </tr>
+</table>
 
-<pre>
-фильтры:
-уровень партнера (1-6)
-уровень тех кто приглашает (2-5)
-    </pre>
 <div id="partnerListWrapper">
     <table class="table table-hover" id="partnerList">
         <thead>
@@ -123,13 +138,14 @@
         init1: function (list_id) {
             this.list = list_id;
             $('#' + this.list + " [data-order]").on('click', function () {
-                alert("clicked");
+                sort($(this).attr('data-order'))
             });
         },
 
         processResponse: function (response) {
             var line = $('#' + this.list + "-line");
             var listObject = $('#' + this.list + " tbody");
+            listObject.html('');
             for (index in response.elements) {
                 var lineBody = line.val();
                 for (key in response.elements[index]) {
@@ -172,7 +188,8 @@
     function sort(field) {
         var data = {
             orderField: field,
-            orderType: 'desc'
+            orderType: 'desc',
+            page:0
 
         };
         window.ACTIVER.AdminPartner.loadData(data);
