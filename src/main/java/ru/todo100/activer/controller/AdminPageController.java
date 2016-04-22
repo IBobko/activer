@@ -227,6 +227,12 @@ public class AdminPageController {
         return pagedFormToPagedData(pagedForm);
     }
 
+    @ResponseBody
+    @RequestMapping("/disputePaged")
+    public PagedData disputePaged(final PagedForm pagedForm) {
+        return getDisputePageData(pagedForm);
+    }
+
     public PagedData pagedFormToPagedData(final PagedForm pagedForm) {
         final Integer accountId = accountService.getCurrentAccount().getId();
         final PartnerQualifier qualifier = new PartnerQualifier();
