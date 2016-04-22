@@ -112,17 +112,7 @@
     </table>
 </div>
 
-<nav>
-    <ul class="pagination" id="partnerListPaged">
-        <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-        <c:forEach var="i" begin="1" end="${pagedData.count}">
-            <li id="partnerListPagedItem${i}" <c:if test="${pagedData.page == i-1}">class="active"</c:if>><a
-                    href="javascript:page(${i-1})">${i}</a></li>
-        </c:forEach>
-
-        <li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
-    </ul>
-</nav>
+<admin:paginator paginatorId="partnerListPaged" pagedData="${pagedData}" onClickFunction="page"/>
 
 <script type="text/javascript">
 
@@ -150,7 +140,7 @@
         },
 
         loadData: function (data) {
-            updatePaginator(data.page);
+            this.updatePaginator(data.page);
             var wrapper = $('#' + this.list + 'Wrapper');
             wrapper.css('height', wrapper.height() + "px");
             var listObject = $('#' + this.list + " tbody");
@@ -160,11 +150,12 @@
                 that.processResponse(response);
             });
         },
+
         updatePaginator: function (page) {
             var paginator = $('#' + this.list + "Paged");
             var paginatorItem = $('#' + this.list + "PagedItem");
             paginator.find("[class='active']").removeClass('active');
-            $('#' + this.list + "PagedItem" + (p + 1)).addClass('active');
+            $('#' + this.list + "PagedItem" + (page + 1)).addClass('active');
         }
     };
 

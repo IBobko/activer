@@ -66,9 +66,7 @@ public class PartnerServiceImpl implements PartnerService {
         return new BigDecimal(7);
     }
 
-
-
-    private List<PartnerInfo> recursive(String referCode, Integer level) {
+    public List<PartnerInfo> recursive(String referCode, Integer level) {
         final List<AccountItem> accounts = referService.getByReferCode(referCode);
         final List<PartnerInfo> result = new ArrayList<>();
         for (AccountItem account: accounts) {

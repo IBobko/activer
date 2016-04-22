@@ -8,13 +8,14 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.*;
 
 @SuppressWarnings({"JpaDataSourceORMInspection", "unused"})
 @Entity
 @Table(name = "account")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class AccountItem extends DateChanges {
+public class AccountItem extends DateChanges implements Serializable {
     @Id
     @SequenceGenerator(name = "default_gen", sequenceName = "account_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")

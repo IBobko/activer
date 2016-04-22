@@ -1,9 +1,8 @@
 package ru.todo100.activer.service;
 
 import ru.todo100.activer.data.PartnerData;
+import ru.todo100.activer.data.PartnerInfo;
 import ru.todo100.activer.data.PartnerQualifier;
-import ru.todo100.activer.data.Qualifier;
-import ru.todo100.activer.model.AccountItem;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -19,4 +18,6 @@ public interface PartnerService {
     Integer getNetworkCount(Integer accountID);
     BigDecimal getEarned(Integer accountID);
     BigDecimal getProfit(Integer accountID);
+
+    List<PartnerInfo> recursive(String referCode, Integer level);
 }

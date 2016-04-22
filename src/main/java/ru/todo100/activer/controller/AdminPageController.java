@@ -11,12 +11,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.data.*;
 import ru.todo100.activer.form.PagedForm;
-import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.service.AdminAccountService;
 import ru.todo100.activer.service.PartnerService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
@@ -71,15 +69,11 @@ public class AdminPageController {
     }
 
     @RequestMapping("/creator")
-    public String creator(final Model model, final PagedForm pagedForm) {
+    public String creator(final Model model, final PagedForm pagedForm, @RequestParam(name = "synch", required = false) Integer synch) {
+        if (synch != null) {
+            getAdminAccountService().synchronize();
+        }
         model.addAttribute("pageType", "admin/creator");
-        //Integer accountId = accountService.getCurrentAccount().getId();
-        //final List<AccountItem> partners = getPartnerService().getPartners(accountId);
-        //model.addAttribute("partners", partners);
-
-        List<AccountItem> accounts = accountService.getAll();
-
-        model.addAttribute("accounts", accounts);
 
         model.addAttribute("pagedData", adminAccountPagedData(pagedForm));
         return "admin/creator";

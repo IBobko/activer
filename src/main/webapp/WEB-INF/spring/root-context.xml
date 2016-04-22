@@ -98,6 +98,7 @@
 	<bean id="networkListCacheIDao" class="ru.todo100.activer.dao.NetworkListCacheIDao"/>
 
 
+	<bean id="adminAccountListCacheDao" class="ru.todo100.activer.dao.AdminAccountListCacheDao"/>
 
 
 	<bean
