@@ -103,7 +103,7 @@
 	<bean id="giftDao" class="ru.todo100.activer.dao.GiftDao"/>
 
 
-	<bean id="paymentDao" class="ru.todo100.activer.dao.PaymentDao"/>
+	<bean id="paymentDebitDaoDao" class="ru.todo100.activer.dao.PaymentDebitDao"/>
 	<bean id="paymentService" class="ru.todo100.activer.service.impl.PaymentServiceImpl"/>
 
 	<bean id="giftService" class="ru.todo100.activer.service.impl.GiftServiceImpl"/>
@@ -167,6 +167,10 @@
 	<bean id="educationPopulator" class="ru.todo100.activer.populators.EducationPopulator"/>
 	<bean id="jobPopulator" class="ru.todo100.activer.populators.JobPopulator"/>
 	<bean id="childrenPopulator" class="ru.todo100.activer.populators.ChildrenPopulator"/>
+
+
+
+	<bean id="payPalAccountDao" class="ru.todo100.activer.dao.PayPalAccountDao"/>
 
 
 	<bean id="photosDao" class="ru.todo100.activer.dao.PhotosDao"/>

@@ -1,6 +1,7 @@
 package ru.todo100.activer.controller;
 
 import com.paypal.api.payments.*;
+import com.paypal.api.payments.Currency;
 import com.paypal.api.payments.util.ResultPrinter;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.OAuthTokenCredential;
@@ -12,11 +13,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.service.impl.PaymentServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -26,6 +30,8 @@ import java.util.*;
 @RequestMapping("/paypal")
 public class PayPalController {
 
+    @Autowired
+    private AccountDao accountService;
 
     @Autowired
     private PaymentServiceImpl paymentService;
@@ -180,10 +186,79 @@ public class PayPalController {
     }
 
     @RequestMapping("/return")
+
     public String result(HttpServletRequest req, HttpServletResponse resp) throws Exception, PayPalRESTException {
+
+        AccountItem accountItem = accountService.getCurrentAccount();
+        try {
+            accountItem.addRole("ROLE_PARTNER");
+            accountService.save(accountItem);
+        } catch(Exception ignored) {
+
+        }
+        paymentService.addPayment(accountItem.getId(),new BigDecimal(50));
+
 
         return "paypal/success";
     }
+
+
+    @RequestMapping("/out")
+    @ResponseBody
+    public PayoutBatch out(HttpServletRequest req, HttpServletResponse resp) throws Exception, PayPalRESTException {
+      return createSynchronousSinglePayout(req,resp);
+    }
+
+
+    @SuppressWarnings("unchecked")
+    public PayoutBatch createSynchronousSinglePayout(HttpServletRequest req,
+                                                     HttpServletResponse resp) throws Exception {
+
+        Payout payout = new Payout();
+
+        PayoutSenderBatchHeader senderBatchHeader = new PayoutSenderBatchHeader();
+
+        Random random = new Random();
+        senderBatchHeader.setSenderBatchId(
+                new Double(random.nextDouble()).toString()).setEmailSubject(
+                "You have a Payout!");
+
+        Currency amount = new Currency();
+        amount.setValue("10").setCurrency("USD");
+
+        PayoutItem senderItem = new PayoutItem();
+        senderItem.setRecipientType("Email")
+                .setNote("Thanks for your patronage")
+                .setReceiver("limit-speed@yandex.ru")
+                .setSenderItemId("201404324234").setAmount(amount);
+
+        List<PayoutItem> items = new ArrayList<PayoutItem>();
+        items.add(senderItem);
+
+        payout.setSenderBatchHeader(senderBatchHeader).setItems(items);
+
+        PayoutBatch batch = null;
+        try {
+
+            String accessToken = token();
+
+            APIContext apiContext = new APIContext(accessToken);
+
+                    batch = payout.createSynchronous(apiContext);
+
+            LOGGER.info("Payout Batch With ID: "
+                    + batch.getBatchHeader().getPayoutBatchId());
+            ResultPrinter.addResult(req, resp,
+                    "Created Single Synchronous Payout",
+                    Payout.getLastRequest(), Payout.getLastResponse(), null);
+        } catch (PayPalRESTException e) {
+            ResultPrinter.addResult(req, resp,
+                    "Created Single Synchronous Payout",
+                    Payout.getLastRequest(), null, e.getMessage());
+        }
+        return batch;
+    }
+
 
 
 }

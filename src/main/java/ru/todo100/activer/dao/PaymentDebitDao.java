@@ -1,13 +1,13 @@
 package ru.todo100.activer.dao;
 
-import ru.todo100.activer.model.PaymentItem;
+import ru.todo100.activer.model.PaymentDebitItem;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
-public class PaymentDao extends AbstractDao{
+public class PaymentDebitDao extends AbstractDao{
     @Override
     public Class getItemClass() {
-        return PaymentItem.class;
+        return PaymentDebitItem.class;
     }
 }
