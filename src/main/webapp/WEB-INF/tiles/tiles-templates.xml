@@ -78,12 +78,12 @@
 	</definition>
 
 
-	<definition name="payment/fail" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/payment/fail.jsp" />
+	<definition name="paypal/fail" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/paypal/fail.jsp" />
 	</definition>
 	
-	<definition name="payment/success" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/payment/success.jsp" />
+	<definition name="paypal/success" extends="base-template">
+    	<put-attribute name="content" value="/WEB-INF/views/paypal/success.jsp" />
 	</definition>
 	
 	<definition name="mark/index" extends="base-template">

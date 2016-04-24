@@ -423,3 +423,4 @@
     </ul>
 </c:if>
 
+<a href="<c:url value="/paypal"/>" style="color:orange">Купить аккаунт</a>

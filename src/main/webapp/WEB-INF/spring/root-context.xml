@@ -101,6 +101,11 @@
 	<bean id="adminAccountListCacheDao" class="ru.todo100.activer.dao.AdminAccountListCacheDao"/>
 
 	<bean id="giftDao" class="ru.todo100.activer.dao.GiftDao"/>
+
+
+	<bean id="paymentDao" class="ru.todo100.activer.dao.PaymentDao"/>
+	<bean id="paymentService" class="ru.todo100.activer.service.impl.PaymentServiceImpl"/>
+
 	<bean id="giftService" class="ru.todo100.activer.service.impl.GiftServiceImpl"/>
 
 	<bean id="disputeThemeDao" class="ru.todo100.activer.dao.DisputeThemeDao"/>
