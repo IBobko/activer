@@ -14,6 +14,7 @@ import ru.todo100.activer.data.AdminAccountQualifier;
 import ru.todo100.activer.data.PartnerInfo;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.AdminAccountListCacheItem;
+import ru.todo100.activer.model.AuthorityItem;
 import ru.todo100.activer.service.AdminAccountService;
 import ru.todo100.activer.service.PartnerService;
 import ru.todo100.activer.service.ReferService;
@@ -141,6 +142,20 @@ public class AdminAccountServiceImpl implements AdminAccountService {
             if (item.getInviterId() != null) {
                 data.setInviterId(item.getInviterId().toString());
             }
+            /*@TODO переделать на код из ресурсов */
+            data.setType("Бесплатный");
+            List<AuthorityItem> authorities = item.getAccountItem().getAuthorities();
+
+            for (AuthorityItem authorityItem: authorities) {
+                if (authorityItem.getRole().equals("ROLE_PARTNER")){
+                    data.setType("Партнер");
+                }
+                if (authorityItem.getRole().equals("ROLE_CREATOR")){
+                    data.setType("Создатель");
+                    break;
+                }
+            }
+
 
             Calendar lastActivity = item.getAccountItem().getLastActivity();
             if (lastActivity == null) {

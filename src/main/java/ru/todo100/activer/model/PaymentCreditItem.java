@@ -15,8 +15,10 @@ public class PaymentCreditItem {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")
     private Integer id;
 
-    @Column(name = "account_id")
-    private Integer accountId;
+
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private AccountItem account;
 
     @Column(name = "payment_credit_sum")
     private BigDecimal paymentCreditSum;
@@ -40,12 +42,12 @@ public class PaymentCreditItem {
         this.paymentCreditDescription = paymentCreditDescription;
     }
 
-    public Integer getAccountId() {
-        return accountId;
+    public AccountItem getAccount() {
+        return account;
     }
 
-    public void setAccountId(Integer accountId) {
-        this.accountId = accountId;
+    public void setAccount(AccountItem account) {
+        this.account = account;
     }
 
     public Integer getId() {

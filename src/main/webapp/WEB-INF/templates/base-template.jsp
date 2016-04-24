@@ -5,6 +5,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="main" tagdir="/WEB-INF/tags/main" %>
 
+<%@ taglib prefix="leftmenu" uri="/WEB-INF/tlds/LeftMenu.tld" %>
+
+<leftmenu:init/>
+
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>

@@ -1,13 +1,14 @@
 package ru.todo100.activer.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
 @Entity
 @Table(name = "paypal_account")
-public class PayPalAccountItem {
+public class PayPalAccountItem implements Serializable{
     @Id
     @OneToOne
     @JoinColumn(name = "account_id")

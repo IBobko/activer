@@ -4,6 +4,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ attribute name="pageType" required="false" type="java.lang.String" %>
 
+
+
 <c:if test="${pageType == 'auth'}">
     <ul class="sidebar-nav">
         <li class="active">
@@ -308,119 +310,36 @@
 </c:if>
 
 
-<c:if test="${pageType == 'admin/creator'}">
+<c:if test="${mainPage == 'admin'}">
     <ul class="sidebar-nav">
-        <li class="active">
+        <li ${creatorMenu}>
             <a href="<c:url value="/admin/creator"/>">
                 <span class="glyphicon glyphicon-stats"></span>
                 Статистика
             </a>
         </li>
-        <li>
+        <li ${giftsMenu}>
             <a href="<c:url value="/admin/gifts"/>">
                 <span class="fa fa-gift"></span>
                 Подарки
             </a>
         </li>
-        <li>
-            <a href="<c:url value="/admin/dispute"/>">
-                <span class="fa fa-comment"></span>
-                Споры
-            </a>
-        </li>
-    </ul>
-</c:if>
-
-<c:if test="${pageType == 'admin/gifts'}">
-    <ul class="sidebar-nav">
-        <li>
-            <a href="<c:url value="/admin/creator"/>">
-                <span class="glyphicon glyphicon-stats"></span>
-                Статистика
-            </a>
-        </li>
-        <li class="active">
-            <a href="<c:url value="/admin/gifts"/>">
-                <span class="fa fa-gift"></span>
-                Подарки
-            </a>
-        </li>
-        <li>
-            <a href="<c:url value="/admin/dispute"/>">
-                <span class="fa fa-photo"></span>
-                Споры
-            </a>
-        </li>
-    </ul>
-</c:if>
-
-<c:if test="${pageType == 'admin/gifts/add'}">
-    <ul class="sidebar-nav">
-        <li>
-            <a href="<c:url value="/admin/creator"/>">
-                <span class="glyphicon glyphicon-stats"></span>
-                Статистика
-            </a>
-        </li>
-        <li class="active">
-            <a href="<c:url value="/admin/gifts"/>">
-                <span class="fa fa-gift"></span>
-                Подарки
-            </a>
-        </li>
-        <li>
-            <a href="<c:url value="/admin/dispute"/>">
-                <span class="fa fa-photo"></span>
-                Споры
-            </a>
-        </li>
-    </ul>
-</c:if>
-
-<c:if test="${pageType == 'admin/dispute'}">
-    <ul class="sidebar-nav">
-        <li>
-            <a href="<c:url value="/admin/creator"/>">
-                <span class="glyphicon glyphicon-stats"></span>
-                Статистика
-            </a>
-        </li>
-        <li>
-            <a href="<c:url value="/admin/gifts"/>">
-                <span class="fa fa-gift"></span>
-                Подарки
-            </a>
-        </li>
-        <li class="active">
+        <li ${disputeMenu}>
             <a href="<c:url value="/admin/dispute"/>">
                 <span class="glyphicon glyphicon-comment"></span>
                 Споры
             </a>
         </li>
+        <li ${balanceMenu}>
+            <a href="<c:url value="/admin/balance"/>">
+                <span class="glyphicon glyphicon-usd"></span>
+                Баланс
+            </a>
+        </li>
     </ul>
 </c:if>
 
-<c:if test="${pageType == 'admin/dispute/add'}">
-    <ul class="sidebar-nav">
-        <li>
-            <a href="<c:url value="/admin/creator"/>">
-                <span class="glyphicon glyphicon-stats"></span>
-                Статистика
-            </a>
-        </li>
-        <li>
-            <a href="<c:url value="/admin/gifts"/>">
-                <span class="fa fa-gift"></span>
-                Подарки
-            </a>
-        </li>
-        <li class="active">
-            <a href="<c:url value="/admin/dispute"/>">
-                <span class="glyphicon glyphicon-comment"></span>
-                Споры
-            </a>
-        </li>
-    </ul>
-</c:if>
 
 <a href="<c:url value="/paypal"/>" style="color:orange">Купить аккаунт</a>
+
+

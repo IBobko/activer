@@ -104,6 +104,8 @@
 
 
 	<bean id="paymentDebitDaoDao" class="ru.todo100.activer.dao.PaymentDebitDao"/>
+
+	<bean id="paymentCreditDaoDao" class="ru.todo100.activer.dao.PaymentCreditDao"/>
 	<bean id="paymentService" class="ru.todo100.activer.service.impl.PaymentServiceImpl"/>
 
 	<bean id="giftService" class="ru.todo100.activer.service.impl.GiftServiceImpl"/>

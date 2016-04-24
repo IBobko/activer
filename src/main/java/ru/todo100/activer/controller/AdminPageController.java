@@ -1,9 +1,12 @@
 package ru.todo100.activer.controller;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,17 +14,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.dao.PaymentCreditDao;
 import ru.todo100.activer.data.*;
 import ru.todo100.activer.form.DisputeThemeForm;
 import ru.todo100.activer.form.PagedForm;
+import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.DisputeThemeItem;
+import ru.todo100.activer.model.PaymentCreditItem;
 import ru.todo100.activer.qualifier.DisputeThemeQualifier;
-import ru.todo100.activer.service.AdminAccountService;
-import ru.todo100.activer.service.DisputeService;
-import ru.todo100.activer.service.GiftService;
-import ru.todo100.activer.service.PartnerService;
+import ru.todo100.activer.service.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -221,6 +225,53 @@ public class AdminPageController {
         return "admin/partner";
     }
 
+    @RequestMapping("/balance")
+    public String balance(final Model model, final PagedForm pagedForm, @RequestParam(name = "synch", required = false) Integer synch) {
+        if (synch != null) {
+            getPartnerService().synchronize(accountService.getCurrentAccount().getId());
+        }
+        model.addAttribute("pageType", "admin/balance");
+        model.addAttribute("pagedData", getBalanceForPagedForm(pagedForm));
+        return "admin/balance";
+    }
+
+    public PaymentService getPaymentService() {
+        return paymentService;
+    }
+
+    @Autowired
+    public void setPaymentService(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
+
+
+    private PaymentService paymentService;
+
+    private PagedData<BalanceData> getBalanceForPagedForm(PagedForm pagedForm) {
+        final Integer accountId = accountService.getCurrentAccount().getId();
+        final BalanceQualifier qualifier = new BalanceQualifier();
+        qualifier.setCount(COUNT_PER_PAGE);
+        qualifier.setStart(pagedForm.getPage() * COUNT_PER_PAGE);
+
+        if (pagedForm.getOrderType() != null && pagedForm.getOrderField() != null) {
+            qualifier.setOrderName(pagedForm.getOrderField());
+            qualifier.setOrder(Qualifier.Order.valueOf(pagedForm.getOrderType()));
+        }
+        final Long count = getPaymentService().getBalanceCount(qualifier);
+        final PagedData<BalanceData> pagedData = new PagedData<>();
+        pagedData.setPage(pagedForm.getPage());
+        pagedData.setCount((int) Math.ceil(count * 1.0 / COUNT_PER_PAGE));
+        pagedData.setElements(getPaymentService().getBalances(qualifier));
+        return pagedData;
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/balancePaged")
+    public PagedData balancePaged(final PagedForm pagedForm) {
+        return getBalanceForPagedForm(pagedForm);
+    }
+
     @ResponseBody
     @RequestMapping("/partnerPaged")
     public PagedData partnerPaged(final PagedForm pagedForm) {
@@ -249,6 +300,31 @@ public class AdminPageController {
         pagedData.setCount((int) Math.ceil(count * 1.0 / COUNT_PER_PAGE));
         pagedData.setElements(getPartnerService().getPartners(qualifier));
         return pagedData;
+    }
+
+    @Autowired
+    private PaymentCreditDao paymentCreditDao;
+
+    @ResponseBody
+    @RequestMapping("/out")
+    public String out() {
+
+//        final List<AccountItem> accounts = accountService.getAll();
+//        Session session = paymentCreditDao.getSessionFactory().openSession();
+//        Transaction tx = session.beginTransaction();
+//
+//        for (AccountItem account: accounts) {
+//            PaymentCreditItem paymentCreditItem = new PaymentCreditItem();
+//            paymentCreditItem.setAccount(account);
+//            paymentCreditItem.setPaymentCreditDescription("Оплатить партнерский аккаунт");
+//            paymentCreditItem.setPaymentCreditSum(new BigDecimal("50"));
+//            session.save(paymentCreditItem);
+//        };
+//        tx.commit();
+
+
+
+        return "Done";
     }
 
 }

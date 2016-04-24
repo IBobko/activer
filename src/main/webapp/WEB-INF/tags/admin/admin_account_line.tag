@@ -8,7 +8,7 @@
 <tr>
     <td>${adminAccount.lastName}&nbsp;${adminAccount.firstName}</td>
     <td>${adminAccount.email}</td>
-    <td>Бесплатный</td>
+    <td>${adminAccount.type}</td>
     <td>${adminAccount.networkCount}</td>
     <td>${adminAccount.inviterName}</td>
     <td>${adminAccount.onoffline}</td>
