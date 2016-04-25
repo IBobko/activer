@@ -6,6 +6,14 @@ import com.paypal.api.payments.util.ResultPrinter;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.OAuthTokenCredential;
 import com.paypal.base.rest.PayPalRESTException;
+import com.paypal.exception.*;
+import com.paypal.sdk.exceptions.OAuthException;
+import com.paypal.svcs.services.AdaptiveAccountsService;
+import com.paypal.svcs.types.aa.AddressType;
+import com.paypal.svcs.types.aa.CreateAccountRequest;
+import com.paypal.svcs.types.aa.CreateAccountResponse;
+import com.paypal.svcs.types.aa.NameType;
+import com.paypal.svcs.types.common.RequestEnvelope;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +27,7 @@ import ru.todo100.activer.service.impl.PaymentServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.*;
@@ -30,20 +39,16 @@ import java.util.*;
 @RequestMapping("/paypal")
 public class PayPalController {
 
+    private static final Logger LOGGER = Logger
+            .getLogger(PayPalController.class);
+    Map<String, String> map = new HashMap<String, String>();
     @Autowired
     private AccountDao accountService;
-
     @Autowired
     private PaymentServiceImpl paymentService;
 
-    Map<String, String> map = new HashMap<String, String>();
-
-
-    private static final Logger LOGGER = Logger
-            .getLogger(PayPalController.class);
-
     @RequestMapping
-    public ModelAndView index(HttpServletRequest req, HttpServletResponse resp) throws Exception, PayPalRESTException {
+    public ModelAndView index(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 
 
         JSONObject josn = new JSONObject(createPayment(req,resp));
@@ -180,14 +185,14 @@ public class PayPalController {
 
     @RequestMapping("/cancel")
     @ResponseBody
-    public String cancel(HttpServletRequest req, HttpServletResponse resp) throws Exception, PayPalRESTException {
+    public String cancel(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 
         return "cancel";
     }
 
     @RequestMapping("/return")
 
-    public String result(HttpServletRequest req, HttpServletResponse resp) throws Exception, PayPalRESTException {
+    public String result(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 
         AccountItem accountItem = accountService.getCurrentAccount();
         try {
@@ -205,7 +210,7 @@ public class PayPalController {
 
     @RequestMapping("/out")
     @ResponseBody
-    public PayoutBatch out(HttpServletRequest req, HttpServletResponse resp) throws Exception, PayPalRESTException {
+    public PayoutBatch out(HttpServletRequest req, HttpServletResponse resp) throws Exception {
       return createSynchronousSinglePayout(req,resp);
     }
 
@@ -259,6 +264,41 @@ public class PayPalController {
         return batch;
     }
 
+    @ResponseBody
+    @RequestMapping("/create")
+    public String createAccount() throws IOException, OAuthException, InvalidResponseDataException, SSLConfigurationException, MissingCredentialException, HttpErrorException, InvalidCredentialException, ClientActionRequiredException, InterruptedException {
 
+        RequestEnvelope env = new RequestEnvelope();
+        env.setErrorLanguage("en_US");
+
+        NameType name = new NameType("John", "Lui");
+
+
+        AddressType address = new AddressType("Main St", "US");
+
+        String preferredLanguageCode = "en_US";
+
+        CreateAccountRequest createAccountRequest = new CreateAccountRequest(env,
+                name, address, preferredLanguageCode);
+
+        Map<String, String> customConfigurationMap = new HashMap<String, String>();
+        customConfigurationMap.put("mode", "sandbox"); // Load the map with all mandatory parameters
+        customConfigurationMap.put("acct1.UserName", "limit-speed_api2.ya.ru");
+        customConfigurationMap.put("acct1.Password", "J9HQTXEEYPMX9FCR");
+        customConfigurationMap.put("acct1.Signature", "AFcWxV21C7fd0v3bYYYRCpSSRl31AEwgUxCEukmIx.B4rWL3njNJmCNL");
+        customConfigurationMap.put("acct1.AppId", "APP-80W284485P519543T");
+        customConfigurationMap.put("acct1.Subject", "sandbox");
+
+        customConfigurationMap.put("X-PAYPAL-SANDBOX-EMAIL-ADDRESS", "limit-speed@yandex.ua");
+
+
+        AdaptiveAccountsService adaptiveAccountsService = new AdaptiveAccountsService(customConfigurationMap);
+
+
+        CreateAccountResponse createAccountResponse = adaptiveAccountsService.createAccount(createAccountRequest, "limit-speed@yandex.ua");
+
+
+        return "DONE" + createAccountResponse.getAccountId();
+    }
 
 }

@@ -92,6 +92,32 @@
         </tr>
     </table>
 </form:form>
+
+
+<h4 style="color:#337ab7;font-weight:bold">Привязка к PayPal</h4>
+<form:form method="post" commandName="payPalForm">
+    <table>
+        <tr>
+            <td>
+                PayPal account
+            </td>
+            <td>
+                <form:input type="text" path="login"/>
+            </td>
+            <td>
+                <form:errors path="login"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: center"><input type="submit" value="Привязать"/></td>
+            <td></td>
+        </tr>
+    </table>
+</form:form>
+
+
+
+
 <c:url var="advancedPost" value="/settings/advancedPost"/>
 <form:form method="post" action="${advancedPost}" commandName="childrenEducationJobForm">
     <h4 style="color:#337ab7;font-weight:bold">Образование</h4>
