@@ -11,17 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.data.Qualifier;
 import ru.todo100.activer.form.RegisterForm;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.DreamItem;
 import ru.todo100.activer.model.PromoCodeItem;
 import ru.todo100.activer.model.TripItem;
+import ru.todo100.activer.populators.ProfilePopulator;
 import ru.todo100.activer.service.PromoService;
 import ru.todo100.activer.service.ReferService;
 import ru.todo100.activer.util.InputError;
 import ru.todo100.activer.util.MailService;
 
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.GregorianCalendar;
@@ -95,6 +98,25 @@ public class AccountDao extends AbstractDao
 			return accountItem;
 		}
 		return null;
+	}
+
+	@Autowired
+	private ProfilePopulator profilePopulator;
+
+
+	public void initCurrentProfile(HttpSession session) {
+		final AccountItem account = getCurrentAccountForProfile();
+		final ProfileData profile = profilePopulator.populate(account);
+		profile.setMy(true);
+		session.setAttribute("currentProfileData",profile);
+	}
+
+	public ProfileData getCurrentProfileData(HttpSession session)
+	{
+		if (session.getAttribute("currentProfileData")==null){
+			initCurrentProfile(session);
+		}
+		return (ProfileData)session.getAttribute("currentProfileData");
 	}
 
 	public void addFriend(AccountItem account, Integer friendId)

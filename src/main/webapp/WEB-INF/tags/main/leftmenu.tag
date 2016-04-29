@@ -236,39 +236,6 @@
     </ul>
 </c:if>
 
-
-
-
-<c:if test="${pageType == 'settings'}">
-    <ul class="sidebar-nav">
-        <li>
-            <div style="background-color: #14EA78;">
-            <a href="<c:url value="/profile"/>" style="color:black">
-                <span class="fa fa-user"></span>
-                Информация</a></div>
-                <ul style="list-style:none">
-                    <li><a href="<c:url value="/settings"/>">Общее</a></li>
-                    <li><a href="<c:url value="/settings/interests"/>">Интересы</a></li>
-                    <li><a href="<c:url value="/settings/trips"/>">Путешествия</a></li>
-                    <li><a href="<c:url value="/settings/dreams"/>">Мечты</a></li>
-                </ul>
-        </li>
-        <li>
-            <a href="<c:url value="/safety"/>">
-                <span class="fa fa-smile-o"></span>
-                Безопастность
-            </a>
-        </li>
-        <li>
-            <a href="<c:url value="/private"/>">
-                <span class="fa fa-photo"></span>
-                Приватность
-            </a>
-        </li>
-    </ul>
-</c:if>
-
-
 <c:if test="${pageType == 'videos'}">
     <ul class="sidebar-nav">
         <li>
@@ -308,6 +275,39 @@
         </li>
     </ul>
 </c:if>
+
+
+<c:if test="${mainPage == 'settings'}">
+    <ul class="sidebar-nav">
+        <li>
+            <div>
+                <a href="<c:url value="/settings"/>">
+                    <span class="fa fa-user"></span>
+                    Информация
+                </a>
+            </div>
+            <ul style="list-style:none">
+                <li ${SettingsInfoMenu}><a href="<c:url value="/settings"/>">Общее</a></li>
+                <li ${SettingsInfoInterestMenu}><a href="<c:url value="/settings/interests"/>">Интересы</a></li>
+                <li ${SettingsInfoTripMenu}><a href="<c:url value="/settings/trips"/>">Путешествия</a></li>
+                <li ${SettingsInfoDreamMenu}><a href="<c:url value="/settings/dreams"/>">Мечты</a></li>
+            </ul>
+        </li>
+        <li ${SettingsSafetyMenu}>
+            <a href="<c:url value="/safety"/>">
+                <span class="fa fa-smile-o"></span>
+                Безопастность
+            </a>
+        </li>
+        <li ${SettingsPrivateMenu}>
+            <a href="<c:url value="/private"/>">
+                <span class="fa fa-photo"></span>
+                Приватность
+            </a>
+        </li>
+    </ul>
+</c:if>
+
 
 
 <c:if test="${mainPage == 'admin'}">

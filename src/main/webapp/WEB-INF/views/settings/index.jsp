@@ -23,7 +23,11 @@
                 Дата рождения
             </td>
             <td>
-                <form:input type="text" path="birthDate"/>
+                <div style="width:202px" class="input-group date form_date col-md-5" data-date="" data-date-format="dd/mm/yyyy" data-link-format="yyyy-mm-dd">
+                    <form:input type="text" path="birthDate" class="form-control" name="m" size="16" readonly="true"/>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
             </td>
             <td>
                 <form:errors path="birthDate"/>

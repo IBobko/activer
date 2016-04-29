@@ -34,6 +34,7 @@
     <link href="<c:url value="/resources/css/styles.css"/>" rel="stylesheet">
     <link href="<c:url value="/resources/css/sidebar.css"/>" rel="stylesheet">
     <link href="<c:url value="/resources/font-awesome/css/font-awesome.min.css"/>" rel="stylesheet">
+    <link href="<c:url value="/resources/css/bootstrap-datetimepicker.css"/>" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -47,6 +48,9 @@
     <script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/sockjs-0.3.4.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/stomp.js"/>"></script>
+
+    <script type="text/javascript" src="<c:url value="/resources/js/bootstrap-datetimepicker.min.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/resources/js/locales/bootstrap-datetimepicker.ru.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/activer.global.js"/>"></script>
 
     <script type="text/javascript">
@@ -76,7 +80,6 @@
 </head>
 
 <body>
-
 <div id="wrapper">
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
@@ -105,6 +108,7 @@
     <div id="page-content-wrapper" class="container-fluid">
         <!-- Navbar -->
         <main:topmenu/>
+
         <!-- /Navbar -->
         <tiles:insertAttribute name="content"/>
     </div>
@@ -142,6 +146,19 @@
      style="z-index:100000; top:10px; left:10px; position:absolute;display:none; width:300px; height:300px;background:#5d7fb5">
 
 </div>
+
+<script type="text/javascript">
+    $('.form_date').datetimepicker({
+        language:  'ru',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+</script>
 </body>
 </html>
 

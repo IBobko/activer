@@ -54,18 +54,10 @@ public class ProfilePageController
 	private FriendsService friendsService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String index(final Model model, HttpServletRequest request)
+	public String index(final HttpServletRequest request)
 	{
-		final AccountItem account = accountService.getCurrentAccountForProfile();
-		final String photo = photoService1.getPhoto(account.getId());
-		final ProfileData profile = profilePopulator.populate(account);
-		model.addAttribute("profile", profile);
-		model.addAttribute("friends", friendsService.getFriendData(request.getSession()));
-		model.addAttribute("photos", photosDao.getByAccountAndAlbum(account.getId(), 1));
-		model.addAttribute("gifts", photosDao.getByAccountAndAlbum(account.getId(), 1));
-		model.addAttribute("photo", photo);
-		populatePersonOfPage(model, account);
-		return "profile/index";
+		final ProfileData profile = accountService.getCurrentProfileData(request.getSession());
+		return "redirect:/profile/id" + profile.getId();
 	}
 
 	@RequestMapping(value = "/change")
@@ -111,18 +103,21 @@ public class ProfilePageController
 	}
 
 	@RequestMapping(value = "/id{id:\\d+}", method = RequestMethod.GET)
-	public String people(Model model, @PathVariable Integer id)
+	public String people(Model model, @PathVariable Integer id,HttpServletRequest request)
 	{
-		final AccountItem account = accountService.get(id);
-		ProfileData profile = profilePopulator.populate(account);
+		ProfileData profile = accountService.getCurrentProfileData(request.getSession());
+		if (!profile.getId().equals(id)) {
+			final AccountItem account = accountService.get(id);
+			profile = profilePopulator.populate(account);
+		}
 
-
-		String photo =  photoService1.getPhoto(profile.getId());
-
+		final String photo = photoService1.getPhoto(profile.getId());
 		model.addAttribute("profile", profile);
+		model.addAttribute("friends", friendsService.getFriendData(request.getSession()));
+		model.addAttribute("photos", photosDao.getByAccountAndAlbum(profile.getId(), 1));
+		model.addAttribute("gifts", photosDao.getByAccountAndAlbum(profile.getId(), 1));
 		model.addAttribute("photo", photo);
-
-		populatePersonOfPage(model,account);
+		populatePersonOfPage(model, profile);
 		return "profile/index";
 	}
 
@@ -134,7 +129,7 @@ public class ProfilePageController
 		response.getOutputStream().print("Successful");
 	}
 
-	private void populatePersonOfPage(Model model, AccountItem account) {
+	private void populatePersonOfPage(Model model, ProfileData account) {
 		final List<MessageData> wall = new ArrayList<>();
 		final List<WallItem> posts = wallService.getAllByAccount(account.getId());
 		for (final WallItem item: posts) {

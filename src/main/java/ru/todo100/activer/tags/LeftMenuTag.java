@@ -45,6 +45,13 @@ public class LeftMenuTag extends BodyTagSupport {
                     pageContext.setAttribute("creatorMenu"," class='active'");
                 }
                 pageContext.getRequest().setAttribute("mainPage",sections[0]);
+            } else {
+                final StringBuilder menuName = new StringBuilder();
+                for (String sub: sections) {
+                    menuName.append(sub.substring(0, 1).toUpperCase()).append(sub.substring(1));
+                }
+                pageContext.getRequest().setAttribute(menuName.toString() + "Menu"," class='active'");
+                pageContext.getRequest().setAttribute("mainPage",sections[0]);
             }
 
         }

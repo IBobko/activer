@@ -34,7 +34,7 @@ public class SafetyPageController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String index(Model model) {
-        model.addAttribute("pageType", "settings");
+        model.addAttribute("pageType", "settings/safety");
 
         if (!model.containsAttribute("changePasswordForm")){
             final ChangePasswordForm changePasswordForm = new ChangePasswordForm();

@@ -26,7 +26,7 @@
                 </li>
                 <li <c:if test="${pageType == 'gifts'}">class="active"</c:if>><a
                         href="<c:url value="/gifts/"/>">Подарки</a></li>
-                <li <c:if test="${pageType == 'settings'}">class="active"</c:if>><a href="<c:url value="/settings"/>">Настройки</a>
+                <li <c:if test="${mainPage == 'settings'}">class="active"</c:if>><a href="<c:url value="/settings"/>">Настройки</a>
                 </li>
                 <li <c:if test="${pageType == 'admin/partner'}">class="active"</c:if>><a
                         href="<c:url value="/admin/partner"/>">Партнер</a></li>

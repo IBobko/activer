@@ -1,11 +1,12 @@
 package ru.todo100.activer.data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
-public class ProfileData {
+public class ProfileData implements Serializable{
     private Integer id;
     private String firstName;
     private String lastName;
@@ -22,6 +23,16 @@ public class ProfileData {
     private List<DreamData> dreams;
     private String role;
     private boolean isOnline;
+
+    public boolean isMy() {
+        return my;
+    }
+
+    public void setMy(boolean my) {
+        this.my = my;
+    }
+
+    private boolean my = false;
 
     public String getRole() {
         return role;

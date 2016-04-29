@@ -78,7 +78,7 @@ public class SettingPageController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String main(final Model model) {
-        model.addAttribute("pageType", "settings");
+        model.addAttribute("pageType", "settings/info");
 
         final AccountItem account = accountService.getCurrentAccount();
 
@@ -249,7 +249,7 @@ public class SettingPageController {
 
     @RequestMapping(value = "/interests", method = RequestMethod.GET)
     public String interests(Model model) {
-        model.addAttribute("pageType", "settings");
+        model.addAttribute("pageType", "settings/info/interest");
 
         final AccountItem account = accountService.getCurrentAccount();
 
@@ -296,7 +296,7 @@ public class SettingPageController {
 
     @RequestMapping(value = "/trips", method = RequestMethod.GET)
     public String trips(Model model) {
-        model.addAttribute("pageType", "settings");
+        model.addAttribute("pageType", "settings/info/trip");
 
         final TripForm tripForm = new TripForm();
         model.addAttribute("tripForm", tripForm);
@@ -353,7 +353,7 @@ public class SettingPageController {
 
     @RequestMapping("/dreams")
     public String dreams(Model model) {
-        model.addAttribute("pageType", "settings");
+        model.addAttribute("pageType", "settings/info/dream");
         final DreamForm dreamForm = new DreamForm();
         model.addAttribute("dreamForm", dreamForm);
         final AccountItem account = accountService.getCurrentAccount();

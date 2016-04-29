@@ -45,7 +45,7 @@ public class PrivatePageController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String index(final Model model) {
-        model.addAttribute("pageType", "settings");
+        model.addAttribute("pageType", "settings/private");
         final AccountItem accountItem = getAccountService().getCurrentAccount();
         if (!model.containsAttribute("privateForm")) {
             final PrivateForm privateForm = new PrivateForm();

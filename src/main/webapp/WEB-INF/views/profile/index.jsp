@@ -37,7 +37,7 @@
                 <h4 class="media-heading">${profile.firstName}&nbsp;${profile.lastName}'27</h4>
                 <table class="table">
                     <tr>
-                        <td>Дата рождения:</td>
+                        <td width="200">Дата рождения:</td>
                         <td>${profile.birthDate}&nbsp;
                             <!--<a href="#" class="zodiac">
                                 <span class="fa fa-venus"></span>
@@ -98,6 +98,7 @@
             </div>
         </div>
     </div>
+
 </div>
 <!-- /About me -->
 
@@ -123,7 +124,9 @@
                 <img class="img-responsive" src="<c:url value="/resources/img/image-not-found.jpg"/>">
                 <img class="img-responsive" src="<c:url value="/resources/img/image-not-found.jpg"/>">
             </div>
-            <button class="btn btn-default upload-photo">Загрузить фото</button>
+            <c:if test="${profile.my}">
+                <button class="btn btn-default upload-photo">Загрузить фото</button>
+            </c:if>
         </div>
     </div>
 </div>
@@ -139,9 +142,11 @@
             <c:forEach items="${profile.interests}" var="interest">
                 <li><a href="#">${interest.name}</a></li>
             </c:forEach>
-            <li>
+            <c:if test="${profile.my}">
+                <li>
                 <button class="btn btn-default" onclick="document.location='<c:url value="/settings/interests"/>'">+ Добавить</button>
             </li>
+            </c:if>
         </ul>
 
     </div>
