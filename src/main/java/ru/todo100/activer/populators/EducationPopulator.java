@@ -12,7 +12,9 @@ public class EducationPopulator implements Populator<EducationItem,EducationData
         final EducationData educationData = new EducationData();
         educationData.setCity(educationItem.getCity());
         educationData.setYear(educationItem.getEndYear());
-        educationData.setCountry(educationItem.getCountry().getName());
+        if (educationItem.getCountry() != null) {
+            educationData.setCountry(educationItem.getCountry().getName());
+        }
         educationData.setFaculty(educationItem.getFaculty());
         educationData.setUniversity(educationItem.getUniversity());
         return educationData;

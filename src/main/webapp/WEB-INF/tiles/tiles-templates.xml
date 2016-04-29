@@ -34,7 +34,6 @@
 		<put-attribute name="content" value="/WEB-INF/views/auth/done.jsp"/>
 	</definition>
 
-
 	<definition name="index/index" extends="base-template">
     	<put-attribute name="content" value="/WEB-INF/views/index/index.jsp" />
 	</definition>
@@ -43,19 +42,9 @@
 		<put-attribute name="content" value="/WEB-INF/views/profile/index.jsp" />
 	</definition>
 
-	
 	<definition name="profile/change" extends="base-template">
     	<put-attribute name="content" value="/WEB-INF/views/profile/change.jsp" />
 	</definition>
-
-	<definition name="profile/i_can_form" extends="base-template">
-		<put-attribute name="content" value="/WEB-INF/views/profile/i_can_form.jsp" />
-	</definition>
-
-	<definition name="profile/i_want_form" extends="base-template">
-		<put-attribute name="content" value="/WEB-INF/views/profile/i_want_form.jsp" />
-	</definition>
-
 
 	<definition name="mysql/index" extends="base-template">
     	<put-attribute name="content" value="/WEB-INF/views/mysql/index.jsp" />

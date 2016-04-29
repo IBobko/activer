@@ -104,41 +104,41 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
             profileData.setBirthDate(simpleDateFormat.format(accountItem.getBirthdate().getTime()));
         }
 
-        if (accountItem.getEducationItems() != null && accountItem.getEducationItems().size() > 0) {
-            profileData.setEducation(getEducationPopulator().populate(accountItem.getEducationItems().get(0)));
+        /* Educations populate*/
+        if (!accountItem.getEducationItems().isEmpty()) {
+            profileData.setEducation(getEducationPopulator().populate(accountItem.getEducationItems().iterator().next()));
         }
 
-        if (accountItem.getJobItems() != null && accountItem.getJobItems().size() > 0) {
-            profileData.setJob(getJobPopulator().populate(accountItem.getJobItems().get(0)));
+        /* Jobs populate*/
+        if (!accountItem.getJobItems().isEmpty()) {
+            profileData.setJob(getJobPopulator().populate(accountItem.getJobItems().iterator().next()));
         }
 
-        if (accountItem.getChildrenItems() != null && accountItem.getChildrenItems().size() > 0) {
-            profileData.setChildren(getChildrenPopulator().populate(accountItem.getChildrenItems().get(0)));
+        /* Children populate*/
+        if (!accountItem.getChildrenItems().isEmpty()) {
+            profileData.setChildren(getChildrenPopulator().populate(accountItem.getChildrenItems().iterator().next()));
         }
 
+        /* Interests populate*/
         final List<InterestData> interests = new ArrayList<>();
-        if (accountItem.getInterestItems() != null) {
-            for (InterestItem item : accountItem.getInterestItems()) {
-                interests.add(getInterestPopulator().populate(item));
-            }
+        for (InterestItem item : accountItem.getInterestItems()) {
+            interests.add(getInterestPopulator().populate(item));
         }
         profileData.setInterests(interests);
 
+        /* Dreams populate*/
         final List<DreamData> dreams = new ArrayList<>();
-        if (accountItem.getDreamItems() != null) {
-            for (DreamItem item : accountItem.getDreamItems()) {
-                dreams.add(getDreamPopulator().populate(item));
-            }
+        for (DreamItem item : accountItem.getDreamItems()) {
+            dreams.add(getDreamPopulator().populate(item));
         }
         profileData.setDreams(dreams);
 
-        final List<TripData> tripDatas = new ArrayList<>();
-        if (accountItem.getTripItems() != null) {
-            for (TripItem item : accountItem.getTripItems()) {
-                tripDatas.add(getTripPopulator().populate(item));
-            }
+        /* Trips populate*/
+        final List<TripData> trips = new ArrayList<>();
+        for (TripItem item : accountItem.getTripItems()) {
+            trips.add(getTripPopulator().populate(item));
         }
-        profileData.setTrips(tripDatas);
+        profileData.setTrips(trips);
 
         if (facePhoto != null) {
             profileData.setFacePhotoUrl(facePhoto.getName());

@@ -36,7 +36,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Igor Bobko <limit-speed@yandex.ru>.
@@ -55,6 +57,7 @@ public class SettingPageController {
     @Autowired
     private InterestPopulator interestPopulator;
     private TripPopulator tripPopulator;
+    private DreamPopulator dreamPopulator;
 
     public CountryDao getCountryDao() {
         return countryDao;
@@ -80,6 +83,20 @@ public class SettingPageController {
         final AccountItem account = accountService.getCurrentAccount();
 
         if (!model.containsAttribute("mainInfoForm")) {
+            final PayPalAccountForm payPalAccountForm = new PayPalAccountForm();
+//            mainInfoForm.setFirstName(account.getFirstName());
+//            mainInfoForm.setLastName(account.getLastName());
+//            mainInfoForm.setSex(account.getSex());
+//            mainInfoForm.setMaritalStatus(account.getMaritalStatus());
+//            mainInfoForm.setBirthDate(account.getBirthdate());
+//            if (account.getBirthdate() != null) {
+//                mainInfoForm.setBirthDate(account.getBirthdate());
+//            }
+
+            model.addAttribute("payPalForm", payPalAccountForm);
+        }
+
+        if (!model.containsAttribute("mainInfoForm")) {
             final MainInfoForm mainInfoForm = new MainInfoForm();
             mainInfoForm.setFirstName(account.getFirstName());
             mainInfoForm.setLastName(account.getLastName());
@@ -100,8 +117,8 @@ public class SettingPageController {
             childrenEducationJobForm.setEducationForm(educationForm);
             final ChildrenForm childrenForm = new ChildrenForm();
             childrenEducationJobForm.setChildrenForm(childrenForm);
-            if (account.getEducationItems() != null && account.getEducationItems().size() > 0) {
-                EducationItem education = account.getEducationItems().get(0);
+            if (!account.getEducationItems().isEmpty()) {
+                EducationItem education = account.getEducationItems().iterator().next();
                 educationForm.setCity(education.getCity());
                 educationForm.setUniversity(education.getUniversity());
                 educationForm.setFaculty(education.getFaculty());
@@ -111,15 +128,15 @@ public class SettingPageController {
                 educationForm.setYear(education.getEndYear());
             }
 
-            if (account.getJobItems() != null && account.getJobItems().size() > 0) {
-                JobItem job = account.getJobItems().get(0);
+            if (!account.getJobItems().isEmpty()) {
+                JobItem job = account.getJobItems().iterator().next();
                 jobForm.setCity(job.getCity());
                 jobForm.setPost(job.getPost());
                 jobForm.setWork(job.getWorkplace());
             }
 
-            if (account.getChildrenItems() != null && account.getChildrenItems().size() > 0) {
-                ChildrenItem child = account.getChildrenItems().get(0);
+            if (!account.getChildrenItems().isEmpty()) {
+                ChildrenItem child = account.getChildrenItems().iterator().next();
                 childrenForm.setName(child.getChildrenName());
                 childrenForm.setYear(child.getBirthdateYear());
             }
@@ -149,18 +166,14 @@ public class SettingPageController {
     public String advancedPost(@Valid final ChildrenEducationJobForm childrenEducationJobForm, final BindingResult bindingResult) {
         if (!bindingResult.hasErrors()) {
             final AccountItem account = accountService.getCurrentAccount();
-            List<EducationItem> educations = account.getEducationItems();
-            if (educations == null) {
-                educations = new ArrayList<>();
-                account.setEducationItems(educations);
-            }
+            final Set<EducationItem> educations = account.getEducationItems();
 
             final EducationItem education;
-            if (educations.size() == 0) {
+            if (educations.isEmpty()) {
                 education = new EducationItem();
                 educations.add(education);
             } else {
-                education = educations.get(0);
+                education = educations.iterator().next();
             }
 
             education.setCity(childrenEducationJobForm.getEducationForm().getCity());
@@ -175,18 +188,15 @@ public class SettingPageController {
             }
 
 
-            List<JobItem> jobs = account.getJobItems();
-            if (jobs == null) {
-                jobs = new ArrayList<>();
-                account.setJobItems(jobs);
-            }
+            Set<JobItem> jobs = account.getJobItems();
+
 
             final JobItem job;
-            if (jobs.size() == 0) {
+            if (jobs.isEmpty()) {
                 job = new JobItem();
                 jobs.add(job);
             } else {
-                job = jobs.get(0);
+                job = jobs.iterator().next();
             }
 
             job.setCity(childrenEducationJobForm.getJobForm().getCity());
@@ -194,18 +204,14 @@ public class SettingPageController {
             job.setWorkplace(childrenEducationJobForm.getJobForm().getWork());
 
 
-            List<ChildrenItem> children = account.getChildrenItems();
-            if (children == null) {
-                children = new ArrayList<>();
-                account.setChildrenItems(children);
-            }
+            Set<ChildrenItem> children = account.getChildrenItems();
 
             final ChildrenItem child;
             if (children.size() == 0) {
                 child = new ChildrenItem();
                 children.add(child);
             } else {
-                child = children.get(0);
+                child = children.iterator().next();
             }
 
             child.setChildrenName(childrenEducationJobForm.getChildrenForm().getName());
@@ -247,13 +253,13 @@ public class SettingPageController {
 
         final AccountItem account = accountService.getCurrentAccount();
 
-        List<InterestItem> interestsItems = account.getInterestItems();
+        Set<InterestItem> interestsItems = account.getInterestItems();
         List<InterestData> interests = new ArrayList<>();
-        if (interestsItems != null) {
-            for (InterestItem item : interestsItems) {
-                interests.add(getInterestPopulator().populate(item));
-            }
+
+        for (InterestItem item : interestsItems) {
+            interests.add(getInterestPopulator().populate(item));
         }
+
         model.addAttribute("interests", interests);
         return "settings/interests";
     }
@@ -262,7 +268,7 @@ public class SettingPageController {
     @ResponseBody
     @Transactional
     public void interestsPost(InterestForm interestForm) {
-        List<InterestItem> interests = new ArrayList<>();
+        Set<InterestItem> interests = new HashSet<>();
         if (interestForm.getTags() != null) {
             for (String interest : interestForm.getTags()) {
                 InterestItem interestItem = new InterestItem();
@@ -297,11 +303,11 @@ public class SettingPageController {
 
         final List<TripData> trips = new ArrayList<>();
         final AccountItem account = accountService.getCurrentAccount();
-        if (account.getTripItems() != null) {
-            for (final TripItem trip : account.getTripItems()) {
-                trips.add(getTripPopulator().populate(trip));
-            }
+
+        for (final TripItem trip : account.getTripItems()) {
+            trips.add(getTripPopulator().populate(trip));
         }
+
         model.addAttribute("trips", trips);
         return "settings/trips";
     }
@@ -319,13 +325,7 @@ public class SettingPageController {
                     tripItem.setCountry(country);
                 }
             }
-            final List<TripItem> trips;
-            if (account.getTripItems() != null) {
-                trips = account.getTripItems();
-            } else {
-                trips = new ArrayList<>();
-                account.setTripItems(trips);
-            }
+            final Set<TripItem> trips = account.getTripItems();
             trips.add(tripItem);
             accountService.save(account);
         }
@@ -351,10 +351,6 @@ public class SettingPageController {
         this.dreamPopulator = dreamPopulator;
     }
 
-
-    private DreamPopulator dreamPopulator;
-
-
     @RequestMapping("/dreams")
     public String dreams(Model model) {
         model.addAttribute("pageType", "settings");
@@ -362,12 +358,12 @@ public class SettingPageController {
         model.addAttribute("dreamForm", dreamForm);
         final AccountItem account = accountService.getCurrentAccount();
         final List<DreamData> dreams = new ArrayList<>();
-        if (account.getDreamItems() != null){
-            for (DreamItem dreamItem: account.getDreamItems()) {
-                final DreamData dreamData = getDreamPopulator().populate(dreamItem);
-                dreams.add(dreamData);
-            }
+
+        for (DreamItem dreamItem : account.getDreamItems()) {
+            final DreamData dreamData = getDreamPopulator().populate(dreamItem);
+            dreams.add(dreamData);
         }
+
         model.addAttribute("dreams", dreams);
         return "settings/dreams";
     }
@@ -379,11 +375,9 @@ public class SettingPageController {
 
             DreamItem dreamItem = null;
             if (dreamForm.getId() != null) {
-                if (account.getDreamItems() != null) {
-                    for (DreamItem item: account.getDreamItems()) {
-                        if (item.getId().equals(dreamForm.getId())){
-                            dreamItem = item;
-                        }
+                for (DreamItem item : account.getDreamItems()) {
+                    if (item.getId().equals(dreamForm.getId())) {
+                        dreamItem = item;
                     }
                 }
             }
@@ -409,13 +403,7 @@ public class SettingPageController {
                 System.out.println(theString);
                 dreamItem.setPhoto(theString);
             }
-            final List<DreamItem> dreamItems;
-            if (account.getDreamItems() !=null) {
-                dreamItems = account.getDreamItems();
-            } else {
-                dreamItems = new ArrayList<>();
-                account.setDreamItems(dreamItems);
-            }
+            final Set<DreamItem> dreamItems = account.getDreamItems();
             dreamItems.add(dreamItem);
             accountService.save(account);
         }

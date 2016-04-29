@@ -19,10 +19,7 @@ import ru.todo100.activer.service.AdminAccountService;
 import ru.todo100.activer.service.PartnerService;
 import ru.todo100.activer.service.ReferService;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
@@ -144,7 +141,7 @@ public class AdminAccountServiceImpl implements AdminAccountService {
             }
             /*@TODO переделать на код из ресурсов */
             data.setType("Бесплатный");
-            List<AuthorityItem> authorities = item.getAccountItem().getAuthorities();
+            Set<AuthorityItem> authorities = item.getAccountItem().getAuthorities();
 
             for (AuthorityItem authorityItem: authorities) {
                 if (authorityItem.getRole().equals("ROLE_PARTNER")){

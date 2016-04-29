@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
-@SuppressWarnings(value = {"unchecked", "SqlResolve"})
+@SuppressWarnings(value = {"unused", "SqlResolve", "unchecked"})
 @Transactional
 public class AccountDao extends AbstractDao
 {
@@ -56,7 +56,7 @@ public class AccountDao extends AbstractDao
 
 	public void save(AccountItem account)
 	{
-		Session session = getSession();
+		final Session session = getSession();
 		session.saveOrUpdate(account);
 	}
 
@@ -68,6 +68,13 @@ public class AccountDao extends AbstractDao
 	public AccountItem getByEmail(String email)
 	{
 		return (AccountItem) getCriteria().add(Restrictions.eq("email", email)).uniqueResult();
+	}
+
+	public AccountItem getCurrentAccountForProfile() {
+		getSession().enableFetchProfile("account-for-profile");
+		AccountItem accountItem = getCurrentAccount();
+		getSession().disableFetchProfile("account-for-profile");
+		return accountItem;
 	}
 
 	public AccountItem getCurrentAccount()
@@ -173,12 +180,10 @@ public class AccountDao extends AbstractDao
 
 	public void deleteTrip(Integer id) {
 		final AccountItem account = getCurrentAccount();
-		if (account.getTripItems() != null) {
-			for (TripItem trip : account.getTripItems()) {
-				if (Objects.equals(trip.getId(), id)) {
-					account.getTripItems().remove(trip);
-					break;
-				}
+		for (TripItem trip : account.getTripItems()) {
+			if (Objects.equals(trip.getId(), id)) {
+				account.getTripItems().remove(trip);
+				break;
 			}
 		}
 	}
@@ -197,12 +202,10 @@ public class AccountDao extends AbstractDao
 
 	public void deleteDream(Integer id) {
 		final AccountItem account = getCurrentAccount();
-		if (account.getDreamItems() != null) {
-			for (DreamItem dream : account.getDreamItems()) {
-				if (Objects.equals(dream.getId(), id)) {
-					account.getDreamItems().remove(dream);
-					break;
-				}
+		for (DreamItem dream : account.getDreamItems()) {
+			if (Objects.equals(dream.getId(), id)) {
+				account.getDreamItems().remove(dream);
+				break;
 			}
 		}
 	}

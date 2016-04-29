@@ -9,89 +9,114 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.Set;
 
 @SuppressWarnings({"JpaDataSourceORMInspection", "unused"})
 @Entity
 @Table(name = "account")
+@DynamicUpdate
+@FetchProfile(name = "account-for-profile", fetchOverrides = {
+        @FetchProfile.FetchOverride(entity = AccountItem.class, association = "educationItems", mode = FetchMode.JOIN),
+        @FetchProfile.FetchOverride(entity = AccountItem.class, association = "childrenItems", mode = FetchMode.JOIN),
+        @FetchProfile.FetchOverride(entity = AccountItem.class, association = "interestItems", mode = FetchMode.JOIN),
+        @FetchProfile.FetchOverride(entity = AccountItem.class, association = "dreamItems", mode = FetchMode.JOIN),
+        @FetchProfile.FetchOverride(entity = AccountItem.class, association = "tripItems", mode = FetchMode.JOIN),
+        @FetchProfile.FetchOverride(entity = AccountItem.class, association = "jobItems", mode = FetchMode.JOIN)
+})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AccountItem extends DateChanges implements Serializable {
     @Id
     @SequenceGenerator(name = "default_gen", sequenceName = "account_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")
     private Integer id;
+
+    @OneToMany
+    @JoinColumn(name = "account_username", referencedColumnName = "account_username")
+    private Set<AuthorityItem> authorities;
+
     @Column(name = "account_refer_code", nullable = false)
     private String referCode;
+
     @Column(name = "account_used_refer_code", nullable = false)
     private String usedReferCode;
-    @Fetch(value = FetchMode.SUBSELECT)
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_username", referencedColumnName = "account_username")
-    private List<AuthorityItem> authorities;
+
     @NaturalId
     @NotNull
     @Column(name = "account_username", nullable = false)
     private String username;
+
     @NotNull
     @Column(name = "account_password", nullable = false)
     private String password;
+
     @NotNull
     @Column(name = "account_email", nullable = false)
     private String email;
+
     @NotNull
     @Column(name = "account_firstname", nullable = false)
     private String firstName;
+
     @NotNull
     @Column(name = "account_lastname", nullable = false)
     private String lastName;
+
     @ManyToMany
     @JoinTable(name = "account_friend_relation",
             joinColumns = @JoinColumn(name = "account_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "friend_account_id", nullable = false)
     )
     private Set<AccountItem> friends;
-    @Fetch(value = FetchMode.SUBSELECT)
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private List<EducationItem> educationItems;
-    @Fetch(value = FetchMode.SUBSELECT)
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private List<JobItem> jobItems;
-    @Fetch(value = FetchMode.SUBSELECT)
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private List<ChildrenItem> childrenItems;
+
     @Column(name = "account_sex")
     private Integer sex;
+
     @Column(name = "account_birthdate")
     private Calendar birthdate;
+
     @Column(name = "account_maritalstatus")
     private Integer maritalStatus;
 
-    @Fetch(value = FetchMode.SUBSELECT)
+    /*Благодаря CascadeType.ALL удается сохранять айтемы, однако я не уверен что это обязательно. нужно проверить */
+    /*Использование Set вместо List крайне важно, так как пораждает возможносьти множественного FETCH.JOIN*/
+    /*По умолчанию используется ленивая загрузка однако, однако мы это исправим в профайлах*/
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private List<InterestItem> interestItems;
+    @JoinColumn(name = "account_id")
+    private Set<EducationItem> educationItems;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id")
+    private Set<JobItem> jobItems;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id")
+    private Set<ChildrenItem> childrenItems;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id")
+    private Set<InterestItem> interestItems;
+
+    /*
+    orphanRemoval = true
+    It means that if you delete items from collection that item will be deleted from database.
+    */
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id")
+    private Set<DreamItem> dreamItems;
+
+    /*
+    orphanRemoval = true
+    It means that if you delete items from collection that item will be deleted from database.
+    */
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id")
+    private Set<TripItem> tripItems;
 
     @Column(name = "account_last_activity")
     private Calendar lastActivity;
-    /*
-    orphanRemoval = true
-    It means that if you delete items from collection that item will be deleted from database.
-    */
-    @Fetch(value = FetchMode.SUBSELECT)
-    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
-    @JoinColumn(name = "account_id")
-    private List<DreamItem> dreamItems;
-    /*
-    orphanRemoval = true
-    It means that if you delete items from collection that item will be deleted from database.
-    */
-    @Fetch(value = FetchMode.SUBSELECT)
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "account_id")
-    private List<TripItem> tripItems;
 
     public Calendar getLastActivity() {
         return lastActivity;
@@ -101,51 +126,51 @@ public class AccountItem extends DateChanges implements Serializable {
         this.lastActivity = lastActivity;
     }
 
-    public List<DreamItem> getDreamItems() {
+    public Set<DreamItem> getDreamItems() {
         return dreamItems;
     }
 
-    public void setDreamItems(List<DreamItem> dreamItems) {
+    public void setDreamItems(Set<DreamItem> dreamItems) {
         this.dreamItems = dreamItems;
     }
 
-    public List<TripItem> getTripItems() {
+    public Set<TripItem> getTripItems() {
         return tripItems;
     }
 
-    public void setTripItems(List<TripItem> tripItems) {
+    public void setTripItems(Set<TripItem> tripItems) {
         this.tripItems = tripItems;
     }
 
-    public List<InterestItem> getInterestItems() {
+    public Set<InterestItem> getInterestItems() {
         return interestItems;
     }
 
-    public void setInterestItems(List<InterestItem> interestItems) {
+    public void setInterestItems(Set<InterestItem> interestItems) {
         this.interestItems = interestItems;
     }
 
-    public List<EducationItem> getEducationItems() {
+    public Set<EducationItem> getEducationItems() {
         return educationItems;
     }
 
-    public void setEducationItems(List<EducationItem> educationItems) {
+    public void setEducationItems(Set<EducationItem> educationItems) {
         this.educationItems = educationItems;
     }
 
-    public List<JobItem> getJobItems() {
+    public Set<JobItem> getJobItems() {
         return jobItems;
     }
 
-    public void setJobItems(List<JobItem> jobItems) {
+    public void setJobItems(Set<JobItem> jobItems) {
         this.jobItems = jobItems;
     }
 
-    public List<ChildrenItem> getChildrenItems() {
+    public Set<ChildrenItem> getChildrenItems() {
         return childrenItems;
     }
 
-    public void setChildrenItems(List<ChildrenItem> childrenItems) {
+    public void setChildrenItems(Set<ChildrenItem> childrenItems) {
         this.childrenItems = childrenItems;
     }
 
@@ -200,7 +225,7 @@ public class AccountItem extends DateChanges implements Serializable {
     @SuppressWarnings("unchecked")
     public void addRole(String role) {
         if (authorities == null) {
-            authorities = new ArrayList();
+            authorities = new HashSet<>();
         }
         AuthorityItem item = new AuthorityItem();
         item.setRole(role);
@@ -208,11 +233,11 @@ public class AccountItem extends DateChanges implements Serializable {
         authorities.add(item);
     }
 
-    public List<AuthorityItem> getAuthorities() {
+    public Set<AuthorityItem> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(final List<AuthorityItem> authorities) {
+    public void setAuthorities(final Set<AuthorityItem> authorities) {
         this.authorities = authorities;
     }
 
