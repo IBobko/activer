@@ -7,9 +7,9 @@
 <div class="container-fluid info-panel">
     <div class="row">
         <ul class="nav nav-pills">
-            <li><a href="#">20 подарков</a></li>
-            <li><a href="#">364 друга</a></li>
-            <li><a href="#">70 фото</a></li>
+            <li><a href="#">${gifts.size()} подарков</a></li>
+            <li><a href="#">${friends.friends.size()} друга</a></li>
+            <li><a href="#">${photos.size()} фото</a></li>
             <li><a href="#">${profile.interests.size()} интересов</a></li>
         </ul>
     </div>
@@ -19,8 +19,10 @@
 <!-- About me -->
 <div class="container-fluid about-me">
     <div class="row">
-        <p class="status-line"><c:if test="${profile.online}">online</c:if><c:if
-                test="${!profile.online}">offline</c:if></p>
+        <p class="status-line">
+            <c:if test="${profile.online}">online</c:if>
+            <c:if test="${!profile.online}">offline</c:if>
+        </p>
     </div>
     <div class="row">
         <div class="media">
@@ -85,7 +87,7 @@
                     </tr>
                     <tr>
                         <td>Дети:</td>
-                        <td>не сделано</td>
+                        <td>${profile.children.name}&nbsp;${profile.children.year}</td>
                     </tr>
                 </table>
             </div>
@@ -102,7 +104,7 @@
 <!-- Photos -->
 <div class="container-fluid photos">
     <div class="row">
-        <p class="status-line">Фотографии - 364 <a class="pull-right" href="#">все фото</a></p>
+        <p class="status-line">Фотографии - ${photos.size()} <a class="pull-right" href="#">все фото</a></p>
     </div>
     <div class="row">
         <div class="text-justify">
@@ -205,7 +207,7 @@
 
 <div class="container-fluid thoughts">
     <div class="row">
-        <p class="status-line">Мои мысли - 782 <a class="pull-right" href="#">все мысли</a></p>
+        <p class="status-line">Мои мысли - ${wall.size()} <a class="pull-right" href="#">все мысли</a></p>
     </div>
     <div class="row">
         <ul class="media-list" id="profile-wall">
@@ -251,4 +253,3 @@
     </div>
 </div>
 <!-- /Thoughts -->
-

@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(value = "/")
+@RequestMapping
 public class HomePageController
 {
 	final public String AUTH_REDIRECT = "redirect:/auth";
@@ -14,5 +14,3 @@ public class HomePageController
 		return AUTH_REDIRECT;
 	}
 }
-
-

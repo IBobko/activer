@@ -20,7 +20,16 @@ public class ProfileData {
     private List<InterestData> interests;
     private List<TripData> trips;
     private List<DreamData> dreams;
+    private String role;
     private boolean isOnline;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public boolean isOnline() {
         return isOnline;

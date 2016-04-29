@@ -8,8 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.dao.PhotosDao;
 import ru.todo100.activer.dao.WallDao;
-import ru.todo100.activer.data.MessageAccountData;
 import ru.todo100.activer.data.MessageData;
 import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.form.ChangeProfileForm;
@@ -17,6 +17,7 @@ import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.WallItem;
 import ru.todo100.activer.populators.ProfilePopulator;
 import ru.todo100.activer.populators.WallPopulator;
+import ru.todo100.activer.service.FriendsService;
 import ru.todo100.activer.service.PhotoService;
 import ru.todo100.activer.util.InputError;
 
@@ -25,7 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @PreAuthorize("isAuthenticated()")
@@ -36,7 +36,11 @@ public class ProfilePageController
 	private AccountDao accountService;
 
 	@Autowired
+	private PhotosDao photosDao;
+
+	@Autowired
 	private WallDao wallService;
+
 	@Autowired
 	private ProfilePopulator profilePopulator;
 
@@ -46,13 +50,19 @@ public class ProfilePageController
 	@Autowired
 	private WallPopulator wallPopulator;
 
+	@Autowired
+	private FriendsService friendsService;
+
 	@RequestMapping(method = RequestMethod.GET)
-	public String index(final Model model)
+	public String index(final Model model, HttpServletRequest request)
 	{
 		final AccountItem account = accountService.getCurrentAccountForProfile();
 		final String photo = photoService1.getPhoto(account.getId());
 		final ProfileData profile = profilePopulator.populate(account);
 		model.addAttribute("profile", profile);
+		model.addAttribute("friends", friendsService.getFriendData(request.getSession()));
+		model.addAttribute("photos", photosDao.getByAccountAndAlbum(account.getId(), 1));
+		model.addAttribute("gifts", photosDao.getByAccountAndAlbum(account.getId(), 1));
 		model.addAttribute("photo", photo);
 		populatePersonOfPage(model, account);
 		return "profile/index";
@@ -105,17 +115,7 @@ public class ProfilePageController
 	{
 		final AccountItem account = accountService.get(id);
 		ProfileData profile = profilePopulator.populate(account);
-		Set<AccountItem> friends = account.getFriends();
-		List<ProfileData> friendsData = new ArrayList<>();
-		for (AccountItem friend : friends)
-		{
-			if (friend != null)
-			{
-				ProfileData friendData = profilePopulator.populate(friend);
-				friendsData.add(friendData);
-			}
-		}
-		profile.setFriends(friendsData);
+
 
 		String photo =  photoService1.getPhoto(profile.getId());
 
@@ -135,28 +135,12 @@ public class ProfilePageController
 	}
 
 	private void populatePersonOfPage(Model model, AccountItem account) {
-		model.addAttribute("personOfPage", account);
-
 		final List<MessageData> wall = new ArrayList<>();
 		final List<WallItem> posts = wallService.getAllByAccount(account.getId());
 		for (final WallItem item: posts) {
 			final MessageData data = wallPopulator.populate(item);
 			wall.add(data);
 		}
-		model.addAttribute("wallTemplate", generateWallTemplate());
 		model.addAttribute("wall",wall);
 	}
-
-	public MessageData generateWallTemplate() {
-		final MessageData template = new MessageData();
-		template.setText("%text%");
-		final MessageAccountData sender = new MessageAccountData();
-		sender.setFirstName("%firstName%");
-		sender.setLastName("%lastName%");
-		sender.setPhoto60x60("%photo60x60%");
-		template.setDate("%date%");
-		template.setSender(sender);
-		return template;
-	}
-
 }
