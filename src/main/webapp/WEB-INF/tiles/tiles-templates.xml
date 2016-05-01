@@ -178,6 +178,10 @@
 		<put-attribute name="content" value="/WEB-INF/views/admin/gift_add.jsp"/>
 	</definition>
 
+	<definition name="admin/gift/category" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/gift_category.jsp"/>
+	</definition>
+
 	<definition name="admin/dispute" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/admin/dispute.jsp"/>
 	</definition>

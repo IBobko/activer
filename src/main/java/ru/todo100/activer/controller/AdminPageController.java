@@ -1,5 +1,14 @@
 package ru.todo100.activer.controller;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +23,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.dao.GiftCategoryDao;
+import ru.todo100.activer.dao.GiftDao;
 import ru.todo100.activer.dao.PaymentCreditDao;
 import ru.todo100.activer.data.*;
 import ru.todo100.activer.form.DisputeThemeForm;
+import ru.todo100.activer.form.GiftAddForm;
 import ru.todo100.activer.form.PagedForm;
-import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.DisputeThemeItem;
-import ru.todo100.activer.model.PaymentCreditItem;
+import ru.todo100.activer.model.GiftCategoryItem;
+import ru.todo100.activer.model.GiftItem;
 import ru.todo100.activer.qualifier.DisputeThemeQualifier;
 import ru.todo100.activer.service.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.List;
 
 /**
@@ -45,6 +59,13 @@ public class AdminPageController {
     private SimpMessagingTemplate template;
 
     private DisputeService disputeService;
+    @Autowired
+    private GiftCategoryDao giftCategoryDao;
+    @Autowired
+    private GiftDao giftDao;
+    private PaymentService paymentService;
+    @Autowired
+    private PaymentCreditDao paymentCreditDao;
 
     public DisputeService getDisputeService() {
         return disputeService;
@@ -112,8 +133,22 @@ public class AdminPageController {
         return "admin/creator";
     }
 
-    public PagedData<GiftData> getGiftPageData(final PagedForm pagedForm) {
-        return new PagedData<>();
+    public PagedData<GiftItem> getGiftPageData(final PagedForm pagedForm) {
+        Qualifier qualifier = new Qualifier();
+        qualifier.setCount(COUNT_PER_PAGE);
+        qualifier.setStart(pagedForm.getPage() * COUNT_PER_PAGE);
+        if (pagedForm.getOrderType() != null && pagedForm.getOrderField() != null) {
+            qualifier.setOrderName(pagedForm.getOrderField());
+            qualifier.setOrder(Qualifier.Order.valueOf(pagedForm.getOrderType()));
+        }
+
+        final Long count = giftDao.getCountByQualifier(qualifier);
+        final List<GiftItem> giftItems = giftDao.getGiftsByQualifier(qualifier);
+        final PagedData<GiftItem> pagedData = new PagedData<>();
+        pagedData.setPage(pagedForm.getPage());
+        pagedData.setCount((int) Math.ceil(count * 1.0 / COUNT_PER_PAGE));
+        pagedData.setElements(giftItems);
+        return pagedData;
     }
 
     public PagedData<DisputeThemeData> getDisputePageData(final PagedForm pagedForm) {
@@ -133,7 +168,6 @@ public class AdminPageController {
         return pagedData;
     }
 
-
     @RequestMapping("/gifts")
     public String gifts(final Model model, final PagedForm pagedForm) {
         model.addAttribute("pageType", "admin/gifts");
@@ -144,16 +178,64 @@ public class AdminPageController {
     @RequestMapping("/gifts/add")
     public String giftsAdd(final Model model) {
         model.addAttribute("pageType", "admin/gifts/add");
+
+        model.addAttribute("giftAddForm", new GiftAddForm());
+
+        model.addAttribute("categories",giftCategoryDao.getCategories());
+
         return "admin/gifts/add";
     }
 
-    @RequestMapping("/gifts/upload")
-    public String giftsUpload(final Model model) {
+    @RequestMapping(value = "/gifts/category", method = RequestMethod.GET)
+    public String giftsCategory(final Model model) {
+        model.addAttribute("pageType", "admin/gifts/category");
+
+
+        return "admin/gift/category";
+    }
+
+    @RequestMapping(value = "/gifts/category", method = RequestMethod.POST)
+    public String giftsCategorySave(HttpServletRequest request) {
+        Session session = giftDao.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+
+        String categoryName = request.getParameter("categoryName");
+
+        GiftCategoryItem giftCategoryItem = new GiftCategoryItem();
+        giftCategoryItem.setName(categoryName);
+
+        session.save(giftCategoryItem);
+        tx.commit();
         return "redirect:/admin/gifts";
     }
 
-    @RequestMapping(value = "/dispute/upload",method = RequestMethod.POST)
-    public String disputeUpload(final Model model,final DisputeThemeForm form, final BindingResult bindingResult) {
+    @Transactional
+    @RequestMapping("/gifts/upload")
+    public String giftsUpload(final Model model, GiftAddForm giftAddForm) throws IOException {
+        final HttpClient httpclient = HttpClientBuilder.create().build();
+        final MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        final File file = new File(giftAddForm.getPhoto().getName());
+        FileUtils.writeByteArrayToFile(file, giftAddForm.getPhoto().getBytes());
+        final HttpPost httppost = new HttpPost("http://192.168.1.65:18080/static/upload");
+        builder.addPart("image", new FileBody(file, ContentType.create(giftAddForm.getPhoto().getContentType())));
+        httppost.setEntity(builder.build());
+        final HttpResponse response = httpclient.execute(httppost);
+        final StringWriter writer = new StringWriter();
+        IOUtils.copy(response.getEntity().getContent(), writer, "UTF-8");
+        final String theString = writer.toString();
+
+        GiftItem giftItem = new GiftItem();
+        giftItem.setFile(theString);
+        giftItem.setName(giftAddForm.getDescription());
+        Session session = giftDao.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        session.save(giftItem);
+        tx.commit();
+        return "redirect:/admin/gifts";
+    }
+
+    @RequestMapping(value = "/dispute/upload", method = RequestMethod.POST)
+    public String disputeUpload(final Model model, final DisputeThemeForm form, final BindingResult bindingResult) {
         if (!bindingResult.hasErrors()) {
             getDisputeService().editDispute(form);
         }
@@ -168,7 +250,7 @@ public class AdminPageController {
     }
 
     @RequestMapping("/dispute/add")
-    public String disputeAdd(final Model model,@RequestParam(required = false,defaultValue = "0") Integer id) {
+    public String disputeAdd(final Model model, @RequestParam(required = false, defaultValue = "0") Integer id) {
         model.addAttribute("pageType", "admin/dispute/add");
 
         final DisputeThemeForm disputeThemeForm = new DisputeThemeForm();
@@ -182,20 +264,18 @@ public class AdminPageController {
             }
         }
 
-        model.addAttribute("disputeThemeForm",disputeThemeForm);
+        model.addAttribute("disputeThemeForm", disputeThemeForm);
         return "admin/dispute/add";
     }
 
     @RequestMapping("/dispute/delete")
-    public String deleteDispute(final Model model,@RequestParam(required = false,defaultValue = "0") Integer id) {
+    public String deleteDispute(final Model model, @RequestParam(required = false, defaultValue = "0") Integer id) {
         model.addAttribute("pageType", "admin/dispute/add");
         if (id != null) {
             getDisputeService().delete(id);
         }
         return "redirect:/admin/dispute";
     }
-
-
 
     public PagedData<AdminAccountData> adminAccountPagedData(final PagedForm pagedForm) {
         AdminAccountQualifier qualifier = new AdminAccountQualifier();
@@ -244,9 +324,6 @@ public class AdminPageController {
         this.paymentService = paymentService;
     }
 
-
-    private PaymentService paymentService;
-
     private PagedData<BalanceData> getBalanceForPagedForm(PagedForm pagedForm) {
         final Integer accountId = accountService.getCurrentAccount().getId();
         final BalanceQualifier qualifier = new BalanceQualifier();
@@ -264,7 +341,6 @@ public class AdminPageController {
         pagedData.setElements(getPaymentService().getBalances(qualifier));
         return pagedData;
     }
-
 
     @ResponseBody
     @RequestMapping("/balancePaged")
@@ -302,9 +378,6 @@ public class AdminPageController {
         return pagedData;
     }
 
-    @Autowired
-    private PaymentCreditDao paymentCreditDao;
-
     @ResponseBody
     @RequestMapping("/out")
     public String out() {
@@ -321,7 +394,6 @@ public class AdminPageController {
 //            session.save(paymentCreditItem);
 //        };
 //        tx.commit();
-
 
 
         return "Done";

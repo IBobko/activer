@@ -20,7 +20,6 @@ public class TestModule {
         //metadata.addAnnotatedClass(AuthorityItem.class);
         //metadata.addAnnotatedClass(AccountItem.class);
         //metadata.addAnnotatedClass(AccountFriendRelationItem.class);
-        //metadata.addAnnotatedClass(IWantItem.class);
         //metadata.addAnnotatedClass(MessageItem.class);
         //metadata.addAnnotatedClass(AccountPhotoItem.class);
         //metadata.addAnnotatedClass(WallItem.class);
@@ -69,7 +68,6 @@ public class TestModule {
 //        metadata.addAnnotatedClass(AccountItem.class);
 //        metadata.addAnnotatedClass(AccountFriendRelationItem.class);
 
-//        metadata.addAnnotatedClass(IWantItem.class);
 //        metadata.addAnnotatedClass(MessageItem.class);
 //        metadata.addAnnotatedClass(AccountPhotoItem.class);
 //        metadata.addAnnotatedClass(WallItem.class);

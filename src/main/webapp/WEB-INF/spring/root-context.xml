@@ -50,73 +50,27 @@
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
 
 	<!-- Classes for work of db tables -->
+	<import resource="dao-context.xml" />
 
-	<bean
-		id="serviceAbstract"
-		class="ru.todo100.activer.dao.AbstractDao"
-		abstract="true" />
-
-	<bean
-		id="accountService"
-		class="ru.todo100.activer.dao.AccountDao"
-		parent="serviceAbstract" />
-
-	<bean
-		id="markService"
-		class="ru.todo100.activer.dao.MarkDao"
-		parent="serviceAbstract" />
-
-	<bean id="iWantService"
-		  class="ru.todo100.activer.dao.IWantDao"
-		  parent="serviceAbstract"/>
-
-	<bean id="countryDao"
-		  class="ru.todo100.activer.dao.CountryDao"
-		  parent="serviceAbstract"/>
-
-	<bean id="tripDao"
-		  class="ru.todo100.activer.dao.TripDao"
-		  parent="serviceAbstract"/>
-
-	<bean id="videoDao"
-		  class="ru.todo100.activer.dao.VideoDao"
-		  parent="serviceAbstract"/>
-
-	<bean id="photoAlbumDao"
-		  class="ru.todo100.activer.dao.PhotoAlbumDao"
-		  parent="serviceAbstract"/>
 
 	<bean id="partnerService" class="ru.todo100.activer.service.impl.PartnerServiceImpl"/>
 
 	<bean id="adminAccountService" class="ru.todo100.activer.service.impl.AdminAccountServiceImpl"/>
 
-	<bean id="photoService" class="ru.todo100.activer.dao.PhotoDao" parent="serviceAbstract"/>
 
-	<bean id="messageService" class="ru.todo100.activer.dao.MessageDao" parent="serviceAbstract"/>
 
 	<bean id="friendsService" class="ru.todo100.activer.service.impl.FriendsServiceImpl"/>
-	<bean id="networkListCacheIDao" class="ru.todo100.activer.dao.NetworkListCacheIDao"/>
 
-
-	<bean id="adminAccountListCacheDao" class="ru.todo100.activer.dao.AdminAccountListCacheDao"/>
-
-	<bean id="giftDao" class="ru.todo100.activer.dao.GiftDao"/>
-
-
-	<bean id="paymentDebitDaoDao" class="ru.todo100.activer.dao.PaymentDebitDao"/>
-
-	<bean id="paymentCreditDaoDao" class="ru.todo100.activer.dao.PaymentCreditDao"/>
 	<bean id="paymentService" class="ru.todo100.activer.service.impl.PaymentServiceImpl"/>
 
 	<bean id="giftService" class="ru.todo100.activer.service.impl.GiftServiceImpl"/>
 
-	<bean id="disputeThemeDao" class="ru.todo100.activer.dao.DisputeThemeDao"/>
 	<bean id="disputeService" class="ru.todo100.activer.service.impl.DisputeServiceImpl"/>
 
 	<bean
 			id="promocodeService"
 			class="ru.todo100.activer.service.impl.PromoServiceImpl"
-			parent="serviceAbstract" />
+			 />
 
 	<!-- end classes -->
 
@@ -153,7 +107,6 @@
 		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
 
-	<bean id="iWantPopulator" class="ru.todo100.activer.populators.IWantPopulator"/>
 
 	<bean id="wallPopulator" class="ru.todo100.activer.populators.WallPopulator"/>
 
@@ -171,18 +124,6 @@
 	<bean id="childrenPopulator" class="ru.todo100.activer.populators.ChildrenPopulator"/>
 
 
-
-	<bean id="payPalAccountDao" class="ru.todo100.activer.dao.PayPalAccountDao"/>
-
-
-	<bean id="photosDao" class="ru.todo100.activer.dao.PhotosDao"/>
-
-	<bean id="markRelationService" class="ru.todo100.activer.dao.MarkRelationDao"/>
-
-	<bean id="markFacade" class="ru.todo100.activer.facade.MarkFacade"/>
-
-	<bean id="wallService" class="ru.todo100.activer.dao.WallDao"/>
-
 	<bean id="photoStrategy" class="ru.todo100.activer.strategy.PhotoStrategy">
 		<property name="pathToSave" value="/resources/photos"/>
 	</bean>
@@ -193,11 +134,6 @@
 
 	<bean id="referService" class="ru.todo100.activer.service.impl.ReferServiceImpl"/>
 
-	<bean id="settingService" class="ru.todo100.activer.dao.SettingDao"/>
-
-	<bean id="photoService1" class="ru.todo100.activer.service.impl.PhotoServiceImpl"/>
-
-	<bean id="friendDao" class="ru.todo100.activer.dao.FriendDao"/>
 
 	<!-- Facades -->
 	<import resource="facade-context.xml" />

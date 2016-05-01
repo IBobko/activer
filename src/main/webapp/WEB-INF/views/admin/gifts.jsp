@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <a class="std-button btn btn-default" style="float:right" href="<c:url value="/admin/gifts/add"/>"><span
         class="glyphicon glyphicon-plus"></span> Добавить подарок</a>
+<a class="std-button btn btn-default" style="float:right" href="<c:url value="/admin/gifts/category"/>"><span
+        class="glyphicon glyphicon-plus"></span> Добавить категорию</a>
 <h4 style="color: #3F51B5;font-weight:bold;">Администрирование подарков</h4>
 
 <pre>
@@ -14,3 +16,9 @@
 инпут - цена за данных подарок (допускается 0)
 чекбокс "акьтивен" (определяет доступность для покупки данного попдарка)
 </pre>
+
+<table>
+    <c:forEach items="${pagedData.elements}" var="gift">
+    <tr><td>${gift}</td></tr>
+</c:forEach>
+</table>

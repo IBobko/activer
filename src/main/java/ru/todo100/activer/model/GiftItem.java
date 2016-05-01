@@ -12,12 +12,19 @@ public class GiftItem {
     @SequenceGenerator(name = "default_gen", sequenceName = "gift_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")
     private Integer id;
-
+    private Integer category;
     @Column(name = "gift_file")
     private String file;
-
     @Column(name = "gift_name")
     private String name;
+
+    public Integer getCategory() {
+        return category;
+    }
+
+    public void setCategory(Integer category) {
+        this.category = category;
+    }
 
     public Integer getId() {
         return id;

@@ -484,3 +484,12 @@ body #page-content-wrapper .thoughts .media-list .media-body p {
   font-weight: bold;
   color: #3f51b3;
 }
+
+.fileChoice {
+  cursor:pointer;
+  position:absolute;
+  height:34px;
+  opacity: 0;
+  overflow: hidden;
+  width:165px
+}
