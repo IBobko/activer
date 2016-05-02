@@ -74,7 +74,7 @@
     </ul>
 </c:if>
 
-<c:if test="${pageType == null}">
+<c:if test="${pageType == null  or mainPage == 'gifts'}">
     <ul class="sidebar-nav">
         <li class="active">
             <a href="<c:url value="/profile"/>">

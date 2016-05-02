@@ -220,7 +220,7 @@ public class AdminPageController {
 
     @Transactional
     @RequestMapping("/gifts/upload")
-    public String giftsUpload(final Model model, GiftAddForm giftAddForm) throws IOException {
+    public String giftsUpload(final GiftAddForm giftAddForm) throws IOException {
         final HttpClient httpclient = HttpClientBuilder.create().build();
         final MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         final File file = new File(giftAddForm.getPhoto().getName());
@@ -254,7 +254,7 @@ public class AdminPageController {
     }
 
     @RequestMapping(value = "/dispute/upload", method = RequestMethod.POST)
-    public String disputeUpload(final Model model, final DisputeThemeForm form, final BindingResult bindingResult) {
+    public String disputeUpload(final DisputeThemeForm form, final BindingResult bindingResult) {
         if (!bindingResult.hasErrors()) {
             getDisputeService().editDispute(form);
         }

@@ -15,6 +15,9 @@ public class AccountGiftItem {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")
     private Integer id;
 
+    @NotNull
+    @Column(name = "gift_id", nullable = false)
+    private Integer giftId;
 
     @NotNull
     @Column(name = "account_id", nullable = false)
@@ -29,6 +32,14 @@ public class AccountGiftItem {
     @NotNull
     @Column(name = "given_date", nullable = false)
     private Calendar givenDate;
+
+    public Integer getGiftId() {
+        return giftId;
+    }
+
+    public void setGiftId(Integer giftId) {
+        this.giftId = giftId;
+    }
 
     public Integer getId() {
         return id;

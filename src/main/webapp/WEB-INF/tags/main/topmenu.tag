@@ -25,7 +25,7 @@
                         href="<c:url value="/news/"/>">Новости</a></li>
                 <li <c:if test="${pageType == 'datings'}">class="active"</c:if>><a href="<c:url value="/dating/"/>">Знакомства</a>
                 </li>
-                <li <c:if test="${pageType == 'gifts'}">class="active"</c:if>><a
+                <li <c:if test="${mainPage == 'gifts'}">class="active"</c:if>><a
                         href="<c:url value="/gifts/"/>">Подарки</a></li>
                 <li <c:if test="${mainPage == 'settings'}">class="active"</c:if>><a href="<c:url value="/settings"/>">Настройки</a>
                 </li>

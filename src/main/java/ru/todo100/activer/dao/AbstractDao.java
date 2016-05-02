@@ -51,6 +51,11 @@ abstract public class AbstractDao<T>
 		}
 	}
 	@Transactional
+	public Object get(Integer id) {
+		return getSession().get(getItemClass(),id);
+	}
+
+	@Transactional
 	public void save(Item item)
 	{
 		final Session session = getSession();

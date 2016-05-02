@@ -133,7 +133,7 @@
 	</bean>
 
 	<bean id="referService" class="ru.todo100.activer.service.impl.ReferServiceImpl"/>
-
+	<bean id="payPalService" class="ru.todo100.activer.service.impl.PayPalServiceImpl"/>
 
 	<!-- Facades -->
 	<import resource="facade-context.xml" />
