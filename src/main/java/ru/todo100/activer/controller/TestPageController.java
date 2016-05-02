@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Enumeration;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -58,10 +59,13 @@ public class TestPageController
 	}
 
 	@RequestMapping("/i")
-	public String i()
-	{
-		return "test/test";
-
+	@ResponseBody
+	public void i(HttpServletRequest request,HttpServletResponse response) throws IOException {
+		final Enumeration<String> headers = request.getHeaderNames();
+		while (headers.hasMoreElements()) {
+			String header = headers.nextElement();
+			response.getWriter().println(header + " = " + request.getHeader(header));
+		}
 	}
 
 	@ResponseBody
