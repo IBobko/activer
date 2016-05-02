@@ -17,8 +17,17 @@
 чекбокс "акьтивен" (определяет доступность для покупки данного попдарка)
 </pre>
 
-<table>
+
+<style type="text/css">
+    .gifts li{
+        float:left;
+    }
+</style>
+
+<ul class="gifts">
     <c:forEach items="${pagedData.elements}" var="gift">
-    <tr><td>${gift}</td></tr>
+    <li>
+    <a href="<c:url value="/admin/gifts/add?id=${gift.id}"/>"><img src="http://todo100.ru:18080/static/upload/files/${gift.file}.jpg"/><br/>${gift.name}</a>
+    </li>
 </c:forEach>
-</table>
+</ul>

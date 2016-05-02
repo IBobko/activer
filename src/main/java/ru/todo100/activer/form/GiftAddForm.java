@@ -6,9 +6,36 @@ import org.springframework.web.multipart.MultipartFile;
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
 public class GiftAddForm {
-    public MultipartFile photo;
-    public String description;
-    public Integer category;
+    private MultipartFile photo;
+    private String description;
+    private Integer category;
+    private String fileName;
+    private Integer id;
+    private Boolean enabled;
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getCategory() {
         return category;

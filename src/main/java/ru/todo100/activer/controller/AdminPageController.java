@@ -176,13 +176,22 @@ public class AdminPageController {
     }
 
     @RequestMapping("/gifts/add")
-    public String giftsAdd(final Model model) {
+    public String giftsAdd(final Model model,@RequestParam(required = false, defaultValue = "0") Integer id) {
         model.addAttribute("pageType", "admin/gifts/add");
+        GiftAddForm giftAddForm = new GiftAddForm();
+        if (!id.equals(0)) {
+            final Session session = giftDao.getSessionFactory().openSession();
+            final GiftItem giftItem = (GiftItem)session.get(giftDao.getItemClass(),id);
 
-        model.addAttribute("giftAddForm", new GiftAddForm());
+            giftAddForm.setId(giftItem.getId());
+            giftAddForm.setCategory(giftItem.getCategory());
+            giftAddForm.setDescription(giftItem.getName());
+            giftAddForm.setFileName(giftItem.getFile());
+            giftAddForm.setEnabled(giftItem.getEnabled());
 
+        }
+        model.addAttribute("giftAddForm", giftAddForm);
         model.addAttribute("categories",giftCategoryDao.getCategories());
-
         return "admin/gifts/add";
     }
 
@@ -224,9 +233,19 @@ public class AdminPageController {
         IOUtils.copy(response.getEntity().getContent(), writer, "UTF-8");
         final String theString = writer.toString();
 
+
         GiftItem giftItem = new GiftItem();
+        if (giftAddForm.getId()!=null) {
+            final Session session = giftDao.getSessionFactory().openSession();
+            final Transaction tx = session.beginTransaction();
+            giftItem = (GiftItem)session.get(giftDao.getItemClass(),giftAddForm.getId());
+            tx.commit();
+        }
+
         giftItem.setFile(theString);
         giftItem.setName(giftAddForm.getDescription());
+        giftItem.setCategory(giftAddForm.getCategory());
+        giftItem.setEnabled(giftAddForm.getEnabled());
         Session session = giftDao.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         session.save(giftItem);

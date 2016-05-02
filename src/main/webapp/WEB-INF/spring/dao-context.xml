@@ -44,4 +44,6 @@
     <bean id="photoService" class="ru.todo100.activer.dao.PhotoDao"/>
 
     <bean id="messageService" class="ru.todo100.activer.dao.MessageDao"/>
+
+    <bean id="accountGiftDao" class="ru.todo100.activer.dao.AccountGiftDao"/>
 </beans>
