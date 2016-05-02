@@ -61,7 +61,6 @@ public class GiftPageController {
     }
 
 
-
     private GiftDao giftDao;
 
     public AccountGiftDao getAccountGiftDao() {
@@ -131,7 +130,7 @@ public class GiftPageController {
            // accountGiftData.set
 
 
-            GiftItem giftItem = (GiftItem)giftDao.get(accountGiftItem.getGiftId());
+            GiftItem giftItem = (GiftItem)getGiftDao().get(accountGiftItem.getGiftId());
 
             accountGiftData.setFileName(giftItem.getFile());
             accountGiftData.setMessage(accountGiftItem.getMessage());
@@ -191,12 +190,8 @@ public class GiftPageController {
 
         String guid = UUID.randomUUID().toString().replaceAll("-", "");
 
-        redirectUrls.setCancelUrl(req.getScheme() + "://"
-                + req.getServerName() + ":" + req.getServerPort()
-                + req.getContextPath() + "/gifts/cancel?guid=" + guid);
-        redirectUrls.setReturnUrl(req.getScheme() + "://"
-                + req.getServerName() + ":" + req.getServerPort()
-                + req.getContextPath() + "/gifts/result?guid=" + guid);
+        redirectUrls.setCancelUrl(getPayPalService().getServerName(req) + "/gifts/cancel?guid=" + guid);
+        redirectUrls.setReturnUrl(getPayPalService().getServerName(req) + "/gifts/result?guid=" + guid);
 
         payment.setRedirectUrls(redirectUrls);
 
