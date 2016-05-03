@@ -7,7 +7,15 @@
                         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
                         ">
 
-    <http use-expressions="true">
+    <global-method-security pre-post-annotations="enabled"/>
+
+
+    <!-- handler for authorization failure.  Will redirect to the login page. -->
+    <beans:bean id="myAccessDeniedHandler" class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
+        <beans:property name="errorPage" value="/index" />
+    </beans:bean>
+
+    <http auto-config="false" use-expressions="true">
         <csrf disabled="true"/>
         <form-login
                 login-page="/auth"
@@ -17,7 +25,7 @@
                 />
         <logout logout-success-url="/" delete-cookies="JSESSIONID"/>
         <remember-me key="uniqueAndSecret" token-validity-seconds="86400"/>
-
+        <access-denied-handler ref="myAccessDeniedHandler" />
     </http>
 
     <authentication-manager>
@@ -32,5 +40,7 @@
     <beans:bean id="authSuccessHandler" class="ru.todo100.activer.AuthSuccessHandler">
         <beans:property name="defaultTargetUrl" value="/profile"/>
     </beans:bean>
+
+
 
 </beans:beans>

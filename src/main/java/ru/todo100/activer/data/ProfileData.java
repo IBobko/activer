@@ -21,6 +21,16 @@ public class ProfileData implements Serializable{
     private List<InterestData> interests;
     private List<TripData> trips;
     private List<DreamData> dreams;
+
+    public List<AccountGiftData> getGifts() {
+        return gifts;
+    }
+
+    public void setGifts(List<AccountGiftData> gifts) {
+        this.gifts = gifts;
+    }
+
+    private List<AccountGiftData> gifts;
     private String role;
     private boolean isOnline;
 

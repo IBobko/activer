@@ -1,11 +1,10 @@
 package ru.todo100.activer.populators;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.todo100.activer.dao.AccountGiftDao;
+import ru.todo100.activer.dao.GiftDao;
 import ru.todo100.activer.dao.PhotoDao;
-import ru.todo100.activer.data.DreamData;
-import ru.todo100.activer.data.InterestData;
-import ru.todo100.activer.data.ProfileData;
-import ru.todo100.activer.data.TripData;
+import ru.todo100.activer.data.*;
 import ru.todo100.activer.model.*;
 
 import java.io.File;
@@ -30,6 +29,9 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
     private InterestPopulator interestPopulator;
     private TripPopulator tripPopulator;
     private DreamPopulator dreamPopulator;
+
+    @Autowired
+    private AccountGiftDao accountGiftDao;
 
     private DreamPopulator getDreamPopulator() {
         return dreamPopulator;
@@ -146,6 +148,34 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
             profileData.setFacePhotoUrl(f.getParent() + "/" + "thumb_" + f.getName());
             profileData.setPhoto60x60(f.getParent() + "/" + "60x60_" + f.getName());
         }
+
+
+        final List<AccountGiftItem> gifts = accountGiftDao.getGiftsByAccount(profileData.getId());
+        final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
+        final List<AccountGiftData> giftData = new ArrayList<>();
+        for (AccountGiftItem accountGiftItem: gifts) {
+            AccountGiftData accountGiftData = new AccountGiftData();
+            accountGiftData.setSenderFirstName("Иосиф");
+            accountGiftData.setSenderLastName("Сталин");
+            // accountGiftData.set
+
+
+            GiftItem giftItem = (GiftItem)giftDao.get(accountGiftItem.getGiftId());
+
+            accountGiftData.setFileName(giftItem.getFile());
+            accountGiftData.setMessage(accountGiftItem.getMessage());
+
+            accountGiftData.setGivenDate(format.format(accountGiftItem.getGivenDate().getTime()));
+            giftData.add(accountGiftData);
+        }
+
+        profileData.setGifts(giftData);
+
+
         return profileData;
     }
+
+
+    @Autowired
+    private GiftDao giftDao;
 }

@@ -6,8 +6,17 @@ package ru.todo100.activer.data;
 public class TripData {
     private Integer id;
     private String country;
+    private String countryCode;
     private String city;
     private Integer year;
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
 
     public Integer getId() {
         return id;

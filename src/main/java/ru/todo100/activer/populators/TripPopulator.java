@@ -15,6 +15,7 @@ public class TripPopulator implements Populator<TripItem, TripData> {
         tripData.setYear(tripItem.getYear());
         if (tripItem.getCountry() != null) {
             tripData.setCountry(tripItem.getCountry().getName());
+            tripData.setCountryCode(tripItem.getCountry().getCode());
         }
         return tripData;
     }

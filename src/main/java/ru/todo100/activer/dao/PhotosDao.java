@@ -20,4 +20,10 @@ public class PhotosDao extends AbstractDao {
     public List<PhotoItem> getByAccountAndAlbum(Integer accountId,Integer albumId) {
         return getCriteria().add(Restrictions.and(Restrictions.eq("accountId",accountId),Restrictions.eq("albumId",albumId))).list();
     }
+
+    @SuppressWarnings("unchecked")
+    public List<PhotoItem> getByAccount(Integer accountId) {
+        return getCriteria().add(Restrictions.eq("accountId",accountId)).list();
+    }
+
 }

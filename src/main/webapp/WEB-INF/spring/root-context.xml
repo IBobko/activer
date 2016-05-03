@@ -137,4 +137,18 @@
 
 	<!-- Facades -->
 	<import resource="facade-context.xml" />
+
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="defaultErrorView" value="uncaughtException" />
+		<property name="excludedExceptions" value="org.springframework.security.access.AccessDeniedException" />
+
+		<property name="exceptionMappings">
+			<props>
+				<prop key=".DataAccessException">dataAccessFailure</prop>
+				<prop key=".NoSuchRequestHandlingMethodException">resourceNotFound</prop>
+				<prop key=".TypeMismatchException">resourceNotFound</prop>
+				<prop key=".MissingServletRequestParameterException">resourceNotFound</prop>
+			</props>
+		</property>
+	</bean>
 </beans>

@@ -7,7 +7,7 @@
 <div class="container-fluid info-panel">
     <div class="row">
         <ul class="nav nav-pills">
-            <li><a href="#">${gifts.size()} подарков</a></li>
+            <li><a href="#">${profile.gifts.size()} подарков</a></li>
             <li><a href="#">${friends.friends.size()} друга</a></li>
             <li><a href="#">${photos.size()} фото</a></li>
             <li><a href="#">${profile.interests.size()} интересов</a></li>
@@ -105,27 +105,18 @@
 <!-- Photos -->
 <div class="container-fluid photos">
     <div class="row">
-        <p class="status-line">Фотографии - ${photos.size()} <a class="pull-right" href="#">все фото</a></p>
+        <p class="status-line">Фотографии - ${photos.size()} <a class="pull-right" href="<c:url value="/photos/"/>">все фото</a></p>
     </div>
     <div class="row">
         <div class="text-justify">
             <div class="gallery">
-                <img class="img-responsive" src="<c:url value="/resources/img/image-not-found.jpg"/>">
-                <img class="img-responsive" src="<c:url value="/resources/img/image-not-found.jpg"/>">
-                <img class="img-responsive" src="<c:url value="/resources/img/image-not-found.jpg"/>">
-                <img class="img-responsive" src="<c:url value="/resources/img/image-not-found.jpg"/>">
-                <img class="img-responsive" src="<c:url value="/resources/img/image-not-found.jpg"/>">
-                <img class="img-responsive" src="<c:url value="/resources/img/image-not-found.jpg"/>">
-                <img class="img-responsive" src="<c:url value="/resources/img/image-not-found.jpg"/>">
-                <img class="img-responsive" src="<c:url value="/resources/img/image-not-found.jpg"/>">
-                <img class="img-responsive" src="<c:url value="/resources/img/image-not-found.jpg"/>">
-                <img class="img-responsive" src="<c:url value="/resources/img/image-not-found.jpg"/>">
-                <img class="img-responsive" src="<c:url value="/resources/img/image-not-found.jpg"/>">
-                <img class="img-responsive" src="<c:url value="/resources/img/image-not-found.jpg"/>">
-                <img class="img-responsive" src="<c:url value="/resources/img/image-not-found.jpg"/>">
+
+                <c:forEach items="${photos}" var="photo">
+                    <img class="img-responsive" src="http://onoffline.ru/static/upload/files/${photo.path}.jpg"/>
+                </c:forEach>
             </div>
             <c:if test="${profile.my}">
-                <button class="btn btn-default upload-photo">Загрузить фото</button>
+                <button onclick="document.location='<c:url value="/photos/add?album=1"/>';" class="btn btn-default upload-photo">Загрузить фото</button>
             </c:if>
         </div>
     </div>
@@ -152,6 +143,21 @@
     </div>
 </div>
 <!-- /Interests -->
+<style type="text/css">
+    .worldmap {fill:white;stroke:black;stroke-width:0.5px;}
+    .worldmap:hover {fill:#e0e0e0;stroke:black;stroke-width:0.5px;}
+
+    .worldmap_1 {fill:#f08080;stroke:black;stroke-width:0.5px;}
+    .worldmap_1:hover {fill:#ff0000;stroke:black;stroke-width:1px;}
+
+    .worldmap_2 {fill:#8080f0;stroke:black;stroke-width:0.5px;}
+    .worldmap_2:hover {fill:#0000ff;stroke:black;stroke-width:1px;}
+</style>
+<script src="<c:url value="/resources/js/worldmap.js"/>"></script>
+
+
+
+
 
 <!-- Travels -->
 <div class="container-fluid travels">
@@ -159,20 +165,34 @@
         <p class="status-line">Мои путешествия - ${profile.trips.size()} <a class="pull-right" href="<c:url value="/settings/trips"/>">добавить</a></p>
     </div>
     <div class="row">
-        <div class="col-xs-6 col-lg-offset-1">
-            <img class="img-responsive" src="<c:url value="/resources/img/map.png"/>">
-        </div>
+        <div id="worldmap" width="640" height="400" style="overflow:hidden;float:left"></div>
         <div class="col-lg-5 col-xs-6">
             <ul class="list-unstyled">
                 <c:forEach items="${profile.trips}" var="trip">
-                    <li><a href="#">${trip.country} <span class="hidden-xs hidden-sm">${trip.year}</span></a></li>
+                    <li><a href="#">${trip.country} (${trip.countryCode.substring(0,2)}) <span class="hidden-xs hidden-sm">${trip.year}</span></a> ${trip.city}</li>
                 </c:forEach>
             </ul>
         </div>
     </div>
 </div>
 <!-- /Travels -->
+<script type="text/javascript">
 
+    var map=new WorldMap({
+        element : 'worldmap',
+        width : 640,
+        height : 400,
+        c : {
+<c:forEach items="${profile.trips}" var="trip" varStatus="status">
+            <c:if test="${not empty trip.countryCode}">
+            ${trip.countryCode.substring(0,2)}:1<c:if test="${not status.last}">,</c:if>
+            </c:if>
+            </c:forEach>
+        }
+
+    });
+
+</script>
 <!-- Dreams -->
 <div class="container-fluid dreams">
     <div class="row">

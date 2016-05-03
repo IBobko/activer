@@ -14,6 +14,7 @@ import ru.todo100.activer.data.MessageData;
 import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.form.ChangeProfileForm;
 import ru.todo100.activer.model.AccountItem;
+import ru.todo100.activer.model.PhotoItem;
 import ru.todo100.activer.model.WallItem;
 import ru.todo100.activer.populators.ProfilePopulator;
 import ru.todo100.activer.populators.WallPopulator;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@PreAuthorize("isAuthenticated()")
+@PreAuthorize("isAuthenticated() && hasRole('ROLE_USER')")
 @RequestMapping(value = "/profile")
 public class ProfilePageController
 {
@@ -111,11 +112,12 @@ public class ProfilePageController
 			profile = profilePopulator.populate(account);
 		}
 
+		List<PhotoItem> photos = photosDao.getByAccount(profile.getId());
+
 		final String photo = photoService1.getPhoto(profile.getId());
 		model.addAttribute("profile", profile);
 		model.addAttribute("friends", friendsService.getFriendData(request.getSession()));
-		model.addAttribute("photos", photosDao.getByAccountAndAlbum(profile.getId(), 1));
-		model.addAttribute("gifts", photosDao.getByAccountAndAlbum(profile.getId(), 1));
+		model.addAttribute("photos", photos);
 		model.addAttribute("photo", photo);
 		populatePersonOfPage(model, profile);
 		return "profile/index";
