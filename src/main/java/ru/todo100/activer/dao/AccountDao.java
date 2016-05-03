@@ -210,13 +210,15 @@ public class AccountDao extends AbstractDao
 		}
 	}
 
-	public AccountItem getRandomOnlineAccount() {
+	public AccountItem getRandomOnlineAccount(HttpSession session) {
+		ProfileData profileData = getCurrentProfileData(session);
+
 		final List<BigDecimal> result = getSession().createSQLQuery(
 				"select id from (select id,extract( day from diff )*24*60*60*1000 + " +
 						" extract( hour from diff )*60*60*1000 + " +
 						" extract( minute from diff )*60*1000 + " +
 						" round(extract( second from diff )*1000) total_milliseconds " +
-						"from (select id,(systimestamp - ACCOUNT_LAST_ACTIVITY) diff from ACCOUNT)) where total_milliseconds < 10906720").list();
+						"from (select id,(systimestamp - ACCOUNT_LAST_ACTIVITY) diff from ACCOUNT)) where total_milliseconds < 10906720 and id !=" + profileData.getId()).list();
 
 		final Integer index = ThreadLocalRandom.current().nextInt(0, result.size());
 		return getSession().load(AccountItem.class, result.get(index).intValue());

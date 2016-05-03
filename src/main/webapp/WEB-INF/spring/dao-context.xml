@@ -48,4 +48,9 @@
     <bean id="accountGiftDao" class="ru.todo100.activer.dao.AccountGiftDao"/>
 
     <bean id="newsDao" class="ru.todo100.activer.dao.NewsDao"/>
+
+    <bean id="happenedDisputeDao" class="ru.todo100.activer.dao.HappenedDisputeDao"/>
+
+    <bean id="disputeMessageDao" class="ru.todo100.activer.dao.DisputeMessageDao"/>
+
 </beans>

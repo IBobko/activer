@@ -16,6 +16,7 @@ window.ACTIVER.Global = {
     submit: function(data){
         this.stompClient.send("/actions",{},JSON.stringify(data));
     },
+    handlers:{},
     connect: function() {
         var that = this;
         var socket = new SockJS(window.ACTIVER.context_path + '/global');
@@ -24,10 +25,13 @@ window.ACTIVER.Global = {
             console.log(frame);
             that.stompClient.subscribe('/user/global2', function (greeting) {
                 var result = JSON.parse(greeting.body);
-                if (that.onPRIVATE_MESSAGE != null) {
-                    that.onPRIVATE_MESSAGE(result);
+                if (that.handlers[result.type] != undefined) {
+                    that.handlers[result.type](result);
+                } else {
+                    if (that.onPRIVATE_MESSAGE != null) {
+                        that.onPRIVATE_MESSAGE(result);
+                    }
                 }
-                console.log(result);
             });
         });
     },

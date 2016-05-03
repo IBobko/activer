@@ -2,9 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib tagdir="/WEB-INF/tags/profile" prefix="profile" %>
 
-
-<style>
-
+<style type="text/css">
     #dating button {
         font-size: 10px !important;
         font-weight: bold !important;
@@ -16,7 +14,20 @@
         padding: 10px 15px !important;
         margin: 10px 0 !important;
     }
+    .modal {
+        font-weight: normal;
+    }
 </style>
+
+
+<div class="modal fade" id="pleaseWaitingWindow">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="padding: 30px">
+            <img src="<c:url value="/resources/img/progress.gif"/>" style="margin: 0 30px"/>
+            <div style="margin-top:30px;">Подождите, пока сервер подберет вам собеседника.</div>
+        </div>
+    </div>
+</div>
 
 <h3 style="color: #3F51B5;font-weight:bold;">Знакомства</h3>
 <div>Для того, чтобы начать знакомиться с новыми людьми просто
@@ -53,27 +64,20 @@
     <br/><br/><br/>
 
 
-
     <div>
         <img src="<c:url value="/resources/img/dispute.jpg"/>" style="float: left;margin: 0 30px"/>
         <h4 style="color: #3F51B5;font-weight:bold;">Споры</h4>
-        В начале диалога мы даем вам тему и обозначаем вашу позицию относительно проблемы. У вас есть 7 минут, чтобы доказать собеседнику, что вы правы на все 100%.
+        В начале диалога мы даем вам тему и обозначаем вашу позицию относительно проблемы. У вас есть 7 минут, чтобы
+        доказать собеседнику, что вы правы на все 100%.
         <br/>
         <button id="searchDispute" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Выбрать</button>
         <span style="font-weight: normal">Вы учавствовали 58 раз</span>
-
-
-        <div id="templatePost1" style="display:none">
-            <profile:post message="${templatePost}"/>
-        </div>
-
         <script type="text/javascript">
             $('#searchDispute').click(function () {
-                <%--$.get("<c:url value="/dating/search"/>", function (data) {--%>
-                    <%--$('#meetingWindow').append("<div>Собеседник найден, пишите!</div>");--%>
-                    <%--dialog = data.trim();--%>
-                <%--});--%>
-                $('#myModal').modal('show')
+                $('#pleaseWaitingWindow').modal('show');
+                $.get("<c:url value="/dating/search"/>", function (data) {
+                    document.location = "<c:url value="/dating/dispute"/>" + "?id=" + data;
+                });
             });
         </script>
     </div>
@@ -93,21 +97,6 @@
             <profile:post message="${templatePost}"/>
         </div>
 
-        <script type="text/javascript">
-            $('#searchDispute').click(function () {
-                <%--$.get("<c:url value="/dating/search"/>", function (data) {--%>
-                    <%--$('#meetingWindow').append("<div>Собеседник найден, пишите!</div>");--%>
-                    <%--dialog = data.trim();--%>
-                <%--});--%>
-
-
-                $('.bs-example-modal-sm').modal('show');
-                setTimeout(function(){
-                    document.location="<c:url value="/dating/dispute"/>";
-                },3000);
-
-            });
-        </script>
     </div>
 
 
@@ -118,18 +107,6 @@
         <input id="text" type="text"><input type="submit" value="Послать сообщение несчастному"/>
     </form>
 
-
-    <!-- Small modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button>
-
-        <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content" style="padding: 30px">
-                <img src="<c:url value="/resources/img/progress.gif"/>" style="float: left;margin: 0 30px"/>
-                Подождите пока сервер подберет вам собеседника
-            </div>
-        </div>
-    </div>
 
     <script type="text/javascript">
         var dialog = <c:if test="${dialog == null}">0</c:if><c:if test="${dialog != null}">${dialog}</c:if>;

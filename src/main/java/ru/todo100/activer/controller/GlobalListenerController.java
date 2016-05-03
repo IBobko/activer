@@ -11,6 +11,7 @@ import ru.todo100.activer.dao.MessageDao;
 import ru.todo100.activer.data.MessageAccountData;
 import ru.todo100.activer.data.PacketMessageData;
 import ru.todo100.activer.data.ReceiveMessageData;
+import ru.todo100.activer.handler.DisputeHandler;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.MessageItem;
 
@@ -34,6 +35,9 @@ public class GlobalListenerController {
     private FriendDao friendDao;
 
     @Autowired
+    private DisputeHandler disputeHandler;
+
+    @Autowired
     private MessageDao messageDao;
 
     @MessageMapping("/actions")
@@ -48,6 +52,13 @@ public class GlobalListenerController {
 //            case "wall-message": /*todo something*/
 //                break;
 //        }
+
+        if (message.getType().equals("DISPUTE_MESSAGE")) {
+            disputeHandler.handle(message,principal);
+            return;
+        }
+
+
 
         if (message.getType().equals("PRIVATE_MESSAGE")) {
 
