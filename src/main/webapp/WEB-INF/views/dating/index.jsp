@@ -3,7 +3,7 @@
 <%@ taglib tagdir="/WEB-INF/tags/profile" prefix="profile" %>
 
 <style type="text/css">
-    #dating button {
+    .datingBlock button {
         font-size: 10px !important;
         font-weight: bold !important;
         color: #fff !important;
@@ -17,8 +17,11 @@
     .modal {
         font-weight: normal;
     }
-</style>
 
+    .datingBlock {
+        padding: 30px;
+    }
+</style>
 
 <div class="modal fade" id="pleaseWaitingWindow">
     <div class="modal-dialog modal-sm">
@@ -35,8 +38,8 @@
     поэтому рекомендуем ознакомиться с описанием.
 </div>
 
-<div style="margin:30px" id="dating">
-    <div>
+
+<div class="datingBlock">
         <img src="<c:url value="/resources/img/flirt.jpg"/>" style="float: left;margin: 0 30px"/>
         <h4 style="color: #3F51B5;font-weight:bold;">Флирт</h4>
         У вас есть 5 минут, чтобы познакомиться с собеседником и узнать его поближе.
@@ -45,26 +48,17 @@
         <button id="searchFlirt" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Выбрать</button>
         <span style="font-weight: normal">Вы учавствовали 58 раз</span>
 
-
-        <div id="templatePost" style="display:none">
-            <profile:post message="${templatePost}"/>
-        </div>
-
         <script type="text/javascript">
             $('#searchFlirt').click(function () {
-                $.get("<c:url value="/dating/search"/>", function (data) {
-                    $('#meetingWindow').append("<div>Собеседник найден, пишите!</div>");
-                    dialog = data.trim();
+                $('#pleaseWaitingWindow').modal('show');
+                $.get("<c:url value="/dating/search/flirt"/>", function (data) {
+                    document.location = "<c:url value="/dating/flirt"/>" + "?id=" + data.trim();
                 });
-
             });
         </script>
     </div>
 
-    <br/><br/><br/>
-
-
-    <div>
+<div class="datingBlock">
         <img src="<c:url value="/resources/img/dispute.jpg"/>" style="float: left;margin: 0 30px"/>
         <h4 style="color: #3F51B5;font-weight:bold;">Споры</h4>
         В начале диалога мы даем вам тему и обозначаем вашу позицию относительно проблемы. У вас есть 7 минут, чтобы
@@ -76,58 +70,16 @@
             $('#searchDispute').click(function () {
                 $('#pleaseWaitingWindow').modal('show');
                 $.get("<c:url value="/dating/search"/>", function (data) {
-                    document.location = "<c:url value="/dating/dispute"/>" + "?id=" + data;
+                    document.location = "<c:url value="/dating/dispute"/>" + "?id=" + data.trim();
                 });
             });
         </script>
     </div>
-
-    <br/><br/><br/>
-    <div>
+<div class="datingBlock">
         <img src="<c:url value="/resources/img/top.jpg"/>" style="float: left;margin: 0 30px"/>
         <h4 style="color: #3F51B5;font-weight:bold;">TOP LINE</h4>
         Хотите больше знакомтс и друзей? Просто нажмите на кнопку ниже и попадите в TOP LINE
         <br/>
-
-        <button id="111" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Выбрать</button>
-        <span style="font-weight: normal">Вы учавствовали 58 раз</span>
-
-
-        <div id="templatePost1" style="display:none">
-            <profile:post message="${templatePost}"/>
-        </div>
-
+    <button class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Выбрать</button>
     </div>
 
-
-    <div style="width:400px; height:400px;" id="meetingWindow">
-
-    </div>
-    <form id="dialogForm">
-        <input id="text" type="text"><input type="submit" value="Послать сообщение несчастному"/>
-    </form>
-
-
-    <script type="text/javascript">
-        var dialog = <c:if test="${dialog == null}">0</c:if><c:if test="${dialog != null}">${dialog}</c:if>;
-        window.ACTIVER.Global.onPRIVATE_MESSAGE = function (data) {
-
-            var post = $('#templatePost').html();
-            post = post.replace("%text%", data.message);
-            console.log(post);
-            $('#meetingWindow').append(post);
-            $('#meetingWindow').scrollTop($('#meetingWindow').height());
-        };
-        $('#dialogForm').submit(function () {
-            var data = window.ACTIVER.Global.message;
-            data.to = dialog;
-            data.message = $('#text').val();
-            data.type = "DATING";
-            $('#text').val('');
-            window.ACTIVER.Global.submit(data);
-            return false;
-        });
-        $('#meetingWindow').scrollTop($('#meetingWindow').height());
-    </script>
-
-</div>

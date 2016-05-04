@@ -53,4 +53,8 @@
 
     <bean id="disputeMessageDao" class="ru.todo100.activer.dao.DisputeMessageDao"/>
 
+    <bean id="happenedFlirtDao" class="ru.todo100.activer.dao.HappenedFlirtDao"/>
+
+    <bean id="flirtMessageDao" class="ru.todo100.activer.dao.FlirtMessageDao"/>
+
 </beans>

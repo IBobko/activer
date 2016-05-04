@@ -65,22 +65,21 @@
     var dateObj = new Date();
 
 
-function timer() {
-    setTimeout(function () {
-        var date = new Date();
-        var diff = new Date(date.getTime() - dateObj.getTime());
+    function timer() {
+        setTimeout(function () {
+            var date = new Date();
+            var diff = new Date(date.getTime() - dateObj.getTime());
 
-        var t = new Date(420000 - diff.getTime());
+            var t = new Date(420000 - diff.getTime());
 
-        var sec = t.getSeconds() < 10 ? "0" + t.getSeconds() : t.getSeconds();
+            var sec = t.getSeconds() < 10 ? "0" + t.getSeconds() : t.getSeconds();
 
-        $('#timer').html(t.getMinutes() + ":" + sec);
+            $('#timer').html(t.getMinutes() + ":" + sec);
 
-        timer();
-    }, 1000);
-};
+            timer();
+        }, 1000);
+    }
     timer();
-
 </script>
 <div style="display:none" id="disputeMessageTemplate">
     <div style="overflow: hidden">

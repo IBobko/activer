@@ -12,6 +12,7 @@ import ru.todo100.activer.data.MessageAccountData;
 import ru.todo100.activer.data.PacketMessageData;
 import ru.todo100.activer.data.ReceiveMessageData;
 import ru.todo100.activer.handler.DisputeHandler;
+import ru.todo100.activer.handler.FlirtHandler;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.MessageItem;
 
@@ -23,8 +24,6 @@ import java.util.GregorianCalendar;
  */
 @Controller
 public class GlobalListenerController {
-
-
     @Autowired
     private AccountDao accountService;
 
@@ -38,23 +37,19 @@ public class GlobalListenerController {
     private DisputeHandler disputeHandler;
 
     @Autowired
+    private FlirtHandler flirtHandler;
+
+    @Autowired
     private MessageDao messageDao;
 
     @MessageMapping("/actions")
     public void message(final ReceiveMessageData message, final Principal principal) {
-//        switch (message.getPayload().getType()) {
-//            case "private-message": /*todo something*/
-//                break;
-//            case "add-to-friend": /*todo something*/
-//                break;
-//            case "like-message": /*todo something*/
-//                break;
-//            case "wall-message": /*todo something*/
-//                break;
-//        }
-
         if (message.getType().equals("DISPUTE_MESSAGE")) {
             disputeHandler.handle(message,principal);
+            return;
+        }
+        if (message.getType().equals("FLIRT_MESSAGE")) {
+            flirtHandler.handle(message, principal);
             return;
         }
 

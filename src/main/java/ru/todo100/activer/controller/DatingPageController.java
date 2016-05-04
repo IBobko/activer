@@ -12,18 +12,17 @@ import ru.todo100.activer.PopupMessageType;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.DisputeThemeDao;
 import ru.todo100.activer.dao.HappenedDisputeDao;
-import ru.todo100.activer.data.HappenedDisputeData;
-import ru.todo100.activer.data.MessageAccountData;
-import ru.todo100.activer.data.PacketMessageData;
-import ru.todo100.activer.data.ProfileData;
-import ru.todo100.activer.model.AccountItem;
-import ru.todo100.activer.model.DisputeThemeItem;
-import ru.todo100.activer.model.HappenedDisputeItem;
+import ru.todo100.activer.dao.HappenedFlirtDao;
+import ru.todo100.activer.data.*;
+import ru.todo100.activer.model.*;
 import ru.todo100.activer.service.PhotoService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
@@ -36,6 +35,12 @@ public class DatingPageController {
 
     private AccountDao accountDao;
     private HappenedDisputeDao happenedDisputeDao;
+    @Autowired
+    private PhotoService photoService1;
+    @Autowired
+    private DisputeThemeDao disputeThemeDao;
+
+    private HappenedFlirtDao happenedFlirtDao;
 
     public AccountDao getAccountDao() {
         return accountDao;
@@ -59,22 +64,64 @@ public class DatingPageController {
     }
 
     @RequestMapping("/flirt")
-    public String flirt(HttpServletRequest request, Model model) {
-        model.addAttribute("pageType", "dating");
-        try {
-            Integer dialog = Integer.parseInt(request.getParameter("dialog"));
-            model.addAttribute("dialog", dialog);
-        } catch (NumberFormatException ignored) {
+    public String flirt(final HttpServletRequest request, final Model model, @RequestParam(defaultValue = "0") final Integer id) {
+        if (id.equals(0)) {
+            return "redirect:/dating";
         }
-        model.addAttribute("templatePost", MessageController.generateTemplateMessageData());
-        return "dating/flirt";
+        final HappenedFlirtItem happenedFlirt = (HappenedFlirtItem) getHappenedFlirtDao().get(id);
+        if (happenedFlirt != null) {
+            ProfileData profileData = accountDao.getCurrentProfileData(request.getSession());
+            Boolean init = null;
+
+            if (profileData.getId().equals(happenedFlirt.getAccountAppliedId())) {
+                init = false;
+            }
+
+            if (profileData.getId().equals(happenedFlirt.getAccountInitId())) {
+                init = true;
+            }
+
+            if (init == null) {
+                return "redirect:/dating";
+            }
+
+            model.addAttribute("pageType", "dating/flirt");
+
+            final HappenedFlirtData flirtData = generateHappenedFlirtData(happenedFlirt, init);
+            model.addAttribute("flirtData", flirtData);
+            model.addAttribute("photo", photoService1.getPhoto(profileData.getId()));
+            model.addAttribute("profile", profileData);
+            return "dating/flirt";
+        }
+        return "redirect:/dating";
     }
 
-    @Autowired
-    private PhotoService photoService1;
+    public HappenedFlirtData generateHappenedFlirtData(HappenedFlirtItem happenedFlirt, boolean init) {
+        HappenedFlirtData happenedFlirtData = new HappenedFlirtData();
+        happenedFlirtData.setId(happenedFlirt.getId());
+        final AccountItem opponent;
+        if (init) {
+            opponent = accountDao.get(happenedFlirt.getAccountAppliedId());
+        } else {
+            opponent = accountDao.get(happenedFlirt.getAccountInitId());
+        }
 
-    @Autowired
-    private DisputeThemeDao disputeThemeDao;
+        final String photo = photoService1.getPhoto(opponent.getId());
+        happenedFlirtData.setOpponentAvatar(photo);
+        happenedFlirtData.setStartedDate(happenedFlirt.getStartedDate());
+        happenedFlirtData.setBirthday(opponent.getBirthdate());
+
+        happenedFlirtData.setOpponentFirstName(opponent.getFirstName());
+        happenedFlirtData.setOpponentLastName(opponent.getLastName());
+
+        Set<InterestItem> interests = opponent.getInterestItems();
+        List<String> interestsData = new ArrayList<>();
+        for (InterestItem item : interests) {
+            interestsData.add(item.getName());
+        }
+        happenedFlirtData.setInterests(interestsData);
+        return happenedFlirtData;
+    }
 
     @Transactional
     public HappenedDisputeData generate(final HappenedDisputeItem item, final boolean init) {
@@ -113,7 +160,6 @@ public class DatingPageController {
         return happenedDisputeData;
     }
 
-
     @RequestMapping(value = "/dispute")
     public String dispute(final HttpServletRequest request, final Model model, @RequestParam(defaultValue = "0") final Integer id) {
         if (id.equals(0)) {
@@ -137,7 +183,7 @@ public class DatingPageController {
                 return "redirect:/dating";
             }
 
-            model.addAttribute("pageType", "dating");
+            model.addAttribute("pageType", "dating/dispute");
 
             final HappenedDisputeData disputeData = generate(happenedDispute, init);
 
@@ -174,4 +220,27 @@ public class DatingPageController {
         response.getWriter().println(happenedDisputeItem.getId());
     }
 
+    public HappenedFlirtDao getHappenedFlirtDao() {
+        return happenedFlirtDao;
+    }
+
+    @Autowired
+    public void setHappenedFlirtDao(HappenedFlirtDao happenedFlirtDao) {
+        this.happenedFlirtDao = happenedFlirtDao;
+    }
+
+    @ResponseBody
+    @RequestMapping("/search/flirt")
+    public void searchFlirt(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        final AccountItem account = getAccountDao().getRandomOnlineAccount(request.getSession());
+        final ProfileData profileData = getAccountDao().getCurrentProfileData(request.getSession());
+        final HappenedFlirtItem happenedFlirtItem = getHappenedFlirtDao().create(profileData.getId(), account.getId());
+        final PacketMessageData messageData = new PacketMessageData();
+        messageData.setType(PopupMessageType.FLIRT);
+        final MessageAccountData from = new MessageAccountData();
+        from.setId(account.getId());
+        messageData.setFrom(from);
+        template.convertAndSendToUser(account.getUsername(), "/global2", messageData);
+        response.getWriter().println(happenedFlirtItem.getId());
+    }
 }

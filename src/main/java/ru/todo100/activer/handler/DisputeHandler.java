@@ -5,13 +5,11 @@ import ru.todo100.activer.PopupMessageType;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.DisputeMessageDao;
 import ru.todo100.activer.dao.HappenedDisputeDao;
-import ru.todo100.activer.data.MessageAccountData;
 import ru.todo100.activer.data.PacketMessageData;
 import ru.todo100.activer.data.ReceiveMessageData;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.DisputeMessageItem;
 import ru.todo100.activer.model.HappenedDisputeItem;
-import ru.todo100.activer.service.PhotoService;
 
 import java.security.Principal;
 import java.util.GregorianCalendar;
@@ -48,9 +46,6 @@ public class DisputeHandler extends AbstractMessageHandler {
     }
 
     @Autowired
-    PhotoService photoService1;
-
-    @Autowired
     public void setAccountService(AccountDao accountService) {
         this.accountService = accountService;
     }
@@ -68,13 +63,7 @@ public class DisputeHandler extends AbstractMessageHandler {
         }
 
         final PacketMessageData messageData = new PacketMessageData();
-        final MessageAccountData messageAccountData = new MessageAccountData();
-        messageAccountData.setFirstName(account.getFirstName());
-        messageAccountData.setLastName(account.getLastName());
-        messageAccountData.setId(account.getId());
-
-        messageAccountData.setPhoto60x60(photoService1.getPhoto(account.getId()));
-        messageData.setFrom(messageAccountData);
+        messageData.setFrom(generateAccountData(account));
         messageData.setDate(new GregorianCalendar());
         messageData.setType(PopupMessageType.DISPUTE_MESSAGE);
         messageData.setMessage(message.getMessage());

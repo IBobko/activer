@@ -34,6 +34,7 @@
 
 	<beans:bean id="abstractMessageHandler" abstract="true" class="ru.todo100.activer.handler.AbstractMessageHandler"/>
 	<beans:bean id="disputeHandler" class="ru.todo100.activer.handler.DisputeHandler" parent="abstractMessageHandler"/>
+	<beans:bean id="flirtHandler" class="ru.todo100.activer.handler.FlirtHandler" parent="abstractMessageHandler"/>
 
 
 
