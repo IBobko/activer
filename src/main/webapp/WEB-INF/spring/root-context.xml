@@ -15,7 +15,6 @@
 	<context:annotation-config />
 
 	<context:property-placeholder location="/WEB-INF/local.properties" ignore-unresolvable="true" />
-
 	<context:property-placeholder location="/WEB-INF/servlet.properties" />
 
 	<!-- Root Context: defines shared resources visible to all other web components -->
@@ -35,9 +34,7 @@
 				<prop key="hibernate.max_fetch_depth">3</prop>
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.enable_lazy_load_no_trans">true</prop>
-				<prop key="hibernate.cache.region.factory_class">
-					org.hibernate.cache.ehcache.EhCacheRegionFactory
-				</prop>
+				<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
 				<prop key="hibernate.cache.use_second_level_cache">true</prop>
 			</props>
 		</property>
@@ -54,23 +51,12 @@
 
 
 	<bean id="partnerService" class="ru.todo100.activer.service.impl.PartnerServiceImpl"/>
-
 	<bean id="adminAccountService" class="ru.todo100.activer.service.impl.AdminAccountServiceImpl"/>
-
-
-
 	<bean id="friendsService" class="ru.todo100.activer.service.impl.FriendsServiceImpl"/>
-
 	<bean id="paymentService" class="ru.todo100.activer.service.impl.PaymentServiceImpl"/>
-
 	<bean id="giftService" class="ru.todo100.activer.service.impl.GiftServiceImpl"/>
-
 	<bean id="disputeService" class="ru.todo100.activer.service.impl.DisputeServiceImpl"/>
-
-	<bean
-			id="promocodeService"
-			class="ru.todo100.activer.service.impl.PromoServiceImpl"
-			 />
+	<bean id="promocodeService" class="ru.todo100.activer.service.impl.PromoServiceImpl"/>
 
 	<!-- end classes -->
 
@@ -109,16 +95,11 @@
 
 
 	<bean id="wallPopulator" class="ru.todo100.activer.populators.WallPopulator"/>
-
 	<bean id="interestPopulator" class="ru.todo100.activer.populators.InterestPopulator"/>
-
 	<bean id="profilePopulator" class="ru.todo100.activer.populators.ProfilePopulator"/>
-
 	<bean id="messagePopulator" class="ru.todo100.activer.populators.ProfilePopulator"/>
-
 	<bean id="tripPopulator" class="ru.todo100.activer.populators.TripPopulator"/>
 	<bean id="dreamPopulator" class="ru.todo100.activer.populators.DreamPopulator"/>
-
 	<bean id="educationPopulator" class="ru.todo100.activer.populators.EducationPopulator"/>
 	<bean id="jobPopulator" class="ru.todo100.activer.populators.JobPopulator"/>
 	<bean id="childrenPopulator" class="ru.todo100.activer.populators.ChildrenPopulator"/>
@@ -127,6 +108,8 @@
 	<bean id="photoStrategy" class="ru.todo100.activer.strategy.PhotoStrategy">
 		<property name="pathToSave" value="/resources/photos"/>
 	</bean>
+
+	<bean id="newsService" class="ru.todo100.activer.service.impl.NewsServiceImpl"/>
 
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
 		<property name="defaultLocale" value="en" />
@@ -137,21 +120,5 @@
 
 	<!-- Facades -->
 	<import resource="facade-context.xml" />
-
-	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-		<property name="defaultErrorView" value="uncaughtException" />
-		<property name="excludedExceptions" value="org.springframework.security.access.AccessDeniedException" />
-
-		<property name="exceptionMappings">
-			<props>
-				<prop key=".DataAccessException">dataAccessFailure</prop>
-				<prop key=".NoSuchRequestHandlingMethodException">resourceNotFound</prop>
-				<prop key=".TypeMismatchException">resourceNotFound</prop>
-				<prop key=".MissingServletRequestParameterException">resourceNotFound</prop>
-			</props>
-		</property>
-	</bean>
-
-
 
 </beans>

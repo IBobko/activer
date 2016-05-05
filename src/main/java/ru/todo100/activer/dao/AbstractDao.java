@@ -65,6 +65,7 @@ abstract public class AbstractDao<T>
 		}
 		else
 		{
+			/*todo необходимо по возможности использовать, где это возможно этот метод*/
 			if (item instanceof DateChanges)
 			{
 				((DateChanges) item).setCreatedDate(new GregorianCalendar());

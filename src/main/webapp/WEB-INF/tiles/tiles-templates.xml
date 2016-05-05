@@ -3,14 +3,11 @@
        "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
        "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 
-
 <tiles-definitions>
 
 	<definition name="base-template" template="/WEB-INF/templates/base-template.jsp">
     	<put-attribute name="title" value="Activer" />
-    	<put-attribute name="header" value="/WEB-INF/templates/header.jsp" />
-    	<put-attribute name="content" value="" />
-    	<put-attribute name="footer" value="/WEB-INF/templates/footer.jsp" />
+		<put-attribute name="content" value=""/>
 	</definition>
 
 	<!-- Authorization and Registration -->
@@ -53,19 +50,6 @@
 	<definition name="mysql/tables" extends="base-template">
     	<put-attribute name="content" value="/WEB-INF/views/mysql/tables.jsp" />
 	</definition>
-	
-	<definition name="wish/index" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/wish/index.jsp" />
-	</definition>
-	
-	<definition name="error/modelFileNotFound" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/error/modelFileNotFound.jsp" />
-	</definition>
-
-	<definition name="error/modelNotPaid" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/error/modelNotPaid.jsp" />
-	</definition>
-
 
 	<definition name="paypal/fail" extends="base-template">
     	<put-attribute name="content" value="/WEB-INF/views/paypal/fail.jsp" />
@@ -74,22 +58,9 @@
 	<definition name="paypal/success" extends="base-template">
     	<put-attribute name="content" value="/WEB-INF/views/paypal/success.jsp" />
 	</definition>
-	
-	<definition name="mark/index" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/mark/index.jsp" />
-	</definition>
-
-	<definition name="search/index" extends="base-template">
-		<put-attribute name="content" value="/WEB-INF/views/search/index.jsp" />
-	</definition>
-
 
 	<definition name="message/index" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/message/index.jsp" />
-	</definition>
-
-	<definition name="search/people" extends="base-template">
-		<put-attribute name="content" value="/WEB-INF/views/search/people.jsp" />
 	</definition>
 
 	<definition name="message/communicate" extends="base-template">
@@ -189,7 +160,6 @@
 	<definition name="admin/dispute/add" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/admin/dispute_add.jsp"/>
 	</definition>
-
 
 	<definition name="admin/balance" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/admin/balance.jsp"/>
