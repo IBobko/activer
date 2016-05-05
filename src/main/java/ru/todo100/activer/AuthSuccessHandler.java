@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.service.FriendsService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,9 @@ import java.io.IOException;
 public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler
 {
 	private AccountDao accountService;
+
+	@Autowired
+	private FriendsService friendsService;
 
 	public AccountDao getAccountService() {
 		return accountService;
@@ -30,6 +34,8 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
 	                                    final Authentication authentication) throws IOException, ServletException
 	{
 		getAccountService().initCurrentProfile(httpServletRequest.getSession());
+		/*@todo возможно не стоит этот методо все таки вызывать здесь*/
+		httpServletRequest.setAttribute("friendsData", friendsService.getFriendData(httpServletRequest.getSession()));
 		super.onAuthenticationSuccess(httpServletRequest,httpServletResponse,authentication);
 	}
 }

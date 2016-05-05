@@ -12,7 +12,7 @@
 
     <!-- handler for authorization failure.  Will redirect to the login page. -->
     <beans:bean id="myAccessDeniedHandler" class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
-        <beans:property name="errorPage" value="/index" />
+        <beans:property name="errorPage" value="/"/>
     </beans:bean>
 
     <http auto-config="false" use-expressions="true">
@@ -23,6 +23,12 @@
                 always-use-default-target="true"
                 authentication-success-handler-ref="authSuccessHandler"
                 />
+
+        <intercept-url pattern="/auth/**" access="permitAll"/>
+        <intercept-url pattern="/resources/**" access="permitAll"/>
+
+        <intercept-url pattern="/**" access="isAuthenticated()"/>
+
         <logout logout-success-url="/" delete-cookies="JSESSIONID"/>
         <remember-me key="uniqueAndSecret" token-validity-seconds="86400"/>
         <access-denied-handler ref="myAccessDeniedHandler" />
@@ -40,7 +46,6 @@
     <beans:bean id="authSuccessHandler" class="ru.todo100.activer.AuthSuccessHandler">
         <beans:property name="defaultTargetUrl" value="/profile"/>
     </beans:bean>
-
 
 
 </beans:beans>

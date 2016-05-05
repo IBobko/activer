@@ -33,11 +33,6 @@
 	</filter>
 
 	<filter>
-		<filter-name>dataPopulatorFilter</filter-name>
-		<filter-class>ru.todo100.activer.filter.DataPopulatorFilter</filter-class>
-		<async-supported>true</async-supported>
-	</filter>
-	<filter>
 		<filter-name>hibernateFilter</filter-name>
 		<filter-class>
 			org.springframework.orm.hibernate3.support.OpenSessionInViewFilter
@@ -62,11 +57,6 @@
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>hibernateFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-
-	<filter-mapping>
-		<filter-name>dataPopulatorFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 

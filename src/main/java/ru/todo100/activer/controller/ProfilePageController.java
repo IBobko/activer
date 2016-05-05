@@ -1,7 +1,6 @@
 package ru.todo100.activer.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -29,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@PreAuthorize("isAuthenticated() && hasRole('ROLE_USER')")
 @RequestMapping(value = "/profile")
 public class ProfilePageController
 {
@@ -139,5 +137,10 @@ public class ProfilePageController
 			wall.add(data);
 		}
 		model.addAttribute("wall",wall);
+	}
+
+	@ExceptionHandler(Exception.class)
+	public void handleNullPointerException(NullPointerException ex) {
+		System.out.println("hello world");
 	}
 }
