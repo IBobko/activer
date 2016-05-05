@@ -10,24 +10,29 @@
 		<put-attribute name="content" value=""/>
 	</definition>
 
+	<definition name="base-template-auth" template="/WEB-INF/templates/base-template-auth.jsp">
+		<put-attribute name="title" value="Activer"/>
+		<put-attribute name="content" value=""/>
+	</definition>
+
 	<!-- Authorization and Registration -->
-	<definition name="auth/index" extends="base-template">
+	<definition name="auth/index" extends="base-template-auth">
 		<put-attribute name="content" value="/WEB-INF/views/auth/index.jsp"/>
 	</definition>
 
-	<definition name="auth/forgot" extends="base-template">
+	<definition name="auth/forgot" extends="base-template-auth">
 		<put-attribute name="content" value="/WEB-INF/views/auth/forgot.jsp"/>
 	</definition>
 
-	<definition name="auth/signup" extends="base-template">
+	<definition name="auth/signup" extends="base-template-auth">
 		<put-attribute name="content" value="/WEB-INF/views/auth/signup.jsp"/>
 	</definition>
 
-	<definition name="auth/denied" extends="base-template">
+	<definition name="auth/denied" extends="base-template-auth">
 		<put-attribute name="content" value="/WEB-INF/views/auth/denied.jsp"/>
 	</definition>
 
-	<definition name="auth/done" extends="base-template">
+	<definition name="auth/done" extends="base-template-auth">
 		<put-attribute name="content" value="/WEB-INF/views/auth/done.jsp"/>
 	</definition>
 

@@ -83,6 +83,11 @@
 				<beans:property name="paramName" value="lang" />
 			</beans:bean>
 		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/auth/**"/>
+			<beans:bean class="ru.todo100.activer.interceptor.AuthInterceptor"/>
+		</mvc:interceptor>
 	</mvc:interceptors>
+
 
 </beans:beans>
