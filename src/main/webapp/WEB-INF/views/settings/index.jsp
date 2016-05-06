@@ -11,8 +11,12 @@
 
 <h4 style="color:#337ab7;font-weight:bold">Фото профиля</h4>
 <form method="post" action="<c:url value="/settings/uploadphoto"/>" enctype="multipart/form-data">
-    <input type="file" name="photo">
-    <input type="submit" value="Загрузить фото">
+    <input id="choosePhoto" name="photo" type="file"
+           style="cursor:pointer;position:absolute;height:34px;opacity: 0;overflow: hidden;width:165px">
+    <a id="choosePhotoButton" href="#" class="std-button btn btn-default"><span class="fa fa-camera"></span>&nbsp;Выбрать
+        фото</a>
+    <br/><br/>
+    <input class="std-button btn btn-default" type="submit" value="Загрузить фото">
 </form>
 
 <h4 style="color:#337ab7;font-weight:bold">Основная информация</h4>

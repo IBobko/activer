@@ -13,7 +13,6 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -22,15 +21,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.CountryDao;
-import ru.todo100.activer.data.DreamData;
-import ru.todo100.activer.data.InterestData;
-import ru.todo100.activer.data.PhotoAvatarSizeData;
-import ru.todo100.activer.data.TripData;
+import ru.todo100.activer.data.*;
 import ru.todo100.activer.form.*;
 import ru.todo100.activer.model.*;
 import ru.todo100.activer.populators.DreamPopulator;
 import ru.todo100.activer.populators.InterestPopulator;
 import ru.todo100.activer.populators.TripPopulator;
+import ru.todo100.activer.service.NewsService;
 import ru.todo100.activer.service.PhotoService;
 import ru.todo100.activer.util.ResizeImage;
 
@@ -50,11 +47,9 @@ import java.util.Set;
  */
 @Controller
 @RequestMapping("/settings")
-@PreAuthorize("isAuthenticated()")
 public class SettingPageController {
-
     @Value("${static.host}")
-    String staticHost;
+    private String staticHost;
     private CountryDao countryDao;
     private List<CountryItem> countryItems;
     @Autowired
@@ -65,6 +60,8 @@ public class SettingPageController {
     private InterestPopulator interestPopulator;
     private TripPopulator tripPopulator;
     private DreamPopulator dreamPopulator;
+
+    private NewsService newsService;
 
     public CountryDao getCountryDao() {
         return countryDao;
@@ -230,7 +227,7 @@ public class SettingPageController {
     }
 
     @RequestMapping(value = "/uploadphoto", method = RequestMethod.POST)
-    public String uploadPhoto(HttpServletResponse res, @RequestParam(value = "photo", required = false) MultipartFile photo) throws IOException {
+    public String uploadPhoto(HttpServletRequest req, HttpServletResponse res, @RequestParam(value = "photo", required = false) MultipartFile photo) throws IOException {
         final HttpClient httpclient = HttpClientBuilder.create().build();
         final MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         final File file = new File(photo.getOriginalFilename());
@@ -286,6 +283,11 @@ public class SettingPageController {
         file.delete();
 
         photoService1.setPhoto(accountService.getCurrentAccount().getId(), photoAvatarSizeData);
+
+        ProfileData profileData = accountService.getCurrentProfileData(req.getSession());
+
+        newsService.addNews(profileData.getId(), "Обновил фотографию");
+
         return "redirect:/profile";
     }
 
