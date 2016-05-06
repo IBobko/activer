@@ -12,6 +12,8 @@
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd"
 >
+	<!--@todo Подумать обязательно ли указывать пропертис в двух файлах-->
+	<context:property-placeholder location="/WEB-INF/local.properties" ignore-unresolvable="true"/>
 	<context:property-placeholder location="/WEB-INF/servlet.properties" />
 	<!-- DispatcherServlet Context: defines this servlet's request-processing 
 		infrastructure -->

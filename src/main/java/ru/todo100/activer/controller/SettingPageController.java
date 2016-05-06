@@ -1,7 +1,9 @@
 package ru.todo100.activer.controller;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -10,6 +12,7 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +24,7 @@ import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.CountryDao;
 import ru.todo100.activer.data.DreamData;
 import ru.todo100.activer.data.InterestData;
+import ru.todo100.activer.data.PhotoAvatarSizeData;
 import ru.todo100.activer.data.TripData;
 import ru.todo100.activer.form.*;
 import ru.todo100.activer.model.*;
@@ -28,6 +32,7 @@ import ru.todo100.activer.populators.DreamPopulator;
 import ru.todo100.activer.populators.InterestPopulator;
 import ru.todo100.activer.populators.TripPopulator;
 import ru.todo100.activer.service.PhotoService;
+import ru.todo100.activer.util.ResizeImage;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,13 +46,15 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by Igor Bobko <limit-speed@yandex.ru>.
+ * @author Igor Bobko <limit-speed@yandex.ru>.
  */
 @Controller
 @RequestMapping("/settings")
 @PreAuthorize("isAuthenticated()")
 public class SettingPageController {
 
+    @Value("${static.host}")
+    String staticHost;
     private CountryDao countryDao;
     private List<CountryItem> countryItems;
     @Autowired
@@ -226,17 +233,81 @@ public class SettingPageController {
     public String uploadPhoto(HttpServletResponse res, @RequestParam(value = "photo", required = false) MultipartFile photo) throws IOException {
         final HttpClient httpclient = HttpClientBuilder.create().build();
         final MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-        final File file = new File(photo.getName());
+        final File file = new File(photo.getOriginalFilename());
         FileUtils.writeByteArrayToFile(file, photo.getBytes());
-        final HttpPost httppost = new HttpPost("http://192.168.1.65:18080/static/upload");
+        final HttpPost httppost = new HttpPost(staticHost + "/static/upload");
         builder.addPart("image", new FileBody(file, ContentType.create(photo.getContentType())));
         httppost.setEntity(builder.build());
         final HttpResponse response = httpclient.execute(httppost);
         final StringWriter writer = new StringWriter();
         IOUtils.copy(response.getEntity().getContent(), writer, "UTF-8");
         final String theString = writer.toString();
-        photoService1.setPhoto(accountService.getCurrentAccount().getId(), theString);
+
+
+        PhotoAvatarSizeData photoAvatarSizeData = new PhotoAvatarSizeData();
+        photoAvatarSizeData.setPhotoOriginal(theString);
+
+
+        String contentType = photo.getContentType();
+
+
+        final File file2 = getNewFile(file, 200, 400);
+        String avatarSize = sendFile(file2, contentType);
+
+
+        photoAvatarSizeData.setPhotoAvatar(avatarSize);
+
+
+        final File file3 = getNewFile(file, 50, 50);
+        String miniSize = sendFile(file3, contentType);
+
+
+        photoAvatarSizeData.setPhotoMini(miniSize);
+
+
+        final File file4 = getNewFile(file, 300, 300);
+        String showingSize = sendFile(file4, contentType);
+
+
+        photoAvatarSizeData.setPhotoShowing(showingSize);
+
+
+        final File file5 = getNewFile(file, 100, 100);
+        String size100 = sendFile(file5, contentType);
+
+
+        photoAvatarSizeData.setPhotoThumbnail(size100);
+
+
+        file4.delete();
+        file5.delete();
+        file3.delete();
+        file2.delete();
+        file.delete();
+
+        photoService1.setPhoto(accountService.getCurrentAccount().getId(), photoAvatarSizeData);
         return "redirect:/profile";
+    }
+
+    public String sendFile(File file, String contentType) throws IOException {
+        final HttpClient httpclient = HttpClientBuilder.create().build();
+        final MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        final HttpPost httppost = new HttpPost(staticHost + "/static/upload");
+        builder.addPart("image", new FileBody(file, ContentType.create(contentType)));
+        httppost.setEntity(builder.build());
+        final HttpResponse response = httpclient.execute(httppost);
+        final StringWriter writer = new StringWriter();
+        IOUtils.copy(response.getEntity().getContent(), writer, "UTF-8");
+        return writer.toString();
+    }
+
+
+    public File getNewFile(File file, int width, int height) {
+        String newName = RandomStringUtils.randomAlphanumeric(6);
+        final File newFile = new File(newName);
+        String extension = FilenameUtils.getExtension(file.getName());
+        ResizeImage.resize(file, newFile, extension, width, height);
+        return newFile;
     }
 
     public InterestPopulator getInterestPopulator() {
