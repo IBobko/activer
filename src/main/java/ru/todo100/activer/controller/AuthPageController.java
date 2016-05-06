@@ -53,7 +53,6 @@ public class AuthPageController
 	@RequestMapping
 	public String index(final Model model)
 	{
-
 		model.addAttribute("pageType", "auth");
 		return "auth/index";
 	}

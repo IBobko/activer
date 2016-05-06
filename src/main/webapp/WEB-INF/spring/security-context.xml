@@ -15,6 +15,9 @@
         <beans:property name="errorPage" value="/"/>
     </beans:bean>
 
+    <!--
+     Framework maintains a chain of filters in order to apply its services.
+     -->
     <http auto-config="false" use-expressions="true">
         <csrf disabled="true"/>
         <form-login
@@ -24,14 +27,13 @@
                 authentication-success-handler-ref="authSuccessHandler"
                 />
 
-        <intercept-url pattern="/*" access="permitAll"/>
+        <intercept-url pattern="/" access="permitAll"/>
         <intercept-url pattern="/auth/**" access="permitAll"/>
         <intercept-url pattern="/resources/**" access="permitAll"/>
 
         <intercept-url pattern="/admin/**" access="hasRole('ROLE_CREATOR')"/>
 
-        <intercept-url pattern="/**" access="isAuthenticated()"/>
-
+        <intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
 
         <logout logout-success-url="/" delete-cookies="JSESSIONID"/>
         <remember-me key="uniqueAndSecret" token-validity-seconds="86400"/>

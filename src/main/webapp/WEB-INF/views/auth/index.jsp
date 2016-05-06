@@ -62,7 +62,9 @@
             <input type="password" placeholder="Пароль" name="password" id="password" class='form-control'/>
         </div>
         <div style="padding:10px 0; text-align: center">
-            <label><input type="checkbox" name="remember-me" title="Запомнить меня"/> Запомнить меня</label>
+            <label><input type="checkbox" name="remember-me"
+                          <c:if test="${cookie.containsKey('remember-me')}">checked="checked"</c:if>
+                          title="Запомнить меня"/> Запомнить меня</label>
         </div>
         <div style="text-align: center">
             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-log-in">&nbsp;</span>Войти</button>

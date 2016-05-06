@@ -7,6 +7,7 @@ import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.service.FriendsService;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -36,6 +37,14 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
 		getAccountService().initCurrentProfile(httpServletRequest.getSession());
 		/*@todo возможно не стоит этот методо все таки вызывать здесь*/
 		httpServletRequest.setAttribute("friendsData", friendsService.getFriendData(httpServletRequest.getSession()));
+
+		if (httpServletRequest.getParameter("remember-me") != null) {
+			Cookie cookie = new Cookie("remember-me", "1");
+			cookie.setMaxAge(604800);
+			cookie.setPath("/");
+			httpServletResponse.addCookie(cookie);
+		}
+
 		super.onAuthenticationSuccess(httpServletRequest,httpServletResponse,authentication);
 	}
 }
