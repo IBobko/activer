@@ -182,7 +182,7 @@
         element : 'worldmap',
         width : 640,
         height : 400,
-        c : {
+        c: {;
 <c:forEach items="${profile.trips}" var="trip" varStatus="status">
             <c:if test="${not empty trip.countryCode}">
             ${trip.countryCode.substring(0,2)}:1<c:if test="${not status.last}">,</c:if>
@@ -190,7 +190,7 @@
             </c:forEach>
         }
 
-    });
+    })
 
 </script>
 <!-- Dreams -->
@@ -245,7 +245,7 @@
                 </li>
             </c:forEach>
 
-
+            <c:if test="${profile.my}">
             <form class="add-thought" id="wall">
                 <div class="form-group">
                     <textarea class="form-control" id="wall-text" placeholder="Есть мысли?" maxlength="140" rows="2"></textarea>
@@ -257,6 +257,7 @@
                     </button>
                 </div>
             </form>
+            </c:if>
             <script type="text/javascript">
                 $('#wall').submit(function(){
                     var data = {

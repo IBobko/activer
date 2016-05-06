@@ -80,6 +80,11 @@
                                     path="email"/>
                     </div>
                     <br/>
+                            <div style="text-align: center">
+                                <form:button type="submit" class="btn btn-default"><span
+                                        class="glyphicon glyphicon-edit">&nbsp;</span>Зарегистрироваться
+                                </form:button>
+                            </div>
                 </div>
 
             </td>

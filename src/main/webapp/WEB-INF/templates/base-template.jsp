@@ -79,8 +79,7 @@
     </script>
 </head>
 
-<body>
-<div id="wrapper">
+<div id="wrapper" <c:if test="${sessionScope.containsKey('leftmenu')}">class="toggled"</c:if>>
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
         <nav class="navbar navbar-default navbar-sidebar">
@@ -121,7 +120,17 @@
 <script type="text/javascript">
     $("#sidebar-toggle").click(function (e) {
         e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
+        $("#wrapper").toggleClass(function (a, state) {
+            if (state == "toggled") {
+                $.get("<c:url value="/settings/leftmenusave"/>");
+            } else {
+                $.get("<c:url value="/settings/leftmenusave"/>", {yes: 1});
+            }
+            return "toggled";
+        });
+
+
+
     });
 
     if (window.ACTIVER.Global.onPRIVATE_MESSAGE == null) {

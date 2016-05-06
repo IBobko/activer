@@ -419,4 +419,14 @@ public class SettingPageController {
         }
         return  "redirect:/settings/dreams";
     }
+
+    @RequestMapping(value = "/leftmenusave")
+    @ResponseBody
+    public void leftmenusave(final HttpServletRequest request) {
+        if (request.getParameter("yes") != null) {
+            request.getSession().setAttribute("leftmenu", 1);
+        } else {
+            request.getSession().removeAttribute("leftmenu");
+        }
+    }
 }
