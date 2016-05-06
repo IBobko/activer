@@ -67,7 +67,7 @@
 			value="org.springframework.web.servlet.view.tiles3.TilesView" />
 		<beans:property name="attributes">
 			<beans:props>
-				<beans:prop key="picturePath">${url.model.picturepath}</beans:prop>
+				<beans:prop key="staticFiles">${static.host.files}</beans:prop>
 			</beans:props>
 		</beans:property>
 	</beans:bean>
