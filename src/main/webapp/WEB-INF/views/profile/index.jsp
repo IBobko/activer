@@ -176,23 +176,22 @@
     </div>
 </div>
 <!-- /Travels -->
+<jsp:useBean id="worldMap" class="ru.todo100.activer.jsp.WorldMap"/>
 <script type="text/javascript">
 
     var map=new WorldMap({
         element : 'worldmap',
         width : 640,
         height : 400,
-        c: {;
-<c:forEach items="${profile.trips}" var="trip" varStatus="status">
-            <c:if test="${not empty trip.countryCode}">
-            ${trip.countryCode.substring(0,2)}:1<c:if test="${not status.last}">,</c:if>
-            </c:if>
-            </c:forEach>
-        }
-
+        c: {${worldMap.generateCData(profile.trips)}}
     })
 
 </script>
+
+
+
+
+
 <!-- Dreams -->
 <div class="container-fluid dreams">
     <div class="row">
