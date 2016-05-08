@@ -8,4 +8,5 @@ import ru.todo100.activer.data.PhotoAvatarSizeData;
 public interface PhotoService {
     void setPhoto(Integer accountId, PhotoAvatarSizeData photoName);
     String getPhoto(Integer accountId);
+    PhotoAvatarSizeData getSizedPhoto(Integer accountId);
 }

@@ -2,6 +2,7 @@ package ru.todo100.activer.service.impl;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.todo100.activer.dao.PhotoDao;
 import ru.todo100.activer.data.PhotoAvatarSizeData;
 import ru.todo100.activer.model.AccountPhotoItem;
 import ru.todo100.activer.service.PhotoService;
@@ -14,6 +15,17 @@ import java.util.List;
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
 public class PhotoServiceImpl implements PhotoService {
+
+    public PhotoDao getPhotoDao() {
+        return photoDao;
+    }
+
+    public void setPhotoDao(PhotoDao photoDao) {
+        this.photoDao = photoDao;
+    }
+
+    @Autowired
+    private PhotoDao photoDao;
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -39,6 +51,23 @@ public class PhotoServiceImpl implements PhotoService {
                 getCurrentSession().createSQLQuery("SELECT photo_name FROM account_photo WHERE account_id = " + accountId + " ORDER BY photo_id DESC").list();
         if (result!=null && result.size() > 0) {
             return (String)result.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public PhotoAvatarSizeData getSizedPhoto(Integer accountId) {
+        final AccountPhotoItem accountPhotoItem = getPhotoDao().getByAccount(accountId);
+        if (accountPhotoItem != null ){
+            /*Было бы неплохо, если бы за это отвечали популяторы*/
+            final PhotoAvatarSizeData photoAvatarSizeData = new PhotoAvatarSizeData();
+            photoAvatarSizeData.setPhotoAvatar(accountPhotoItem.getNameAvatar());
+            photoAvatarSizeData.setPhotoMini(accountPhotoItem.getNameMini());
+            photoAvatarSizeData.setPhotoThumbnail(accountPhotoItem.getNameThumbnail());
+            photoAvatarSizeData.setPhotoShowing(accountPhotoItem.getNameShowing());
+            photoAvatarSizeData.setPhotoOriginal(accountPhotoItem.getName());
+            return photoAvatarSizeData;
         }
         return null;
     }

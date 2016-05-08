@@ -86,6 +86,8 @@ public class SettingPageController {
 
         final AccountItem account = accountService.getCurrentAccount();
 
+        model.addAttribute("photo",photoService1.getSizedPhoto(account.getId()));
+
         if (!model.containsAttribute("mainInfoForm")) {
             final PayPalAccountForm payPalAccountForm = new PayPalAccountForm();
 //            mainInfoForm.setFirstName(account.getFirstName());
