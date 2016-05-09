@@ -32,7 +32,7 @@ public class MessageDao extends AbstractDao
 								Restrictions.eq("accountFrom",person1),Restrictions.eq("accountTo",person2)
 		),Restrictions.and(
 								Restrictions.eq("accountFrom",person2),Restrictions.eq("accountTo",person1)
-				))).addOrder(Order.desc("addedDate")).setFetchSize(20).list();
+				))).addOrder(Order.desc("addedDate")).setMaxResults(20).list();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -52,16 +52,21 @@ public class MessageDao extends AbstractDao
 			MessageItem messageItem = (MessageItem)getCriteria().add(Restrictions.and(Restrictions.eq("accountFrom",row[0]),Restrictions.eq("accountTo",row[1]))).addOrder(Order.desc("addedDate")).setMaxResults(1).uniqueResult();
 
 			Iterator<MessageItem> it = dialogs.iterator();
+			boolean needForAdd = true;
 			while(it.hasNext()) {
 				final MessageItem item = it.next();
 				if ((item.getAccountFrom() == row[0] && item.getAccountTo() == row[1]) ||
 						(item.getAccountFrom() == row[1] && item.getAccountTo() == row[0])) {
 					if (item.getAddedDate().getTime().getTime() < messageItem.getAddedDate().getTime().getTime()) {
 						it.remove();
+					} else {
+						needForAdd = false;
 					}
 				}
 			}
-			dialogs.add(messageItem);
+			if (needForAdd) {
+				dialogs.add(messageItem);
+			}
 		}
 		return dialogs;
 	}

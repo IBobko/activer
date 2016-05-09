@@ -111,17 +111,6 @@ public class AdminPageController {
         this.partnerService = partnerService;
     }
 
-    @RequestMapping("")
-    public String admin(HttpServletRequest request) {
-
-
-        String subscribe = request.getParameter("subscribe");
-
-        template.convertAndSend(subscribe, "hello");
-
-        return "admin/index";
-    }
-
     @RequestMapping("/creator")
     public String creator(final Model model, final PagedForm pagedForm, @RequestParam(name = "synch", required = false) Integer synch) {
         if (synch != null) {

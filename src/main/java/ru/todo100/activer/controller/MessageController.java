@@ -1,14 +1,11 @@
 package ru.todo100.activer.controller;
 
-/**
- * @author Igor Bobko <limit-speed@yandex.ru>.
- */
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.MessageDao;
 import ru.todo100.activer.data.DialogData;
@@ -17,23 +14,26 @@ import ru.todo100.activer.data.MessageData;
 import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.MessageItem;
-import ru.todo100.activer.populators.ProfilePopulator;
+import ru.todo100.activer.service.PhotoService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * @author Igor Bobko <limit-speed@yandex.ru>.
+ */
+
 @Controller
 public class MessageController {
     @Autowired
+    private PhotoService photoService1;
+    @Autowired
     private MessageDao messageService;
-
     @Autowired
     private AccountDao accountService;
-
-    @Autowired
-    private ProfilePopulator profilePopulator;
 
     public static MessageData generateTemplateMessageData() {
         final MessageData template = new MessageData();
@@ -48,61 +48,60 @@ public class MessageController {
 
     @RequestMapping("/message")
     public String index(final Model model) {
-        model.addAttribute("pageType","message");
+        model.addAttribute("pageType", "message");
         final AccountItem accountItem = accountService.getCurrentAccount();
         final List<MessageItem> messageItems = messageService.getDialogs(accountItem.getId());
 
-        final List<DialogData> dialogData = new ArrayList<>();
+        final List<DialogData> dialogDataList = new ArrayList<>();
 
-        for (MessageItem item : messageItems) {
-            final MessageData data = new MessageData();
-            final AccountItem from = accountService.get(item.getAccountFrom());
+        for (final MessageItem messageItem : messageItems) {
+            final MessageData messageData = new MessageData();
+            final AccountItem from = accountService.get(messageItem.getAccountFrom());
             final MessageAccountData sender = new MessageAccountData();
             sender.setFirstName(from.getFirstName());
             sender.setLastName(from.getLastName());
-            sender.setId(item.getAccountFrom());
-            data.setSender(sender);
-            data.setText(item.getText());
+            sender.setId(messageItem.getAccountFrom());
+            sender.setPhoto60x60(photoService1.getSizedPhoto(from.getId()).getPhotoMini());
+            messageData.setSender(sender);
+            messageData.setText(messageItem.getText());
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
-            data.setDate(format.format(item.getAddedDate().getTime()));
-            DialogData dd = new DialogData();
-            dialogData.add(dd);
-            dd.setLastMessage(data);
+            messageData.setDate(format.format(messageItem.getAddedDate().getTime()));
+            DialogData dialogData = new DialogData();
+            dialogDataList.add(dialogData);
+            dialogData.setLastMessage(messageData);
 
-            if (item.getAccountTo().equals(accountItem.getId())) {
+            if (messageItem.getAccountTo().equals(accountItem.getId())) {
 
-                dd.setOwner(sender);
+                dialogData.setOwner(sender);
             } else {
-                final AccountItem to = accountService.get(item.getAccountTo());
-                final MessageAccountData to1 = new MessageAccountData();
-                to1.setFirstName(to.getFirstName());
-                to1.setLastName(to.getLastName());
-                to1.setId(item.getAccountTo());
-                dd.setOwner(to1);
+                final AccountItem toAccountItem = accountService.get(messageItem.getAccountTo());
+                final MessageAccountData toMessageAccountData = new MessageAccountData();
+                toMessageAccountData.setFirstName(toAccountItem.getFirstName());
+                toMessageAccountData.setLastName(toAccountItem.getLastName());
+                toMessageAccountData.setId(messageItem.getAccountTo());
+                toMessageAccountData.setPhoto60x60(photoService1.getSizedPhoto(toMessageAccountData.getId()).getPhotoMini());
+                dialogData.setOwner(toMessageAccountData);
             }
-
         }
-
-        model.addAttribute("dialogs", dialogData);
-
+        model.addAttribute("dialogs", dialogDataList);
         return "message/index";
     }
 
-    @RequestMapping("/message/{id:\\d+}")
-    public String profileMessage(final Model model, @PathVariable Integer id) {
-        model.addAttribute("pageType","message");
-
-        /** Добавить кэширование **/
+    @RequestMapping("/message/ajax/{id:\\d+}")
+    @ResponseBody
+    public List<MessageData> ajaxMessage(@PathVariable final Integer id, HttpServletRequest request) {
+        /** todo Добавить кэширование **/
         final List<MessageData> messageData = new ArrayList<>();
-        AccountItem accountItem = accountService.getCurrentAccount();
-        List<MessageItem> messageItems = messageService.getDialog(id, accountItem.getId());
+        final ProfileData profileData = accountService.getCurrentProfileData(request.getSession());
+        final List<MessageItem> messageItems = messageService.getDialog(id, profileData.getId());
         for (MessageItem item : messageItems) {
             final MessageData data = new MessageData();
             final AccountItem from = accountService.get(item.getAccountFrom());
             final MessageAccountData sender = new MessageAccountData();
             sender.setFirstName(from.getFirstName());
             sender.setLastName(from.getLastName());
+            sender.setPhoto60x60(photoService1.getSizedPhoto((item.getAccountFrom())).getPhotoMini());
             data.setSender(sender);
             data.setText(item.getText());
 
@@ -110,17 +109,8 @@ public class MessageController {
             data.setDate(format.format(item.getAddedDate().getTime()));
             messageData.add(data);
         }
-
-        final AccountItem friend = accountService.get(id);
-        ProfileData friendData = profilePopulator.populate(friend);
-        model.addAttribute("friend", friendData);
-        model.addAttribute("myProfile", accountService.getCurrentAccount());
-
-
         Collections.reverse(messageData);
-
-        model.addAttribute("lastMessages", messageData);
-        model.addAttribute("templatePost", generateTemplateMessageData());
-        return "message/communicate";
+        return messageData;
     }
+
 }

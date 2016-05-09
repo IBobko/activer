@@ -15,6 +15,7 @@ import ru.todo100.activer.handler.DisputeHandler;
 import ru.todo100.activer.handler.FlirtHandler;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.MessageItem;
+import ru.todo100.activer.service.PhotoService;
 
 import java.security.Principal;
 import java.util.GregorianCalendar;
@@ -136,12 +137,15 @@ public class GlobalListenerController {
         return ex.getMessage();
     }
 
+    @Autowired
+    PhotoService photoService1;
 
     private MessageAccountData getMessageAccountData(AccountItem accountItem){
         final MessageAccountData messageAccountData = new MessageAccountData();
         messageAccountData.setFirstName(accountItem.getFirstName());
         messageAccountData.setLastName(accountItem.getLastName());
         messageAccountData.setId(accountItem.getId());
+        messageAccountData.setPhoto60x60(photoService1.getSizedPhoto(accountItem.getId()).getPhotoMini());
         return messageAccountData;
     }
 

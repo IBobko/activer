@@ -68,10 +68,6 @@
 		<put-attribute name="content" value="/WEB-INF/views/message/index.jsp" />
 	</definition>
 
-	<definition name="message/communicate" extends="base-template">
-		<put-attribute name="content" value="/WEB-INF/views/message/communicate.jsp" />
-	</definition>
-
 	<definition name="friend/index" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/friend/index.jsp"/>
 	</definition>
@@ -135,8 +131,6 @@
 	<definition name="safety/index" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/safety/index.jsp"/>
 	</definition>
-
-	<definition name="admin/index" template="/WEB-INF/views/admin/index.jsp"/>
 
 	<definition name="admin/partner" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/admin/partner.jsp"/>
