@@ -2,15 +2,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
-<h4 style="color:#337ab7;font-weight:bold">Добавить путешествия</h4>
-
-<style>
+<style type="text/css">
+    #page-content-wrapper {
+        font-weight: normal;
+    }
     table td {
         padding:10px;
     }
-</style>
 
+    .trips ul{
+        list-style: none;
+
+    }
+
+    .trips ul li{
+        float:left;
+        border-radius: 40px;
+        background-color: #e4e7f7;
+        padding-top: 5px;
+        height:36px;
+        margin:10px;
+        padding:10px
+    }
+</style>s
+
+<h4 style="color:#337ab7;font-weight:bold">Добавить путешествия</h4>
 
 <form:form commandName="tripForm" method="post">
     <table>
@@ -42,7 +58,9 @@
             <td><form:errors path="year"/> </td>
         </tr>
         <tr>
-            <td colspan="=2"><input type="submit" value="Сохранить"/></td>
+            <td colspan="=2">
+                <a class="std-button btn btn-default" onclick="$('#tripForm').submit()">Сохранить</a>
+            </td>
             <td></td>
         </tr>
     </table>
@@ -51,12 +69,10 @@
 <h4 style="color:#337ab7;font-weight:bold">Мои путешествия</h4>
 
 
-
-
-<div class="interests">
-    <ul class="nav nav-pills">
+<div class="trips">
+    <ul>
         <c:forEach items="${trips}" var="trip">
-            <li><a href="#">${trip.country}</a><a href="<c:url value="/settings/trips/remove?trip=${trip.id}"/> "><span class="glyphicon glyphicon-remove-circle"></span></a></li>
+            <li><span onclick="document.location='<c:url value="/settings/trips/remove?trip=${trip.id}"/>';"><span class="glyphicon glyphicon-remove-circle"></span></span>&nbsp;<a href="#">${trip.country}'${trip.year}</a></li>
         </c:forEach>
     </ul>
 </div>
