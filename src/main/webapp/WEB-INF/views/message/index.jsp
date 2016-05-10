@@ -16,6 +16,10 @@
     .modal-open {
         padding-right: 0 !important;
     }
+
+    #dialogWindow{
+        border:3px solid #b5bdec;
+    }
 </style>
 
 <h4 style="color: #3F51B5;font-weight:bold;">Мои сообщения</h4>
