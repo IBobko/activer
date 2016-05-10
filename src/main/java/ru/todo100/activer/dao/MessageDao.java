@@ -1,15 +1,16 @@
 package ru.todo100.activer.dao;
 
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import ru.todo100.activer.model.Item;
+import ru.todo100.activer.model.MessageItem;
+
+import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.transaction.Transactional;
-
-import org.hibernate.criterion.*;
-
-import ru.todo100.activer.model.Item;
-import ru.todo100.activer.model.MessageItem;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
@@ -33,6 +34,35 @@ public class MessageDao extends AbstractDao
 		),Restrictions.and(
 								Restrictions.eq("accountFrom",person2),Restrictions.eq("accountTo",person1)
 				))).addOrder(Order.desc("addedDate")).setMaxResults(20).list();
+	}
+
+	public List<MessageItem> getDialogSQL(Integer person1, Integer person2) {
+		System.out.println("Start: " + System.currentTimeMillis());
+		Long start = System.currentTimeMillis();
+		Long start2 = System.currentTimeMillis();
+		String sql = "SELECT * FROM message where (account_from = " + person1 + " and account_to = " + person2 + ")" +
+				" or " +
+				"(account_from = " + person2 + " and account_to = " + person1 + ")";
+
+
+		List<Object[]> rows = getSessionFactory().getCurrentSession().createSQLQuery(sql).list();
+		System.out.println("SQL QUERY:" + (System.currentTimeMillis() - start));
+
+		start = System.currentTimeMillis();
+
+		List<MessageItem> result = new ArrayList<MessageItem>();
+		for (Object[] row : rows) {
+			MessageItem messageItem = new MessageItem();
+			messageItem.setId(((BigDecimal) row[0]).intValue());
+			messageItem.setAddedDate(null);
+			messageItem.setAccountFrom(null);
+			messageItem.setText(null);
+			messageItem.setAccountTo(null);
+			result.add(messageItem);
+		}
+		System.out.println("formed: " + (System.currentTimeMillis() - start));
+		System.out.println("Total: " + (System.currentTimeMillis() - start2));
+		return result;
 	}
 
 	@SuppressWarnings("unchecked")
