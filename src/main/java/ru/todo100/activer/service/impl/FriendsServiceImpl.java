@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.FriendDao;
 import ru.todo100.activer.data.FriendsData;
+import ru.todo100.activer.data.FriendsData1;
 import ru.todo100.activer.service.FriendsService;
 
 import javax.servlet.http.HttpSession;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpSession;
 public class FriendsServiceImpl implements FriendsService {
 
     private final String FRIENDS_DATA = "friendsData";
+    private final String FRIENDS_DATA1 = "friendsData1";
 
     @Autowired
     private FriendDao friendDao;
@@ -28,6 +30,17 @@ public class FriendsServiceImpl implements FriendsService {
             final Integer currentID = accountService.getCurrentAccount().getId();
             friendsData = friendDao.getFriends(currentID);
             session.setAttribute(FRIENDS_DATA,friendsData);
+        }
+        return friendsData;
+    }
+
+    @Override
+    public FriendsData1 getFriendData1(HttpSession session) {
+        FriendsData1 friendsData = (FriendsData1) session.getAttribute(FRIENDS_DATA1);
+        if (friendsData == null) {
+            final Integer currentID = accountService.getCurrentAccount().getId();
+            friendsData = friendDao.getFriends1(currentID);
+            session.setAttribute(FRIENDS_DATA1, friendsData);
         }
         return friendsData;
     }

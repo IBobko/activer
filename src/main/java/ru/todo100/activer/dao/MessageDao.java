@@ -1,5 +1,6 @@
 package ru.todo100.activer.dao;
 
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -99,5 +100,33 @@ public class MessageDao extends AbstractDao
 			}
 		}
 		return dialogs;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<MessageItem> searchDialog(final Integer account_id, final String find) {
+		final List<MessageItem> dialogs = (List<MessageItem>) getCriteria().add(
+				Restrictions.or(
+						Restrictions.eq("accountFrom", account_id), Restrictions.eq("accountTo", account_id)
+				)).add(Restrictions.ilike("text", find, MatchMode.ANYWHERE)).list();
+		final ArrayList<MessageItem> result = new ArrayList<>();
+		for (MessageItem messageItem : dialogs) {
+			Iterator<MessageItem> it = result.iterator();
+			boolean needForAdd = true;
+			while (it.hasNext()) {
+				final MessageItem item = it.next();
+				if ((item.getAccountFrom().equals(messageItem.getAccountFrom()) && item.getAccountTo().equals(messageItem.getAccountTo())) ||
+						(item.getAccountFrom().equals(messageItem.getAccountTo()) && item.getAccountTo().equals(messageItem.getAccountFrom()))) {
+					if (item.getAddedDate().getTime().getTime() < messageItem.getAddedDate().getTime().getTime()) {
+						it.remove();
+					} else {
+						needForAdd = false;
+					}
+				}
+			}
+			if (needForAdd) {
+				result.add(messageItem);
+			}
+		}
+		return result;
 	}
 }

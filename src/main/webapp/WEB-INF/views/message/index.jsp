@@ -1,3 +1,5 @@
+<%--suppress HtmlUnknownAnchorTarget --%>
+<%--@elvariable id="staticFiles" type="java.lang.String"--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -6,19 +8,128 @@
         background-color: gray;
         cursor: pointer;
     }
+
+    html {
+        overflow-y: scroll;
+    }
+
+    .modal-open {
+        padding-right: 0 !important;
+    }
 </style>
 
 <h4 style="color: #3F51B5;font-weight:bold;">Мои сообщения</h4>
 <br/>
 <table>
     <tr>
-        <td style="width:300px"><input type="text" class="form-control" placeholder="Поиск диалога"></td>
-        <td width="1%">                    <input type="submit"  style="margin-left:15px" class="std-button btn btn-default"
-                                       value="Поиск"/></td>
-        <td>                    <input type="submit"  style="float:right;margin-left:15px" class="std-button btn btn-default"
-                                       value="Найти друга"/></td>
+        <td style="width:300px">
+            <input type="text" class="form-control" id="textForSearch" placeholder="Поиск диалога">
+        </td>
+        <td width="1%">
+            <a id="searchDialogButton" style="margin-left:15px" class="std-button btn btn-default"><span
+                    class="fa fa-search"></span>&nbsp;Поиск</a>
+        </td>
+        <td>
+            <a data-toggle="modal" data-target="#startDialogWithFriend" style="float:right;"
+               class="std-button btn btn-default"><span class="fa fa-plus"></span>&nbsp;Найти друга</a>
+        </td>
     </tr>
 </table>
+
+<!-- Modal -->
+<div class="modal fade" id="startDialogWithFriend" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Поиск друга</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(function () {
+        var interlocutors = $('#interlocutors');
+
+        $('#searchDialogButton').click(function () {
+            interlocutors.html("<div style='text-align:center'><img src='<c:url value="/resources/img/progress.gif"/>'/></div>");
+            var textForSearch = $('#textForSearch').val();
+            var data = {
+                t: textForSearch
+            };
+            /**
+             * @param response {{owner:{photo60x60,lastName,firstName}}}
+             */
+            $.get("<c:url value="/message/search"/>", data, function (response) {
+                interlocutors.html('');
+                for (var index in response) {
+                    if (response.hasOwnProperty(index)) {
+                        var template = $('#dialogTemplate').html();
+                        template = template.replace("#id", response[index].owner.id);
+                        template = template.replace("#ownerphoto", response[index].owner.photo60x60);
+                        template = template.replace("#ownerlastname", response[index].owner.lastName);
+                        template = template.replace("#ownerfirstname", response[index].owner.firstName);
+                        template = template.replace("#onoffline", "online");
+                        template = template.replace("#date", response[index].lastMessage.date);
+                        interlocutors.append(template);
+                    }
+                }
+            });
+        });
+        var startDialogWithFriend = $('#startDialogWithFriend');
+        var modalBody = startDialogWithFriend.find(".modal-body");
+        startDialogWithFriend.on('show.bs.modal', function (e) {
+            modalBody.html("<div style='text-align:center'><img src='<c:url value="/resources/img/progress.gif"/>'/></div>");
+            $.get("<c:url value="/friend/ajax"/>", {}, function (response) {
+                /*todo здесь необходимо добавить блок, для отображение друга. Он по идее должен быть общий*/
+                modalBody.html('');
+                console.log(response);
+                var friends = response.friends;
+                for (var index in friends) {
+                    if (friends.hasOwnProperty(index)) {
+                        var template = $('#friendTempale').html();
+                        template = template.replace(/#id/gi, friends[index].id);
+                        template = template.replace("#name", friends[index].firstName + " " + friends[index].lastName);
+                        template = template.replace(/#photo/gi, friends[index].photo60x60);
+                        modalBody.append(template);
+                    }
+                }
+            });
+        });
+
+    });
+
+    function addFried(data) {
+        var interlocutors = $('#interlocutors');
+        var block = $('#startDialogWithFriend').find(".manBlock[friend-id='" + data + "']");
+        var photo = block.find(".friend_photo").attr('filename');
+        var name = block.find(".friend_name").html();
+
+        var exists = $("#interlocutors").find("[interlocutor-id='" + data + "']");
+        if (exists.length == 0) {
+            var template = $('#dialogTemplate').html();
+            template = template.replace("#id", data);
+            template = template.replace("#ownerphoto", photo);
+            template = template.replace("#ownerlastname", "");
+            template = template.replace("#ownerfirstname", name);
+            template = template.replace("#onoffline", "online");
+            template = template.replace("#date", "");
+            interlocutors.append(template);
+        }
+        interlocutor = data;
+    }
+
+</script>
+
 <br/>
 <table>
     <tr>
@@ -29,7 +140,7 @@
                         <img style="margin:10px;float:left" width="60" src="${staticFiles}/${dialog.owner.photo60x60}." height="60"/>
                         <div style="margin:10px">
                             <span style="color:#337ab7">${dialog.owner.lastName} ${dialog.owner.firstName}</span><br/>
-                            <span style="font-weight: normal;font-size: 12px">01.05.2015</span><br/>
+                            <span style="font-weight: normal;font-size: 12px">${dialog.lastMessage.date}</span><br/>
                             <span style="font-weight: normal;font-size: 12px">Online</span>
                         </div>
                     </div>
@@ -41,39 +152,40 @@
 
         </div>
             <div style="margin-top:20px">
-                <form id="flirtForm">
-                    <input type="submit"  style="float:right;margin-left:15px" class="std-button btn btn-default"
+                <form id="sendMessageForm">
+                    <input type="submit" style="float:right;margin-left:15px" class="std-button btn btn-default"
                            value="Отправить"/>
                     <div style="overflow: hidden">
-                        <input id="text" name="flirtMessage" type="text" class="form-control"/>&nbsp;
+                        <input id="text" name="flirtMessage" type="text" class="form-control"/>
                     </div>
                 </form>
             </div>
         </td>
     </tr>
 </table>
+<br/><br/><br/>
 
-<script>
+<script type="text/javascript">
     var interlocutor = 0;
+    var dialogWindow = $('#dialogWindow');
     $('.interlocutor').click(function(){
         var id = $(this).attr("interlocutor-id");
         interlocutor = id;
         $('#dialogWindow').html("Загрузка. Подождите...");
         $.get("<c:url value="/message/ajax/"/>" + id,function(data) {
-            $('#dialogWindow').html("");
-            for (index in data) {
-
+            dialogWindow.html("");
+            for (var index in data) {
                 if (data.hasOwnProperty(index)) {
                     var template = $('#messageTemplate').html();
+                    //noinspection JSUnresolvedVariable
                     template = template.replace("#avatar",'${staticFiles}/' + data[index].sender.photo60x60 +'.');
                     template = template.replace("#sender",data[index].sender.firstName + " "+ data[index].sender.lastName);
                     template = template.replace("#message",data[index].text);
-                    $('#dialogWindow').append(template);
+                    dialogWindow.append(template);
                     console.log(data[index]);
                 }
             }
-            var objDiv = document.getElementById('dialogWindow');
-            objDiv.scrollTop = objDiv.scrollHeight;
+            scrollDialogWindow();
         });
     });
 </script>
@@ -87,27 +199,52 @@
     </table>
 </div>
 
+<div id="friendTempale" style="display:none">
+    <div class="manBlock" style="overflow:hidden;margin:10px" friend-id="#id">
+        <img filename="#photo" class="friend_photo" src="${staticFiles}/#photo." width="80" style="float:left">
+        <div style="margin: 0 100px">
+            <a class="friend_name" href="<c:url value="/profile/id"/>#id">#name</a><br>
+            <a style="font-weight: normal" href="javascript:addFried('#id')">Написать сообщение</a>
+        </div>
+    </div>
+</div>
+
+
+<div style="display:none" id="dialogTemplate">
+    <div style="overflow: hidden" class="interlocutor" interlocutor-id="#id">
+        <img style="margin:10px;float:left" width="60" src="${staticFiles}/#ownerphoto." height="60"/>
+        <div style="margin:10px">
+            <span style="color:#337ab7">#ownerlastname #ownerfirstname</span><br/>
+            <span style="font-weight: normal;font-size: 12px">#date</span><br/>
+            <span style="font-weight: normal;font-size: 12px">#onoffline</span>
+        </div>
+    </div>
+</div>
 
 
 <script type="text/javascript">
-    window.ACTIVER.Global.onPRIVATE_MESSAGE = function(data){
+    function scrollDialogWindow() {
+        var objDiv = document.getElementById('dialogWindow');
+        objDiv.scrollTop = objDiv.scrollHeight;
+    }
+
+    ACTIVER.Global.handlers["PRIVATE_MESSAGE"] = function (data) {
         var template = $('#messageTemplate').html();
         template = template.replace("#avatar",'${staticFiles}/' + data.from.photo60x60 +'.');
         template = template.replace("#sender",data.from.firstName + " "+ data.from.lastName);
         template = template.replace("#message",data.message);
         $('#dialogWindow').append(template);
-        var objDiv = document.getElementById('dialogWindow');
-        objDiv.scrollTop = objDiv.scrollHeight;
+        scrollDialogWindow();
     };
-    $('#flirtForm').submit(function(){
-        var data = window.ACTIVER.Global.message;
+    var text = $('#text');
+
+    $('#sendMessageForm').submit(function () {
+        var data = ACTIVER.Global.message;
         data.to = interlocutor;
-        data.message = $('#text').val();
+        data.message = text.val();
         data.type = "PRIVATE_MESSAGE";
-        $('#text').val('');
-        window.ACTIVER.Global.submit(data);
+        text.val('');
+        ACTIVER.Global.submit(data);
         return false;
     });
-    var objDiv = document.getElementById('dialogWindow');
-    objDiv.scrollTop = objDiv.scrollHeight;
 </script>

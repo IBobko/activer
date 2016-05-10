@@ -1,47 +1,27 @@
 package ru.todo100.activer.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import ru.todo100.activer.dao.AccountDao;
-import ru.todo100.activer.dao.FriendDao;
-import ru.todo100.activer.dao.MessageDao;
-import ru.todo100.activer.data.MessageAccountData;
-import ru.todo100.activer.data.PacketMessageData;
 import ru.todo100.activer.data.ReceiveMessageData;
 import ru.todo100.activer.handler.DisputeHandler;
 import ru.todo100.activer.handler.FlirtHandler;
-import ru.todo100.activer.model.AccountItem;
-import ru.todo100.activer.model.MessageItem;
-import ru.todo100.activer.service.PhotoService;
+import ru.todo100.activer.handler.PrivateMessageHandler;
 
 import java.security.Principal;
-import java.util.GregorianCalendar;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
+@SuppressWarnings("StatementWithEmptyBody")
 @Controller
 public class GlobalListenerController {
     @Autowired
-    private AccountDao accountService;
-
-    @Autowired
-    private SimpMessagingTemplate template;
-
-    @Autowired
-    private FriendDao friendDao;
-
+    PrivateMessageHandler privateMessageHandler;
     @Autowired
     private DisputeHandler disputeHandler;
-
     @Autowired
     private FlirtHandler flirtHandler;
-
-    @Autowired
-    private MessageDao messageDao;
 
     @MessageMapping("/actions")
     public void message(final ReceiveMessageData message, final Principal principal) {
@@ -54,73 +34,9 @@ public class GlobalListenerController {
             return;
         }
 
-
-
         if (message.getType().equals("PRIVATE_MESSAGE")) {
-
-            final PacketMessageData messageData = new PacketMessageData();
-
-
-            final AccountItem from = accountService.get(principal.getName());
-            messageData.setFrom(getMessageAccountData(from));
-            final AccountItem to = accountService.get(message.getTo());
-            messageData.setTo(getMessageAccountData(to));
-            messageData.setDate(new GregorianCalendar());
-            messageData.setMessage(message.getMessage());
-
-            //AccountItem to = accountService.get()
-            //messageData.setFrom(getMessageAccountData(from));
-
-
-            //template.convertAndSend("/global2/1", messageData);
-
-            //template.convertAndSend("/global2/1", messageData);
-
-            template.convertAndSendToUser(principal.getName(), "/global2", messageData);
-
-            // template.convertAndSend("/global2",messageData);
-
-            MessageItem messageItem = new MessageItem();
-            messageItem.setAccountFrom(from.getId());
-            messageItem.setAccountTo(to.getId());
-            messageItem.setAddedDate(new GregorianCalendar());
-            messageItem.setText(message.getMessage());
-            messageDao.save(messageItem);
-
-        }
-
-
-        if (message.getType().equals("DATING")) {
-
-            final PacketMessageData messageData = new PacketMessageData();
-
-
-            final AccountItem from = accountService.get(principal.getName());
-            messageData.setFrom(getMessageAccountData(from));
-            final AccountItem to = accountService.get(message.getTo());
-            messageData.setTo(getMessageAccountData(to));
-            messageData.setDate(new GregorianCalendar());
-            messageData.setMessage(message.getMessage());
-
-            //AccountItem to = accountService.get()
-            //messageData.setFrom(getMessageAccountData(from));
-
-
-            //template.convertAndSend("/global2/1", messageData);
-
-            //template.convertAndSend("/global2/1", messageData);
-
-            template.convertAndSendToUser(principal.getName(), "/global2", messageData);
-
-            // template.convertAndSend("/global2",messageData);
-
-            MessageItem messageItem = new MessageItem();
-            messageItem.setAccountFrom(from.getId());
-            messageItem.setAccountTo(to.getId());
-            messageItem.setAddedDate(new GregorianCalendar());
-            messageItem.setText(message.getMessage());
-            messageDao.save(messageItem);
-
+            privateMessageHandler.handle(message, principal);
+            return;
         }
 
         if (message.getType().equals("ADD_TO_FRIEND")) {
@@ -129,25 +45,4 @@ public class GlobalListenerController {
         }
 
     }
-
-    @MessageExceptionHandler
-
-    public String handleException(Exception ex) {
-        System.out.println(ex);
-        return ex.getMessage();
-    }
-
-    @Autowired
-    PhotoService photoService1;
-
-    private MessageAccountData getMessageAccountData(AccountItem accountItem){
-        final MessageAccountData messageAccountData = new MessageAccountData();
-        messageAccountData.setFirstName(accountItem.getFirstName());
-        messageAccountData.setLastName(accountItem.getLastName());
-        messageAccountData.setId(accountItem.getId());
-        messageAccountData.setPhoto60x60(photoService1.getSizedPhoto(accountItem.getId()).getPhotoMini());
-        return messageAccountData;
-    }
-
-
 }

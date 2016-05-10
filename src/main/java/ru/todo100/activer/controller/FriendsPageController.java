@@ -1,26 +1,23 @@
 package ru.todo100.activer.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.HandlerMapping;
-import ru.todo100.activer.dao.FriendDao;
-import ru.todo100.activer.data.FriendsData;
-import ru.todo100.activer.model.AccountItem;
-import ru.todo100.activer.populators.ProfilePopulator;
 import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.data.FriendsData;
+import ru.todo100.activer.data.FriendsData1;
+import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.service.FriendsService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
- * @author Igor Bobko
+ * @author Igor Bobko <limit-speed@yandex.ru>.
  */
 @Controller
 @RequestMapping("/friend")
@@ -28,9 +25,6 @@ public class FriendsPageController
 {
 	@Autowired
 	private AccountDao accountService;
-
-	@Autowired
-	private ProfilePopulator profilePopulator;
 
 	@Autowired
 	private FriendsService friendsService;
@@ -76,5 +70,11 @@ public class FriendsPageController
 		friendsService.add(id);
 		friendsService.synchronize(request.getSession());
 		return "redirect:/friend";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/ajax")
+	public FriendsData1 ajax(final HttpServletRequest request) {
+		return friendsService.getFriendData1(request.getSession());
 	}
 }

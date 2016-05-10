@@ -7,6 +7,15 @@ public class FriendData {
     public Integer id;
     public String firstName;
     public String lastName;
+    public String photo60x60;
+
+    public String getPhoto60x60() {
+        return photo60x60;
+    }
+
+    public void setPhoto60x60(String photo60x60) {
+        this.photo60x60 = photo60x60;
+    }
 
     public Integer getId() {
         return id;
