@@ -493,3 +493,8 @@ body #page-content-wrapper .thoughts .media-list .media-body p {
   overflow: hidden;
   width:165px
 }
+
+.form-control {
+  border:3px solid #b5bdec;
+  border-radius:0px;
+}
