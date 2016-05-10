@@ -5,7 +5,7 @@
 
 <style type="text/css">
     .interlocutor:hover{
-        background-color: gray;
+        background-color: #f0f2fe;
         cursor: pointer;
     }
 
@@ -55,6 +55,26 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="giftsPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Поиск друга</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <script type="text/javascript">
     $(function () {
@@ -78,7 +98,7 @@
                         template = template.replace("#ownerphoto", response[index].owner.photo60x60);
                         template = template.replace("#ownerlastname", response[index].owner.lastName);
                         template = template.replace("#ownerfirstname", response[index].owner.firstName);
-                        template = template.replace("#onoffline", "online");
+                        template = template.replace("#onoffline", response[index].owner.online ? "online":"offline");
                         template = template.replace("#date", response[index].lastMessage.date);
                         interlocutors.append(template);
                     }
@@ -126,7 +146,13 @@
             interlocutors.append(template);
         }
         interlocutor = data;
+        window.history.pushState('page2', 'Title', '<c:url value="/message?dialog="/>' + data);
     }
+
+
+    $("#giftsPopup").on('show.bs.modal', function (e) {
+        alert("he");
+    });
 
 </script>
 
@@ -141,7 +167,7 @@
                         <div style="margin:10px">
                             <span style="color:#337ab7">${dialog.owner.lastName} ${dialog.owner.firstName}</span><br/>
                             <span style="font-weight: normal;font-size: 12px">${dialog.lastMessage.date}</span><br/>
-                            <span style="font-weight: normal;font-size: 12px">Online</span>
+                            <span style="font-weight: normal;font-size: 12px">${dialog.owner.online? "online":"offline"}</span>
                         </div>
                     </div>
                 </c:forEach>
@@ -153,8 +179,8 @@
         </div>
             <div style="margin-top:20px">
                 <form id="sendMessageForm">
-                    <input type="submit" style="float:right;margin-left:15px" class="std-button btn btn-default"
-                           value="Отправить"/>
+                    <button type="submit" style="float:right;margin-left:7px" class="std-button btn btn-default"><span class="fa fa-comment"></span>&nbsp;Отправить</button>
+                    <a data-toggle="modal" data-target="#giftsPopup" class="std-button btn btn-default" style="background-color:#eb1e63;margin-left:15px;font-size: 14px;width:34px;padding:7px 11px;float:right"><span class="fa fa-gift"></span></a>
                     <div style="overflow: hidden">
                         <input id="text" name="flirtMessage" type="text" class="form-control"/>
                     </div>
@@ -166,11 +192,22 @@
 <br/><br/><br/>
 
 <script type="text/javascript">
-    var interlocutor = 0;
-    var dialogWindow = $('#dialogWindow');
-    $('.interlocutor').click(function(){
-        var id = $(this).attr("interlocutor-id");
+
+    var dialog = '${param["dialog"]}';
+
+    var interlocutor = ${not empty param["dialog"]?param["dialog"]:0};
+
+    if (interlocutor!=0) {
+        initDialog(interlocutor)
+    }
+
+    $('#giftButton').click(function(){
+
+    });
+
+    function initDialog(id) {
         interlocutor = id;
+        window.history.pushState('page2', 'Title', '<c:url value="/message?dialog="/>' + interlocutor);
         $('#dialogWindow').html("Загрузка. Подождите...");
         $.get("<c:url value="/message/ajax/"/>" + id,function(data) {
             dialogWindow.html("");
@@ -181,20 +218,29 @@
                     template = template.replace("#avatar",'${staticFiles}/' + data[index].sender.photo60x60 +'.');
                     template = template.replace("#sender",data[index].sender.firstName + " "+ data[index].sender.lastName);
                     template = template.replace("#message",data[index].text);
+                    template = template.replace("#time",data[index].date);
                     dialogWindow.append(template);
                     console.log(data[index]);
                 }
             }
             scrollDialogWindow();
         });
+    }
+
+
+    var dialogWindow = $('#dialogWindow');
+    $('.interlocutor').click(function(){
+        var id = $(this).attr("interlocutor-id");
+        initDialog(id);
     });
 </script>
 
 <div style="display:none" id="messageTemplate">
-    <table>
+    <table width="100%">
         <tr>
-            <td valign="top"><img src="#avatar" style="width:60px;height:60px;margin:10px"></td>
-            <td valign="top"><div style="margin:10px">#sender<br/><span style="font-weight: normal">#message</span></div></td>
+            <td valign="top" style="width:70px"><img src="#avatar" style="width:60px;height:60px;margin:10px"></td>
+            <td valign="top" ><div style="margin:10px"><span style="color:gray">#sender</span><br/><span style="font-weight: normal">#message</span></div></td>
+            <td valign="top" style="width:150px;font-weight: normal">#time</td>
         </tr>
     </table>
 </div>
@@ -205,6 +251,7 @@
         <div style="margin: 0 100px">
             <a class="friend_name" href="<c:url value="/profile/id"/>#id">#name</a><br>
             <a style="font-weight: normal" href="javascript:addFried('#id')">Написать сообщение</a>
+            <span>#onoffline</span><br>
         </div>
     </div>
 </div>

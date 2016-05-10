@@ -24,6 +24,7 @@ import java.util.*;
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
+@SuppressWarnings("Duplicates")
 @Controller
 @RequestMapping("/message")
 public class MessageController {
@@ -56,11 +57,7 @@ public class MessageController {
         for (final MessageItem messageItem : messageItems) {
             final MessageData messageData = new MessageData();
             final AccountItem from = accountService.get(messageItem.getAccountFrom());
-            final MessageAccountData sender = new MessageAccountData();
-            sender.setFirstName(from.getFirstName());
-            sender.setLastName(from.getLastName());
-            sender.setId(messageItem.getAccountFrom());
-            sender.setPhoto60x60(photoService1.getSizedPhoto(from.getId()).getPhotoMini());
+            final MessageAccountData sender = messageAccountDataPopulator(from);
             messageData.setSender(sender);
             messageData.setText(messageItem.getText());
 
@@ -75,12 +72,7 @@ public class MessageController {
                 dialogData.setOwner(sender);
             } else {
                 final AccountItem toAccountItem = accountService.get(messageItem.getAccountTo());
-                final MessageAccountData toMessageAccountData = new MessageAccountData();
-                toMessageAccountData.setFirstName(toAccountItem.getFirstName());
-                toMessageAccountData.setLastName(toAccountItem.getLastName());
-                toMessageAccountData.setId(messageItem.getAccountTo());
-                toMessageAccountData.setPhoto60x60(photoService1.getSizedPhoto(toMessageAccountData.getId()).getPhotoMini());
-                dialogData.setOwner(toMessageAccountData);
+                dialogData.setOwner(messageAccountDataPopulator(toAccountItem));
             }
         }
         model.addAttribute("dialogs", dialogDataList);
@@ -134,11 +126,7 @@ public class MessageController {
         for (final MessageItem messageItem : messageItems) {
             final MessageData messageData = new MessageData();
             final AccountItem from = accountService.get(messageItem.getAccountFrom());
-            final MessageAccountData sender = new MessageAccountData();
-            sender.setFirstName(from.getFirstName());
-            sender.setLastName(from.getLastName());
-            sender.setId(messageItem.getAccountFrom());
-            sender.setPhoto60x60(photoService1.getSizedPhoto(from.getId()).getPhotoMini());
+            final MessageAccountData sender = messageAccountDataPopulator(from);
             messageData.setSender(sender);
             messageData.setText(messageItem.getText());
 
@@ -147,23 +135,26 @@ public class MessageController {
             DialogData dialogData = new DialogData();
             dialogDataList.add(dialogData);
             dialogData.setLastMessage(messageData);
-
             if (messageItem.getAccountTo().equals(accountItem.getId())) {
-
                 dialogData.setOwner(sender);
             } else {
                 final AccountItem toAccountItem = accountService.get(messageItem.getAccountTo());
-                final MessageAccountData toMessageAccountData = new MessageAccountData();
-                toMessageAccountData.setFirstName(toAccountItem.getFirstName());
-                toMessageAccountData.setLastName(toAccountItem.getLastName());
-                toMessageAccountData.setId(messageItem.getAccountTo());
-                toMessageAccountData.setPhoto60x60(photoService1.getSizedPhoto(toMessageAccountData.getId()).getPhotoMini());
-                dialogData.setOwner(toMessageAccountData);
+                dialogData.setOwner(messageAccountDataPopulator(toAccountItem));
             }
         }
 
 
         return dialogDataList;
+    }
+
+    private MessageAccountData messageAccountDataPopulator(AccountItem accountItem) {
+        final MessageAccountData messageAccountDataPopulator = new MessageAccountData();
+        messageAccountDataPopulator.setFirstName(accountItem.getFirstName());
+        messageAccountDataPopulator.setLastName(accountItem.getLastName());
+        messageAccountDataPopulator.setId(accountItem.getId());
+        messageAccountDataPopulator.setPhoto60x60(photoService1.getSizedPhoto(accountItem.getId()).getPhotoMini());
+        messageAccountDataPopulator.setOnline(accountItem.getIsOnline());
+        return messageAccountDataPopulator;
     }
 
 }

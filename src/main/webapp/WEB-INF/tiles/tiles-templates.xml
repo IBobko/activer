@@ -96,6 +96,8 @@
 		<put-attribute name="content" value="/WEB-INF/views/gifts/index.jsp"/>
 	</definition>
 
+	<definition name="gifts/popup" template="/WEB-INF/views/gifts/popup.jsp"/>
+
 	<definition name="news/index" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/news/index.jsp"/>
 	</definition>

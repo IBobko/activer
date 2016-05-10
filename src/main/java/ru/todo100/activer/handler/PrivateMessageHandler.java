@@ -46,6 +46,8 @@ public class PrivateMessageHandler extends AbstractMessageHandler {
         //template.convertAndSend("/global2/1", messageData);
 
         getTemplate().convertAndSendToUser(principal.getName(), "/global2", messageData);
+        getTemplate().convertAndSendToUser(to.getEmail(), "/global2", messageData);
+
 
         // template.convertAndSend("/global2",messageData);
 
