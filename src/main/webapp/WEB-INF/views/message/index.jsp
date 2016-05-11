@@ -20,6 +20,16 @@
     #dialogWindow{
         border:3px solid #b5bdec;
     }
+
+    .badge {
+        text-indent: 0;
+        background-color: #EC1F64;
+        float: right;
+        padding: 7px 5px;
+        border-radius: 20px;
+        margin-top: 6px;
+        min-width: 28px;
+    }
 </style>
 
 <h4 style="color: #3F51B5;font-weight:bold;">Мои сообщения</h4>
@@ -29,7 +39,7 @@
         <td style="width:300px">
             <input type="text" class="form-control" id="textForSearch" placeholder="Поиск диалога">
         </td>
-        <td width="1%">
+        <td width="1%" style="padding-left:5px">
             <a id="searchDialogButton" style="margin-left:15px" class="std-button btn btn-default"><span
                     class="fa fa-search"></span>&nbsp;Поиск</a>
         </td>
@@ -95,6 +105,7 @@
              */
             $.get("<c:url value="/message/search"/>", data, function (response) {
                 interlocutors.html('');
+                console.log(response);
                 for (var index in response) {
                     if (response.hasOwnProperty(index)) {
                         var template = $('#dialogTemplate').html();
@@ -104,6 +115,9 @@
                         template = template.replace("#ownerfirstname", response[index].owner.firstName);
                         template = template.replace("#onoffline", response[index].owner.online ? "online":"offline");
                         template = template.replace("#date", response[index].lastMessage.date);
+
+
+
                         interlocutors.append(template);
                     }
                 }
@@ -167,17 +181,19 @@
             <div id="interlocutors" style="width:300px">
                 <c:forEach items="${dialogs}" var="dialog">
                     <div style="overflow: hidden" class="interlocutor" interlocutor-id="${dialog.owner.id}">
+                        <div id="counter" style="float:right;padding-top:22px"><c:if test="${dialog.countNotRed != 0}"><span class='badge'>${dialog.countNotRed}</span></c:if></div>
                         <img style="margin:10px;float:left" width="60" src="${staticFiles}/${dialog.owner.photo60x60}." height="60"/>
-                        <div style="margin:10px">
+                        <div style="margin:10px;">
                             <span style="color:#337ab7">${dialog.owner.lastName} ${dialog.owner.firstName}</span><br/>
                             <span style="font-weight: normal;font-size: 12px">${dialog.lastMessage.date}</span><br/>
                             <span style="font-weight: normal;font-size: 12px">${dialog.owner.online? "online":"offline"}</span>
+
                         </div>
                     </div>
                 </c:forEach>
             </div>
         </td>
-        <td valign="top" width="100%">
+        <td valign="top" width="100%" style="padding-left:20px">
         <div id="dialogWindow" style="height:500px;width:100%;overflow-y: scroll">
 
         </div>
@@ -280,12 +296,31 @@
     }
 
     ACTIVER.Global.handlers["PRIVATE_MESSAGE"] = function (data) {
-        var template = $('#messageTemplate').html();
-        template = template.replace("#avatar",'${staticFiles}/' + data.from.photo60x60 +'.');
-        template = template.replace("#sender",data.from.firstName + " "+ data.from.lastName);
-        template = template.replace("#message",data.message);
-        $('#dialogWindow').append(template);
-        scrollDialogWindow();
+        console.log(data);
+        var owner = null;
+        if (data.to.id == ${currentId}) {
+            owner = data.from.id;
+        } else {
+            owner = data.to.id;
+        }
+        if (interlocutor == owner) {
+            var template = $('#messageTemplate').html();
+            template = template.replace("#avatar",'${staticFiles}/' + data.from.photo60x60 +'.');
+            template = template.replace("#sender",data.from.firstName + " "+ data.from.lastName);
+            template = template.replace("#message",data.message);
+            $('#dialogWindow').append(template);
+            scrollDialogWindow();
+        } else {
+            var counter = $("[interlocutor-id='"+owner+"']").find("#counter");
+            if (counter.html()!="") {
+                var c = counter.find("span").html();
+                c++;
+                counter.find("span").html(c);
+            } else {
+                counter.html('<span class="badge">1</span>');
+            }
+
+        }
     };
     var text = $('#text');
 

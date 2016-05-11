@@ -37,6 +37,10 @@ public class MessageDao extends AbstractDao
 				))).addOrder(Order.desc("addedDate")).setMaxResults(20).list();
 	}
 
+	public Long countNotRed(Integer from,Integer to) {
+		return (Long)getCriteria().add(Restrictions.and(Restrictions.eq("accountTo",to),Restrictions.eq("read",0))).add(Restrictions.eq("accountFrom",from)).setProjection(Projections.rowCount()).uniqueResult();
+	}
+
 	public List<MessageItem> getDialogSQL(Integer person1, Integer person2) {
 		System.out.println("Start: " + System.currentTimeMillis());
 		Long start = System.currentTimeMillis();

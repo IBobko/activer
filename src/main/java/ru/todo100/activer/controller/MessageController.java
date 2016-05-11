@@ -46,6 +46,8 @@ public class MessageController {
         return template;
     }
 
+
+
     @RequestMapping
     public String index(final Model model) {
         model.addAttribute("pageType", "message");
@@ -67,15 +69,21 @@ public class MessageController {
             dialogDataList.add(dialogData);
             dialogData.setLastMessage(messageData);
 
+
             if (messageItem.getAccountTo().equals(accountItem.getId())) {
 
                 dialogData.setOwner(sender);
+                dialogData.setCountNotRed(messageService.countNotRed(sender.getId(),accountItem.getId()));
             } else {
                 final AccountItem toAccountItem = accountService.get(messageItem.getAccountTo());
                 dialogData.setOwner(messageAccountDataPopulator(toAccountItem));
+                dialogData.setCountNotRed(messageService.countNotRed(toAccountItem.getId(),accountItem.getId()));
             }
+
         }
         model.addAttribute("dialogs", dialogDataList);
+        /*todo этот код нужен только, чтобы определить чье сообщение пришло */
+        model.addAttribute("currentId", accountItem.getId());
         return "message/index";
     }
 
@@ -84,12 +92,12 @@ public class MessageController {
     public List<MessageData> ajaxMessage(@PathVariable final Integer id, final HttpServletRequest request) {
         final ProfileData profileData = accountService.getCurrentProfileData(request.getSession());
         final List<MessageItem> messageItems = messageService.getDialog(id, profileData.getId());
-        final List<MessageData> messageData = messagePopulate(messageItems);
+        final List<MessageData> messageData = messagePopulate(messageItems,profileData.getId());
         Collections.reverse(messageData);
         return messageData;
     }
 
-    private List<MessageData> messagePopulate(List<MessageItem> messageItems) {
+    private List<MessageData> messagePopulate(List<MessageItem> messageItems,Integer accountId) {
         final Map<Integer, MessageAccountData> cachedAccountData = new HashMap<>();
         final List<MessageData> messageData = new ArrayList<>();
         for (MessageItem item : messageItems) {
@@ -106,8 +114,17 @@ public class MessageController {
                 cachedAccountData.put(item.getAccountFrom(), sender);
             }
             data.setText(item.getText());
+
+            if (item.getAccountFrom().equals(accountId)) {
+                data.setOwner(item.getAccountTo());
+            } else {
+                data.setOwner(item.getAccountFrom());
+            }
+
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
             data.setDate(format.format(item.getAddedDate().getTime()));
+            data.setRead(item.getRead() == 1);
+
             messageData.add(data);
         }
         return messageData;

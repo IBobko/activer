@@ -1,87 +1,98 @@
 package ru.todo100.activer.data;
 
-import java.util.Calendar;
 
 /**
- * @author Igor Bobko
+ * @author Igor Bobko <limit-speed@yandex.ru>.
  */
-public class MessageData
-{
-	private Integer            id;
-	private Integer            accountFrom;
-	private Integer            accountTo;
-	private String             text;
-	private MessageAccountData sender;
-	private MessageAccountData accountDataTo;
-	private String           date;
+public class MessageData {
+    private Integer id;
+    private Integer accountFrom;
+    private Integer accountTo;
+    private String text;
+    private MessageAccountData sender;
+    private MessageAccountData accountDataTo;
+    private String date;
+    private Boolean read;
+    private Integer owner;
+    private Integer dialog;
 
-	public String getDate()
-	{
-		return date;
-	}
+    public Boolean getRead() {
+        return read;
+    }
 
-	public void setDate(final String date)
-	{
-		this.date = date;
-	}
+    public void setRead(Boolean read) {
+        this.read = read;
+    }
 
-	public MessageAccountData getAccountDataTo()
-	{
-		return accountDataTo;
-	}
+    public Integer getOwner() {
+        return owner;
+    }
 
-	public void setAccountDataTo(final MessageAccountData accountDataTo)
-	{
-		this.accountDataTo = accountDataTo;
-	}
+    public void setOwner(Integer owner) {
+        this.owner = owner;
+    }
 
-	public MessageAccountData getSender()
-	{
-		return sender;
-	}
+    public Integer getDialog() {
+        return dialog;
+    }
 
-	public void setSender(final MessageAccountData sender)
-	{
-		this.sender = sender;
-	}
+    public void setDialog(Integer dialog) {
+        this.dialog = dialog;
+    }
 
-	public Integer getId()
-	{
-		return id;
-	}
+    public String getDate() {
+        return date;
+    }
 
-	public void setId(final Integer id)
-	{
-		this.id = id;
-	}
+    public void setDate(final String date) {
+        this.date = date;
+    }
 
-	public Integer getAccountFrom()
-	{
-		return accountFrom;
-	}
+    public MessageAccountData getAccountDataTo() {
+        return accountDataTo;
+    }
 
-	public void setAccountFrom(final Integer accountFrom)
-	{
-		this.accountFrom = accountFrom;
-	}
+    public void setAccountDataTo(final MessageAccountData accountDataTo) {
+        this.accountDataTo = accountDataTo;
+    }
 
-	public Integer getAccountTo()
-	{
-		return accountTo;
-	}
+    public MessageAccountData getSender() {
+        return sender;
+    }
 
-	public void setAccountTo(final Integer accountTo)
-	{
-		this.accountTo = accountTo;
-	}
+    public void setSender(final MessageAccountData sender) {
+        this.sender = sender;
+    }
 
-	public String getText()
-	{
-		return text;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setText(final String text)
-	{
-		this.text = text;
-	}
+    public void setId(final Integer id) {
+        this.id = id;
+    }
+
+    public Integer getAccountFrom() {
+        return accountFrom;
+    }
+
+    public void setAccountFrom(final Integer accountFrom) {
+        this.accountFrom = accountFrom;
+    }
+
+    public Integer getAccountTo() {
+        return accountTo;
+    }
+
+    public void setAccountTo(final Integer accountTo) {
+        this.accountTo = accountTo;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(final String text) {
+        this.text = text;
+    }
 }

@@ -7,6 +7,16 @@ public class DialogData {
     private MessageAccountData owner;
     private MessageData lastMessage;
 
+    public Long getCountNotRed() {
+        return countNotRed;
+    }
+
+    public void setCountNotRed(Long countNotRed) {
+        this.countNotRed = countNotRed;
+    }
+
+    private Long countNotRed;
+
     public MessageData getLastMessage() {
         return lastMessage;
     }
