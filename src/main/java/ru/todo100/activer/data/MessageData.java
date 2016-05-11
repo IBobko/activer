@@ -1,20 +1,45 @@
 package ru.todo100.activer.data;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import ru.todo100.activer.json.CustomDateSerializer;
+
+import java.io.Serializable;
+import java.util.Calendar;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
-public class MessageData {
+public class MessageData implements Serializable {
+    /**
+     * Идентификатор сообщения в системе
+     */
     private Integer id;
-    private Integer accountFrom;
-    private Integer accountTo;
-    private String text;
-    private MessageAccountData sender;
-    private MessageAccountData accountDataTo;
-    private String date;
+    /**
+     * Тело сигнала
+     */
+    private String message;
+    /**
+     * От кого пришел сигнал
+     */
+    private MessageAccountData from;
+    /**
+     * Кому предназначается сигнал
+     */
+    private MessageAccountData to;
+    /**
+     * Дата сигнала
+     */
+
+    private Calendar date;
+    /**
+     * Прочитан ли сигнал получателем
+     */
     private Boolean read;
-    private Integer owner;
-    private Integer dialog;
+    /**
+     * Собеседник, противоположная сторона. Часто может совпадать либо с from.id, либо с to.id
+     * Также может содержать ID диалога
+     */
+    private Integer interlocutor;
 
     public Boolean getRead() {
         return read;
@@ -24,44 +49,37 @@ public class MessageData {
         this.read = read;
     }
 
-    public Integer getOwner() {
-        return owner;
+    public Integer getInterlocutor() {
+        return interlocutor;
     }
 
-    public void setOwner(Integer owner) {
-        this.owner = owner;
+    public void setInterlocutor(Integer interlocutor) {
+        this.interlocutor = interlocutor;
     }
 
-    public Integer getDialog() {
-        return dialog;
-    }
-
-    public void setDialog(Integer dialog) {
-        this.dialog = dialog;
-    }
-
-    public String getDate() {
+    @JsonSerialize(using = CustomDateSerializer.class)
+    public Calendar getDate() {
         return date;
     }
 
-    public void setDate(final String date) {
+    public void setDate(final Calendar date) {
         this.date = date;
     }
 
-    public MessageAccountData getAccountDataTo() {
-        return accountDataTo;
+    public MessageAccountData getTo() {
+        return to;
     }
 
-    public void setAccountDataTo(final MessageAccountData accountDataTo) {
-        this.accountDataTo = accountDataTo;
+    public void setTo(final MessageAccountData to) {
+        this.to = to;
     }
 
-    public MessageAccountData getSender() {
-        return sender;
+    public MessageAccountData getFrom() {
+        return from;
     }
 
-    public void setSender(final MessageAccountData sender) {
-        this.sender = sender;
+    public void setFrom(final MessageAccountData from) {
+        this.from = from;
     }
 
     public Integer getId() {
@@ -72,27 +90,11 @@ public class MessageData {
         this.id = id;
     }
 
-    public Integer getAccountFrom() {
-        return accountFrom;
+    public String getMessage() {
+        return message;
     }
 
-    public void setAccountFrom(final Integer accountFrom) {
-        this.accountFrom = accountFrom;
-    }
-
-    public Integer getAccountTo() {
-        return accountTo;
-    }
-
-    public void setAccountTo(final Integer accountTo) {
-        this.accountTo = accountTo;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(final String text) {
-        this.text = text;
+    public void setMessage(final String message) {
+        this.message = message;
     }
 }

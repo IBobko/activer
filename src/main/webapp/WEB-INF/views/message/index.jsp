@@ -1,7 +1,22 @@
 <%--suppress HtmlUnknownAnchorTarget --%>
 <%--@elvariable id="staticFiles" type="java.lang.String"--%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="message/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<script type="text/javascript">
+    /*todo пока не используется*/
+    window.Messaging = {
+    messageTemplate: '#messageTemplate',
+    dialogMessageRow: function(message) {
+    var template = $(this.messageTemplate).html();
+    template = template.replace("#avatar",'${staticFiles}/' + message.from.photo60x60 +'.');
+    template = template.replace("#from",message.from.firstName + " "+ message.from.lastName);
+    template = template.replace("#message",message.message);
+    template = template.replace("#time",message.date);
+    return template;
+    }
+    }
+</script>
 
 <style type="text/css">
     .interlocutor:hover{
@@ -233,14 +248,8 @@
             dialogWindow.html("");
             for (var index in data) {
                 if (data.hasOwnProperty(index)) {
-                    var template = $('#messageTemplate').html();
-                    //noinspection JSUnresolvedVariable
-                    template = template.replace("#avatar",'${staticFiles}/' + data[index].sender.photo60x60 +'.');
-                    template = template.replace("#sender",data[index].sender.firstName + " "+ data[index].sender.lastName);
-                    template = template.replace("#message",data[index].text);
-                    template = template.replace("#time",data[index].date);
-                    dialogWindow.append(template);
-                    console.log(data[index]);
+    var row = Messaging.dialogMessageRow(data[index]);
+    dialogWindow.append(row);
                 }
             }
             scrollDialogWindow();
@@ -304,11 +313,8 @@
             owner = data.to.id;
         }
         if (interlocutor == owner) {
-            var template = $('#messageTemplate').html();
-            template = template.replace("#avatar",'${staticFiles}/' + data.from.photo60x60 +'.');
-            template = template.replace("#sender",data.from.firstName + " "+ data.from.lastName);
-            template = template.replace("#message",data.message);
-            $('#dialogWindow').append(template);
+    var row = Messaging.dialogMessageRow(data);
+    $('#dialogWindow').append(row);
             scrollDialogWindow();
         } else {
             var counter = $("[interlocutor-id='"+owner+"']").find("#counter");

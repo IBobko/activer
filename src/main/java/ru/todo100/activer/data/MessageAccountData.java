@@ -1,9 +1,11 @@
 package ru.todo100.activer.data;
 
+import java.io.Serializable;
+
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
-public class MessageAccountData {
+public class MessageAccountData implements Serializable {
     private Integer id;
     private String firstName;
     private String lastName;

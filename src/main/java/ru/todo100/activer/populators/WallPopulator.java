@@ -27,9 +27,9 @@ public class WallPopulator implements Populator<WallItem, MessageData>
 	public MessageData populate(final WallItem wallItem)
 	{
 		final MessageData data = new MessageData();
-		data.setText(wallItem.getText());
+		data.setMessage(wallItem.getText());
 		final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
-		data.setDate(format.format(wallItem.getAddedDate().getTime()));
+		data.setDate(wallItem.getAddedDate());
 
 		final MessageAccountData sender = new MessageAccountData();
 		final AccountItem senderItem = accountService.get(wallItem.getSender());
@@ -43,7 +43,7 @@ public class WallPopulator implements Populator<WallItem, MessageData>
 			File f = new File(facePhoto.getName());
 			sender.setPhoto60x60(f.getParent() + "/" + "60x60_" + f.getName());
 		}
-		data.setSender(sender);
+		data.setFrom(sender);
 		return data;
 	}
 

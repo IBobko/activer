@@ -1,5 +1,8 @@
 package ru.todo100.activer.model;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Calendar;
@@ -7,9 +10,11 @@ import java.util.Calendar;
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
-@SuppressWarnings({"unused"})
+
 @Entity
 @Table(name = "message")
+@DynamicUpdate
+@DynamicInsert
 public class MessageItem extends Item {
     @Id
     @SequenceGenerator(name = "default_gen", sequenceName = "message_seq", allocationSize = 1)
@@ -27,7 +32,10 @@ public class MessageItem extends Item {
     @NotNull
     @Column(name = "added_date", nullable = false)
     private Calendar addedDate;
-    @NotNull
+
+    /*
+    * This field has default value in database. Default is 0.
+    */
     @Column(name = "read", nullable = false)
     private Integer read;
 

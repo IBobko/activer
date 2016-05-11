@@ -190,6 +190,7 @@ public class DatingPageController {
             model.addAttribute("disputeData", disputeData);
             model.addAttribute("photo", photoService1.getPhoto(profileData.getId()));
             model.addAttribute("profile",profileData);
+            /*todo ИСПОРЧЕНО*/
             model.addAttribute("templatePost", MessageController.generateTemplateMessageData());
             return "dating/dispute";
         }

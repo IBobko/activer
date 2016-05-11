@@ -37,12 +37,13 @@ public class MessageController {
 
     public static MessageData generateTemplateMessageData() {
         final MessageData template = new MessageData();
-        template.setText("%text%");
+        template.setMessage("%text%");
         final MessageAccountData sender = new MessageAccountData();
         sender.setFirstName("%firstName%");
         sender.setLastName("%lastName%");
-        template.setDate("%date%");
-        template.setSender(sender);
+        /*ИСПОРЧЕНО*/
+        //template.setDate("%date%");
+        template.setFrom(sender);
         return template;
     }
 
@@ -60,11 +61,12 @@ public class MessageController {
             final MessageData messageData = new MessageData();
             final AccountItem from = accountService.get(messageItem.getAccountFrom());
             final MessageAccountData sender = messageAccountDataPopulator(from);
-            messageData.setSender(sender);
-            messageData.setText(messageItem.getText());
+            messageData.setFrom(sender);
+            messageData.setMessage(messageItem.getText());
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
-            messageData.setDate(format.format(messageItem.getAddedDate().getTime()));
+            /*todo испорчено*/
+            messageData.setDate(messageItem.getAddedDate());
             DialogData dialogData = new DialogData();
             dialogDataList.add(dialogData);
             dialogData.setLastMessage(messageData);
@@ -103,26 +105,27 @@ public class MessageController {
         for (MessageItem item : messageItems) {
             final MessageData data = new MessageData();
             if (cachedAccountData.containsKey(item.getAccountFrom())) {
-                data.setSender(cachedAccountData.get(item.getAccountFrom()));
+                data.setFrom(cachedAccountData.get(item.getAccountFrom()));
             } else {
                 final AccountItem from = accountService.get(item.getAccountFrom());
                 final MessageAccountData sender = new MessageAccountData();
                 sender.setFirstName(from.getFirstName());
                 sender.setLastName(from.getLastName());
                 sender.setPhoto60x60(photoService1.getSizedPhoto((item.getAccountFrom())).getPhotoMini());
-                data.setSender(sender);
+                data.setFrom(sender);
                 cachedAccountData.put(item.getAccountFrom(), sender);
             }
-            data.setText(item.getText());
+            data.setMessage(item.getText());
 
             if (item.getAccountFrom().equals(accountId)) {
-                data.setOwner(item.getAccountTo());
+                data.setInterlocutor(item.getAccountTo());
+
             } else {
-                data.setOwner(item.getAccountFrom());
+                data.setInterlocutor(item.getAccountFrom());
             }
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
-            data.setDate(format.format(item.getAddedDate().getTime()));
+            data.setDate(item.getAddedDate());
             data.setRead(item.getRead() == 1);
 
             messageData.add(data);
@@ -144,11 +147,11 @@ public class MessageController {
             final MessageData messageData = new MessageData();
             final AccountItem from = accountService.get(messageItem.getAccountFrom());
             final MessageAccountData sender = messageAccountDataPopulator(from);
-            messageData.setSender(sender);
-            messageData.setText(messageItem.getText());
+            messageData.setFrom(sender);
+            messageData.setMessage(messageItem.getText());
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
-            messageData.setDate(format.format(messageItem.getAddedDate().getTime()));
+            messageData.setDate(messageItem.getAddedDate());
             DialogData dialogData = new DialogData();
             dialogDataList.add(dialogData);
             dialogData.setLastMessage(messageData);
