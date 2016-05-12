@@ -2,6 +2,7 @@
 <%--@elvariable id="staticFiles" type="java.lang.String"--%>
 <%@ page language="java" contentType="message/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <script type="text/javascript">
     /*todo пока не используется*/
@@ -10,7 +11,7 @@
     dialogMessageRow: function(message) {
     var template = $(this.messageTemplate).html();
     template = template.replace("#avatar",'${staticFiles}/' + message.from.photo60x60 +'.');
-    template = template.replace("#from",message.from.firstName + " "+ message.from.lastName);
+    template = template.replace("#sender",message.from.firstName + " "+ message.from.lastName);
     template = template.replace("#message",message.message);
     template = template.replace("#time",message.date);
     return template;
@@ -200,7 +201,9 @@
                         <img style="margin:10px;float:left" width="60" src="${staticFiles}/${dialog.owner.photo60x60}." height="60"/>
                         <div style="margin:10px;">
                             <span style="color:#337ab7">${dialog.owner.lastName} ${dialog.owner.firstName}</span><br/>
-                            <span style="font-weight: normal;font-size: 12px">${dialog.lastMessage.date}</span><br/>
+                            <span style="font-weight: normal;font-size: 12px"><fmt:formatDate
+                                    value="${dialog.lastMessage.date.time}" pattern="yyyy-MM-dd H:m:s"/></span>
+                            <br/>
                             <span style="font-weight: normal;font-size: 12px">${dialog.owner.online? "online":"offline"}</span>
 
                         </div>

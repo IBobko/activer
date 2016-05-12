@@ -29,7 +29,6 @@ public class MessageData implements Serializable {
     /**
      * Дата сигнала
      */
-
     private Calendar date;
     /**
      * Прочитан ли сигнал получателем
