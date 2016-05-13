@@ -1,21 +1,20 @@
 <%--suppress HtmlUnknownAnchorTarget --%>
 <%--@elvariable id="staticFiles" type="java.lang.String"--%>
-<%@ page language="java" contentType="message/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <script type="text/javascript">
-    /*todo пока не используется*/
     window.Messaging = {
-    messageTemplate: '#messageTemplate',
-    dialogMessageRow: function(message) {
-    var template = $(this.messageTemplate).html();
-    template = template.replace("#avatar",'${staticFiles}/' + message.from.photo60x60 +'.');
-    template = template.replace("#sender",message.from.firstName + " "+ message.from.lastName);
-    template = template.replace("#message",message.message);
-    template = template.replace("#time",message.date);
-    return template;
-    }
+        messageTemplate: '#messageTemplate',
+        dialogMessageRow: function (message) {
+            var template = $(this.messageTemplate).html();
+            template = template.replace("#avatar", '${staticFiles}/' + message.from.photo60x60 + '.');
+            template = template.replace("#sender", message.from.firstName + " " + message.from.lastName);
+            template = template.replace("#message", message.message);
+            template = template.replace("#time", message.date);
+            return template;
+        }
     }
 </script>
 
@@ -67,13 +66,13 @@
 </table>
 
 <!-- Modal -->
-<div class="modal fade" id="startDialogWithFriend" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="startDialogWithFriend" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Поиск друга</h4>
+                <h4 class="modal-title">Поиск друга</h4>
             </div>
             <div class="modal-body">
                 ...
@@ -86,13 +85,13 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="giftsPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="giftsPopup" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Поиск друга</h4>
+                <h4 class="modal-title">Поиск друга</h4>
             </div>
             <div class="modal-body">
                 ...
@@ -131,9 +130,6 @@
                         template = template.replace("#ownerfirstname", response[index].owner.firstName);
                         template = template.replace("#onoffline", response[index].owner.online ? "online":"offline");
                         template = template.replace("#date", response[index].lastMessage.date);
-
-
-
                         interlocutors.append(template);
                     }
                 }
