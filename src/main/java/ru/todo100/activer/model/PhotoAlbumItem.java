@@ -21,8 +21,9 @@ public class PhotoAlbumItem extends Item {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "photo_id", nullable = false)
-    private Integer photoId;
+    @ManyToOne
+    @Column(name = "photo_id")
+    private PhotoItem cover;
 
     @NotNull
     @Column(name = "account_id", nullable = false)
@@ -36,12 +37,12 @@ public class PhotoAlbumItem extends Item {
         this.description = description;
     }
 
-    public Integer getPhotoId() {
-        return photoId;
+    public PhotoItem getCover() {
+        return cover;
     }
 
-    public void setPhotoId(Integer photoId) {
-        this.photoId = photoId;
+    public void setCover(PhotoItem cover) {
+        this.cover = cover;
     }
 
     public Integer getId() {

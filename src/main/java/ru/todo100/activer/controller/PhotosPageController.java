@@ -13,15 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.PhotoAlbumDao;
 import ru.todo100.activer.dao.PhotosDao;
+import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.form.PhotoAlbumForm;
+import ru.todo100.activer.form.PhotoForm;
 import ru.todo100.activer.model.PhotoAlbumItem;
 import ru.todo100.activer.model.PhotoItem;
 
@@ -29,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,31 +59,47 @@ public class PhotosPageController {
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String edit(final Model model, final HttpServletRequest request) {
         model.addAttribute("pageType","photos");
+
+        final PhotoAlbumForm photoAlbumForm = new PhotoAlbumForm();
         Integer albumId = null;
         try {
             albumId = Integer.parseInt(request.getParameter("id"));
         } catch(NumberFormatException ignored){}
 
-        if (albumId == null) {
-            model.addAttribute("photoAlbumForm",new PhotoAlbumForm());
+        if (albumId != null) {
+            final PhotoAlbumItem photoAlbumItem = (PhotoAlbumItem) photoAlbumDao.get(albumId);
+            photoAlbumForm.setDescription(photoAlbumItem.getDescription());
+            photoAlbumForm.setId(photoAlbumItem.getId());
+            photoAlbumForm.setName(photoAlbumItem.getName());
+
+            if (photoAlbumItem.getCover() != null) {
+                /*todo Возможно стоит использовать PhotoForm. Стоит проверить создает ли он форму или нет при отправке с формы*/
+                photoAlbumForm.setPhotoName(photoAlbumItem.getCover().getMiddlePath());
+                photoAlbumForm.setPhotoId(photoAlbumItem.getCover().getId());
+            }
         }
 
+
+        model.addAttribute("photoAlbumForm", photoAlbumForm);
         return "photos/edit";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String postAlbum(PhotoAlbumForm photoAlbumForm, BindingResult bindingResult) {
+    public String postAlbum(final PhotoAlbumForm photoAlbumForm, final BindingResult bindingResult, final HttpServletRequest request) {
         if (!bindingResult.hasErrors()) {
             final PhotoAlbumItem photoAlbumItem;
             if (photoAlbumForm.getId() != null) {
-                photoAlbumItem = photoAlbumDao.getSession().load(PhotoAlbumItem.class, photoAlbumForm.getId());
+                photoAlbumItem = (PhotoAlbumItem) photoAlbumDao.get(photoAlbumForm.getId());
             } else {
                 photoAlbumItem = new PhotoAlbumItem();
             }
-
             photoAlbumItem.setName(photoAlbumForm.getName());
             photoAlbumItem.setDescription(photoAlbumForm.getName());
-            photoAlbumItem.setAccountId(accountService.getCurrentAccount().getId());
+            ProfileData profileData = accountService.getCurrentProfileData(request.getSession());
+            photoAlbumItem.setAccountId(profileData.getId());
+            final PhotoItem photoItem = new PhotoItem();
+            photoItem.setId(photoAlbumForm.getPhotoId());
+            photoAlbumItem.setCover(photoItem);
             photoAlbumDao.save(photoAlbumItem);
         }
         return "redirect:/photos";
@@ -129,10 +145,14 @@ public class PhotosPageController {
 
     @RequestMapping(value = "/add",method = RequestMethod.GET)
     public String add( final HttpServletRequest request,Model model) {
+        final PhotoForm photoForm = new PhotoForm();
         try {
             Integer album = Integer.parseInt(request.getParameter("album"));
-            model.addAttribute("album",album);
+            photoForm.setAlbum(album);
         } catch(Exception ignored){}
+
+        model.addAttribute("photoForm", photoForm);
+
         return "photos/add";
     }
 
@@ -143,6 +163,15 @@ public class PhotosPageController {
     }
 
 
-
-
+    @ResponseBody
+    @RequestMapping(value = "/ajax")
+    public List<PhotoItem> ajax(final HttpServletRequest request) {
+        try {
+            final Integer album = Integer.parseInt(request.getParameter("album"));
+            ProfileData profileData = accountService.getCurrentProfileData(request.getSession());
+            return photosDao.getByAccountAndAlbum(profileData.getId(), album);
+        } catch (Exception ignored) {
+        }
+        return new ArrayList<>();
+    }
 }

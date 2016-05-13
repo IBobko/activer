@@ -29,9 +29,19 @@ public class PhotoItem extends Item {
     @Column(name = "album_id")
     private Integer albumId;
 
+    @Column(name = "description")
+    private String description;
     @NotNull
     @Column(name = "account_id", nullable = false)
     private Integer accountId;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Integer getAccountId() {
         return accountId;

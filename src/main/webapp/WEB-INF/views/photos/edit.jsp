@@ -1,3 +1,5 @@
+<%--suppress HtmlUnknownAttribute --%>
+<%--@elvariable id="staticFiles" type="java.lang.String"--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -10,8 +12,8 @@
         cursor: pointer;
     }
 
-    table td{
-        padding:10px 20px 10px 0px;
+    table td {
+        padding: 10px 20px 10px 0;
         vertical-align: top;
     }
 </style>
@@ -31,14 +33,25 @@
 <a href="<c:url value="/photos"/>" class="std-button btn btn-default"><span
         class="glyphicon glyphicon-arrow-left"></span>&nbsp;Назад</a>
 
-
+<form:form commandName="photoAlbumForm" method="post">
+    <form:hidden path="id"/>
 <div style="margin-top:20px">
     <div style="width:300px;height: 150px;overflow: hidden;float:left;text-align: center">
-        <img src="<c:url value="/resources/img/notselected.png"/>" style="height:150px"/>
+        <form:hidden path="photoId"/>
+        <c:if test="${empty photoAlbumForm.photoId}">
+            <img id="albumPhoto" src="<c:url value="/resources/img/notselected.png"/>"
+                 style="width:200px;height:150px"/>
+        </c:if>
+
+        <c:if test="${not empty photoAlbumForm.photoId}">
+            <img id="albumPhoto" src="${staticFiles}/${photoAlbumForm.photoName}." style="width:200px;height:150px"/>
+        </c:if>
+
+        <img id="albumPhoto" src="<c:url value="/resources/img/notselected.png"/>" style="width:200px;height:150px"/>
     </div>
     <div style="margin-left:300px">
         <h3 class="title">Редактирование альбома</h3>
-        <div>Выберите фото, чтобы сделать его обложкой альбома.<br/>Максимальный размер фото 10MB.</div>
+        <div>Выберите фото, чтобы сделать его обложкой альбома.</div>
         <br/>
         <input id="choosePhoto" type="file"
                style="cursor:pointer;position:absolute;left:350px;height:34px;opacity: 0;overflow: hidden;width:165px">
@@ -52,7 +65,6 @@
         </c:if>
         <br/><br/><br/>
         <h3 class="title">Основная информация</h3>
-        <form:form commandName="photoAlbumForm" method="post">
             <table>
                 <tr>
                     <td>Название альбома</td>
@@ -61,7 +73,7 @@
                 <tr>
                     <td>Описание альбома</td>
                     <td><form:textarea path="description" class="form-control"
-                                       style="width:500px;height:200px"></form:textarea></td>
+                                       style="width:500px;height:200px"/></td>
                 </tr>
                 <tr>
                     <td></td>
@@ -76,7 +88,64 @@
                     </td>
                 </tr>
             </table>
-        </form:form>
     </div>
 </div>
+</form:form>
+
+<a data-toggle="modal" data-target="#photosOfAlbum" style="float:right;"
+   class="std-button btn btn-default"><span class="fa fa-plus"></span>&nbsp;Найти друга</a>
+
+
+<!-- Modal -->
+<div class="modal fade" id="photosOfAlbum" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Фотографии альбома</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="display:none" id="photoItem">
+    <div photo-id="#id" onclick="choosePhoto(this)">
+        <img src="${staticFiles}/#photo." style="width:200px;height:100px">
+        <br/>
+        #description
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function choosePhoto(obj) {
+        $('#albumPhoto').attr('src', $(obj).find('img').attr('src'));
+        $('[name="photoId"]').val(obj.getAttribute("photo-id"));
+        $('#photosOfAlbum').modal('hide');
+    }
+
+    $.get("<c:url value="/photos/ajax/?album=${photoAlbumForm.id}"/>", {}, function (response) {
+        console.log(response);
+        alert("wow!");
+        var photoWindow = $('#photosOfAlbum').find('.modal-body');
+        photoWindow.html('');
+        var template = $('#photoItem').html();
+        for (var index in response) {
+            if (response.hasOwnProperty(index)) {
+                var line = template;
+                line = line.replace("#id", response[index].id);
+                line = line.replace("#photo", response[index].middlePath);
+                line = line.replace("#description", response[index].description);
+                photoWindow.append(line);
+            }
+        }
+    });
+
+</script>
 

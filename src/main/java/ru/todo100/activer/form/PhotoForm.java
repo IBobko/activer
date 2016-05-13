@@ -1,21 +1,23 @@
 package ru.todo100.activer.form;
 
+import org.springframework.web.multipart.MultipartFile;
+
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
-public class PhotoAlbumForm {
+public class PhotoForm {
+    private MultipartFile file;
     private Integer id;
-    private Integer photoId;
     private String name;
     private String description;
-    private String photoName;
+    private Integer album;
 
-    public String getPhotoName() {
-        return photoName;
+    public Integer getAlbum() {
+        return album;
     }
 
-    public void setPhotoName(String photoName) {
-        this.photoName = photoName;
+    public void setAlbum(Integer album) {
+        this.album = album;
     }
 
     public String getDescription() {
@@ -34,19 +36,19 @@ public class PhotoAlbumForm {
         this.name = name;
     }
 
-    public Integer getPhotoId() {
-        return photoId;
-    }
-
-    public void setPhotoId(Integer photoId) {
-        this.photoId = photoId;
-    }
-
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 }
