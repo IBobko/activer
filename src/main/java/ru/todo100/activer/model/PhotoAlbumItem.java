@@ -22,7 +22,7 @@ public class PhotoAlbumItem extends Item {
     private String description;
 
     @ManyToOne
-    @Column(name = "photo_id")
+    @JoinColumn(name = "photo_id")
     private PhotoItem cover;
 
     @NotNull
