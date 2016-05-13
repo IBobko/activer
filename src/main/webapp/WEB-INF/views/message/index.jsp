@@ -1,4 +1,4 @@
-<%--suppress HtmlUnknownAnchorTarget --%>
+<%--suppress HtmlUnknownAnchorTarget,CssUnusedSymbol --%>
 <%--@elvariable id="staticFiles" type="java.lang.String"--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -33,7 +33,7 @@
     }
 
     #dialogWindow{
-        border:3px solid #b5bdec;
+        border: 3px solid #BC1F64;
     }
 
     .badge {
@@ -116,7 +116,7 @@
                 t: textForSearch
             };
             /**
-             * @param response {{owner:{photo60x60,lastName,firstName}}}
+             * @param response {{owner:{photo60x60,lastName,firstName,online},lastMessage}}
              */
             $.get("<c:url value="/message/search"/>", data, function (response) {
                 interlocutors.html('');
@@ -137,8 +137,11 @@
         });
         var startDialogWithFriend = $('#startDialogWithFriend');
         var modalBody = startDialogWithFriend.find(".modal-body");
-        startDialogWithFriend.on('show.bs.modal', function (e) {
+        startDialogWithFriend.on('show.bs.modal', function () {
             modalBody.html("<div style='text-align:center'><img src='<c:url value="/resources/img/progress.gif"/>'/></div>");
+            /**
+             * @param response {{friends}}
+             */
             $.get("<c:url value="/friend/ajax"/>", {}, function (response) {
                 /*todo здесь необходимо добавить блок, для отображение друга. Он по идее должен быть общий*/
                 modalBody.html('');
@@ -146,7 +149,7 @@
                 var friends = response.friends;
                 for (var index in friends) {
                     if (friends.hasOwnProperty(index)) {
-                        var template = $('#friendTempale').html();
+                        var template = $('#friendTemplate').html();
                         template = template.replace(/#id/gi, friends[index].id);
                         template = template.replace("#name", friends[index].firstName + " " + friends[index].lastName);
                         template = template.replace(/#photo/gi, friends[index].photo60x60);
@@ -164,7 +167,7 @@
         var photo = block.find(".friend_photo").attr('filename');
         var name = block.find(".friend_name").html();
 
-        var exists = $("#interlocutors").find("[interlocutor-id='" + data + "']");
+        var exists = interlocutors.find("[interlocutor-id='" + data + "']");
         if (exists.length == 0) {
             var template = $('#dialogTemplate').html();
             template = template.replace("#id", data);
@@ -180,7 +183,7 @@
     }
 
 
-    $("#giftsPopup").on('show.bs.modal', function (e) {
+    $("#giftsPopup").on('show.bs.modal', function () {
         alert("he");
     });
 
@@ -216,7 +219,7 @@
                     <button type="submit" style="float:right;margin-left:7px" class="std-button btn btn-default"><span class="fa fa-comment"></span>&nbsp;Отправить</button>
                     <a data-toggle="modal" data-target="#giftsPopup" class="std-button btn btn-default" style="background-color:#eb1e63;margin-left:15px;font-size: 14px;width:34px;padding:7px 11px;float:right"><span class="fa fa-gift"></span></a>
                     <div style="overflow: hidden">
-                        <input id="text" name="flirtMessage" type="text" class="form-control"/>
+                        <input id="text" name="flirtMessage" type="text" class="form-control" title="sendingMessage"/>
                     </div>
                 </form>
             </div>
@@ -227,11 +230,9 @@
 
 <script type="text/javascript">
 
-    var dialog = '${param["dialog"]}';
-
     var interlocutor = ${not empty param["dialog"]?param["dialog"]:0};
 
-    if (interlocutor!=0) {
+    if (interlocutor != undefined && interlocutor != 0) {
         initDialog(interlocutor)
     }
 
@@ -273,7 +274,7 @@
     </table>
 </div>
 
-<div id="friendTempale" style="display:none">
+<div id="friendTemplate" style="display:none">
     <div class="manBlock" style="overflow:hidden;margin:10px" friend-id="#id">
         <img filename="#photo" class="friend_photo" src="${staticFiles}/#photo." width="80" style="float:left">
         <div style="margin: 0 100px">
