@@ -238,8 +238,8 @@
             <c:forEach items="${wall}" var="item">
                 <li class="media">
                     <div class="media-body">
-                        <h4 class="media-heading">${item.sender.firstName} ${item.sender.lastName}<span> - ${item.date}</span></h4>
-                        <p>${item.text}</p>
+                        <h4 class="media-heading">${item.from.firstName} ${item.from.lastName}<span> - ${item.date}</span></h4>
+                        <p>${item.message}</p>
                     </div>
                 </li>
             </c:forEach>
@@ -266,7 +266,7 @@
                     $.post('<c:url value="/wall/publish"/>',data,function(response){
                         var data = JSON.parse(response);
                         var template = $('#wall-template').html();
-                        template = template.replace("%{sender-name}",data.sender.firstName + " " + data.sender.lastName);
+                        template = template.replace("%{sender-name}",data.from.firstName + " " + data.from.lastName);
                         template = template.replace("%{text}",data.text);
                         template = template.replace("%{date}",data.date);
                         $('#profile-wall').prepend(template);

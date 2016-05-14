@@ -115,12 +115,12 @@ public class PhotosPageController {
     }
 
     @RequestMapping(value = "/upload",method = RequestMethod.POST)
-    public String upload(@RequestParam(value = "photo", required = false) MultipartFile photo,@RequestParam(value = "album", required = false)Integer album) throws IOException {
+    public String upload(@RequestParam(value = "file", required = false) MultipartFile photo,@RequestParam(value = "album", required = false)Integer album) throws IOException {
         final HttpClient httpclient = HttpClientBuilder.create().build();
         final MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         final File file = new File(photo.getName());
         FileUtils.writeByteArrayToFile(file, photo.getBytes());
-        final HttpPost httppost = new HttpPost("http://192.168.1.65:18080/static/upload");
+        final HttpPost httppost = new HttpPost("http://todo100.ru:18080/static/upload");
         builder.addPart("image", new FileBody(file, ContentType.create(photo.getContentType())));
         httppost.setEntity(builder.build());
         final HttpResponse response = httpclient.execute(httppost);

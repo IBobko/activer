@@ -53,10 +53,8 @@
         <h3 class="title">Редактирование альбома</h3>
         <div>Выберите фото, чтобы сделать его обложкой альбома.</div>
         <br/>
-        <input id="choosePhoto" type="file"
-               style="cursor:pointer;position:absolute;left:350px;height:34px;opacity: 0;overflow: hidden;width:165px">
-        <a id="choosePhotoButton" href="<c:url value="/photos"/>" class="std-button btn btn-default"><span
-                class="glyphicon glyphicon-pencil"></span>&nbsp;Выбрать фото</a>
+
+        <a data-toggle="modal" data-target="#photosOfAlbum" class="std-button btn btn-default"><span class="fa fa-plus"></span>&nbsp;Выбрать фото</a>
         &nbsp;&nbsp;&nbsp;
         <c:if test="${photoAlbumForm.id != null}">
             <a href="<c:url value="/photos/delete/${photoAlbumForm.id}"/>"
@@ -92,8 +90,7 @@
 </div>
 </form:form>
 
-<a data-toggle="modal" data-target="#photosOfAlbum" style="float:right;"
-   class="std-button btn btn-default"><span class="fa fa-plus"></span>&nbsp;Найти друга</a>
+
 
 
 <!-- Modal -->
@@ -131,8 +128,6 @@
     }
 
     $.get("<c:url value="/photos/ajax/?album=${photoAlbumForm.id}"/>", {}, function (response) {
-        console.log(response);
-        alert("wow!");
         var photoWindow = $('#photosOfAlbum').find('.modal-body');
         photoWindow.html('');
         var template = $('#photoItem').html();
