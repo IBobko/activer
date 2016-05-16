@@ -56,8 +56,53 @@
 <a href="<c:url value="/photos"/>" class="std-button btn btn-default" style="float:left"><span
         class="fa fa-arrow-left"></span>&nbsp;Назад</a>
 
-<a class="std-button btn btn-default" style="float:right" href="<c:url value="/photos/add?album=${album}"/>"><span
-        class="glyphicon glyphicon-plus"></span> Добавить фото</a>
+<div style="float:right">
+    <input type="file" id="addingPhoto" style="cursor:pointer;position:absolute;height:34px;opacity: 0;width:165px"/>
+    <a href="#" class="std-button btn btn-default"><span class="fa fa-pencil"></span>&nbsp;Добавить фото</a>
+</div>
+
+<script type="text/javascript">
+    $('#addingPhoto').change(function(event){
+        var files = event.target.files;
+        var data = new FormData();
+
+        data.append("file", files[0]);
+        data.append("album",1);
+
+        $.ajax({
+            url: '<c:url value="/photos/upload"/>',
+            type: 'POST',
+            data: data,
+            cache: false,
+            dataType: 'json',
+            processData: false, // Don't process the files
+            contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+            success: function(data, textStatus, jqXHR)
+            {
+                console.log(data);
+
+                $("#photos").append("<li><a href=\"${staticFiles}/" + data["originalPath"] +".jpg\"><img photo-id=\""+data["id"]+"\" style=\"width:200px; height:130px\" src=\"${staticFiles}/"+ data["middlePath"] +"${photo.middlePath.trim()}.jpg\" alt=\"${photo.description}\"></a></li>");
+
+                jQuery(".yoxview").yoxview(
+                        {
+                            backgroundColor: '#000000',
+                            backgroundOpacity: 0.8,
+                            lang: 'ru',
+                        });
+            },
+            error: function(jqXHR, textStatus, errorThrown)
+            {
+                // Handle errors here
+                console.log('ERRORS: ' + textStatus);
+                // STOP LOADING SPINNER
+            }
+        });
+
+
+
+    });
+</script>
+
 <ul style="margin-top:36px;margin-left:130px" class="photo_menu">
     <li>${album.name} (${photos.size()})</li>
 </ul>

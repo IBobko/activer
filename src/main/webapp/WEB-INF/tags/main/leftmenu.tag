@@ -1,10 +1,9 @@
 <%--suppress XmlPathReference --%>
 <%--@elvariable id="friendsData" type="ru.todo100.activer.data.FriendsData"--%>
+
 <%@ tag language="java" trimDirectiveWhitespaces="true" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ attribute name="pageType" required="false" type="java.lang.String" %>
-
-
 
 <c:if test="${pageType == 'auth'}">
     <ul class="sidebar-nav">
@@ -94,13 +93,13 @@
         <li>
             <a href="<c:url value="/message"/>">
                 <span class="fa fa-envelope-o"></span>
-                Сообщения<span class="badge">12</span>
+                Сообщения<span class="badge">3</span>
             </a>
         </li>
         <li>
             <a href="<c:url value="/photos/"/>">
                 <span class="fa fa-photo"></span>
-                Фотографии<span class="badge">3</span>
+                Фотографии
             </a>
         </li>
         <li>
@@ -136,13 +135,13 @@
         <li>
             <a href="<c:url value="/message"/>">
                 <span class="fa fa-envelope-o"></span>
-                Сообщения<span class="badge">12</span>
+                Сообщения<span class="badge">3</span>
             </a>
         </li>
         <li>
             <a href="<c:url value="/photos/"/>">
                 <span class="fa fa-photo"></span>
-                Фотографии<span class="badge">3</span>
+                Фотографии
             </a>
         </li>
         <li>
@@ -177,13 +176,13 @@
         <li class="active">
             <a href="<c:url value="/message"/>">
                 <span class="fa fa-envelope-o"></span>
-                Сообщения<span class="badge">12</span>
+                Сообщения<span class="badge">3</span>
             </a>
         </li>
         <li>
             <a href="<c:url value="/photos/"/>">
                 <span class="fa fa-photo"></span>
-                Фотографии<span class="badge">3</span>
+                Фотографии
             </a>
         </li>
         <li>
@@ -218,13 +217,13 @@
         <li>
             <a href="<c:url value="/message"/>">
                 <span class="fa fa-envelope-o"></span>
-                Сообщения<span class="badge">12</span>
+                Сообщения<span class="badge">3</span>
             </a>
         </li>
         <li class="active">
             <a href="<c:url value="/photos/"/>">
                 <span class="fa fa-photo"></span>
-                Фотографии<span class="badge">3</span>
+                Фотографии
             </a>
         </li>
         <li>
@@ -258,13 +257,13 @@
         <li>
             <a href="<c:url value="/message"/>">
                 <span class="fa fa-envelope-o"></span>
-                Сообщения<span class="badge">12</span>
+                Сообщения<span class="badge">3</span>
             </a>
         </li>
         <li>
             <a href="<c:url value="/photos/"/>">
                 <span class="fa fa-photo"></span>
-                Фотографии<span class="badge">3</span>
+                Фотографии
             </a>
         </li>
         <li class="active">
@@ -276,7 +275,12 @@
     </ul>
 </c:if>
 
-
+<%--@elvariable id="SettingsInfoMenu" type="java.lang.String"--%>
+<%--@elvariable id="SettingsInfoInterestMenu" type="java.lang.String"--%>
+<%--@elvariable id="SettingsInfoTripMenu" type="java.lang.String"--%>
+<%--@elvariable id="SettingsInfoDreamMenu" type="java.lang.String"--%>
+<%--@elvariable id="SettingsSafetyMenu" type="java.lang.String"--%>
+<%--@elvariable id="SettingsPrivateMenu" type="java.lang.String"--%>
 <c:if test="${mainPage == 'settings'}">
     <ul class="sidebar-nav">
         <li>
@@ -308,13 +312,16 @@
     </ul>
 </c:if>
 
-
-
+<%--@elvariable id="mainPage" type="java.lang.String"--%>
+<%--@elvariable id="disputeMenu" type="java.lang.String"--%>
+<%--@elvariable id="giftsMenu" type="java.lang.String"--%>
+<%--@elvariable id="creatorMenu" type="java.lang.String"--%>
+<%--@elvariable id="balanceMenu" type="java.lang.String"--%>
 <c:if test="${mainPage == 'admin'}">
     <ul class="sidebar-nav">
         <li ${creatorMenu}>
             <a href="<c:url value="/admin/creator"/>">
-                <span class="glyphicon glyphicon-stats"></span>
+                <span class="fa fa-stats"></span>
                 Статистика
             </a>
         </li>

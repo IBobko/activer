@@ -66,7 +66,7 @@
 <a href="<c:url value="/photos"/>" class="std-button btn btn-default"><span
         class="glyphicon glyphicon-arrow-left"></span>&nbsp;Назад</a>
 
-<h3 class="title">Добавление фотографии</h3>
+<h3 class="title">Добавление фотографии11111111111111</h3>
 
 <table>
     <tr>

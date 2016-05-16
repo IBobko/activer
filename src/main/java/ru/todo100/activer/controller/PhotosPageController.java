@@ -2,6 +2,7 @@ package ru.todo100.activer.controller;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -9,6 +10,7 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,13 +25,19 @@ import ru.todo100.activer.form.PhotoAlbumForm;
 import ru.todo100.activer.form.PhotoForm;
 import ru.todo100.activer.model.PhotoAlbumItem;
 import ru.todo100.activer.model.PhotoItem;
+import ru.todo100.activer.util.ResizeImage;
 
 import javax.servlet.http.HttpServletRequest;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
@@ -124,13 +132,25 @@ public class PhotosPageController {
         return "photos/album";
     }
 
+    File generateMiddlePath(final File original) {
+        String newName = RandomStringUtils.randomAlphanumeric(6);
+        final File newFile = new File(newName);
+        ResizeImage.crop(original,newFile,"jpg",300,200);
+        return newFile;
+    }
+
     @RequestMapping(value = "/upload",method = RequestMethod.POST)
+    @ResponseBody
     public String upload(@RequestParam(value = "file", required = false) MultipartFile photo,@RequestParam(value = "album", required = false)Integer album) throws IOException {
         final HttpClient httpclient = HttpClientBuilder.create().build();
         final MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         final File file = new File(photo.getName());
         FileUtils.writeByteArrayToFile(file, photo.getBytes());
-        final HttpPost httppost = new HttpPost("http://todo100.ru:18080/static/upload");
+
+
+
+
+        final HttpPost httppost = new HttpPost("http://192.168.1.65:18080/static/upload");
         builder.addPart("image", new FileBody(file, ContentType.create(photo.getContentType())));
         httppost.setEntity(builder.build());
         final HttpResponse response = httpclient.execute(httppost);
@@ -139,9 +159,23 @@ public class PhotosPageController {
         final String theString = writer.toString();
 
 
+
+
+        File middleFile = generateMiddlePath(file);
+        final MultipartEntityBuilder builder2 = MultipartEntityBuilder.create();
+        builder2.addPart("image", new FileBody(middleFile, ContentType.create(photo.getContentType())));
+        final HttpPost httppost2 = new HttpPost("http://192.168.1.65:18080/static/upload");
+        httppost2.setEntity(builder2.build());
+        final HttpResponse response2 = httpclient.execute(httppost2);
+        final StringWriter writer2 = new StringWriter();
+        IOUtils.copy(response2.getEntity().getContent(), writer2, "UTF-8");
+        final String theString2 = writer2.toString();
+
+
+
         PhotoItem photo1 = new PhotoItem();
         photo1.setPath(theString);
-        photo1.setMiddlePath(theString);
+        photo1.setMiddlePath(theString2);
         photo1.setSmallPath(theString);
 
 
@@ -150,8 +184,46 @@ public class PhotosPageController {
 
         photosDao.save(photo1);
 
-        return "redirect:/photos/album" + album;
+        JSONObject result = new JSONObject();
+        result.put("originalPath",theString);
+        result.put("middlePath",theString2);
+        result.put("id",photo1.getId());
+
+        return result.toString();
     }
+
+    private HashMap t() {
+        HashMap<String,Rectangle> sizes = new HashMap<>();
+        Rectangle rectangle = new Rectangle(300,200);
+        sizes.put("MiddlePath",rectangle);
+        return sizes;
+    }
+
+    private void y(PhotoItem photo1) {
+        HashMap<String,Rectangle> sizes = t();
+
+
+
+        for (Map.Entry<String,Rectangle> s: sizes.entrySet()) {
+            String filename = "";
+            try {
+
+                Method method = photo1.getClass().getMethod("set" + s.getKey());
+                method.invoke(photo1,filename);
+
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            
+        }
+    }
+
+
+
 
     @RequestMapping(value = "/add",method = RequestMethod.GET)
     public String add( final HttpServletRequest request,Model model) {

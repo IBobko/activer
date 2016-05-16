@@ -44,4 +44,36 @@ public class ResizeImage {
 		g.dispose();
     	return resizedImage;
     }
+
+
+
+	public static void crop(final File original, final File dest, String extention, int width, int height) {
+		Rectangle rect = new Rectangle(width,height);
+		try{
+			if (extention.equals("png")) {
+				BufferedImage originalImage = ImageIO.read(original);
+				BufferedImage resizeImagePng = cropImage(originalImage, rect);
+				ImageIO.write(resizeImagePng, "png", dest);
+			}
+			if (extention.equals("jpg")) {
+				BufferedImage originalImage = ImageIO.read(original);
+				BufferedImage resizeImagePng = cropImage(originalImage, rect);
+
+				ImageIO.write(resizeImagePng, "jpg", dest);
+			}
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+
+
+	private static BufferedImage cropImage(final BufferedImage src, final Rectangle rect) {
+
+		// Картинка, больше
+		int x= (src.getWidth()  - rect.width) / 2;
+		int y = (src.getHeight() - rect.height) / 2;
+
+
+		return src.getSubimage(x, y, rect.width, rect.height);
+	}
 }
