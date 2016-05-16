@@ -59,7 +59,7 @@ public class PhotosPageController {
     public String index(final Model model) {
         model.addAttribute("pageType","photos");
         Integer accountId = accountService.getCurrentAccount().getId();
-        List<PhotoAlbumItem> albums = photoAlbumDao.getAlbumsByAccount(accountId);
+        final List<PhotoAlbumItem> albums = photoAlbumDao.getAlbumsByAccount(accountId);
         model.addAttribute("albums", albums);
         return "photos/index";
     }
@@ -125,9 +125,8 @@ public class PhotosPageController {
     @RequestMapping(value = "/album{id}", method = RequestMethod.GET)
     public String album(@PathVariable final Integer id, Model model, final HttpServletRequest request) {
         final Integer accountId = accountService.getCurrentProfileData(request.getSession()).getId();
-        final List<PhotoItem> photos = photosDao.getByAccountAndAlbum(accountId, id);
         final PhotoAlbumItem album = photoAlbumDao.getAlbum(accountId, id);
-        model.addAttribute("photos",photos);
+        model.addAttribute("photos",album.getPhotos());
         model.addAttribute("album", album);
         return "photos/album";
     }

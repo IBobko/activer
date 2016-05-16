@@ -5,8 +5,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import ru.todo100.activer.data.Qualifier;
 import ru.todo100.activer.model.DateChanges;
 import ru.todo100.activer.model.Item;
+import ru.todo100.activer.qualifier.AccountQualifier;
 
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -75,7 +77,7 @@ abstract public class AbstractDao<T>
 		}
 	}
 
-	public List<T> getByQualifier() {
+	public List<T> getByQualifier(Qualifier qualifier) {
 		return null;
 	}
 

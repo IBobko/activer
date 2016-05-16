@@ -2,6 +2,7 @@ package ru.todo100.activer.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
@@ -28,6 +29,18 @@ public class PhotoAlbumItem extends Item {
     @NotNull
     @Column(name = "account_id", nullable = false)
     private Integer accountId;
+
+    @OneToMany
+    @JoinColumn(name = "album_id")
+    private Set<PhotoItem> photos;
+
+    public Set<PhotoItem> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(Set<PhotoItem> photos) {
+        this.photos = photos;
+    }
 
     public String getDescription() {
         return description;

@@ -114,7 +114,7 @@ public class ProfilePageController
 
 		final String photo = photoService1.getPhoto(profile.getId());
 		model.addAttribute("profile", profile);
-		model.addAttribute("friends", friendsService.getFriendData(request.getSession()));
+		model.addAttribute("friends", friendsService.getFriendData1(request.getSession()));
 		model.addAttribute("photos", photos);
 		model.addAttribute("photo", photo);
 		populatePersonOfPage(model, profile);

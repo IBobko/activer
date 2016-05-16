@@ -11,14 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import ru.todo100.activer.data.ProfileData;
-import ru.todo100.activer.data.Qualifier;
+import ru.todo100.activer.data.*;
+import ru.todo100.activer.form.FriendSearchForm;
 import ru.todo100.activer.form.RegisterForm;
-import ru.todo100.activer.model.AccountItem;
-import ru.todo100.activer.model.DreamItem;
-import ru.todo100.activer.model.PromoCodeItem;
-import ru.todo100.activer.model.TripItem;
+import ru.todo100.activer.model.*;
 import ru.todo100.activer.populators.ProfilePopulator;
+import ru.todo100.activer.qualifier.AccountQualifier;
+import ru.todo100.activer.service.PhotoService;
 import ru.todo100.activer.service.PromoService;
 import ru.todo100.activer.service.ReferService;
 import ru.todo100.activer.util.InputError;
@@ -27,9 +26,9 @@ import ru.todo100.activer.util.MailService;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Objects;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 @SuppressWarnings(value = {"unused", "SqlResolve", "unchecked"})
@@ -234,7 +233,7 @@ public class AccountDao extends AbstractDao
 		}
 	}
 
-	public List<AccountItem> getByQualifier(Qualifier qualifier) {
+	public List<FriendData> getByQualifier(AccountQualifier qualifier) {
 		Criteria criteria = getCriteria();
 		if (qualifier.getStart() != null) {
 			criteria.setFirstResult(qualifier.getStart());
@@ -243,8 +242,67 @@ public class AccountDao extends AbstractDao
 		if (qualifier.getCount() != null) {
 			criteria.setMaxResults(qualifier.getCount());
 		}
-		return criteria.list();
+
+		final FriendSearchForm friendSearchForm = qualifier.getFriendSearchForm();
+		if (StringUtils.isNotEmpty(friendSearchForm.getEmail())){
+			criteria.add(Restrictions.eq("email",friendSearchForm.getEmail()));
+		}
+
+		if (friendSearchForm.getSex()!=null){
+			criteria.add(Restrictions.eq("sex",friendSearchForm.getSex()));
+		}
+
+		if (StringUtils.isNotEmpty(friendSearchForm.getFirstName())){
+			criteria.add(Restrictions.eq("firstName",friendSearchForm.getFirstName()));
+		}
+
+		if (StringUtils.isNotEmpty(friendSearchForm.getLastName())){
+			criteria.add(Restrictions.eq("lastName",friendSearchForm.getLastName()));
+		}
+
+		if (StringUtils.isNotEmpty(friendSearchForm.getBirthDay())){
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/mm/yyyy");
+			try {
+				Date date = simpleDateFormat.parse(friendSearchForm.getBirthDay());
+				Calendar calendar = new GregorianCalendar();
+				calendar.setTime(date);
+				criteria.add(Restrictions.eq("birthdate",calendar));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+
+		}
+		final List<AccountItem> result = criteria.list();
+
+		final List<FriendData> datas = new ArrayList<>();
+		for (AccountItem item: result) {
+			FriendData friendData = new FriendData();
+			friendData.setFirstName(item.getFirstName());
+			friendData.setLastName(item.getLastName());
+			friendData.setId(item.getId());
+
+			JobData jobData = new JobData();
+
+			if (item.getJobItems() != null && !item.getJobItems().isEmpty()) {
+				JobItem jobItem = (JobItem)item.getJobItems().toArray()[item.getJobItems().size()-1];
+				jobData.setCity(jobItem.getCity());
+				jobData.setPost(jobItem.getPost());
+				jobData.setWork(jobItem.getWorkplace());
+			}
+			friendData.setJob(jobData);
+
+			PhotoAvatarSizeData sized = photoService1.getSizedPhoto(item.getId());
+			if (sized != null) {
+				friendData.setPhoto60x60(sized.getPhotoMini());
+			}
+			datas.add(friendData);
+		}
+
+		return datas;
 	}
+
+	@Autowired
+	PhotoService photoService1;
 
 	public Long getCountByQualifier(Qualifier qualifier) {
 		final Criteria criteria = getCriteria();

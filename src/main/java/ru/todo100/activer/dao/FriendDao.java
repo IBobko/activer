@@ -3,12 +3,10 @@ package ru.todo100.activer.dao;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import ru.todo100.activer.data.FriendData;
-import ru.todo100.activer.data.FriendsData;
-import ru.todo100.activer.data.FriendsData1;
-import ru.todo100.activer.data.PhotoAvatarSizeData;
+import ru.todo100.activer.data.*;
 import ru.todo100.activer.model.AccountFriendRelationItem;
 import ru.todo100.activer.model.AccountItem;
+import ru.todo100.activer.model.JobItem;
 import ru.todo100.activer.service.PhotoService;
 
 import java.util.ArrayList;
@@ -81,6 +79,17 @@ public class FriendDao extends AbstractDao  {
         friendData.setId(accountItem.getId());
         friendData.setFirstName(accountItem.getFirstName());
         friendData.setLastName(accountItem.getLastName());
+
+        JobData jobData = new JobData();
+
+        if (accountItem.getJobItems() != null && !accountItem.getJobItems().isEmpty()) {
+            JobItem jobItem = (JobItem)accountItem.getJobItems().toArray()[accountItem.getJobItems().size()-1];
+            jobData.setCity(jobItem.getCity());
+            jobData.setPost(jobItem.getPost());
+            jobData.setWork(jobItem.getWorkplace());
+        }
+        friendData.setJob(jobData);
+
         PhotoAvatarSizeData sized = photoService1.getSizedPhoto(accountItem.getId());
         if (sized != null) {
             friendData.setPhoto60x60(sized.getPhotoMini());

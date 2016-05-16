@@ -8,6 +8,15 @@ public class FriendData {
     public String firstName;
     public String lastName;
     public String photo60x60;
+    public JobData job;
+
+    public JobData getJob() {
+        return job;
+    }
+
+    public void setJob(JobData job) {
+        this.job = job;
+    }
 
     public String getPhoto60x60() {
         return photo60x60;

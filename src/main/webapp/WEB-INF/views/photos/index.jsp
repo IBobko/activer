@@ -58,9 +58,9 @@
             </div>
 
             <div style="overflow: hidden;margin:10px;text-align: left">
-                <div style="float:right"><span style="font-size:22px;color: #92a0c3" class="fa fa-camera"></span>&nbsp;0
-                </div>
-                    ${album.name}</div>
+                <div style="float:right"><span style="font-size:22px;color: #92a0c3" class="fa fa-camera"></span>&nbsp;${album.photos.size()}</div>
+                    ${album.name}
+            </div>
         </li>
     </c:forEach>
 </ul>
