@@ -56,6 +56,16 @@ public class PhotosPageController {
         return "photos/index";
     }
 
+    @RequestMapping("/slider{id}")
+    public String slider(final Model model, HttpServletRequest request, @PathVariable final Integer id) {
+        final Integer accountId = accountService.getCurrentProfileData(request.getSession()).getId();
+        final List<PhotoItem> photos = photosDao.getByAccountAndAlbum(accountId, id);
+        final PhotoAlbumItem album = photoAlbumDao.getAlbum(accountId, id);
+        model.addAttribute("photos", photos);
+        model.addAttribute("album", album);
+        return "photos/slider";
+    }
+
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String edit(final Model model, final HttpServletRequest request) {
         model.addAttribute("pageType","photos");
@@ -106,11 +116,12 @@ public class PhotosPageController {
     }
 
     @RequestMapping(value = "/album{id}", method = RequestMethod.GET)
-    public String album(@PathVariable Integer id,Model model) {
-        final Integer accountId = accountService.getCurrentAccount().getId();
-        List<PhotoItem> photos = photosDao.getByAccountAndAlbum(accountId, id);
+    public String album(@PathVariable final Integer id, Model model, final HttpServletRequest request) {
+        final Integer accountId = accountService.getCurrentProfileData(request.getSession()).getId();
+        final List<PhotoItem> photos = photosDao.getByAccountAndAlbum(accountId, id);
+        final PhotoAlbumItem album = photoAlbumDao.getAlbum(accountId, id);
         model.addAttribute("photos",photos);
-        model.addAttribute("album",id);
+        model.addAttribute("album", album);
         return "photos/album";
     }
 

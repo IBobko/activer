@@ -20,4 +20,16 @@ public class PhotoAlbumDao extends AbstractDao {
     public List<PhotoAlbumItem> getAlbumsByAccount(Integer id) {
         return getCriteria().add(Restrictions.eq("accountId", id)).list();
     }
+
+    /**
+     * It retrieves album by its id and account id
+     *
+     * @param accountId Id of account
+     * @param albumId   id of album
+     * @return Model of Photo Album item
+     */
+    public PhotoAlbumItem getAlbum(final Integer accountId, final Integer albumId) {
+        return (PhotoAlbumItem) getCriteria().add(Restrictions.eq("accountId", accountId)).
+                add(Restrictions.eq("id", albumId)).uniqueResult();
+    }
 }

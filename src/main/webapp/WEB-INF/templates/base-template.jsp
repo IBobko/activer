@@ -43,7 +43,7 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <script type="text/javascript" src="<c:url value="/resources/js/jquery-1.10.2.min.js"/>"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
 
     <script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/sockjs-0.3.4.js"/>"></script>
