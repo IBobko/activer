@@ -2,58 +2,58 @@
     "Direction"
 :
     "ltr",
-        "Close";
+        "Close"
 :
     "Close",
-        "Help";
+        "Help"
 :
     "Help",
-        "FirstImage";
+        "FirstImage"
 :
     "To the first image",
-        "LastImage";
+        "LastImage"
 :
     "To the last image",
-        "StartStopSlideShow";
+        "StartStopSlideShow"
 :
     "Play/Pause slideshow",
-        "Pause";
+        "Pause"
 :
     "Pause",
-        "Play";
+        "Play"
 :
     "Play",
-        "Prev";
+        "Prev"
 :
     "Prev",
-        "PinInfo";
+        "PinInfo"
 :
     "Pin info",
-        "UnpinInfo";
+        "UnpinInfo"
 :
     "Unpin info",
-        "Next";
+        "Next"
 :
     "Next",
-        "PrevImage";
+        "PrevImage"
 :
     "Previous image",
-        "NextImage";
+        "NextImage"
 :
     "Next image",
-        "Loading";
+        "Loading"
 :
     "Loading",
-        "CloseHelp";
+        "CloseHelp"
 :
     "Close help",
-        "HelpText";
+        "HelpText"
 :
     "The gallery can be navigated using the keyboard:<br/><br/>LEFT/RIGHT ARROWS: Prev/Next<br/>SPACEBAR: Next<br/>ENTER: Start/Stop slideshow<br/>ESCAPE: Close gallery<br/>HOME/END: First/Last image<br/>H - This help panel",
-        "Slideshow";
+        "Slideshow"
 :
     "Play",
-        "OriginalContext";
+        "OriginalContext"
 :
     "View in original context"
-};
+}

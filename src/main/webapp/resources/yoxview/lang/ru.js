@@ -1,59 +1,59 @@
 ﻿{
-    "Direction";
+    "Direction"
 :
     "ltr",
-        "Close";
+        "Close"
 :
     "Закрыть",
-        "Help";
+        "Help"
 :
     "Помощь",
-        "FirstImage";
+        "FirstImage"
 :
     "К первому изображению",
-        "LastImage";
+        "LastImage"
 :
     "К последнему изображению",
-        "StartStopSlideShow";
+        "StartStopSlideShow"
 :
     "Начать/Приостановить слайдшоу",
-        "Pause";
+        "Pause"
 :
     "Приостановить",
-        "Play";
+        "Play"
 :
     "Начать",
-        "Prev";
+        "Prev"
 :
     "Пред.",
-        "PinInfo";
+        "PinInfo"
 :
     "Pin info",
-        "UnpinInfo";
+        "UnpinInfo"
 :
     "Unpin info",
-        "Next";
+        "Next"
 :
     "Следующая",
-        "PrevImage";
+        "PrevImage"
 :
     "Предыдущее изображение",
-        "NextImage";
+        "NextImage"
 :
     "Следующее изображение",
-        "Loading";
+        "Loading"
 :
     "Загрузка",
-        "CloseHelp";
+        "CloseHelp"
 :
     "Закрыть помощь",
-        "HelpText";
+        "HelpText"
 :
     "Управлять галерей можно с помощью клавиатуры:<br/><br/>ЛЕВАЯ/ПРАВАЯ СТРЕЛОЧКИ: Пред./Следующее<br/>ПРОБЕЛ: Следующее<br/>ENTER: Старт/Стоп слайдшоу<br/>ESCAPE: Закрыть галерею<br/>HOME/END: Первое/Последнее изображение<br/>H - Открыть панель помощи",
-        "Slideshow";
+        "Slideshow"
 :
     "Начать",
-        "OriginalContext";
+        "OriginalContext"
 :
     "View in original context"
 }

@@ -1,4 +1,572 @@
-﻿/*!
+﻿if (!jQuery.jsonp) {
+    // jquery.jsonp 1.0.4 (c) 2009 Julian Aubourg | MIT License
+    // http://code.google.com/p/jquery-jsonp/
+    (function ($) {
+        var x = function (o) {
+            return o !== undefined && o !== null;
+        }, H = $("head"), Z = {}, K = {callback: "C", url: location.href};
+        $.jsonp = function (d) {
+            d = $.extend({}, K, d);
+            if (x(d.beforeSend)) {
+                var t = 0;
+                d.abort = function () {
+                    t = 1;
+                };
+                if (d.beforeSend(d, d) === false || t)return d;
+            }
+            var _ = "", y = "success", n = "error", u = x(d.url) ? d.url : _, p = x(d.data) ? d.data : _, s = (typeof p) == "string", k = function (f) {
+                setTimeout(f, 1);
+            }, S, P, i, j, U;
+            p = s ? p : $.param(p);
+            x(d.callbackParameter) && (p += (p == _ ? _ : "&") + escape(d.callbackParameter) + "=?");
+            !d.cache && !d.pageCache && (p += [(p == _ ? _ : "&"), "_xx", (new Date()).getTime(), "=", 1].join(_));
+            S = u.split("?");
+            if (p != _) {
+                P = p.split("?");
+                j = S.length - 1;
+                j && (S[j] += "&" + P.shift());
+                S = S.concat(P);
+            }
+            i = S.length - 2;
+            i && (S[i] += d.callback + S.pop());
+            U = S.join("?");
+            if (d.pageCache && x(Z[U])) {
+                k(function () {
+                    if (x(Z[U].e)) {
+                        x(d.error) && d.error(d, n);
+                        x(d.complete) && d.complete(d, n);
+                    } else {
+                        var v = Z[U].s;
+                        x(d.dataFilter) && (v = d.dataFilter(v));
+                        x(d.success) && d.success(v, y);
+                        x(d.complete) && d.complete(d, y);
+                    }
+                });
+                return d;
+            }
+            var f = $("<iframe />");
+            H.append(f);
+            var F = f[0], W = F.contentWindow || F.contentDocument, D = W.document;
+            if (!x(D)) {
+                D = W;
+                W = D.getParentNode();
+            }
+            var w, e = function (_, m) {
+                d.pageCache && !x(m) && (Z[U] = {e: 1});
+                w();
+                m = x(m) ? m : n;
+                x(d.error) && d.error(d, m);
+                x(d.complete) && d.complete(d, m);
+            }, t = 0, C = d.callback, E = C == "E" ? "X" : "E";
+            D.open();
+            W[C] = function (v) {
+                t = 1;
+                d.pageCache && (Z[U] = {s: v});
+                k(function () {
+                    w();
+                    x(d.dataFilter) && (v = d.dataFilter(v));
+                    x(d.success) && d.success(v, y);
+                    x(d.complete) && d.complete(d, y);
+                });
+            };
+            W[E] = function (s) {
+                (!s || s == "complete") && !t++ && k(e);
+            };
+            w = function () {
+                W[E] = undefined;
+                W[C] = undefined;
+                try {
+                    delete W[E];
+                } catch (_) {
+                }
+                try {
+                    delete W[C];
+                } catch (_) {
+                }
+                D.open()
+                D.write(_);
+                D.close();
+                f.remove();
+            }
+            k(function () {
+                D.write(['<html><head><script src="', U, '" onload="', E, '()" onreadystatechange="', E, '(this.readyState)"></script></head><body onload="', E, '()"></body></html>'].join(_));
+                D.close();
+            });
+            d.timeout > 0 && setTimeout(function () {
+                !t && e(_, "timeout");
+            }, d.timeout);
+            d.abort = w;
+            return d;
+        }
+        $.jsonp.setup = function (o) {
+            $.extend(K, o);
+        };
+    })(jQuery);
+}
+
+if (!jQuery().flash) {
+    // jQuery SWFObject v1.1.1 MIT/GPL @jon_neal
+    // http://jquery.thewikies.com/swfobject
+    (function (f, h, i) {
+        function k(a, c) {
+            var b = (a[0] || 0) - (c[0] || 0);
+            return b > 0 || !b && a.length > 0 && k(a.slice(1), c.slice(1))
+        }
+
+        function l(a) {
+            if (typeof a != g)return a;
+            var c = [], b = "";
+            for (var d in a) {
+                b = typeof a[d] == g ? l(a[d]) : [d, m ? encodeURI(a[d]) : a[d]].join("=");
+                c.push(b)
+            }
+            return c.join("&")
+        }
+
+        function n(a) {
+            var c = [];
+            for (var b in a)a[b] && c.push([b, '="', a[b], '"'].join(""));
+            return c.join(" ")
+        }
+
+        function o(a) {
+            var c = [];
+            for (var b in a)c.push(['<param name="', b, '" value="', l(a[b]), '" />'].join(""));
+            return c.join("")
+        }
+
+        var g = "object", m = true;
+        try {
+            var j = i.description || function () {
+                    return (new i("ShockwaveFlash.ShockwaveFlash")).GetVariable("$version")
+                }()
+        } catch (p) {
+            j = "Unavailable"
+        }
+        var e = j.match(/\d+/g) || [0];
+        f[h] = {
+            available: e[0] > 0,
+            activeX: i && !i.name,
+            version: {
+                original: j,
+                array: e,
+                string: e.join("."),
+                major: parseInt(e[0], 10) || 0,
+                minor: parseInt(e[1], 10) || 0,
+                release: parseInt(e[2], 10) || 0
+            },
+            hasVersion: function (a) {
+                a = /string|number/.test(typeof a) ? a.toString().split(".") : /object/.test(typeof a) ? [a.major, a.minor] : a || [0, 0];
+                return k(e, a)
+            },
+            encodeParams: true,
+            expressInstall: "expressInstall.swf",
+            expressInstallIsActive: false,
+            create: function (a) {
+                if (!a.swf || this.expressInstallIsActive || !this.available && !a.hasVersionFail)return false;
+                if (!this.hasVersion(a.hasVersion || 1)) {
+                    this.expressInstallIsActive = true;
+                    if (typeof a.hasVersionFail == "function")if (!a.hasVersionFail.apply(a))return false;
+                    a = {
+                        swf: a.expressInstall || this.expressInstall,
+                        height: 137,
+                        width: 214,
+                        flashvars: {
+                            MMredirectURL: location.href,
+                            MMplayerType: this.activeX ? "ActiveX" : "PlugIn",
+                            MMdoctitle: document.title.slice(0, 47) + " - Flash Player Installation"
+                        }
+                    }
+                }
+                attrs = {
+                    data: a.swf,
+                    type: "application/x-shockwave-flash",
+                    id: a.id || "flash_" + Math.floor(Math.random() * 999999999),
+                    width: a.width || 320,
+                    height: a.height || 180,
+                    style: a.style || ""
+                };
+                m = typeof a.useEncode !== "undefined" ? a.useEncode : this.encodeParams;
+                a.movie = a.swf;
+                a.wmode = a.wmode || "opaque";
+                delete a.fallback;
+                delete a.hasVersion;
+                delete a.hasVersionFail;
+                delete a.height;
+                delete a.id;
+                delete a.swf;
+                delete a.useEncode;
+                delete a.width;
+                var c = document.createElement("div");
+                c.innerHTML = ["<object ", n(attrs), ">", o(a), "</object>"].join("");
+                return c.firstChild
+            }
+        };
+        f.fn[h] = function (a) {
+            var c = this.find(g).andSelf().filter(g);
+            /string|object/.test(typeof a) && this.each(function () {
+                var b = f(this), d;
+                a = typeof a == g ? a : {swf: a};
+                a.fallback = this;
+                if (d = f[h].create(a)) {
+                    b.children().remove();
+                    b.html(d)
+                }
+            });
+            typeof a == "function" && c.each(function () {
+                var b = this;
+                b.jsInteractionTimeoutMs = b.jsInteractionTimeoutMs || 0;
+                if (b.jsInteractionTimeoutMs < 660)b.clientWidth || b.clientHeight ? a.call(b) : setTimeout(function () {
+                    f(b)[h](a)
+                }, b.jsInteractionTimeoutMs + 66)
+            });
+            return c
+        }
+    })(jQuery, "flash", navigator.plugins["Shockwave Flash"] || window.ActiveXObject);
+}
+
+if (typeof Yox == "undefined")
+    Yox = {
+        addStylesheet: function (a, b) {
+            var d = a.createElement("link");
+            d.setAttribute("rel", "Stylesheet");
+            d.setAttribute("type", "text/css");
+            d.setAttribute("href", b);
+            a.getElementsByTagName("head")[0].appendChild(d)
+        },
+        compare: function (a, b) {
+            function d(g) {
+                var h = 0,
+                    i;
+                for (i in g) i != null && h++;
+                return h
+            }
+
+            if (typeof a != typeof b) return false;
+            else if (typeof a == "function") return a == b;
+            if (d(a) != d(b)) return false;
+            for (var e in a) {
+                var c = a[e],
+                    f = b[e];
+                if (typeof c != typeof f) return false;
+                if (c && c.length && c[0] !== undefined && c[0].tagName) {
+                    if (!f ||
+                        f.length != c.length || !f[0].tagName || f[0].tagName != c[0].tagName) return false
+                } else if (typeof c == "function" || typeof c == "object") {
+                    c = Yox.compare(c, f);
+                    if (!c) return c
+                } else if (c != f) return false
+            }
+            return true
+        },
+        hasProperties: function (a) {
+            var b = false;
+            for (pName in a) {
+                b = true;
+                break
+            }
+            return b
+        },
+        dataSources: [],
+        fitImageSize: function (a, b, d, e) {
+            var c = {
+                width: a.width,
+                height: a.height
+            };
+            if (a.width > b.width || d && a.width < b.width) {
+                c.height = Math.round(b.width / a.width * a.height);
+                c.width = b.width
+            }
+            if (!e && c.height > b.height) {
+                c.width = Math.round(b.height /
+                    c.height * c.width);
+                c.height = b.height
+            } else if (e && c.height < b.height && (b.height <= a.height || d)) {
+                c.height = b.height;
+                c.width = Math.round(b.height / a.height * a.width)
+            }
+            return c
+        },
+        flashVideoPlayers: {
+            jwplayer: function (a, b, d, e, c) {
+                a = {
+                    swf: a || "/jwplayer/player.swf",
+                    flashVars: {
+                        file: b,
+                        image: d,
+                        stretching: "fill",
+                        title: e,
+                        backcolor: "000000",
+                        frontcolor: "FFFFFF"
+                    }
+                };
+                $.extend(a.flashVars, c);
+                return a
+            }
+        },
+        getDataSourceName: function (a) {
+            for (dataSourceIndex in Yox.Regex.data)
+                if (a.match(Yox.Regex.data[dataSourceIndex])) return dataSourceIndex;
+            return null
+        },
+        getPath: function (a) {
+            for (var b = document.getElementsByTagName("script"), d = 0; d < b.length; d++) {
+                var e = b[d].src.match(a);
+                if (e) return e[1]
+            }
+            return null
+        },
+        getTopWindow: function () {
+            var a = window;
+            if (window.top) a = window.top;
+            else
+                for (; a.parent;) a = a.parent;
+            return a
+        },
+        getUrlData: function (a) {
+            a = a.match(Yox.Regex.url);
+            if (!a) return null;
+            var b = {
+                path: a[1],
+                anchor: a[3]
+            };
+            if (a[2]) b.queryFields = this.queryToJson(a[2]);
+            return b
+        },
+        hex2rgba: function (a, b) {
+            a = parseInt(a.replace("#", "0x"), 16);
+            return "rgba(" + ((a & 16711680) >> 16) +
+                ", " + ((a & 65280) >> 8) + ", " + (a & 255) + ", " + (typeof b != "undefined" ? b : "1") + ")"
+        },
+        queryToJson: function (a) {
+            if (!a) return null;
+            a = a.split("&");
+            for (var b = {}, d = 0; d < a.length; d++) {
+                var e = a[d].split("=");
+                if (e.length == 2) b[e[0]] = e[1]
+            }
+            return b
+        },
+        loadDataSource: function (a, b) {
+            var d;
+            if (a.dataUrl)(d = Yox.getDataSourceName(a.dataUrl)) && $.extend(a, {
+                dataSource: dataSourceIndex
+            });
+
+            if (a.dataSource && !Yox.dataSources[d]) $.ajax({
+                url: a.dataFolder + a.dataSource + ".js",
+                async: false,
+                dataType: "script",
+                success: function (e) {
+                    alert("ssss");
+                    eval(e);
+                    eval("Yox.dataSources['" +
+                        a.dataSource + "'] = new yox_" + a.dataSource + "();");
+                    b(Yox.dataSources[a.dataSource])
+                },
+                error: function (e, c, f) {
+                    console.log(e, c, f)
+                }
+            });
+            else b && b()
+        },
+        Regex: {
+            data: {
+                picasa: /http:\/\/(?:www\.)?picasaweb\.google\..*/i,
+                flickr: /http:\/\/(?:www\.)?flickr.com/i,
+                smugmug: /http:\/\/.*\.smugmug.com/i,
+                youtube: /^http:\/\/(?:www\.)?youtube.com\//
+            },
+            flash: /^(.*\.(swf))(\?[^\?]+)?/i,
+            flashvideo: /^(.*\.(flv|f4v|f4p|f4a|f4b|aac))(\?[^\?]+)?/i,
+            image: /^[^\?#]+\.(?:jpg|jpeg|gif|png)$/i,
+            url: /^([^#\?]*)?(?:\?([^\?#]*))?(?:#([A-Za-z]{1}[A-Za-z\d-_\:\.]+))?$/,
+            video: {
+                youtube: /.*youtube.com\/watch.*(?:v=[^&]+).*/i,
+                vimeo: /vimeo.com\/\d+/i,
+                hulu: /hulu.com\/watch\//i,
+                viddler: /viddler.com\//i,
+                flickr: /.*flickr.com\/.*/i,
+                myspace: /.*vids.myspace.com\/.*/i,
+                qik: /qik.com/i,
+                revision3: /revision3.com/i,
+                dailymotion: /dailymotion.com/i,
+                "5min": /.*5min\.com\/Video/i
+            }
+        },
+        Sprites: function (a, b, d) {
+            this.spritesImage = (new Image).src = b;
+            var e = 0;
+            jQuery.each(a, function (c, f) {
+                f.top = e;
+                e += f.height
+            });
+            this.getSprite = function (c, f, g) {
+                return jQuery("<img/>", {
+                    src: d,
+                    alt: f,
+                    title: g,
+                    css: {
+                        width: a[c].width,
+                        height: a[c].height,
+                        "background-image": "url(" + b + ")",
+                        "background-repeat": "no-repeat",
+                        "background-position": this.getBackgroundPosition(c, f)
+                    }
+                })
+            };
+            this.getBackgroundPosition = function (c, f) {
+                return "-" + jQuery.inArray(f, a[c].sprites) * (a[c].width || 0) + "px -" + a[c].top + "px"
+            }
+        },
+        Support: {
+            rgba: function () {
+                if (!("result" in arguments.callee)) {
+                    var a = document.createElement("div"),
+                        b = false;
+                    try {
+                        a.style.color = "rgba(0, 0, 0, 0.5)";
+                        b = /^rgba/.test(a.style.color)
+                    } catch (d) {
+                    }
+                    arguments.callee.result = b
+                }
+                return arguments.callee.result
+            }
+        },
+        urlDataToPath: function (a) {
+            var b = a.path || "";
+            if (a.queryFields && this.hasProperties(a.queryFields)) {
+                b += "?";
+                for (field in a.queryFields) b += field + "=" + a.queryFields[field] + "&";
+                b = b.substring(0, b.length - 1)
+            }
+            if (a.anchor) b += "#" + a.anchor;
+            return b
+        }
+    };
+// yoxthumbs:
+(function (h) {
+    function n(d, a) {
+        function k(b) {
+            var c = f("<a>", {
+                href: b.link,
+                className: a.thumbnailsClass || "yoxthumbs_thumbnail"
+            }), e = jQuery("<img>", {src: b.thumbnailSrc, alt: b.media.alt, title: b.media.title});
+            b.data && c.data("yoxthumbs", b.data);
+            b.thumbnailDimensions && e.css({width: b.thumbnailDimensions.width, height: b.thumbnailDimensions.height});
+            e.appendTo(c);
+            if (a.setTitles && b.media.title)f(a.titlesElement || "<span>", {
+                html: l.title(b.media.title),
+                className: a.titlesClass
+            }).appendTo(c);
+            if (a.setDescriptions && b.media.description)f(a.descriptionsElement ||
+                "<div>", {html: l.description(b.media.description), className: a.descriptionsClass}).appendTo(c);
+            return c
+        }
+
+        var i = this;
+        d.data("yoxview") && d.data("yoxview");
+        var f = jQuery, m = d[0].tagName == "A", l = {};
+        this.thumbnails = [];
+        (function () {
+            f.each(["title", "description"], function (b, c) {
+                var e = a[c + "MaxLength"];
+                l[c] = function (g) {
+                    return !e || g.length <= e ? g : g.substr(0, e) + (a.addEllipsis !== false ? "&hellip;" : "")
+                }
+            })
+        })();
+        a.images && f.each(a.images, function (b, c) {
+            d.append(k(c))
+        });
+        var o = 0, p = m ? d : d.find("a:has(img)");
+        f.each(p, function (b, c) {
+            var e =
+                f(c), g = true;
+            if (a.enableOnlyMedia)if (!c.href.match(Yox.Regex.image)) {
+                var j = false;
+                for (dataProvider in Yox.Regex.data)if (c.href.match(Yox.Regex.data[dataProvider])) {
+                    j = true;
+                    break
+                }
+                if (!j) {
+                    j = false;
+                    for (videoProvider in Yox.Regex.video)if (c.href.match(Yox.Regex.video[videoProvider])) {
+                        j = true;
+                        break
+                    }
+                    j || (g = false)
+                }
+            }
+            if (g) {
+                e.data("yoxthumbs", f.extend({imageIndex: o++}, e.data("yoxthumbs")));
+                i.thumbnails.push(e)
+            }
+        });
+        if (a.thumbsOpacity) {
+            this.thumbnails.css("opacity", a.thumbsOpacity);
+            d.delegate("a:has(img)", "mouseenter.yoxthumbs",
+                function (b) {
+                    if (i.currentSelectedIndex === undefined || f(b.currentTarget).data("yoxthumbs").imageIndex != i.currentSelectedIndex)f(b.currentTarget).stop().animate({opacity: 1}, a.thumbsOpacityFadeTime)
+                }).delegate("a:has(img)", "mouseout.yoxthumbs", function (b) {
+                if (i.currentSelectedIndex === undefined || f(b.currentTarget).data("yoxthumbs").imageIndex != i.currentSelectedIndex)f(b.currentTarget).stop().animate({opacity: a.thumbsOpacity}, a.thumbsOpacityFadeTime)
+            })
+        }
+        if (a.onClick)m ? d.bind("click.yoxthumbs", function (b) {
+            a.onClick(b);
+            return false
+        }) : d.delegate("a:has(img)", "click.yoxthumbs", function (b) {
+            if (!f(b.currentTarget).data("yoxthumbs"))return true;
+            a.onClick(b);
+            return false
+        });
+        this.select = function (b) {
+            if (this.currentSelectedIndex === undefined || this.currentSelectedIndex != b) {
+                var c = this.thumbnails.eq(b), e = d.data("yoxslide");
+                e && e.show(c);
+                if (this.currentSelectedIndex !== undefined) {
+                    e = this.thumbnails.eq(this.currentSelectedIndex);
+                    e.removeClass(a.selectedThumbnailClassName);
+                    a.thumbsOpacity && e.animate({opacity: a.thumbsOpacity}, a.thumbsOpacityFadeTime)
+                }
+                c.addClass(a.selectedThumbnailClassName);
+                a.thumbsOpacity && c.animate({opacity: 1}, a.thumbsOpacityFadeTime);
+                this.currentSelectedIndex = b
+            }
+        };
+        this.unload = function (b) {
+            f.each(this.thumbnails, function (c, e) {
+                f(e).removeData("yoxthumbs");
+                b && f(e).removeData(b)
+            });
+            d.undelegate("a:has(img)", "click.yoxthumbs");
+            d.find(".yoxthumbs_thumbnail").remove();
+            m && d.unbind(".yoxthumbs")
+        }
+    }
+
+    h.fn.yoxthumbs = function (d) {
+        if (this.length == 0)return this;
+        if (typeof d != "string") {
+            var a = h.extend({
+                target: null,
+                selectedThumbnailClassName: "selected",
+                thumbsOpacityFadeTime: 300,
+                thumbsOpacity: undefined,
+                prevBtn: undefined,
+                nextBtn: undefined,
+                onClick: undefined,
+                images: undefined,
+                enableOnlyMedia: false
+            }, d), k = h(this);
+            k.data("yoxthumbs", new n(k, a))
+        } else if (a = h(this).data("yoxthumbs"))if (h.isFunction(a[d]))a[d].apply(a, Array.prototype.slice.call(arguments, 1)); else return a[d];
+        return this
+    }
+})(jQuery);
+
+/*!
  * jquery.yoxview
  * jQuery image gallery viewer
  * http://yoxigen.com/yoxview
@@ -334,7 +902,6 @@
                 loadSkin(options, function (skin) {
                     if (skin && skin.options)
                         $.extend(options, skin.options);
-
                     Yox.loadDataSource(options, loadContents);
                 });
             });
@@ -417,7 +984,7 @@
                         cacheBufferLastIndex: null,
                         currentCacheImg: 0
                     };
-
+                console.log(viewData);
                 images = viewData.images;
                 imagesCount = images.length;
                 currentViewIndex = viewData.viewIndex;
@@ -1310,6 +1877,18 @@
                     }
                 });
 
+
+                infoPanel.append(
+                    $("<div>", {
+                        id: "",
+                        css: {
+                            "float": "right",
+                            "padding-top": "5px"
+                        },
+                        html: "<a href='#' onclick='deletePhoto()'>Удалить</a>"
+                    })
+                );
+
                 if (options.infoBackOpacity === 0) {
                     infoPanel.css("background", "none");
                     infoPanelContent = infoPanel;
@@ -1517,7 +2096,7 @@
         function setImage(itemIndex) {
             if (!isPlaying)
                 showLoaderIcon();
-
+            window.currentImage = $(".yoxview").find('img').get(itemIndex).getAttribute("photo-id");
             loadAndDisplayMedia($.yoxview.currentImage.media);
         }
 
@@ -1977,6 +2556,7 @@
         }
 
         function loadAndDisplayMedia(media) {
+
             try {
                 if (!media)
                     throw("Error: Media is unavailable.");

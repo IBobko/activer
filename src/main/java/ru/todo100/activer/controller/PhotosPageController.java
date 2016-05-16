@@ -56,15 +56,14 @@ public class PhotosPageController {
         return "photos/index";
     }
 
-    @RequestMapping("/slider{id}")
-    public String slider(final Model model, HttpServletRequest request, @PathVariable final Integer id) {
-        final Integer accountId = accountService.getCurrentProfileData(request.getSession()).getId();
-        final List<PhotoItem> photos = photosDao.getByAccountAndAlbum(accountId, id);
-        final PhotoAlbumItem album = photoAlbumDao.getAlbum(accountId, id);
-        model.addAttribute("photos", photos);
-        model.addAttribute("album", album);
-        return "photos/slider";
+    @RequestMapping("/delete")
+    @ResponseBody
+    public String delete(@RequestParam final Integer photoId, HttpServletRequest request) {
+        /*todo сделать чекалку, на то, что этот пользователь может удалять эту фото*/
+        photosDao.delete(photoId);
+        return photoId.toString();
     }
+
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String edit(final Model model, final HttpServletRequest request) {

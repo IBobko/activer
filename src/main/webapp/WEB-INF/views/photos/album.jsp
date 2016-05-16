@@ -50,8 +50,8 @@
     });
 </script>
 
-
 <script type="text/javascript" src="<c:url value="/resources/yoxview/yoxview-init.js"/>"></script>
+
 
 <a href="<c:url value="/photos"/>" class="std-button btn btn-default" style="float:left"><span
         class="fa fa-arrow-left"></span>&nbsp;Назад</a>
@@ -65,10 +65,25 @@
 <ul id="photos" class="thumbnails yoxview">
     <c:forEach items="${photos}" var="photo">
         <li>
-            <a href="${staticFiles}/${photo.path.trim()}.jpg"><img style="width:200px; height:130px"
+            <a href="${staticFiles}/${photo.path.trim()}.jpg"><img photo-id="${photo.id}"
+                                                                   style="width:200px; height:130px"
                                                                    src="${staticFiles}/${photo.middlePath.trim()}.jpg"
                                                                    alt="${photo.description}"
                                                                    title="${photo.description}"/></a>
         </li>
     </c:forEach>
 </ul>
+
+<script>
+    function deletePhoto() {
+        var data = {
+            photoId: window.currentImage
+        };
+        $.get("<c:url value="/photos/delete"/>", data, function (data) {
+            jQuery.yoxview.next();
+            $('.yoxview').find("[photo-id='" + data + "']").closest("li").remove();
+
+        });
+
+    }
+</script>

@@ -41,6 +41,7 @@ abstract public class AbstractDao<T>
 		return getSessionFactory().getCurrentSession();
 	}
 
+	@Transactional
 	public void delete(Integer id)
 	{
 		final Object object = getSession().load(getItemClass(), id);
