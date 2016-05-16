@@ -1,5 +1,5 @@
 ﻿{
-    "Direction";
+    "Direction"
 :
     "ltr",
         "Close";
@@ -53,7 +53,7 @@
         "Slideshow";
 :
     "Play",
-        "OriginalContext"
+        "OriginalContext";
 :
     "View in original context"
 };

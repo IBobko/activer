@@ -53,7 +53,7 @@
         "Slideshow";
 :
     "Начать",
-        "OriginalContext"
+        "OriginalContext";
 :
     "View in original context"
-};
+}

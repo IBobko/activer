@@ -54,7 +54,7 @@
 <script type="text/javascript" src="<c:url value="/resources/yoxview/yoxview-init.js"/>"></script>
 
 <a href="<c:url value="/photos"/>" class="std-button btn btn-default" style="float:left"><span
-        class="glyphicon glyphicon-arrow-left"></span>&nbsp;Назад</a>
+        class="fa fa-arrow-left"></span>&nbsp;Назад</a>
 
 <a class="std-button btn btn-default" style="float:right" href="<c:url value="/photos/add?album=${album}"/>"><span
         class="glyphicon glyphicon-plus"></span> Добавить фото</a>
