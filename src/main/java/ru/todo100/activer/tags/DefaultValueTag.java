@@ -25,7 +25,7 @@ public class DefaultValueTag extends TagSupport {
                     if (method.getName().startsWith("get") && method.getTypeParameters().length == 0) {
                         final String field = method.getName().substring(3);
                         try {
-                            final Method setter = type.getMethod("set" + field, method.getReturnType());
+                            @SuppressWarnings("unchecked") final Method setter = type.getMethod("set" + field, method.getReturnType());
                             setter.invoke(var, "#" + field.substring(0, 1).toLowerCase() + field.substring(1));
                         } catch (Exception ignored) {
                         }
