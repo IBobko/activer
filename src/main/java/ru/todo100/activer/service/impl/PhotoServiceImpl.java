@@ -47,7 +47,7 @@ public class PhotoServiceImpl implements PhotoService {
     @Override
     @Transactional
     public String getPhoto(Integer accountId) {
-        List<Object> result = sessionFactory.
+        @SuppressWarnings("unchecked") List<Object> result = sessionFactory.
                 getCurrentSession().createSQLQuery("SELECT photo_name FROM account_photo WHERE account_id = " + accountId + " ORDER BY photo_id DESC").list();
         if (result!=null && result.size() > 0) {
             return (String)result.get(0);

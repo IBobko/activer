@@ -50,7 +50,7 @@ public class MessageDao extends AbstractDao
 				"(account_from = " + person2 + " and account_to = " + person1 + ")";
 
 
-		List<Object[]> rows = getSessionFactory().getCurrentSession().createSQLQuery(sql).list();
+		@SuppressWarnings("unchecked") List<Object[]> rows = getSessionFactory().getCurrentSession().createSQLQuery(sql).list();
 		System.out.println("SQL QUERY:" + (System.currentTimeMillis() - start));
 
 		start = System.currentTimeMillis();
