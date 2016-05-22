@@ -12,6 +12,7 @@
         <org.springframework-version>4.2.5.RELEASE</org.springframework-version>
         <org.springframework-version-security>4.0.4.RELEASE</org.springframework-version-security>
         <org.slf4j-version>1.7.20</org.slf4j-version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <pluginRepositories>
         <pluginRepository>
