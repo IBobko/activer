@@ -27,6 +27,28 @@ public class HappenedFlirtItem extends Item {
     @Column(name = "started_date", nullable = false)
     private Calendar startedDate;
 
+    @Column(name = "agree_init")
+    private Integer agreeInit;
+
+    @Column(name = "agree_applied")
+    private Integer agreeApplied;
+
+    public Integer getAgreeApplied() {
+        return agreeApplied;
+    }
+
+    public void setAgreeApplied(Integer agreeApplied) {
+        this.agreeApplied = agreeApplied;
+    }
+
+    public Integer getAgreeInit() {
+        return agreeInit;
+    }
+
+    public void setAgreeInit(Integer agreeInit) {
+        this.agreeInit = agreeInit;
+    }
+
     public Integer getId() {
         return id;
     }

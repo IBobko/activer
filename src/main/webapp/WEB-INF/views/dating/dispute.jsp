@@ -5,7 +5,6 @@
     <div style="overflow: hidden">
         <img src="<c:url value="/resources/img/dispute.jpg"/>" style="float: left;margin: 0 30px"/>
         <h4 style="color: #3F51B5;font-weight:bold;">Знакомство "Спор"</h4>
-        У вас есть 7 минут, чтобы доказать собеседнику, что вы правы на все 100%.
     </div>
 
     <div style="text-align: center">
@@ -29,7 +28,6 @@
                 </td>
             </tr>
         </table>
-        <div style="text-align: center" id="timer">7:00</div>
         <div style="border:#b6beec 3px solid; overflow-y: scroll;height:300px" id="disputeMessageDialog"></div>
     </div>
     <br/>
@@ -51,6 +49,7 @@
         var objDiv = document.getElementById("disputeMessageDialog");
         objDiv.scrollTop = objDiv.scrollHeight;
     };
+
     $('#disputeForm').submit(function () {
         var data = window.ACTIVER.Global.message;
         var input = $('[name="disputeMessage"]');
@@ -64,22 +63,6 @@
 
     var dateObj = new Date();
 
-
-    function timer() {
-        setTimeout(function () {
-            var date = new Date();
-            var diff = new Date(date.getTime() - dateObj.getTime());
-
-            var t = new Date(420000 - diff.getTime());
-
-            var sec = t.getSeconds() < 10 ? "0" + t.getSeconds() : t.getSeconds();
-
-            $('#timer').html(t.getMinutes() + ":" + sec);
-
-            timer();
-        }, 1000);
-    }
-    timer();
 </script>
 <div style="display:none" id="disputeMessageTemplate">
     <div style="overflow: hidden">

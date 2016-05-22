@@ -1,5 +1,6 @@
 package ru.todo100.activer.controller;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
@@ -217,6 +218,7 @@ public class DatingPageController {
         final MessageAccountData from = new MessageAccountData();
         from.setId(account.getId());
         messageData.setFrom(from);
+        messageData.setInterlocutor(happenedDisputeItem.getId());
         template.convertAndSendToUser(account.getUsername(), "/global2", messageData);
         response.getWriter().println(happenedDisputeItem.getId());
     }
@@ -232,16 +234,82 @@ public class DatingPageController {
 
     @ResponseBody
     @RequestMapping("/search/flirt")
-    public void searchFlirt(HttpServletResponse response, HttpServletRequest request) throws IOException {
+    public void searchFlirt(final HttpServletResponse response, final HttpServletRequest request) throws IOException {
         final AccountItem account = getAccountDao().getRandomOnlineAccount(request.getSession());
         final ProfileData profileData = getAccountDao().getCurrentProfileData(request.getSession());
         final HappenedFlirtItem happenedFlirtItem = getHappenedFlirtDao().create(profileData.getId(), account.getId());
         final PacketMessageData messageData = new PacketMessageData();
         messageData.setType(PopupMessageType.FLIRT);
-        final MessageAccountData from = new MessageAccountData();
-        from.setId(account.getId());
-        messageData.setFrom(from);
+        messageData.setInterlocutor(happenedFlirtItem.getId());
         template.convertAndSendToUser(account.getUsername(), "/global2", messageData);
         response.getWriter().println(happenedFlirtItem.getId());
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/flirt/agree")
+    public void agree(@RequestParam Integer interlocutor, @RequestParam String agree, final HttpServletResponse response, final HttpServletRequest request) throws IOException {
+        response.setContentType("application/json");
+        final ProfileData profileData = getAccountDao().getCurrentProfileData(request.getSession());
+        final HappenedFlirtItem happenedFlirtItem = (HappenedFlirtItem)getHappenedFlirtDao().get(interlocutor);
+        Integer agreed = null;
+        switch (agree) {
+            case "yes" : agreed = 1; break;
+            case "no" : agreed = 0; break;
+        }
+
+        JSONObject result = new JSONObject();
+
+
+        if (happenedFlirtItem.getAccountInitId().equals(profileData.getId())) {
+            happenedFlirtItem.setAgreeInit(agreed);
+            if (agreed == 1) {
+                if (happenedFlirtItem.getAgreeApplied() == null) {
+                    result.put("action","wait");
+                } else if (happenedFlirtItem.getAgreeApplied().equals(1)) {
+                    result.put("action","ok");
+                    result.put("account_id",happenedFlirtItem.getAccountAppliedId());
+
+                    final AccountItem accountItem = getAccountDao().get(happenedFlirtItem.getAccountAppliedId());
+                    final PacketMessageData messageData = new PacketMessageData();
+                    messageData.setType(PopupMessageType.FLIRT_AGREE);
+                    messageData.setInterlocutor(happenedFlirtItem.getAccountAppliedId());
+                    template.convertAndSendToUser(accountItem.getUsername(), "/global2", messageData);
+
+                } else if (happenedFlirtItem.getAgreeApplied().equals(0)) {
+                    result.put("action","disagree");
+                }
+            } else {
+                result.put("action","done");
+            }
+
+        }
+        if (happenedFlirtItem.getAccountAppliedId().equals(profileData.getId())) {
+            happenedFlirtItem.setAgreeApplied(agreed);
+            if (agreed == 1) {
+                if (happenedFlirtItem.getAgreeInit() == null) {
+                    result.put("action","wait");
+                } else if (happenedFlirtItem.getAgreeInit().equals(1)) {
+                    result.put("action","ok");
+                    result.put("account_id",happenedFlirtItem.getAccountInitId());
+
+                    final AccountItem accountItem = getAccountDao().get(happenedFlirtItem.getAccountInitId());
+                    final PacketMessageData messageData = new PacketMessageData();
+                    messageData.setType(PopupMessageType.FLIRT_AGREE);
+                    messageData.setInterlocutor(happenedFlirtItem.getAccountAppliedId());
+                    template.convertAndSendToUser(accountItem.getUsername(), "/global2", messageData);
+
+
+                } else if (happenedFlirtItem.getAgreeInit().equals(0)) {
+                    result.put("action","disagree");
+                }
+            } else {
+                result.put("action","done");
+            }
+        }
+        getHappenedFlirtDao().save(happenedFlirtItem);
+
+        response.getWriter().println(result.toString());
+
     }
 }

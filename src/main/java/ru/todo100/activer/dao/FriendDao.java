@@ -97,54 +97,6 @@ public class FriendDao extends AbstractDao  {
         return friendData;
     }
 
-    public FriendsData getFriends(Integer accountId) {
-        @SuppressWarnings("unchecked")
-        final List<AccountFriendRelationItem> outRelations = getCriteria().add(Restrictions.eq("account.id",accountId)).list();
-
-        @SuppressWarnings("unchecked")
-        final List<AccountFriendRelationItem> inRelations = getCriteria().add(Restrictions.eq("friendAccount.id",accountId)).list();
-
-
-        final List<AccountItem> friends = new ArrayList<>();
-        final List<AccountItem> outRequest = new ArrayList<>();
-        final List<AccountItem> inRequest = new ArrayList<>();
-
-        HashSet<AccountFriendRelationItem> deletedIn = new HashSet<>();
-        HashSet<AccountFriendRelationItem> deletedOut = new HashSet<>();
-
-        for (final AccountFriendRelationItem outRelation: outRelations) {
-            boolean find = false;
-
-            for (final AccountFriendRelationItem inRelation: inRelations) {
-                if (outRelation.getFriendAccount().getId().equals(inRelation.getAccount().getId())) {
-                    friends.add(outRelation.getFriendAccount());
-                    find = true;
-                    deletedIn.add(outRelation);
-                    deletedOut.add(inRelation);
-                    break;
-                }
-            }
-        }
-
-        for (AccountFriendRelationItem item: outRelations) {
-            if (!deletedIn.contains(item)) {
-                inRequest.add(item.getFriendAccount());
-            }
-        }
-
-        for (AccountFriendRelationItem item: inRelations) {
-            if (!deletedOut.contains(item)) {
-                outRequest.add(item.getAccount());
-            }
-        }
-
-        final FriendsData friendsData = new FriendsData();
-        friendsData.setFriends(friends);
-        friendsData.setOutRequest(outRequest);
-        friendsData.setInRequest(inRequest);
-        return friendsData;
-    }
-
     public void addRequest(Integer accountId, Integer FriendId) {
         AccountFriendRelationItem item = new AccountFriendRelationItem();
         AccountItem item1 = getSession().load(AccountItem.class,accountId);

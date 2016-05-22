@@ -11,7 +11,6 @@ import org.springframework.web.servlet.HandlerMapping;
 import ru.todo100.activer.dao.AccountDao;
 
 import ru.todo100.activer.data.FriendData;
-import ru.todo100.activer.data.FriendsData;
 import ru.todo100.activer.data.FriendsData1;
 import ru.todo100.activer.form.FriendSearchForm;
 import ru.todo100.activer.model.AccountItem;

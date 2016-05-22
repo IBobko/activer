@@ -34,32 +34,7 @@
     <div style="margin-left:300px;">
         <div id="timer">5:00</div>
         <div style="overflow-y: scroll;border:#b6beec 3px solid;height:400px;" id="flirtMessageDialog">
-            <div style="overflow: hidden">
-                <img src="<c:url value="/resources/img/man.jpg"/>" style="float:left;margin:10px;width:50px;"/>
-                Иван<br/><span
-                    style="font-weight: normal">Привет, хотел тебя сразу спросить как ты относишься к ремарку</span><span
-                    style="float:right">12:10</span>
-            </div>
 
-            <div style="overflow: hidden">
-                <img src="<c:url value="/resources/img/woman.jpg"/>" style="float:left;margin:10px;width:50px;"/>
-                Мария<br/><span style="font-weight: normal">Здравствуй, мне очень нравятся ее романы. Она чудесная женщина.</span><span
-                    style="float:right">12:11</span>
-            </div>
-            <div style="overflow: hidden">
-                <img src="<c:url value="/resources/img/man.jpg"/>" style="float:left;margin:10px;width:50px;"/>
-                Иван<br/><span style="font-weight: normal">Хочешь я раскрою тебе страшную тайну?</span><span
-                    style="float:right">12:11</span>
-            </div>
-            <div style="overflow: hidden">
-                <img src="<c:url value="/resources/img/woman.jpg"/>" style="float:left;margin:10px;width:50px;"/>
-                Мария<br/><span style="font-weight: normal">Что это мужчина? Я знаю.:) Просто проверяла тебя</span><span
-                    style="float:right">12:12</span>
-            </div>
-            <div style="overflow: hidden">
-                <img src="<c:url value="/resources/img/man.jpg"/>" style="float:left;margin:10px;width:50px;"/>
-                Иван<br/><span style="font-weight: normal">Хитро, а ты не такая простая</span><span style="float:right">12:12</span>
-            </div>
         </div>
         <div style="margin-top:20px">
             <form id="flirtForm">
@@ -104,6 +79,10 @@
 
             var sec = t.getSeconds() < 10 ? "0" + t.getSeconds() : t.getSeconds();
 
+            if (t.getSeconds() < 1) {
+                $('#myModal').modal("show");
+            }
+
             $('#timer').html(t.getMinutes() + ":" + sec);
 
             timer();
@@ -117,5 +96,65 @@
         <img src="http://onoffline.ru/static/upload/files/#avatar" style="float:left;margin:10px;width:50px;"/>
         #name<br/><span style="font-weight: normal">#message</span><span
             style="float:right">#time</span>
+    </div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Время вышло </h4>
+            </div>
+            <div class="modal-body">
+                <p>Вы можете найти нового собеседника, либо продолжить обещние в личном чате.&hellip;</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="continueButton">Продолжить</button>
+                <button type="button" class="btn btn-primary" id="newInterlocutorButton">Новый собесебдник</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script type="text/javascript">
+    $("#continueButton").click(function(){
+        var data = {
+            interlocutor: ${paramValues.get("id")[0]},
+            agree: "yes"
+        };
+        $.get("<c:url value="/dating/flirt/agree"/>",data,function(response){
+            if (response.action == "wait") {
+                alert("Ждем");
+            }
+            if (response.action == "ok") {
+                document.location = window.ACTIVER.context_path + "/message?dialog=" + response.account_id;
+            }
+        });
+    });
+
+    $("#newInterlocutorButton").click(function(){
+        var data = {
+            interlocutor: ${paramValues.get("id")[0]},
+            agree: "no"
+        };
+        $.get("<c:url value="/dating/flirt/agree"/>",data,function(response){
+            if (response.action == "done") {
+                $('#pleaseWaitingWindow').modal('show');
+                $.get("<c:url value="/dating/search/flirt"/>", function (data) {
+                    document.location = "<c:url value="/dating/flirt"/>" + "?id=" + data.trim();
+                });
+            }
+        });
+    });
+</script>
+
+<div class="modal fade" id="pleaseWaitingWindow">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="padding: 30px">
+            <img src="<c:url value="/resources/img/progress.gif"/>" style="margin: 0 30px"/>
+            <div style="margin-top:30px;">Подождите, пока сервер подберет вам собеседника.</div>
+        </div>
     </div>
 </div>

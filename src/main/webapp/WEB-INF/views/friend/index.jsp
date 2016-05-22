@@ -95,59 +95,53 @@
             <div class="searchBlock">
                 <c:url var="action" value="/friend/search"/>
             <form:form commandName="friendSearchForm" method="post" action="${action}">
-                <form:input path="searchString" type="text" cssClass="form-control" cssStyle="width:400px;float:left" name="t"/><button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span>&nbsp;Искать</button>
-                <div style="clear: both"/>
-                <a role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" style="font-weight: normal">
-                    Расширенный поиск
-                </a>
-                <div class="collapse" id="collapseExample">
-                    <div class="advancedSearch">
-                        <table id="advancedSearch">
-                            <tr>
-                                <td>E-mail</td>
-                                <td><form:input path="email" cssClass="form-control" /></td>
-                            </tr>
-                            <tr>
-                                <td>Пол</td>
-                                <td><form:input path="sex" cssClass="form-control"/></td>
-                            </tr>
-                            <tr>
-                                <td>Имя</td>
-                                <td><form:input path="firstName" cssClass="form-control"/></td>
-                            </tr>
-                            <tr>
-                                <td>Фамилия</td>
-                                <td><form:input path="lastName" cssClass="form-control"/></td>
-                            </tr>
-                            <tr>
-                                <td>Страна</td>
-                                <td><form:input path="countryCode" cssClass="form-control"/></td>
-                            </tr>
-                            <tr>
-                                <td>Город</td>
-                                <td><form:input path="city" cssClass="form-control"/></td>
-                            </tr>
-                            <tr>
-                                <td>Дата рождения</td>
-                                <td><div style="width:202px" class="input-group date form_date col-md-5" data-date=""
-                                                                         data-date-format="dd/mm/yyyy" data-link-format="yyyy-mm-dd">
-                                    <form:input type="text" path="birthDay" cssClass="form-control"
-                                                cssStyle="background-color: white" readonly="true"/>
-                                    <span class="input-group-addon"><span
-                                            class="glyphicon glyphicon-remove"></span></span>
+                <div class="advancedSearch" style="text-align:center;">
+                    <table id="advancedSearch">
+                        <tr>
+                            <td>E-mail</td>
+                            <td><form:input path="email" cssClass="form-control" /></td>
+                        </tr>
+                        <tr>
+                            <td>Пол</td>
+                            <td><form:input path="sex" cssClass="form-control"/></td>
+                        </tr>
+                        <tr>
+                            <td>Имя</td>
+                            <td><form:input path="firstName" cssClass="form-control"/></td>
+                        </tr>
+                        <tr>
+                            <td>Фамилия</td>
+                            <td><form:input path="lastName" cssClass="form-control"/></td>
+                        </tr>
+                        <tr>
+                            <td>Страна</td>
+                            <td><form:input path="countryCode" cssClass="form-control"/></td>
+                        </tr>
+                        <tr>
+                            <td>Город</td>
+                            <td><form:input path="city" cssClass="form-control"/></td>
+                        </tr>
+                        <tr>
+                            <td>Дата рождения</td>
+                            <td><div style="width:202px" class="input-group date form_date col-md-5" data-date=""
+                                                                     data-date-format="dd/mm/yyyy" data-link-format="yyyy-mm-dd">
+                                <form:input type="text" path="birthDay" cssClass="form-control"
+                                            cssStyle="background-color: white" readonly="true"/>
                                 <span class="input-group-addon"><span
-                                        class="glyphicon glyphicon-calendar"></span></span>
-                                </div>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
+                                        class="glyphicon glyphicon-remove"></span></span>
+                            <span class="input-group-addon"><span
+                                    class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span>&nbsp;Искать</button>
                 </div>
             </form:form>
             </div>
 
             <c:forEach items="${searchResult}" var="friend">
-                <div class="manBlock">
+                <div class="manBlock" style="width:400px">
                     <img src="${staticFiles}/${friend.photo60x60}." width="80" style="float:left">
                     <div style="margin: 0 100px">
                         <a href="<c:url value="/profile/id${friend.id}"/>">${friend.firstName}&nbsp;${friend.lastName}</a><br/>
@@ -162,7 +156,6 @@
 
 
 <script type="text/javascript">
-
     $('.nav-tabs a[href="#${listType}Friends"]').tab('show');
 
     function tabClick(tab) {

@@ -135,11 +135,23 @@
 
     if (window.ACTIVER.Global.onPRIVATE_MESSAGE == null) {
         window.ACTIVER.Global.onPRIVATE_MESSAGE = function (data) {
-
+            console.log(data);
             if (data.type == "DATING") {
-                var link = "<a href=\"" + window.ACTIVER.context_path + "/dating/?dialog=" + data.from.id + "\">сюда</a>";
-                $('#popupWindow').html("Вас для ананимного общения! быстрее присоединяйтесь. Кликните " + link + ", чтобы пообщаться");
+                var link = "<a style='color:white;font-weight:bold' href=\"" + window.ACTIVER.context_path + "/dating/dispute?id=" + data.interlocutor + "\">сюда</a>";
+                $('#popupWindow').html("Вас вызывают для общения! Быстрее присоединяйтесь. Кликните " + link + ", чтобы пообщаться");
                 $('#popupWindow').show();
+                return;
+            }
+
+            if (data.type == "FLIRT") {
+                var link = "<a style='color:white;font-weight:bold' href=\"" + window.ACTIVER.context_path + "/dating/flirt?id=" + data.interlocutor + "\">сюда</a>";
+                $('#popupWindow').html("Вас вызывают пофлиртовать! Быстрее присоединяйтесь. Кликните " + link + ", чтобы начать");
+                $('#popupWindow').show();
+                return;
+            }
+
+            if (data.type == "FLIRT_AGREE") {
+                document.location = window.ACTIVER.context_path + "/message?dialog=" + data.interlocutor;
                 return;
             }
 
@@ -148,11 +160,13 @@
                 $('#popupWindow').html(data.from.firstName + " " + data.from.lastName + " прислал личное сообщение. Кликните " + link + ", чтобы пообщаться");
                 $('#popupWindow').show();
             }
+
+
         };
     }
 </script>
 <div id="popupWindow"
-     style="z-index:100000; top:10px; left:10px; position:absolute;display:none; width:300px; height:300px;background:#5d7fb5">
+     style="font-size:12px;display:none;bottom:5%; z-index:100000; left:10px; position:fixed; width:300px; height:80px;background:#5d7fb5;border-radius:10px;padding:10px;font-weight:normal;color:white;">
 
 </div>
 

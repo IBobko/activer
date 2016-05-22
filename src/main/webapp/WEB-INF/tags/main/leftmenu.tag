@@ -1,5 +1,5 @@
 <%--suppress XmlPathReference --%>
-<%--@elvariable id="friendsData" type="ru.todo100.activer.data.FriendsData"--%>
+<%--@elvariable id="friendsData" type="ru.todo100.activer.data.FriendsData1"--%>
 
 <%@ tag language="java" trimDirectiveWhitespaces="true" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>

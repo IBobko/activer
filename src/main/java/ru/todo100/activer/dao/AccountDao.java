@@ -248,7 +248,7 @@ public class AccountDao extends AbstractDao
 			criteria.add(Restrictions.eq("email",friendSearchForm.getEmail()));
 		}
 
-		if (friendSearchForm.getSex()!=null){
+		if (friendSearchForm.getSex() != null){
 			criteria.add(Restrictions.eq("sex",friendSearchForm.getSex()));
 		}
 
