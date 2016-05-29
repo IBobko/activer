@@ -110,9 +110,9 @@ public class ProfilePageController
 			profile = profilePopulator.populate(account);
 		}
 
-		List<PhotoItem> photos = photosDao.getByAccount(profile.getId());
+		final List<PhotoItem> photos = photosDao.getByAccount(profile.getId());
 
-		final String photo = photoService1.getPhoto(profile.getId());
+		final String photo = photoService1.getSizedPhoto(profile.getId()).getPhotoAvatar();
 		model.addAttribute("profile", profile);
 		model.addAttribute("friends", friendsService.getFriendData1(request.getSession()));
 		model.addAttribute("photos", photos);

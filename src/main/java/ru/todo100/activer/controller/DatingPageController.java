@@ -54,7 +54,7 @@ public class DatingPageController {
 
     @RequestMapping
     public String index(HttpServletRequest request, Model model) {
-        model.addAttribute("pageType", "dating");
+        model.addAttribute("pageType", "profile/dating");
         try {
             Integer dialog = Integer.parseInt(request.getParameter("dialog"));
             model.addAttribute("dialog", dialog);
@@ -86,11 +86,14 @@ public class DatingPageController {
                 return "redirect:/dating";
             }
 
-            model.addAttribute("pageType", "dating/flirt");
+            model.addAttribute("pageType", "profile/dating/flirt");
 
             final HappenedFlirtData flirtData = generateHappenedFlirtData(happenedFlirt, init);
             model.addAttribute("flirtData", flirtData);
-            model.addAttribute("photo", photoService1.getPhoto(profileData.getId()));
+
+            final PhotoAvatarSizeData photos = photoService1.getSizedPhoto(profileData.getId());
+            model.addAttribute("photo",photos.getPhotoAvatar());
+
             model.addAttribute("profile", profileData);
             return "dating/flirt";
         }
@@ -107,8 +110,11 @@ public class DatingPageController {
             opponent = accountDao.get(happenedFlirt.getAccountInitId());
         }
 
-        final String photo = photoService1.getPhoto(opponent.getId());
-        happenedFlirtData.setOpponentAvatar(photo);
+
+        final PhotoAvatarSizeData photos = photoService1.getSizedPhoto(opponent.getId());
+        happenedFlirtData.setOpponentAvatar(photos.getPhotoAvatar());
+
+
         happenedFlirtData.setStartedDate(happenedFlirt.getStartedDate());
         happenedFlirtData.setBirthday(opponent.getBirthdate());
 
@@ -149,10 +155,9 @@ public class DatingPageController {
 
         }
 
+        final PhotoAvatarSizeData photos = photoService1.getSizedPhoto(opponent.getId());
+        happenedDisputeData.setOpponentAvatar(photos.getPhotoAvatar());
 
-        final String photo = photoService1.getPhoto(opponent.getId());
-
-        happenedDisputeData.setOpponentAvatar(photo);
         happenedDisputeData.setOpponentFistName(opponent.getFirstName());
         happenedDisputeData.setOpponentLastName(opponent.getLastName());
         happenedDisputeData.setOpponentId(opponent.getId());
@@ -184,12 +189,16 @@ public class DatingPageController {
                 return "redirect:/dating";
             }
 
-            model.addAttribute("pageType", "dating/dispute");
+            model.addAttribute("pageType", "profile/dating/dispute");
 
             final HappenedDisputeData disputeData = generate(happenedDispute, init);
 
             model.addAttribute("disputeData", disputeData);
-            model.addAttribute("photo", photoService1.getPhoto(profileData.getId()));
+
+
+            final PhotoAvatarSizeData photos = photoService1.getSizedPhoto(profileData.getId());
+            model.addAttribute("photo",photos.getPhotoAvatar());
+
             model.addAttribute("profile",profileData);
             /*todo ИСПОРЧЕНО*/
             model.addAttribute("templatePost", MessageController.generateTemplateMessageData());
@@ -257,6 +266,7 @@ public class DatingPageController {
             case "yes" : agreed = 1; break;
             case "no" : agreed = 0; break;
         }
+        if (agreed == null) return;
 
         JSONObject result = new JSONObject();
 

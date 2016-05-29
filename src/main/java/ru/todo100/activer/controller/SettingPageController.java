@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.CountryDao;
+import ru.todo100.activer.dao.PhotoDao;
 import ru.todo100.activer.data.*;
 import ru.todo100.activer.form.*;
 import ru.todo100.activer.model.*;
@@ -32,7 +33,6 @@ import ru.todo100.activer.service.PhotoService;
 import ru.todo100.activer.util.ResizeImage;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
@@ -56,12 +56,13 @@ public class SettingPageController {
     private PhotoService photoService1;
     @Autowired
     private AccountDao accountService;
-    @Autowired
+
     private InterestPopulator interestPopulator;
     private TripPopulator tripPopulator;
     private DreamPopulator dreamPopulator;
 
     private NewsService newsService;
+    private PhotoDao photoDao;
 
     public CountryDao getCountryDao() {
         return countryDao;
@@ -86,7 +87,7 @@ public class SettingPageController {
 
         final AccountItem account = accountService.getCurrentAccount();
 
-        model.addAttribute("photo",photoService1.getSizedPhoto(account.getId()));
+        model.addAttribute("photo", photoService1.getSizedPhoto(account.getId()));
 
         if (!model.containsAttribute("mainInfoForm")) {
             final PayPalAccountForm payPalAccountForm = new PayPalAccountForm();
@@ -228,61 +229,36 @@ public class SettingPageController {
         return "redirect:/settings";
     }
 
+    @ResponseBody
     @RequestMapping(value = "/uploadphoto", method = RequestMethod.POST)
-    public String uploadPhoto(HttpServletRequest req, HttpServletResponse res, @RequestParam(value = "photo", required = false) MultipartFile photo) throws IOException {
-        final HttpClient httpclient = HttpClientBuilder.create().build();
-        final MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-        final File file = new File(photo.getOriginalFilename());
-        FileUtils.writeByteArrayToFile(file, photo.getBytes());
-        final HttpPost httppost = new HttpPost(staticHost + "/static/upload");
-        builder.addPart("image", new FileBody(file, ContentType.create(photo.getContentType())));
-        httppost.setEntity(builder.build());
-        final HttpResponse response = httpclient.execute(httppost);
-        final StringWriter writer = new StringWriter();
-        IOUtils.copy(response.getEntity().getContent(), writer, "UTF-8");
-        final String theString = writer.toString();
+    public PhotoAvatarSizeData uploadPhoto(final HttpServletRequest req,@RequestParam(value = "photo", required = false) MultipartFile photo) throws IOException {
+        final String contentType = photo.getContentType();
+
+        final File originalFile = new File(photo.getOriginalFilename());
+        FileUtils.writeByteArrayToFile(originalFile, photo.getBytes());
+        final String theString = sendFile(originalFile,contentType);
 
 
-        PhotoAvatarSizeData photoAvatarSizeData = new PhotoAvatarSizeData();
+        final PhotoAvatarSizeData photoAvatarSizeData = new PhotoAvatarSizeData();
         photoAvatarSizeData.setPhotoOriginal(theString);
 
-
-        String contentType = photo.getContentType();
-
-
-        final File file2 = getNewFile(file, 200, 400);
-        String avatarSize = sendFile(file2, contentType);
-
-
-        photoAvatarSizeData.setPhotoAvatar(avatarSize);
-
-
-        final File file3 = getNewFile(file, 50, 50);
-        String miniSize = sendFile(file3, contentType);
-
-
-        photoAvatarSizeData.setPhotoMini(miniSize);
-
-
-        final File file4 = getNewFile(file, 300, 300);
-        String showingSize = sendFile(file4, contentType);
+        final File fileShowingSize = getNewFile(originalFile, 300, 300);
+        String showingSize = sendFile(fileShowingSize, contentType);
 
 
         photoAvatarSizeData.setPhotoShowing(showingSize);
 
 
-        final File file5 = getNewFile(file, 100, 100);
-        String size100 = sendFile(file5, contentType);
+        final File fileThumbnailSize = getNewFile(originalFile, 100, 100);
+        String size100 = sendFile(fileThumbnailSize, contentType);
 
 
         photoAvatarSizeData.setPhotoThumbnail(size100);
 
 
-        file4.delete();
-        file5.delete();
-        file3.delete();
-        file2.delete();
-        file.delete();
+        fileShowingSize.deleteOnExit();
+        fileThumbnailSize.deleteOnExit();
+        originalFile.deleteOnExit();
 
         photoService1.setPhoto(accountService.getCurrentAccount().getId(), photoAvatarSizeData);
 
@@ -290,7 +266,7 @@ public class SettingPageController {
 
         newsService.addNews(profileData.getId(), "Обновил фотографию");
 
-        return "redirect:/profile";
+        return photoAvatarSizeData;
     }
 
     public String sendFile(File file, String contentType) throws IOException {
@@ -305,7 +281,6 @@ public class SettingPageController {
         return writer.toString();
     }
 
-
     public File getNewFile(File file, int width, int height) {
         String newName = RandomStringUtils.randomAlphanumeric(6);
         final File newFile = new File(newName);
@@ -318,6 +293,7 @@ public class SettingPageController {
         return interestPopulator;
     }
 
+    @Autowired
     public void setInterestPopulator(InterestPopulator interestPopulator) {
         this.interestPopulator = interestPopulator;
     }
@@ -492,7 +468,7 @@ public class SettingPageController {
             accountService.deleteDream(id);
         } catch (NumberFormatException ignored) {
         }
-        return  "redirect:/settings/dreams";
+        return "redirect:/settings/dreams";
     }
 
     @RequestMapping(value = "/leftmenusave")
@@ -504,4 +480,42 @@ public class SettingPageController {
             request.getSession().removeAttribute("leftmenu");
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/croppedSaveImage", method = RequestMethod.POST)
+    public void croppedSaveImage(final HttpServletRequest request, @RequestParam(value = "croppedImage", required = false) final MultipartFile cropped) throws IOException {
+        File file = null;
+        File miniCroppedFile = null;
+        try {
+            // Always PNG came
+            final String extension = ".png";
+            final ProfileData profileData = accountService.getCurrentProfileData(request.getSession());
+            final AccountPhotoItem accountPhotoItem = getPhotoDao().getByAccount(profileData.getId());
+            file = new File(cropped.getOriginalFilename() + extension);
+            FileUtils.writeByteArrayToFile(file, cropped.getBytes());
+            final String croppedFileName = sendFile(file, cropped.getContentType());
+            accountPhotoItem.setNameAvatar(croppedFileName);
+            miniCroppedFile = getNewFile(file, 60, 60);
+            final String miniCroppedFileName = sendFile(miniCroppedFile, cropped.getContentType());
+            accountPhotoItem.setNameMini(miniCroppedFileName);
+            getPhotoDao().save(accountPhotoItem);
+        } finally {
+            if (miniCroppedFile != null) {
+                miniCroppedFile.deleteOnExit();
+            }
+            if (file != null) {
+                file.deleteOnExit();
+            }
+        }
+    }
+
+    public PhotoDao getPhotoDao() {
+        return photoDao;
+    }
+
+    @Autowired
+    public void setPhotoDao(PhotoDao photoDao) {
+        this.photoDao = photoDao;
+    }
+
 }

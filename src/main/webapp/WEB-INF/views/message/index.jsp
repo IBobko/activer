@@ -91,10 +91,15 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Поиск друга</h4>
+                <h4 class="modal-title">Подарок</h4>
             </div>
             <div class="modal-body">
-                ...
+                <c:forEach items="${gifts}" var="gift">
+                    <div>
+                        <a href="#" class="giftForAdd" gift-id="${gift.id}"><img src="<c:url value="${staticFiles}/${gift.file}."/>"></a>
+                    </div>
+                </c:forEach>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
@@ -107,6 +112,13 @@
 
 <script type="text/javascript">
     $(function () {
+
+        $('.giftForAdd').click(function(){
+            alert($(this).attr("gift-id"));
+        });
+
+
+
         var interlocutors = $('#interlocutors');
 
         $('#searchDialogButton').click(function () {
@@ -184,7 +196,9 @@
 
 
     $("#giftsPopup").on('show.bs.modal', function () {
-        alert("he");
+
+        ${gifts}
+
     });
 
 </script>
@@ -313,8 +327,8 @@
             owner = data.to.id;
         }
         if (interlocutor == owner) {
-    var row = Messaging.dialogMessageRow(data);
-    $('#dialogWindow').append(row);
+        var row = Messaging.dialogMessageRow(data);
+        $('#dialogWindow').append(row);
             scrollDialogWindow();
         } else {
             var counter = $("[interlocutor-id='"+owner+"']").find("#counter");
@@ -325,7 +339,6 @@
             } else {
                 counter.html('<span class="badge">1</span>');
             }
-
         }
     };
     var text = $('#text');

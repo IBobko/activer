@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.dao.GiftDao;
 import ru.todo100.activer.dao.MessageDao;
 import ru.todo100.activer.data.DialogData;
 import ru.todo100.activer.data.MessageAccountData;
@@ -34,6 +35,9 @@ public class MessageController {
     private MessageDao messageService;
     @Autowired
     private AccountDao accountService;
+
+    @Autowired
+    private GiftDao giftDao;
 
     public static MessageData generateTemplateMessageData() {
         final MessageData template = new MessageData();
@@ -86,6 +90,9 @@ public class MessageController {
         model.addAttribute("dialogs", dialogDataList);
         /*todo этот код нужен только, чтобы определить чье сообщение пришло */
         model.addAttribute("currentId", accountItem.getId());
+
+        model.addAttribute("gifts", giftDao.getAll());
+
         return "message/index";
     }
 

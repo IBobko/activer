@@ -22,22 +22,6 @@
     </ul>
 </c:if>
 
-<c:if test="${pageType == 'dating'}">
-    <ul class="sidebar-nav">
-        <li class="active">
-            <a href="<c:url value="/auth"/>">
-                <span class="fa fa-user"></span>
-                Знакомства
-            </a>
-        </li>
-        <li>
-            <a href="<c:url value="/auth/signup"/>">
-                <span class="fa fa-smile-o"></span>
-                История знакомств
-            </a>
-        </li>
-    </ul>
-</c:if>
 
 <c:if test="${pageType == 'register'}">
     <ul class="sidebar-nav">
@@ -73,7 +57,7 @@
     </ul>
 </c:if>
 
-<c:if test="${pageType == null  or mainPage == 'gifts'}">
+<c:if test="${pageType == null or mainPage == 'profile'}">
     <ul class="sidebar-nav">
         <li class="active">
             <a href="<c:url value="/profile"/>">
@@ -347,6 +331,6 @@
 </c:if>
 
 
-<a href="<c:url value="/paypal"/>" style="color:orange">Купить аккаунт</a>
+<!--<a href="<c:url value="/paypal"/>" style="color:orange">Купить аккаунт</a>-->
 
 

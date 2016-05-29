@@ -119,7 +119,7 @@ public class GiftPageController {
     @RequestMapping("/id{id}")
     @Transactional
     public String show(final Model model, @PathVariable final Integer id) {
-        model.addAttribute("pageType","gifts/index");
+        model.addAttribute("pageType","profile/gifts/index");
 
         final List<AccountGiftItem> gifts = accountGiftDao.getGiftsByAccount(id);
         final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");

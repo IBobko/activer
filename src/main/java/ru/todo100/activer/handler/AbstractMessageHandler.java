@@ -3,8 +3,10 @@ package ru.todo100.activer.handler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import ru.todo100.activer.data.MessageAccountData;
+import ru.todo100.activer.data.PhotoAvatarSizeData;
 import ru.todo100.activer.data.ReceiveMessageData;
 import ru.todo100.activer.model.AccountItem;
+import ru.todo100.activer.model.AccountPhotoItem;
 import ru.todo100.activer.service.PhotoService;
 
 import java.security.Principal;
@@ -33,7 +35,9 @@ public abstract class AbstractMessageHandler {
         messageAccountData.setFirstName(account.getFirstName());
         messageAccountData.setLastName(account.getLastName());
         messageAccountData.setId(account.getId());
-        messageAccountData.setPhoto60x60(photoService1.getPhoto(account.getId()));
+        final PhotoAvatarSizeData photos = photoService1.getSizedPhoto(account.getId());
+        messageAccountData.setPhoto60x60(photos.getPhotoAvatar());
+
         return messageAccountData;
     }
 }

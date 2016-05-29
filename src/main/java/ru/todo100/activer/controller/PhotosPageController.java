@@ -198,45 +198,6 @@ public class PhotosPageController {
         return sizes;
     }
 
-    private void y(PhotoItem photo1) {
-        HashMap<String,Rectangle> sizes = t();
-
-
-
-        for (Map.Entry<String,Rectangle> s: sizes.entrySet()) {
-            String filename = "";
-            try {
-
-                Method method = photo1.getClass().getMethod("set" + s.getKey());
-                method.invoke(photo1,filename);
-
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-            
-        }
-    }
-
-
-
-
-    @RequestMapping(value = "/add",method = RequestMethod.GET)
-    public String add( final HttpServletRequest request,Model model) {
-        final PhotoForm photoForm = new PhotoForm();
-        try {
-            Integer album = Integer.parseInt(request.getParameter("album"));
-            photoForm.setAlbum(album);
-        } catch(Exception ignored){}
-
-        model.addAttribute("photoForm", photoForm);
-
-        return "photos/add";
-    }
-
     @SuppressWarnings("MVCPathVariableInspection")
     @RequestMapping("/{id}/photo-{photo}")
     public String photo() {
@@ -254,5 +215,16 @@ public class PhotosPageController {
         } catch (Exception ignored) {
         }
         return new ArrayList<>();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/ajax2")
+    public List<PhotoItem> ajax2(final HttpServletRequest request) {
+        try {
+            final ProfileData profileData = accountService.getCurrentProfileData(request.getSession());
+            return photosDao.getByAccount(profileData.getId());
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
     }
 }

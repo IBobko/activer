@@ -25,4 +25,11 @@ public class GiftDao extends AbstractDao {
     public List<GiftItem> getGiftsByQualifier(Qualifier qualifier) {
         return getCriteria().list();
     }
+
+    @Transactional
+    @SuppressWarnings("unchecked")
+    public List<GiftItem> getAll() {
+        return getCriteria().list();
+    }
+
 }

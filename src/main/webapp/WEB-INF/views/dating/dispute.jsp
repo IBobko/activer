@@ -4,7 +4,7 @@
 <div>
     <div style="overflow: hidden">
         <img src="<c:url value="/resources/img/dispute.jpg"/>" style="float: left;margin: 0 30px"/>
-        <h4 style="color: #3F51B5;font-weight:bold;">Знакомство "Спор"</h4>
+        <h4 style="color: #3F51B5;font-weight:bold;">Знакомство "Спор"</h4>Докажите собеседнику, что вы правы на все 100%. Защищайте свою позицию.
     </div>
 
     <div style="text-align: center">

@@ -12,7 +12,6 @@ import java.util.List;
  * @author Igor Bobko <limit-speed@yandex.ru>
  */
 @SuppressWarnings("unchecked")
-@Transactional
 public class PhotoDao extends AbstractDao
 {
 	@Override
@@ -21,16 +20,13 @@ public class PhotoDao extends AbstractDao
 		return AccountPhotoItem.class;
 	}
 
-	public AccountPhotoItem getByAccount(Integer account_id)
+	@Transactional
+	public AccountPhotoItem getByAccount(final Integer account_id)
 	{
-		final List<AccountPhotoItem> photos = this.getCriteria()
-				.add(Restrictions.eq("account", account_id)).addOrder(Order.desc("addedDate")).list();
-		if (photos.size() > 0)
-		{
-			return photos.get(0);
-		} else {
-			return null;
-		}
+		return (AccountPhotoItem)getCriteria()
+				.add(Restrictions.eq("account",account_id))
+				.addOrder(Order.desc("id"))
+				.setMaxResults(1).uniqueResult();
 	}
 
 }

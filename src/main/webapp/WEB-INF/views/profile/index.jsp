@@ -1,6 +1,7 @@
 <%--suppress ALL --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
 <!-- Info panel -->
@@ -112,11 +113,11 @@
             <div class="gallery">
 
                 <c:forEach items="${photos}" var="photo">
-                    <img class="img-responsive" src="http://onoffline.ru/static/upload/files/${photo.path}.jpg"/>
+                    <img class="img-responsive" src="http://onoffline.ru/static/upload/files/${photo.smallPath}.jpg"/>
                 </c:forEach>
             </div>
             <c:if test="${profile.my}">
-                <button onclick="document.location='<c:url value="/photos/add?album=1"/>';" class="btn btn-default upload-photo">Загрузить фото</button>
+                <button onclick="document.location='<c:url value="/photos"/>';" class="btn btn-default upload-photo">Загрузить фото</button>
             </c:if>
         </div>
     </div>
@@ -238,7 +239,7 @@
             <c:forEach items="${wall}" var="item">
                 <li class="media">
                     <div class="media-body">
-                        <h4 class="media-heading">${item.from.firstName} ${item.from.lastName}<span> - ${item.date}</span></h4>
+                        <h4 class="media-heading">${item.from.firstName} ${item.from.lastName}<span> - <fmt:formatDate value="${item.date.time}" pattern="yyyy-MM-dd H:m:s"/></span></h4>
                         <p>${item.message}</p>
                     </div>
                 </li>
