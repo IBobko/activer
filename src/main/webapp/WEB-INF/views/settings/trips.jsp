@@ -19,12 +19,11 @@
         float:left;
         border-radius: 40px;
         background-color: #e4e7f7;
-        padding-top: 5px;
         height:36px;
         margin:10px;
         padding:10px
     }
-</style>s
+</style>
 
 <h4 style="color:#337ab7;font-weight:bold">Добавить путешествия</h4>
 

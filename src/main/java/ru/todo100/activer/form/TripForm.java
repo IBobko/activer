@@ -9,7 +9,7 @@ public class TripForm {
     @NotNull
     private String country;
     @NotNull
-    private Integer year;
+    private String year;
     @NotNull
     private String city;
 
@@ -17,15 +17,15 @@ public class TripForm {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(final String country) {
         this.country = country;
     }
 
-    public Integer getYear() {
+    public String getYear() {
         return year;
     }
 
-    public void setYear(Integer year) {
+    public void setYear(final String year) {
         this.year = year;
     }
 
@@ -33,7 +33,7 @@ public class TripForm {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(final String city) {
         this.city = city;
     }
 }

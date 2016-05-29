@@ -364,13 +364,13 @@ public class SettingPageController {
     }
 
     @RequestMapping(value = "/trips", method = RequestMethod.POST)
-    public String tripsPost(@Valid TripForm tripForm, BindingResult bindingResult) {
+    public String tripsPost(@Valid final TripForm tripForm, BindingResult bindingResult) {
         if (!bindingResult.hasErrors()) {
             final AccountItem account = accountService.getCurrentAccount();
             final TripItem tripItem = new TripItem();
             tripItem.setCity(tripForm.getCity());
-            tripItem.setYear(tripForm.getYear());
-
+            String[] date = tripForm.getYear().split("/");
+            tripItem.setYear(Integer.parseInt(date[1]));
             for (final CountryItem country : getCountries()) {
                 if (country.getCode().equals(tripForm.getCountry())) {
                     tripItem.setCountry(country);
