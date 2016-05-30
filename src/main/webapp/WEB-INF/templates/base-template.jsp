@@ -59,6 +59,36 @@
             window.ACTIVER = {};
         }
 
+        window.ACTIVER.MessageBadge = {
+            eBadge :null,
+            init: function(){
+                this.eBadge = $('#globalUnreadMessageBadge');
+            },
+
+            increase: function() {
+                this.add(1);
+            },
+
+            add: function(i) {
+                if ((this.getCurrent() + i) < 0) return;
+                this.eBadge.html(this.getCurrent() + i);
+                if (this.getCurrent() == 0) {
+                    this.eBadge.css("display","none");
+                } else {
+                    this.eBadge.css("display","");
+                }
+            },
+
+            getCurrent: function() {
+                return this.eBadge.html()*1;
+            },
+
+            decrease: function() {
+                this.add(-1);
+            }
+
+        };
+
         window.ACTIVER.context_path = "${pageContext.servletContext.contextPath}";
         window.ACTIVER.Data = {};
         $.getJSON("<c:url value="/js/data.json"/>", function (data) {
@@ -156,6 +186,7 @@
             }
 
             if (data.type == "PRIVATE_MESSAGE") {
+                ACTIVER.MessageBadge.increase();
                 var link = "<a href=\"" + window.ACTIVER.context_path + "/message/" + data.from.id + "\">сюда</a>";
                 $('#popupWindow').html(data.from.firstName + " " + data.from.lastName + " прислал личное сообщение. Кликните " + link + ", чтобы пообщаться");
                 $('#popupWindow').show();

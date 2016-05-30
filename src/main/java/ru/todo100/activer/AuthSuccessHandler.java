@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.dao.MessageDao;
 import ru.todo100.activer.service.FriendsService;
 
 import javax.servlet.ServletException;
@@ -22,6 +23,10 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
 	@Autowired
 	private FriendsService friendsService;
 
+	@Autowired
+	private MessageDao messageService;
+
+
 	public AccountDao getAccountService() {
 		return accountService;
 	}
@@ -37,7 +42,7 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
 		getAccountService().initCurrentProfile(httpServletRequest.getSession());
 		/*@todo возможно не стоит этот методо все таки вызывать здесь*/
 		httpServletRequest.setAttribute("friendsData", friendsService.getFriendData1(httpServletRequest.getSession()));
-
+		httpServletRequest.getSession().setAttribute("unreadMessages",messageService.unreadCount(accountService.getCurrentProfileData(httpServletRequest.getSession()).getId()));
 		if (httpServletRequest.getParameter("remember-me") != null) {
 			Cookie cookie = new Cookie("remember-me", "1");
 			cookie.setMaxAge(604800);

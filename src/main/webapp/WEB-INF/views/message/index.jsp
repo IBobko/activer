@@ -8,11 +8,18 @@
     window.Messaging = {
         messageTemplate: '#messageTemplate',
         dialogMessageRow: function (message) {
+
             var template = $(this.messageTemplate).html();
             template = template.replace("#avatar", '${staticFiles}/' + message.from.photo60x60 + '.');
             template = template.replace("#sender", message.from.firstName + " " + message.from.lastName);
             template = template.replace("#message", message.message);
             template = template.replace("#time", message.date);
+            template = template.replace("#id", message.id);
+            var color = "#FFFFFF";
+            if (message.read == false){
+                color = "##F7F7F7";
+            }
+            template = template.replace("#color", color);
             return template;
         }
     }
@@ -197,7 +204,6 @@
 
     $("#giftsPopup").on('show.bs.modal', function () {
 
-        ${gifts}
 
     });
 
@@ -262,8 +268,27 @@
             dialogWindow.html("");
             for (var index in data) {
                 if (data.hasOwnProperty(index)) {
-    var row = Messaging.dialogMessageRow(data[index]);
-    dialogWindow.append(row);
+                    var row = Messaging.dialogMessageRow(data[index]);
+                    dialogWindow.append(row);
+
+                    if (data[index].read == false) {
+                        $.ajax({
+                            url:"<c:url value="/message/red/"/>" + data[index].id,
+                            success: function(response) {
+                                $('[message-id="'+response+'"]').css("background-color","#FFFFFF");
+                                var badge = $('[interlocutor-id="'+data[index].interlocutor+'"]').find(".badge");
+                                var count = 1* badge.html() - 1;
+                                if (count == 0) {
+                                    badge.remove();
+                                } else {
+                                    badge.html(count);
+                                }
+                                window.ACTIVER.MessageBadge.decrease();
+                            }
+                        });
+
+                        console.log("Надо послать сообщение, о прочтении" + data[index].id);
+                    }
                 }
             }
             scrollDialogWindow();
@@ -279,7 +304,7 @@
 </script>
 
 <div style="display:none" id="messageTemplate">
-    <table width="100%">
+    <table width="100%" message-id="#id" style="background-color:#color">
         <tr>
             <td valign="top" style="width:70px"><img src="#avatar" style="width:60px;height:60px;margin:10px"></td>
             <td valign="top" ><div style="margin:10px"><span style="color:gray">#sender</span><br/><span style="font-weight: normal">#message</span></div></td>
@@ -331,6 +356,7 @@
         $('#dialogWindow').append(row);
             scrollDialogWindow();
         } else {
+            ACTIVER.MessageBadge.increase();
             var counter = $("[interlocutor-id='"+owner+"']").find("#counter");
             if (counter.html()!="") {
                 var c = counter.find("span").html();

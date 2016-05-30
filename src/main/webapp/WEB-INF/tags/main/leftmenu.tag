@@ -5,6 +5,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ attribute name="pageType" required="false" type="java.lang.String" %>
 
+<c:if test="${empty sessionScope.get('unreadMessages') ||sessionScope.get('unreadMessages') == 0 }">
+    <c:set var="displayCountNotRead" value="style='display:none'"/>
+</c:if>
+
+<c:set var="countNotRead" value="<span ${displayCountNotRead} id='globalUnreadMessageBadge' class='badge'>${sessionScope.get('unreadMessages')}</span>"/>
+
+
 <c:if test="${pageType == 'auth'}">
     <ul class="sidebar-nav">
         <li class="active">
@@ -77,7 +84,7 @@
         <li>
             <a href="<c:url value="/message"/>">
                 <span class="fa fa-envelope-o"></span>
-                Сообщения<span class="badge">3</span>
+                Сообщения${countNotRead}
             </a>
         </li>
         <li>
@@ -119,7 +126,7 @@
         <li>
             <a href="<c:url value="/message"/>">
                 <span class="fa fa-envelope-o"></span>
-                Сообщения<span class="badge">3</span>
+                Сообщения${countNotRead}
             </a>
         </li>
         <li>
@@ -160,7 +167,7 @@
         <li class="active">
             <a href="<c:url value="/message"/>">
                 <span class="fa fa-envelope-o"></span>
-                Сообщения<span class="badge">3</span>
+                Сообщения${countNotRead}
             </a>
         </li>
         <li>
@@ -201,7 +208,7 @@
         <li>
             <a href="<c:url value="/message"/>">
                 <span class="fa fa-envelope-o"></span>
-                Сообщения<span class="badge">3</span>
+                Сообщения${countNotRead}
             </a>
         </li>
         <li class="active">
@@ -241,7 +248,7 @@
         <li>
             <a href="<c:url value="/message"/>">
                 <span class="fa fa-envelope-o"></span>
-                Сообщения<span class="badge">3</span>
+                Сообщения${countNotRead}
             </a>
         </li>
         <li>

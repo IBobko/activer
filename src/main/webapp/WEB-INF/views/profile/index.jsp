@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
+
 <!-- Info panel -->
 <div class="container-fluid info-panel">
     <div class="row">

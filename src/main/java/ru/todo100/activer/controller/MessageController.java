@@ -51,8 +51,6 @@ public class MessageController {
         return template;
     }
 
-
-
     @RequestMapping
     public String index(final Model model) {
         model.addAttribute("pageType", "message");
@@ -79,11 +77,11 @@ public class MessageController {
             if (messageItem.getAccountTo().equals(accountItem.getId())) {
 
                 dialogData.setOwner(sender);
-                dialogData.setCountNotRed(messageService.countNotRed(sender.getId(),accountItem.getId()));
+                dialogData.setCountNotRed(messageService.countNotRed(sender.getId(), accountItem.getId()));
             } else {
                 final AccountItem toAccountItem = accountService.get(messageItem.getAccountTo());
                 dialogData.setOwner(messageAccountDataPopulator(toAccountItem));
-                dialogData.setCountNotRed(messageService.countNotRed(toAccountItem.getId(),accountItem.getId()));
+                dialogData.setCountNotRed(messageService.countNotRed(toAccountItem.getId(), accountItem.getId()));
             }
 
         }
@@ -101,12 +99,21 @@ public class MessageController {
     public List<MessageData> ajaxMessage(@PathVariable final Integer id, final HttpServletRequest request) {
         final ProfileData profileData = accountService.getCurrentProfileData(request.getSession());
         final List<MessageItem> messageItems = messageService.getDialog(id, profileData.getId());
-        final List<MessageData> messageData = messagePopulate(messageItems,profileData.getId());
+        final List<MessageData> messageData = messagePopulate(messageItems, profileData.getId());
         Collections.reverse(messageData);
         return messageData;
     }
 
-    private List<MessageData> messagePopulate(List<MessageItem> messageItems,Integer accountId) {
+    @RequestMapping("/red/{id:\\d+}")
+    @ResponseBody
+    public String read(@PathVariable final Integer id, final HttpServletRequest request) {
+        if (messageService.read(id)) {
+            messageService.decrease(request.getSession());
+        }
+        return id.toString();
+    }
+
+    private List<MessageData> messagePopulate(List<MessageItem> messageItems, Integer accountId) {
         final Map<Integer, MessageAccountData> cachedAccountData = new HashMap<>();
         final List<MessageData> messageData = new ArrayList<>();
         for (MessageItem item : messageItems) {
@@ -123,7 +130,7 @@ public class MessageController {
                 cachedAccountData.put(item.getAccountFrom(), sender);
             }
             data.setMessage(item.getText());
-
+            data.setId(item.getId());
             if (item.getAccountFrom().equals(accountId)) {
                 data.setInterlocutor(item.getAccountTo());
 
