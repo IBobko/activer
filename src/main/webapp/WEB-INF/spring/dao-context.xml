@@ -57,4 +57,6 @@
 
     <bean id="flirtMessageDao" class="ru.todo100.activer.dao.FlirtMessageDao"/>
 
+    <bean id="balanceDao" class="ru.todo100.activer.dao.BalanceDao"/>
+
 </beans>

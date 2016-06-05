@@ -33,72 +33,59 @@ public class AccountItem extends DateChanges implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")
     private Integer id;
 
+    @OneToOne(mappedBy="account")
+    private BalanceItem balance;
+
     @OneToMany
     @JoinColumn(name = "account_username", referencedColumnName = "account_username")
     private Set<AuthorityItem> authorities;
-
     @Column(name = "account_refer_code", nullable = false)
     private String referCode;
-
     @Column(name = "account_used_refer_code", nullable = false)
     private String usedReferCode;
-
     @NaturalId
     @NotNull
     @Column(name = "account_username", nullable = false)
     private String username;
-
     @NotNull
     @Column(name = "account_password", nullable = false)
     private String password;
-
     @NotNull
     @Column(name = "account_email", nullable = false)
     private String email;
-
     @NotNull
     @Column(name = "account_firstname", nullable = false)
     private String firstName;
-
     @NotNull
     @Column(name = "account_lastname", nullable = false)
     private String lastName;
-
     @ManyToMany
     @JoinTable(name = "account_friend_relation",
             joinColumns = @JoinColumn(name = "account_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "friend_account_id", nullable = false)
     )
     private Set<AccountItem> friends;
-
     @Column(name = "account_sex")
     private Integer sex;
-
     @Column(name = "account_birthdate")
     private Calendar birthdate;
-
     @Column(name = "account_maritalstatus")
     private Integer maritalStatus;
-
     /*Благодаря CascadeType.ALL удается сохранять айтемы, однако я не уверен что это обязательно. нужно проверить */
     /*Использование Set вместо List крайне важно, так как пораждает возможносьти множественного FETCH.JOIN*/
     /*По умолчанию используется ленивая загрузка однако, однако мы это исправим в профайлах*/
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     private Set<EducationItem> educationItems;
-
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     private Set<JobItem> jobItems;
-
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     private Set<ChildrenItem> childrenItems;
-
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     private Set<InterestItem> interestItems;
-
     /*
     orphanRemoval = true
     It means that if you delete items from collection that item will be deleted from database.
@@ -106,7 +93,6 @@ public class AccountItem extends DateChanges implements Serializable {
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     private Set<DreamItem> dreamItems;
-
     /*
     orphanRemoval = true
     It means that if you delete items from collection that item will be deleted from database.
@@ -114,9 +100,16 @@ public class AccountItem extends DateChanges implements Serializable {
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     private Set<TripItem> tripItems;
-
     @Column(name = "account_last_activity")
     private Calendar lastActivity;
+
+    public BalanceItem getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BalanceItem balance) {
+        this.balance = balance;
+    }
 
     public Calendar getLastActivity() {
         return lastActivity;

@@ -8,12 +8,6 @@ import com.paypal.base.rest.OAuthTokenCredential;
 import com.paypal.base.rest.PayPalRESTException;
 import com.paypal.exception.*;
 import com.paypal.sdk.exceptions.OAuthException;
-import com.paypal.svcs.services.AdaptiveAccountsService;
-import com.paypal.svcs.types.aa.AddressType;
-import com.paypal.svcs.types.aa.CreateAccountRequest;
-import com.paypal.svcs.types.aa.CreateAccountResponse;
-import com.paypal.svcs.types.aa.NameType;
-import com.paypal.svcs.types.common.RequestEnvelope;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -267,38 +261,39 @@ public class PayPalController {
     @ResponseBody
     @RequestMapping("/create")
     public String createAccount() throws IOException, OAuthException, InvalidResponseDataException, SSLConfigurationException, MissingCredentialException, HttpErrorException, InvalidCredentialException, ClientActionRequiredException, InterruptedException {
-
-        RequestEnvelope env = new RequestEnvelope();
-        env.setErrorLanguage("en_US");
-
-        NameType name = new NameType("John", "Lui");
-
-
-        AddressType address = new AddressType("Main St", "US");
-
-        String preferredLanguageCode = "en_US";
-
-        CreateAccountRequest createAccountRequest = new CreateAccountRequest(env,
-                name, address, preferredLanguageCode);
-
-        Map<String, String> customConfigurationMap = new HashMap<String, String>();
-        customConfigurationMap.put("mode", "sandbox"); // Load the map with all mandatory parameters
-        customConfigurationMap.put("acct1.UserName", "limit-speed_api2.ya.ru");
-        customConfigurationMap.put("acct1.Password", "J9HQTXEEYPMX9FCR");
-        customConfigurationMap.put("acct1.Signature", "AFcWxV21C7fd0v3bYYYRCpSSRl31AEwgUxCEukmIx.B4rWL3njNJmCNL");
-        customConfigurationMap.put("acct1.AppId", "APP-80W284485P519543T");
-        customConfigurationMap.put("acct1.Subject", "sandbox");
-
-        customConfigurationMap.put("X-PAYPAL-SANDBOX-EMAIL-ADDRESS", "limit-speed@yandex.ua");
-
-
-        AdaptiveAccountsService adaptiveAccountsService = new AdaptiveAccountsService(customConfigurationMap);
-
-
-        CreateAccountResponse createAccountResponse = adaptiveAccountsService.createAccount(createAccountRequest, "limit-speed@yandex.ua");
-
-
-        return "DONE" + createAccountResponse.getAccountId();
+//
+//        RequestEnvelope env = new RequestEnvelope();
+//        env.setErrorLanguage("en_US");
+//
+//        NameType name = new NameType("John", "Lui");
+//
+//
+//        AddressType address = new AddressType("Main St", "US");
+//
+//        String preferredLanguageCode = "en_US";
+//
+//        CreateAccountRequest createAccountRequest = new CreateAccountRequest(env,
+//                name, address, preferredLanguageCode);
+//
+//        Map<String, String> customConfigurationMap = new HashMap<String, String>();
+//        customConfigurationMap.put("mode", "sandbox"); // Load the map with all mandatory parameters
+//        customConfigurationMap.put("acct1.UserName", "limit-speed_api2.ya.ru");
+//        customConfigurationMap.put("acct1.Password", "J9HQTXEEYPMX9FCR");
+//        customConfigurationMap.put("acct1.Signature", "AFcWxV21C7fd0v3bYYYRCpSSRl31AEwgUxCEukmIx.B4rWL3njNJmCNL");
+//        customConfigurationMap.put("acct1.AppId", "APP-80W284485P519543T");
+//        customConfigurationMap.put("acct1.Subject", "sandbox");
+//
+//        customConfigurationMap.put("X-PAYPAL-SANDBOX-EMAIL-ADDRESS", "limit-speed@yandex.ua");
+//
+//
+//        AdaptiveAccountsService adaptiveAccountsService = new AdaptiveAccountsService(customConfigurationMap);
+//
+//
+//        CreateAccountResponse createAccountResponse = adaptiveAccountsService.createAccount(createAccountRequest, "limit-speed@yandex.ua");
+//
+//
+//        return "DONE" + createAccountResponse.getAccountId();
+    return null;
     }
 
 }

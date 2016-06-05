@@ -5,16 +5,24 @@ import com.paypal.api.payments.util.ResultPrinter;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.OAuthTokenCredential;
 import com.paypal.base.rest.PayPalRESTException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.dao.BalanceDao;
+import ru.todo100.activer.model.BalanceItem;
 import ru.todo100.activer.service.PayPalService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -27,6 +35,11 @@ import java.util.UUID;
 @RequestMapping("/balance")
 public class BalancePageController {
 
+    @Autowired
+    BalanceDao balanceDao;
+
+    @Autowired
+    AccountDao accountService;
 
     private PayPalService payPalService;
 
@@ -40,26 +53,36 @@ public class BalancePageController {
     }
 
     @RequestMapping()
-    public String index() {
+    public String index(Model model, HttpServletRequest request) throws IOException {
+        BalanceItem balance = balanceDao.createOrGet(accountService.getCurrentAccount());
+
+
+        model.addAttribute("balance",balance);
         return "balance/index";
     }
 
-    @ResponseBody
     @RequestMapping(method = RequestMethod.POST)
-    public Payment post(HttpServletRequest req, HttpServletResponse resp) {
+    public ModelAndView post(HttpServletRequest req, HttpServletResponse resp) {
         final APIContext apiContext = getPayPalService().getApiContext();
         if (apiContext == null) return null;
 
+        req.getParameter("sum");
 
-        final Details details = new Details();
-        details.setShipping("1");
-        details.setSubtotal("90");
-        details.setTax("1");
+        BigDecimal sum = new BigDecimal(req.getParameter("sum"));
+
+
+        req.getSession().setAttribute("sum",sum);
+
+
+//        final Details details = new Details();
+//        details.setShipping("1");
+//        details.setSubtotal(sum.subtract(new BigDecimal("2")).toString());
+//        details.setTax("1");
 
         Amount amount = new Amount();
         amount.setCurrency("USD");
-        amount.setTotal("92");
-        amount.setDetails(details);
+        amount.setTotal(sum.toString());
+        //amount.setDetails(details);
 
 
         Transaction transaction = new Transaction();
@@ -67,7 +90,7 @@ public class BalancePageController {
         transaction.setDescription("This is the payment transaction description.");
 
         Item item = new Item();
-        item.setName("Ground Coffee 40 oz").setQuantity("1").setCurrency("USD").setPrice("90");
+        item.setName("Ground Coffee 40 oz").setQuantity("1").setCurrency("USD").setPrice(sum.toString());
         ItemList itemList = new ItemList();
         List<Item> items = new ArrayList<>();
         items.add(item);
@@ -92,8 +115,8 @@ public class BalancePageController {
 
         String guid = UUID.randomUUID().toString().replaceAll("-", "");
 
-        redirectUrls.setCancelUrl(getPayPalService().getServerName(req) + "/gifts/cancel?guid=" + guid);
-        redirectUrls.setReturnUrl(getPayPalService().getServerName(req) + "/gifts/result?guid=" + guid);
+        redirectUrls.setCancelUrl(getPayPalService().getServerName(req) + "/balance/cancel?guid=" + guid);
+        redirectUrls.setReturnUrl(getPayPalService().getServerName(req) + "/balance/result/?guid=" + guid);
 
         payment.setRedirectUrls(redirectUrls);
 
@@ -115,18 +138,23 @@ public class BalancePageController {
             ResultPrinter.addResult(req, resp, "Payment with PayPal", Payment.getLastRequest(), null, e.getMessage());
         }
 
-        return createdPayment;
+
+        JSONObject josn = new JSONObject(createdPayment);
+
+        String href = josn.getJSONArray("links").getJSONObject(1).getString("href");
+
+
+        return new ModelAndView("redirect:" + href);
 
     }
 
-    String token() throws Exception {
-        InputStream is = getClass().getResourceAsStream("/sdk_config.properties");
+    @RequestMapping("/result")
+    public ModelAndView result(final HttpServletRequest request) {
 
-        Properties prop = new Properties();
-        prop.load(is);
-        OAuthTokenCredential tokenCredential = Payment.initConfig(prop);
-        String accessToken = tokenCredential.getAccessToken();
-        return accessToken;
+        BigDecimal sum = (BigDecimal)request.getSession().getAttribute("sum");
+        BalanceItem balance = balanceDao.createOrGet(accountService.getCurrentAccount());
+        balance.setSum(balance.getSum().add(sum));
+        balanceDao.save(balance);
+        return new ModelAndView("redirect:/balance");
     }
-
 }

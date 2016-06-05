@@ -5,7 +5,7 @@
 
 <h3 style="color: #3F51B5;font-weight:bold;">Баланс</h3>
 
-Текущий баланс: ${balance}
+Текущий баланс: ${balance.sum}
 
 <form  method="post">
     Пополнить счет
