@@ -162,6 +162,11 @@
 		<put-attribute name="content" value="/WEB-INF/views/admin/balance.jsp"/>
 	</definition>
 
+	<definition name="balance/index" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/balance/index.jsp"/>
+	</definition>
+
+
 	<!-- Photos -->
 
 	<definition name="photos/photo" extends="base-template">
