@@ -29,6 +29,9 @@
                 </li>
                 <li <c:if test="${mainPage == 'gifts'}">class="active"</c:if>><a
                         href="<c:url value="/gifts/"/>">Подарки</a></li>
+                <li <c:if test="${mainPage == 'balance'}">class="active"</c:if>>
+                    <a href="<c:url value="/balance"/>">Баланс</a>
+                </li>
                 <li <c:if test="${mainPage == 'settings'}">class="active"</c:if>><a href="<c:url value="/settings"/>">Настройки</a>
                 </li>
                 <sec:authorize access="hasRole('ROLE_PARTNER')">
