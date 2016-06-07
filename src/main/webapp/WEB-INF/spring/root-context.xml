@@ -118,6 +118,7 @@
 	<bean id="referService" class="ru.todo100.activer.service.impl.ReferServiceImpl"/>
 	<bean id="payPalService" class="ru.todo100.activer.service.impl.PayPalServiceImpl"/>
 
+	<bean id="balanceService" class="ru.todo100.activer.service.impl.BalanceServiceImpl"/>
 	<!-- Facades -->
 	<import resource="facade-context.xml" />
 

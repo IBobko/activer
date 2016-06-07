@@ -8,7 +8,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "payment_debit")
-public class PaymentDebitItem {
+public class PaymentDebitItem extends Item {
 
     @Id
     @SequenceGenerator(name = "default_gen", sequenceName = "payment_debit_seq", allocationSize = 1)

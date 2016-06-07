@@ -105,7 +105,6 @@
                 })
             });
         });
-
     </script>
 </head>
 
@@ -158,11 +157,7 @@
             }
             return "toggled";
         });
-
-
-
     });
-
 
     ACTIVER.Global.on("SPENT",function(data){
         var popupWindow = $('#popupWindow');
@@ -174,7 +169,6 @@
         }
         popupWindow.show();
     });
-
 
     if (window.ACTIVER.Global.onPRIVATE_MESSAGE == null) {
         window.ACTIVER.Global.onPRIVATE_MESSAGE = function (data) {

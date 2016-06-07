@@ -1,7 +1,6 @@
 package ru.todo100.activer.controller;
 
 import com.paypal.api.payments.*;
-
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +11,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.BalanceDao;
+import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.model.BalanceItem;
+import ru.todo100.activer.service.BalanceService;
 import ru.todo100.activer.service.PayPalService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -54,11 +54,10 @@ class Pay implements Serializable {
 @RequestMapping("/balance")
 public class BalancePageController {
 
-
     private BalanceDao balanceDao;
-
     private AccountDao accountService;
     private PayPalService payPalService;
+    private BalanceService balanceService;
 
     public BalanceDao getBalanceDao() {
         return balanceDao;
@@ -100,9 +99,6 @@ public class BalancePageController {
         if (apiContext == null) return null;
 
         final BigDecimal sum = new BigDecimal(request.getParameter("sum"));
-
-
-
 
 
 //        final Details details = new Details();
@@ -159,7 +155,8 @@ public class BalancePageController {
                     break;
                 }
             }
-        } catch (PayPalRESTException ignored) {}
+        } catch (PayPalRESTException ignored) {
+        }
 
         final Pay pay = new Pay();
         pay.setGuid(guid);
@@ -171,7 +168,7 @@ public class BalancePageController {
 
     @RequestMapping("/cancel")
     public ModelAndView cancel(final HttpServletRequest request) {
-        final Pay pay = (Pay)request.getSession().getAttribute("pay");
+        final Pay pay = (Pay) request.getSession().getAttribute("pay");
         final String guid = request.getParameter("guid");
         if (pay != null && guid.equals(pay.getGuid())) {
             request.getSession().removeAttribute("pay");
@@ -179,14 +176,22 @@ public class BalancePageController {
         return new ModelAndView("redirect:/balance");
     }
 
+    public BalanceService getBalanceService() {
+        return balanceService;
+    }
+
+    @Autowired
+    public void setBalanceService(BalanceService balanceService) {
+        this.balanceService = balanceService;
+    }
+
     @RequestMapping("/result")
     public ModelAndView result(final HttpServletRequest request) {
-        final Pay pay = (Pay)request.getSession().getAttribute("pay");
+        final Pay pay = (Pay) request.getSession().getAttribute("pay");
         final String guid = request.getParameter("guid");
         if (pay != null && guid.equals(pay.getGuid())) {
-            final BalanceItem balance = getBalanceDao().createOrGet(getAccountService().getCurrentAccount());
-            balance.setSum(balance.getSum().add(pay.getSum()));
-            getBalanceDao().save(balance);
+            final ProfileData profileData = getAccountService().getCurrentProfileData(request.getSession());
+            getBalanceService().additionAccountBalanceSum(profileData.getId(), pay.getSum(), "Поступление средств через PayPal");
             request.getSession().removeAttribute("pay");
         }
         return new ModelAndView("redirect:/balance");
