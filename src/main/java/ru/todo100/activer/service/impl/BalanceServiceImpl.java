@@ -56,6 +56,7 @@ public class BalanceServiceImpl implements BalanceService {
         int compare = balanceItem.getSum().compareTo(subtrahend);
         if (compare == 1 || compare == 0) {
             BigDecimal newSum = balanceItem.getSum().subtract(subtrahend);
+            setAccountBalanceSum(accountItem, newSum);
             final PaymentCreditItem paymentCreditItem = new PaymentCreditItem();
             paymentCreditItem.setAccount(accountItem);
             paymentCreditItem.setPaymentCreditDescription(description);
