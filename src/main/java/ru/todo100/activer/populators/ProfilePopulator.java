@@ -2,6 +2,7 @@ package ru.todo100.activer.populators;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.todo100.activer.dao.AccountGiftDao;
+import ru.todo100.activer.dao.BalanceDao;
 import ru.todo100.activer.dao.GiftDao;
 import ru.todo100.activer.dao.PhotoDao;
 import ru.todo100.activer.data.*;
@@ -20,18 +21,25 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
     @Autowired
     private PhotoDao photoService;
 
+    private BalanceDao balanceDao;
     private EducationPopulator educationPopulator;
-
     private JobPopulator jobPopulator;
-
     private ChildrenPopulator childrenPopulator;
-
     private InterestPopulator interestPopulator;
     private TripPopulator tripPopulator;
     private DreamPopulator dreamPopulator;
-
     @Autowired
     private AccountGiftDao accountGiftDao;
+    @Autowired
+    private GiftDao giftDao;
+
+    public BalanceDao getBalanceDao() {
+        return balanceDao;
+    }
+    @Autowired
+    public void setBalanceDao(BalanceDao balanceDao) {
+        this.balanceDao = balanceDao;
+    }
 
     private DreamPopulator getDreamPopulator() {
         return dreamPopulator;
@@ -68,7 +76,6 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
     public void setChildrenPopulator(ChildrenPopulator childrenPopulator) {
         this.childrenPopulator = childrenPopulator;
     }
-
 
     private JobPopulator getJobPopulator() {
         return jobPopulator;
@@ -153,14 +160,14 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         final List<AccountGiftItem> gifts = accountGiftDao.getGiftsByAccount(profileData.getId());
         final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
         final List<AccountGiftData> giftData = new ArrayList<>();
-        for (AccountGiftItem accountGiftItem: gifts) {
+        for (AccountGiftItem accountGiftItem : gifts) {
             AccountGiftData accountGiftData = new AccountGiftData();
             accountGiftData.setSenderFirstName("Иосиф");
             accountGiftData.setSenderLastName("Сталин");
             // accountGiftData.set
 
 
-            GiftItem giftItem = (GiftItem)giftDao.get(accountGiftItem.getGiftId());
+            GiftItem giftItem = (GiftItem) giftDao.get(accountGiftItem.getGiftId());
 
             accountGiftData.setFileName(giftItem.getFile());
             accountGiftData.setMessage(accountGiftItem.getMessage());
@@ -168,16 +175,8 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
             accountGiftData.setGivenDate(format.format(accountGiftItem.getGivenDate().getTime()));
             giftData.add(accountGiftData);
         }
-
         profileData.setGifts(giftData);
-
-
-
-
+        profileData.setBalance(getBalanceDao().createOrGet(accountItem).getSum());
         return profileData;
     }
-
-
-    @Autowired
-    private GiftDao giftDao;
 }

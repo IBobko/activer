@@ -1,12 +1,13 @@
 package ru.todo100.activer.data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
-public class ProfileData implements Serializable{
+public class ProfileData implements Serializable {
     private Integer id;
     private String firstName;
     private String lastName;
@@ -21,6 +22,19 @@ public class ProfileData implements Serializable{
     private List<InterestData> interests;
     private List<TripData> trips;
     private List<DreamData> dreams;
+    private BigDecimal balance;
+    private List<AccountGiftData> gifts;
+    private String role;
+    private boolean isOnline;
+    private boolean my = false;
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
 
     public List<AccountGiftData> getGifts() {
         return gifts;
@@ -30,10 +44,6 @@ public class ProfileData implements Serializable{
         this.gifts = gifts;
     }
 
-    private List<AccountGiftData> gifts;
-    private String role;
-    private boolean isOnline;
-
     public boolean isMy() {
         return my;
     }
@@ -41,8 +51,6 @@ public class ProfileData implements Serializable{
     public void setMy(boolean my) {
         this.my = my;
     }
-
-    private boolean my = false;
 
     public String getRole() {
         return role;

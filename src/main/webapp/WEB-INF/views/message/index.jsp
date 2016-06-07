@@ -52,6 +52,20 @@
         margin-top: 6px;
         min-width: 28px;
     }
+
+    .gifts-list{
+        overflow: hidden;
+    }
+    .gifts-list li{
+        list-style: none;
+        float: left;
+        font-weight: normal;
+        text-align: center;
+    }
+    .gifts-list img{
+        width: 128px;
+    }
+
 </style>
 
 <h4 style="color: #3F51B5;font-weight:bold;">Мои сообщения</h4>
@@ -98,14 +112,18 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Подарок</h4>
+                <h4 class="modal-title">Подарок. Ваш баланс: <span id="balanceInModal">${profile.balance}</span>$</h4>
             </div>
             <div class="modal-body">
+                <ul class="gifts-list">
                 <c:forEach items="${gifts}" var="gift">
-                    <div>
+                    <li>
                         <a href="#" class="giftForAdd" gift-id="${gift.id}"><img src="<c:url value="${staticFiles}/${gift.file}."/>"></a>
-                    </div>
+                        <br/>
+                        Стоимость: 1$
+                    </li>
                 </c:forEach>
+                </ul>
 
             </div>
             <div class="modal-footer">
@@ -121,7 +139,12 @@
     $(function () {
 
         $('.giftForAdd').click(function(){
-            alert($(this).attr("gift-id"));
+            var data = ACTIVER.Global.message;
+            data.to = interlocutor;
+            data.message = "gift:" + $(this).attr("gift-id");
+            data.type = "PRIVATE_MESSAGE";
+            ACTIVER.Global.submit(data);
+            $('#giftsPopup').modal('hide');
         });
 
 
@@ -343,10 +366,20 @@
         objDiv.scrollTop = objDiv.scrollHeight;
     }
 
+    ACTIVER.Global.on("SPENT",function(data){
+        var balanceInModal = $('#balanceInModal');
+        var sum = balanceInModal.html() * 1;
+        var diff = data.message * 1;
+        balanceInModal.html(sum - diff);
+    });
+
     ACTIVER.Global.handlers["PRIVATE_MESSAGE"] = function (data) {
         console.log(data);
+
+
+
         var owner = null;
-        if (data.to.id == ${currentId}) {
+        if (data.to.id == ${profile.id}) {
             owner = data.from.id;
         } else {
             owner = data.to.id;

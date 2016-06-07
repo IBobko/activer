@@ -101,6 +101,8 @@ public class ProfilePageController
 		return "profile/change";
 	}
 
+
+
 	@RequestMapping(value = "/id{id:\\d+}", method = RequestMethod.GET)
 	public String people(Model model, @PathVariable Integer id,HttpServletRequest request)
 	{

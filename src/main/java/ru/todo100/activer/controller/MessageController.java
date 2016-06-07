@@ -19,6 +19,7 @@ import ru.todo100.activer.model.MessageItem;
 import ru.todo100.activer.service.PhotoService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -52,10 +53,10 @@ public class MessageController {
     }
 
     @RequestMapping
-    public String index(final Model model) {
+    public String index(final Model model, final HttpSession session) {
         model.addAttribute("pageType", "message");
-        final AccountItem accountItem = accountService.getCurrentAccount();
-        final List<MessageItem> messageItems = messageService.getDialogs(accountItem.getId());
+        final ProfileData profileData = accountService.getCurrentProfileData(session);
+        final List<MessageItem> messageItems = messageService.getDialogs(profileData.getId());
 
         final List<DialogData> dialogDataList = new ArrayList<>();
 
@@ -73,24 +74,20 @@ public class MessageController {
             dialogDataList.add(dialogData);
             dialogData.setLastMessage(messageData);
 
-
-            if (messageItem.getAccountTo().equals(accountItem.getId())) {
-
+            if (messageItem.getAccountTo().equals(profileData.getId())) {
                 dialogData.setOwner(sender);
-                dialogData.setCountNotRed(messageService.countNotRed(sender.getId(), accountItem.getId()));
+                dialogData.setCountNotRed(messageService.countNotRed(sender.getId(), profileData.getId()));
             } else {
                 final AccountItem toAccountItem = accountService.get(messageItem.getAccountTo());
                 dialogData.setOwner(messageAccountDataPopulator(toAccountItem));
-                dialogData.setCountNotRed(messageService.countNotRed(toAccountItem.getId(), accountItem.getId()));
+                dialogData.setCountNotRed(messageService.countNotRed(toAccountItem.getId(), profileData.getId()));
             }
 
         }
         model.addAttribute("dialogs", dialogDataList);
-        /*todo этот код нужен только, чтобы определить чье сообщение пришло */
-        model.addAttribute("currentId", accountItem.getId());
-
         model.addAttribute("gifts", giftDao.getAll());
 
+        model.addAttribute("profile", profileData);
         return "message/index";
     }
 

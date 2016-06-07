@@ -31,6 +31,28 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+
+class ProfileValue {
+	private String name;
+	private Object value;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Object getValue() {
+		return value;
+	}
+
+	public void setValue(Object value) {
+		this.value = value;
+	}
+}
+
 @SuppressWarnings(value = {"unused", "SqlResolve", "unchecked"})
 @Transactional
 public class AccountDao extends AbstractDao
@@ -99,9 +121,24 @@ public class AccountDao extends AbstractDao
 		return null;
 	}
 
+	public void addSynchronizer(final Integer accountId,final String name, final Object value) {
+		final List<ProfileValue> profileValues;
+		if (synchronizers.containsKey(accountId)) {
+			profileValues = synchronizers.get(accountId);
+		} else {
+			profileValues = new ArrayList<>();
+			synchronizers.put(accountId,profileValues);
+		}
+		final ProfileValue profileValue = new ProfileValue();
+		profileValue.setName(name);
+		profileValue.setValue(value);
+		profileValues.add(profileValue);
+	}
+
 	@Autowired
 	private ProfilePopulator profilePopulator;
 
+	private HashMap<Integer,List<ProfileValue>> synchronizers = new HashMap<>();
 
 	public void initCurrentProfile(HttpSession session) {
 		final AccountItem account = getCurrentAccountForProfile();
@@ -115,7 +152,17 @@ public class AccountDao extends AbstractDao
 		if (session.getAttribute("currentProfileData")==null){
 			initCurrentProfile(session);
 		}
-		return (ProfileData)session.getAttribute("currentProfileData");
+		final ProfileData profileData = (ProfileData)session.getAttribute("currentProfileData");
+		if (synchronizers.containsKey(profileData.getId())) {
+			final List<ProfileValue> values = synchronizers.get(profileData.getId());
+			for (ProfileValue value: values) {
+				if (value.getName().equals("balance")) {
+					profileData.setBalance((BigDecimal) value.getValue());
+				}
+			}
+			synchronizers.remove(profileData.getId());
+		}
+		return profileData;
 	}
 
 	public void addFriend(AccountItem account, Integer friendId)

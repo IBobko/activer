@@ -17,6 +17,29 @@ window.ACTIVER.Global = {
         this.stompClient.send("/actions",{},JSON.stringify(data));
     },
     handlers:{},
+
+    /**
+     * Функция устанавливает триггеры на сообщения, приходящие через WebSocket
+     *
+     * @param type тип сообщения
+     * @param f Функция содержащая код обработки
+     */
+    on: function(type,f) {
+        if (typeof type == "string" && typeof f == "function") {
+            if (this.handlers.hasOwnProperty(type)) {
+                if (this.handlers[type] instanceof Array) {
+                    this.handlers[type].push(f);
+                } else if (this.handlers[type] instanceof Function)  {
+                    this.handlers[type] = [this.handlers[type],f];
+                } else {
+                    this.handlers[type] = [f];
+                }
+            } else {
+                this.handlers[type] = [f];
+            }
+        }
+    },
+
     connect: function() {
         var that = this;
         var socket = new SockJS(window.ACTIVER.context_path + '/global');
@@ -25,8 +48,16 @@ window.ACTIVER.Global = {
             console.log(frame);
             that.stompClient.subscribe('/user/global2', function (greeting) {
                 var result = JSON.parse(greeting.body);
-                if (that.handlers[result.type] != undefined) {
-                    that.handlers[result.type](result);
+                if (that.handlers.hasOwnProperty(result.type)) {
+                    if (that.handlers[result.type] instanceof Array) {
+                        for (var index in that.handlers[result.type]) {
+                            if (that.handlers[result.type].hasOwnProperty(index)) {
+                                that.handlers[result.type][index](result);
+                            }
+                        }
+                    } else {
+                        that.handlers[result.type](result);
+                    }
                 } else {
                     if (that.onPRIVATE_MESSAGE != null) {
                         that.onPRIVATE_MESSAGE(result);

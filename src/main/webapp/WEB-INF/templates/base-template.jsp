@@ -163,9 +163,23 @@
 
     });
 
+
+    ACTIVER.Global.on("SPENT",function(data){
+        var popupWindow = $('#popupWindow');
+        var sum = data.message * 1;
+        if (sum == 0) {
+            popupWindow.html("На вашем счету недостаточно средств");
+        } else {
+            popupWindow.html("Потрачен " + sum + " доллар");
+        }
+        popupWindow.show();
+    });
+
+
     if (window.ACTIVER.Global.onPRIVATE_MESSAGE == null) {
         window.ACTIVER.Global.onPRIVATE_MESSAGE = function (data) {
             console.log(data);
+
             if (data.type == "DATING") {
                 var link = "<a style='color:white;font-weight:bold' href=\"" + window.ACTIVER.context_path + "/dating/dispute?id=" + data.interlocutor + "\">сюда</a>";
                 $('#popupWindow').html("Вас вызывают для общения! Быстрее присоединяйтесь. Кликните " + link + ", чтобы пообщаться");
