@@ -3,13 +3,15 @@ package ru.todo100.activer.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@SuppressWarnings({"unused", "WeakerAccess", "RedundantIfStatement"})
+/**
+ * @author Igor Bobko <limit-speed@yandex.ru>
+ */
 @Entity
 @Table(name = "authority")
 public class AuthorityItem implements java.io.Serializable {
+    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_username", referencedColumnName = "account_username", nullable = false)
-    @Id
     @NotNull
     private AccountItem account;
 
@@ -38,13 +40,8 @@ public class AuthorityItem implements java.io.Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         final AuthorityItem that = (AuthorityItem) o;
-
-        if (!account.equals(that.account)) return false;
-        if (!role.equals(that.role)) return false;
-
-        return true;
+        return account.equals(that.account) && role.equals(that.role);
     }
 
     @Override

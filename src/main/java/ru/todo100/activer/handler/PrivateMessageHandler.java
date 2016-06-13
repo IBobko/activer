@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import ru.todo100.activer.PopupMessageType;
 import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.dao.AccountGiftDao;
 import ru.todo100.activer.dao.GiftDao;
 import ru.todo100.activer.dao.MessageDao;
 import ru.todo100.activer.data.PacketMessageData;
@@ -31,6 +32,9 @@ public class PrivateMessageHandler extends AbstractMessageHandler {
     private GiftDao giftDao;
     @Value("${static.host.files}")
     private String staticHost;
+
+    @Autowired
+    private AccountGiftDao accountGiftDao;
 
     public BalanceService getBalanceService() {
         return balanceService;
@@ -63,6 +67,7 @@ public class PrivateMessageHandler extends AbstractMessageHandler {
                 GiftItem gift = (GiftItem) giftDao.get(giftId);
                 messageText = "<img src='" + staticHost + "/" + gift.getFile() + ".'/>";
                 spentMessage.setMessage(costOfGift.toString());
+                accountGiftDao.give(from.getId(),to.getId(),giftId,"Из сообщений");
             } else {
                 spentMessage.setMessage("0");
             }

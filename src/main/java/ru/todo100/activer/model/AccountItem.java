@@ -14,10 +14,11 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 
-@SuppressWarnings({"JpaDataSourceORMInspection", "unused"})
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "account")
 @DynamicUpdate
+@DynamicInsert
 @FetchProfile(name = "account-for-profile", fetchOverrides = {
         @FetchProfile.FetchOverride(entity = AccountItem.class, association = "educationItems", mode = FetchMode.JOIN),
         @FetchProfile.FetchOverride(entity = AccountItem.class, association = "childrenItems", mode = FetchMode.JOIN),
@@ -36,9 +37,10 @@ public class AccountItem extends DateChanges implements Serializable {
     @OneToOne(mappedBy="account")
     private BalanceItem balance;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_username", referencedColumnName = "account_username")
     private Set<AuthorityItem> authorities;
+
     @Column(name = "account_refer_code", nullable = false)
     private String referCode;
     @Column(name = "account_used_refer_code", nullable = false)

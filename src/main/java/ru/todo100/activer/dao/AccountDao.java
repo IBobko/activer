@@ -78,7 +78,7 @@ public class AccountDao extends AbstractDao
 		return getSession().get(this.getItemClass(), id);
 	}
 
-	public void save(AccountItem account)
+	public void save(final AccountItem account)
 	{
 		final Session session = getSession();
 		session.saveOrUpdate(account);
