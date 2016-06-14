@@ -108,7 +108,7 @@ ${profile.balance}
 <!-- Photos -->
 <div class="container-fluid photos">
     <div class="row">
-        <p class="status-line">Фотографии - ${photos.size()} <a class="pull-right" href="<c:url value="/photos/"/>">все фото</a></p>
+        <p class="status-line">Фотографии - ${photos.size()} <a class="pull-right" href="<c:url value="/photos/"/><c:if test="${!profile.my}">?accountId=${profile.id}</c:if>">все фото</a></p>
     </div>
     <div class="row">
         <div class="text-justify">

@@ -68,7 +68,7 @@
 <script>
 
     function goToAlbum(id) {
-        document.location = "<c:url value="/photos/album"/>" + id;
+        document.location = "<c:url value="/photos/album"/>" + id + "?accountId=${accountId}";
     }
 
     function albumIn(id){
