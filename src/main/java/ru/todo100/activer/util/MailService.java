@@ -59,14 +59,14 @@ public class MailService {
 				MimeMessageHelper message = new MimeMessageHelper(mimeMessage,true);
 	            message.setTo(account.getEmail());
 	            message.setFrom("no-replay@3dplenty.com");
-	            message.setSubject("Registration on 3dplenty.com");
-	            Map<String, String> model = new HashMap<String, String>();
+	            message.setSubject("Registration on onoffline.ru");
+	            Map<String, Object> model = new HashMap<>();
 	            model.put("fullName", account.getFirstName() + " " + account.getLastName());
 	            model.put("login", account.getUsername());
 	            model.put("password", account.getPassword());
-//	            String text = VelocityEngineUtils.mergeTemplateIntoString(
-//	               velocityEngine, servletContext.getRealPath("/WEB-INF/velocity/email/forgot.vm"), model);
-//	            message.setText(text, true);
+	            String text = VelocityEngineUtils.mergeTemplateIntoString(
+	               velocityEngine, "/forgot.vm", model);
+	            message.setText(text, true);
 			}
 		};
 		mailSender.send(preparator);		

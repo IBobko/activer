@@ -78,6 +78,7 @@
 			<props>
 				<prop key="resource.loader">webapp</prop>
 				<prop key="webapp.resource.loader.class">org.apache.velocity.tools.view.WebappResourceLoader</prop>
+				<prop key="webapp.resource.loader.path">/WEB-INF/velocity/email/</prop>
 			</props>
 		</property>
 	</bean>
