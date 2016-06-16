@@ -3,12 +3,9 @@ package ru.todo100.activer.handler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import ru.todo100.activer.data.MessageAccountData;
-import ru.todo100.activer.data.PhotoAvatarSizeData;
 import ru.todo100.activer.data.ReceiveMessageData;
 import ru.todo100.activer.model.AccountItem;
-import ru.todo100.activer.model.AccountPhotoItem;
 import ru.todo100.activer.populators.MessageAccountDataPopulator;
-import ru.todo100.activer.service.PhotoService;
 
 import java.security.Principal;
 
