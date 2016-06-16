@@ -60,7 +60,7 @@ public class SettingPageController {
     private InterestPopulator interestPopulator;
     private TripPopulator tripPopulator;
     private DreamPopulator dreamPopulator;
-
+    @Autowired
     private NewsService newsService;
     private PhotoDao photoDao;
 
@@ -231,12 +231,12 @@ public class SettingPageController {
 
     @ResponseBody
     @RequestMapping(value = "/uploadphoto", method = RequestMethod.POST)
-    public PhotoAvatarSizeData uploadPhoto(final HttpServletRequest req,@RequestParam(value = "photo", required = false) MultipartFile photo) throws IOException {
+    public PhotoAvatarSizeData uploadPhoto(final HttpServletRequest req, @RequestParam(value = "photo", required = false) MultipartFile photo) throws IOException {
         final String contentType = photo.getContentType();
 
         final File originalFile = new File(photo.getOriginalFilename());
         FileUtils.writeByteArrayToFile(originalFile, photo.getBytes());
-        final String theString = sendFile(originalFile,contentType);
+        final String theString = sendFile(originalFile, contentType);
 
 
         final PhotoAvatarSizeData photoAvatarSizeData = new PhotoAvatarSizeData();
@@ -262,9 +262,7 @@ public class SettingPageController {
 
         photoService1.setPhoto(accountService.getCurrentAccount().getId(), photoAvatarSizeData);
 
-        ProfileData profileData = accountService.getCurrentProfileData(req.getSession());
-
-        newsService.addNews(profileData.getId(), "Обновил фотографию");
+        newsService.addNews(accountService.getCurrentAccount().getId(), "AVATAR",photoAvatarSizeData.getPhotoOriginal());
 
         return photoAvatarSizeData;
     }

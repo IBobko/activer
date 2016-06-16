@@ -7,6 +7,7 @@ import ru.todo100.activer.data.PhotoAvatarSizeData;
 import ru.todo100.activer.data.ReceiveMessageData;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.AccountPhotoItem;
+import ru.todo100.activer.populators.MessageAccountDataPopulator;
 import ru.todo100.activer.service.PhotoService;
 
 import java.security.Principal;
@@ -16,11 +17,19 @@ import java.security.Principal;
  */
 public abstract class AbstractMessageHandler {
     private SimpMessagingTemplate template;
-    @Autowired
-    private PhotoService photoService1;
-
     protected SimpMessagingTemplate getTemplate() {
         return template;
+    }
+
+    private MessageAccountDataPopulator messageAccountDataPopulator;
+
+    public MessageAccountDataPopulator getMessageAccountDataPopulator() {
+        return messageAccountDataPopulator;
+    }
+
+    @Autowired
+    public void setMessageAccountDataPopulator(MessageAccountDataPopulator messageAccountDataPopulator) {
+        this.messageAccountDataPopulator = messageAccountDataPopulator;
     }
 
     @Autowired
@@ -31,13 +40,6 @@ public abstract class AbstractMessageHandler {
     public abstract void handle(final ReceiveMessageData message, final Principal principal);
 
     protected MessageAccountData generateAccountData(AccountItem account) {
-        final MessageAccountData messageAccountData = new MessageAccountData();
-        messageAccountData.setFirstName(account.getFirstName());
-        messageAccountData.setLastName(account.getLastName());
-        messageAccountData.setId(account.getId());
-        final PhotoAvatarSizeData photos = photoService1.getSizedPhoto(account.getId());
-        messageAccountData.setPhoto60x60(photos.getPhotoAvatar());
-
-        return messageAccountData;
+        return getMessageAccountDataPopulator().populate(account);
     }
 }

@@ -20,24 +20,19 @@ public class AccountPhotoItem extends Item {
     @Column(name = "account_id", nullable = false)
     private Integer account;
 
-    @NotNull
-    @Column(name = "photo_name", nullable = false)
+    @Column(name = "photo_name")
     private String name;
 
-    @NotNull
-    @Column(name = "photo_name_avatar", nullable = false)
+    @Column(name = "photo_name_avatar")
     private String nameAvatar;
 
-    @NotNull
-    @Column(name = "photo_name_mini", nullable = false)
+    @Column(name = "photo_name_mini")
     private String nameMini;
 
-    @NotNull
-    @Column(name = "photo_name_showing", nullable = false)
+    @Column(name = "photo_name_showing")
     private String nameShowing;
 
-    @NotNull
-    @Column(name = "photo_name_thumbnail", nullable = false)
+    @Column(name = "photo_name_thumbnail")
     private String nameThumbnail;
 
     @NotNull

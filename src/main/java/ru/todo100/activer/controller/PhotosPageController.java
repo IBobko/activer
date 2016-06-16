@@ -24,6 +24,7 @@ import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.form.PhotoAlbumForm;
 import ru.todo100.activer.model.PhotoAlbumItem;
 import ru.todo100.activer.model.PhotoItem;
+import ru.todo100.activer.service.NewsService;
 import ru.todo100.activer.util.ResizeImage;
 
 import javax.servlet.http.HttpServletRequest;
@@ -121,9 +122,14 @@ public class PhotosPageController {
             photoAlbumItem.setDescription(photoAlbumForm.getName());
             ProfileData profileData = accountService.getCurrentProfileData(request.getSession());
             photoAlbumItem.setAccountId(profileData.getId());
-            final PhotoItem photoItem = new PhotoItem();
-            photoItem.setId(photoAlbumForm.getPhotoId());
-            photoAlbumItem.setCover(photoItem);
+            if (photoAlbumForm.getPhotoId() != null) {
+                /*
+                * todo сделать проверку существует ли такая фото, принадлежит ли фото владельцу альбома
+                * */
+                final PhotoItem photoItem = new PhotoItem();
+                photoItem.setId(photoAlbumForm.getPhotoId());
+                photoAlbumItem.setCover(photoItem);
+            }
             photoAlbumDao.save(photoAlbumItem);
         }
         return "redirect:/photos";
@@ -134,18 +140,21 @@ public class PhotosPageController {
         if (accountId == 0) {
             accountId = accountService.getCurrentProfileData(session).getId();
         }
-        final PhotoAlbumItem album = photoAlbumDao.getAlbum(accountId, id);
+        final PhotoAlbumItem album = getPhotoAlbumDao().getAlbum(accountId, id);
         model.addAttribute("photos", album.getPhotos());
         model.addAttribute("album", album);
         return "photos/album";
     }
 
-    File generateMiddlePath(final File original) {
+    private File generateMiddlePath(final File original) {
         String newName = RandomStringUtils.randomAlphanumeric(6);
         final File newFile = new File(newName);
         ResizeImage.crop(original, newFile, "jpg", 300, 200);
         return newFile;
     }
+
+    @Autowired
+    private NewsService newsService;
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseBody
@@ -191,6 +200,8 @@ public class PhotosPageController {
         result.put("originalPath", theString);
         result.put("middlePath", theString2);
         result.put("id", photo1.getId());
+
+        newsService.addNews(accountService.getCurrentAccount().getId(),"PHOTO",theString2);
 
         return result.toString();
     }
