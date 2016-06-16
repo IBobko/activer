@@ -25,18 +25,18 @@ public abstract class AbstractMessageHandler {
     }
 
     @Autowired
-    public void setMessageAccountDataPopulator(MessageAccountDataPopulator messageAccountDataPopulator) {
+    protected void setMessageAccountDataPopulator(final MessageAccountDataPopulator messageAccountDataPopulator) {
         this.messageAccountDataPopulator = messageAccountDataPopulator;
     }
 
     @Autowired
-    protected void setTemplate(SimpMessagingTemplate template) {
+    protected void setTemplate(final SimpMessagingTemplate template) {
         this.template = template;
     }
 
     public abstract void handle(final ReceiveMessageData message, final Principal principal);
 
-    protected MessageAccountData generateAccountData(AccountItem account) {
+    protected MessageAccountData generateAccountData(final AccountItem account) {
         return getMessageAccountDataPopulator().populate(account);
     }
 }
