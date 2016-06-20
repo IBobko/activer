@@ -17,6 +17,7 @@ import ru.todo100.activer.form.RegisterForm;
 import ru.todo100.activer.model.*;
 import ru.todo100.activer.populators.ProfilePopulator;
 import ru.todo100.activer.qualifier.AccountQualifier;
+import ru.todo100.activer.qualifier.Qualifier;
 import ru.todo100.activer.service.PhotoService;
 import ru.todo100.activer.service.PromoService;
 import ru.todo100.activer.service.ReferService;

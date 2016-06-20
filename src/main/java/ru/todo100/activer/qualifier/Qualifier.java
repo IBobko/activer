@@ -1,4 +1,4 @@
-package ru.todo100.activer.data;
+package ru.todo100.activer.qualifier;
 
 import java.util.HashMap;
 

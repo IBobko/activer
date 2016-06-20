@@ -201,7 +201,7 @@ public class PhotosPageController {
         result.put("middlePath", theString2);
         result.put("id", photo1.getId());
 
-        newsService.addNews(accountService.getCurrentAccount().getId(),"PHOTO",theString2);
+        newsService.addNews(accountService.getCurrentAccount().getId(),"PHOTO",theString + ";" + theString2);
 
         return result.toString();
     }

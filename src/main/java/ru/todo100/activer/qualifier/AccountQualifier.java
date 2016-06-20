@@ -1,6 +1,5 @@
 package ru.todo100.activer.qualifier;
 
-import ru.todo100.activer.data.Qualifier;
 import ru.todo100.activer.form.FriendSearchForm;
 
 /**

@@ -20,7 +20,7 @@ import ru.todo100.activer.dao.AccountGiftDao;
 import ru.todo100.activer.dao.GiftDao;
 import ru.todo100.activer.data.AccountGiftData;
 import ru.todo100.activer.data.ProfileData;
-import ru.todo100.activer.data.Qualifier;
+import ru.todo100.activer.qualifier.Qualifier;
 import ru.todo100.activer.model.AccountGiftItem;
 import ru.todo100.activer.model.GiftItem;
 import ru.todo100.activer.service.PayPalService;

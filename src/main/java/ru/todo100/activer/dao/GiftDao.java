@@ -1,6 +1,6 @@
 package ru.todo100.activer.dao;
 
-import ru.todo100.activer.data.Qualifier;
+import ru.todo100.activer.qualifier.Qualifier;
 import ru.todo100.activer.model.GiftItem;
 
 import javax.transaction.Transactional;

@@ -11,7 +11,7 @@ import ru.todo100.activer.dao.NetworkListCacheIDao;
 import ru.todo100.activer.data.PartnerData;
 import ru.todo100.activer.data.PartnerInfo;
 import ru.todo100.activer.data.PartnerQualifier;
-import ru.todo100.activer.data.Qualifier;
+import ru.todo100.activer.qualifier.Qualifier;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.NetworkListCacheItem;
 import ru.todo100.activer.service.PartnerService;

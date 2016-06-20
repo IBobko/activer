@@ -262,7 +262,7 @@ public class SettingPageController {
 
         photoService1.setPhoto(accountService.getCurrentAccount().getId(), photoAvatarSizeData);
 
-        newsService.addNews(accountService.getCurrentAccount().getId(), "AVATAR",photoAvatarSizeData.getPhotoOriginal());
+        newsService.addNews(accountService.getCurrentAccount().getId(), "AVATAR",showingSize + ";" + size100);
 
         return photoAvatarSizeData;
     }
