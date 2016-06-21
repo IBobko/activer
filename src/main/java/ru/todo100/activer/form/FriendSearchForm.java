@@ -1,5 +1,7 @@
 package ru.todo100.activer.form;
 
+import org.springframework.util.StringUtils;
+
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
@@ -12,6 +14,17 @@ public class FriendSearchForm {
     private String countryCode;
     private String city;
     private String birthDay;
+
+    public boolean isNull() {
+        return StringUtils.isEmpty(searchString) &&
+                StringUtils.isEmpty(email) &&
+                StringUtils.isEmpty(sex) &&
+                StringUtils.isEmpty(firstName) &&
+                StringUtils.isEmpty(lastName) &&
+                StringUtils.isEmpty(countryCode) &&
+                StringUtils.isEmpty(city) &&
+                StringUtils.isEmpty(birthDay);
+    }
 
     public String getSearchString() {
         return searchString;

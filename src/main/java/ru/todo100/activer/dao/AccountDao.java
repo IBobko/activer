@@ -16,6 +16,7 @@ import ru.todo100.activer.form.FriendSearchForm;
 import ru.todo100.activer.form.RegisterForm;
 import ru.todo100.activer.model.*;
 import ru.todo100.activer.populators.ProfilePopulator;
+import ru.todo100.activer.populators.TripPopulator;
 import ru.todo100.activer.qualifier.AccountQualifier;
 import ru.todo100.activer.qualifier.Qualifier;
 import ru.todo100.activer.service.PhotoService;
@@ -102,6 +103,9 @@ public class AccountDao extends AbstractDao
 		return accountItem;
 	}
 
+	@Autowired
+	private TripPopulator tripPopulator;
+
 	public AccountItem getCurrentAccount()
 	{
 		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -165,6 +169,13 @@ public class AccountDao extends AbstractDao
 				}
 				if (value.getName().equals("showPremium")) {
 					profileData.setShowPremium((Boolean) value.getValue());
+				}
+				if (value.getName().equals("trips")) {
+					final List<TripData> trips = new ArrayList<>();
+					for (TripItem item : (Set<TripItem>)value.getValue()) {
+						trips.add(tripPopulator.populate(item));
+					}
+					profileData.setTrips(trips);
 				}
 			}
 			synchronizers.remove(profileData.getId());
@@ -261,6 +272,7 @@ public class AccountDao extends AbstractDao
 				break;
 			}
 		}
+		addSynchronizer(account.getId(),"trips",account.getTripItems());
 	}
 
 	public AccountItem getRandomOnlineAccount(HttpSession session) {
@@ -288,6 +300,9 @@ public class AccountDao extends AbstractDao
 	}
 
 	public List<FriendData> getByQualifier(AccountQualifier qualifier) {
+		if (qualifier.getFriendSearchForm().isNull()) {
+			return new ArrayList<>();
+		}
 		Criteria criteria = getCriteria();
 		if (qualifier.getStart() != null) {
 			criteria.setFirstResult(qualifier.getStart());

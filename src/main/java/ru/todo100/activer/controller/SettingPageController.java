@@ -344,7 +344,7 @@ public class SettingPageController {
     }
 
     @RequestMapping(value = "/trips", method = RequestMethod.GET)
-    public String trips(Model model) {
+    public String trips(final Model model) {
         model.addAttribute("pageType", "settings/info/trip");
 
         final TripForm tripForm = new TripForm();
@@ -376,6 +376,7 @@ public class SettingPageController {
             }
             final Set<TripItem> trips = account.getTripItems();
             trips.add(tripItem);
+            accountService.addSynchronizer(account.getId(),"trips",trips);
             accountService.save(account);
         }
         return "redirect:/settings/trips";
