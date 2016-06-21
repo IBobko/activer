@@ -12,7 +12,7 @@
             <li><a href="<c:url value="/gifts/id${profile.id}"/>">${profile.gifts.size()} подарков</a></li>
             <li><a href="<c:url value="/friend/list/id${profile.id}"/>">${friends.friends.size()} друга</a></li>
             <li><a href="<c:url value="/photos/?accountId=${profile.id}"/>">${photos.size()} фото</a></li>
-            <li><a href="#">${profile.interests.size()} интересов</a></li>
+            <li><a href="#interests">${profile.interests.size()} интересов</a></li>
         </ul>
     </div>
 </div>
@@ -118,12 +118,12 @@
 
 <!-- Photos -->
 <div class="container-fluid photos">
-    <div class="row">
+    <div class="row" data-toggle="collapse" href="#collapsePhoto">
         <p class="status-line">Фотографии - ${photos.size()} <a class="pull-right"
                                                                 href="<c:url value="/photos/"/><c:if test="${!profile.my}">?accountId=${profile.id}</c:if>">все
             фото</a></p>
     </div>
-    <div class="row">
+    <div id="collapsePhoto" class="row panel-collapse collapse <c:if test="${photos.size() != 0}">in</c:if>">
         <div class="text-justify">
             <div class="gallery">
                 <c:forEach items="${photos}" var="photo">
@@ -144,10 +144,10 @@
 
 <!-- Interests -->
 <div class="container-fluid interests">
-    <div class="row">
-        <p class="status-line">Мои интересы - ${profile.interests.size()}</p>
+    <div class="row" data-toggle="collapse" href="#collapseInterests">
+        <p class="status-line"><a name="interests"></a> Мои интересы - ${profile.interests.size()}</p>
     </div>
-    <div class="row text-justify">
+    <div id="collapseInterests" class="row text-justify panel-collapse collapse <c:if test="${profile.interests.size() != 0}">in</c:if>">
         <ul class="nav nav-pills">
             <c:forEach items="${profile.interests}" var="interest">
                 <li><a href="#">${interest.name}</a></li>
@@ -206,12 +206,12 @@
 
 <!-- Travels -->
 <div class="container-fluid travels">
-    <div class="row">
+    <div class="row" data-toggle="collapse" href="#collapseTrips">
         <p class="status-line">Мои путешествия - ${profile.trips.size()} <a class="pull-right"
                                                                             href="<c:url value="/settings/trips"/>">добавить</a>
         </p>
     </div>
-    <div class="row">
+    <div class="row panel-collapse collapse <c:if test="${profile.trips.size() != 0}">in</c:if>" id="collapseTrips">
         <div id="worldmap" width="640" height="400" style="overflow:hidden;float:left"></div>
         <div class="col-lg-5 col-xs-6">
             <ul class="list-unstyled">
@@ -342,4 +342,3 @@
     });
 </script>
 <script type="text/javascript" src="<c:url value="/resources/yoxview/yoxview-init.js"/>"></script>
-
