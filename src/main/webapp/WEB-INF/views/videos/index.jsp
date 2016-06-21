@@ -29,9 +29,6 @@
     <c:forEach items="${videos}" var="video">
         <li>${video.body}<br/>
             <pre>${video.description}</pre>
-                <%--<div onmousemove="albumIn(${photo.id})" style="height: 202px;" class="photoWindow">--%>
-                <%--<img src="http://onoffline.ru/static/upload/files/${photo.middlePath}.jpg" style="width:200px;height:150px"/>--%>
-                <%--</div>--%>
         </li>
     </c:forEach>
 </ul>

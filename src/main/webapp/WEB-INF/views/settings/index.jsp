@@ -80,7 +80,7 @@
                 <h4 class="modal-title" id="modalLabel">Выберите область</h4>
             </div>
             <div class="modal-body" style="height:500px;width:600px">
-                <img id="renderImage" style="display:none" src="http://onoffline.ru/static/upload/files/UJi9sX.jpg.jpg" />
+                <img id="renderImage" style="display:none" src="${staticFiles}/UJi9sX.jpg.jpg" />
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Выбрать</button>

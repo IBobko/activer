@@ -126,9 +126,10 @@
     <div class="row">
         <div class="text-justify">
             <div class="gallery">
-
                 <c:forEach items="${photos}" var="photo">
-                    <img class="img-responsive" src="http://onoffline.ru/static/upload/files/${photo.smallPath}.jpg"/>
+                    <a href="<c:url value="/photos/album${photo.albumId}?accountId=${profile.id}#rrr=${photo.id}"/>">
+                        <img class="img-responsive" src="${staticFiles}/${photo.smallPath}.jpg"/>
+                    </a>
                 </c:forEach>
             </div>
             <c:if test="${profile.my}">

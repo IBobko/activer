@@ -12,7 +12,7 @@
 <div style="overflow: hidden">
     <div style="width:300px;float:left">
 
-        <img src="http://onoffline.ru/static/upload/files/${flirtData.opponentAvatar}.jpg"
+        <img src="${staticFiles}/${flirtData.opponentAvatar}.jpg"
              style="width:117px;float:left;margin:10px"/>
         <h4 style="color: #3F51B5;font-weight:bold;">${flirtData.opponentFirstName} ${flirtData.opponentLastName}</h4>
         <div style="margin:10px 0;font-weight: normal">Ваш собеседник</div>
@@ -93,7 +93,7 @@
 
 <div style="display:none" id="flirtMessageTemplate">
     <div style="overflow: hidden">
-        <img src="http://onoffline.ru/static/upload/files/#avatar" style="float:left;margin:10px;width:50px;"/>
+        <img src="${staticFiles}/#avatar" style="float:left;margin:10px;width:50px;"/>
         #name<br/><span style="font-weight: normal">#message</span><span
             style="float:right">#time</span>
     </div>

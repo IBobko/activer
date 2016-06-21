@@ -23,14 +23,6 @@
         margin: 10px;
         list-style: none;
     }
-
-    #yoxview_popupWrap {
-        z-index: 100000;
-    }
-
-    .yoxview_popupBarPanel {
-        z-index: 100000;
-    }
 </style>
 
 
@@ -46,6 +38,10 @@
                     backgroundOpacity: 0.8,
                     lang: 'ru',
                 });
+        if (document.location.hash!="") {
+            var result = document.location.hash.match(/(\S+)=(\d+)/);
+            $(".yoxview li a#photo-"+result[2]+" img").click();
+        }
 
     });
 </script>
@@ -110,7 +106,7 @@
 <ul id="photos" class="thumbnails yoxview">
     <c:forEach items="${photos}" var="photo">
         <li>
-            <a href="${staticFiles}/${photo.path.trim()}.jpg"><img photo-id="${photo.id}"
+            <a id="photo-${photo.id}" href="${staticFiles}/${photo.path.trim()}.jpg"><img photo-id="${photo.id}"
                                                                    style="width:200px; height:130px"
                                                                    src="${staticFiles}/${photo.middlePath.trim()}.jpg"
                                                                    alt="${photo.description}"
@@ -119,7 +115,7 @@
     </c:forEach>
 </ul>
 
-<script>
+<script type="text/javascript">
     function deletePhoto() {
         var data = {
             photoId: window.currentImage

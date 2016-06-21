@@ -15,12 +15,12 @@
                     ${profile.firstName} ${profile.lastName}<br/>${disputeData.yourPosition}
                 </td>
                 <td>
-                    <img src="http://onoffline.ru/static/upload/files/${photo}.jpg" style="width:117px;margin:10px"/>
+                    <img src="${staticFiles}/${photo}.jpg" style="width:117px;margin:10px"/>
                 </td>
                 <td>
                     <img src="<c:url value="/resources/img/vs.jpg"/>" style="margin:10px"/></td>
                 <td>
-                    <img src="http://onoffline.ru/static/upload/files/${disputeData.opponentAvatar}.jpg"
+                    <img src="${staticFiles}/${disputeData.opponentAvatar}.jpg"
                          style="width:117px;margin:10px"/>
                 </td>
                 <td>
@@ -66,7 +66,7 @@
 </script>
 <div style="display:none" id="disputeMessageTemplate">
     <div style="overflow: hidden">
-        <img src="http://onoffline.ru/static/upload/files/#avatar" style="float:left;margin:10px;width:50px;"/>
+        <img src="${staticFiles}/#avatar" style="float:left;margin:10px;width:50px;"/>
         #name<br/><span style="font-weight: normal">#message</span><span
             style="float:right">#time</span>
     </div>
