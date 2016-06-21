@@ -26,7 +26,7 @@ public class FriendDao extends AbstractDao  {
         return AccountFriendRelationItem.class;
     }
 
-    public FriendsData1 getFriends1(Integer accountId) {
+    public FriendsData getFriends(final Integer accountId) {
         @SuppressWarnings("unchecked")
         final List<AccountFriendRelationItem> outRelations = getCriteria().add(Restrictions.eq("account.id", accountId)).list();
 
@@ -42,12 +42,9 @@ public class FriendDao extends AbstractDao  {
         HashSet<AccountFriendRelationItem> deletedOut = new HashSet<>();
 
         for (final AccountFriendRelationItem outRelation : outRelations) {
-            boolean find = false;
-
             for (final AccountFriendRelationItem inRelation : inRelations) {
                 if (outRelation.getFriendAccount().getId().equals(inRelation.getAccount().getId())) {
                     friends.add(friendPopulate(outRelation.getFriendAccount()));
-                    find = true;
                     deletedIn.add(outRelation);
                     deletedOut.add(inRelation);
                     break;
@@ -67,7 +64,7 @@ public class FriendDao extends AbstractDao  {
             }
         }
 
-        final FriendsData1 friendsData = new FriendsData1();
+        final FriendsData friendsData = new FriendsData();
         friendsData.setFriends(friends);
         friendsData.setOutRequest(outRequest);
         friendsData.setInRequest(inRequest);

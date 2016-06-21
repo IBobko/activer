@@ -1,4 +1,4 @@
-<%--@elvariable id="friendData" type="ru.todo100.activer.data.FriendsData1"--%>
+<%--@elvariable id="friendData" type="ru.todo100.activer.data.FriendsData"--%>
 <%--@elvariable id="staticFiles" type="java.lang.String"--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -9,7 +9,6 @@
         margin: 20px 0;
         overflow: hidden;
         float:left;
-        overflow: hidden;
     }
 
     .searchBlock{

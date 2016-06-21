@@ -1,6 +1,5 @@
 package ru.todo100.activer.controller;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -8,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.WallDao;
+import ru.todo100.activer.data.MessageData;
 import ru.todo100.activer.data.ReceiveWallData;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.WallItem;
@@ -66,7 +66,7 @@ public class WallController {
 
     @RequestMapping("/publish")
     @ResponseBody
-    public String publish(final ReceiveWallData receiveWallData, final BindingResult bindingResult) throws IOException {
+    public MessageData publish(final ReceiveWallData receiveWallData, final BindingResult bindingResult) throws IOException {
         if (!bindingResult.hasErrors()) {
             final AccountItem account = getAccountService().get(receiveWallData.getId());
             final AccountItem currentAccount = getAccountService().getCurrentAccount();
@@ -77,10 +77,9 @@ public class WallController {
             post.setSender(currentAccount.getId());
             getWallService().save(post);
             getNewsService().addNews(currentAccount.getId(), "WALL", receiveWallData.getText());
-            final JSONObject jsonObject = new JSONObject(getWallPopulator().populate(post));
-            return jsonObject.toString();
+            return getWallPopulator().populate(post);
         }
-        return "";
+        return null;
     }
 }
 

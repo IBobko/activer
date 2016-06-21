@@ -61,8 +61,8 @@ public class NewsPageController {
 
     public List<Integer> getAccounts(final HttpSession session){
         final List<Integer> accounts = new ArrayList<>();
-        final List<FriendData> friends = friendsService.getFriendData1(session).getFriends();
-        final List<FriendData> outRequest = friendsService.getFriendData1(session).getOutRequest();
+        final List<FriendData> friends = friendsService.getFriendData(session).getFriends();
+        final List<FriendData> outRequest = friendsService.getFriendData(session).getOutRequest();
         for (FriendData friendData: friends) {
             accounts.add(friendData.getId());
         }

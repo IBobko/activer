@@ -24,15 +24,6 @@
 <%--</c:forEach>--%>
 <%--</ul>--%>
 
-<style>
-    #yoxview_popupWrap {
-        z-index: 100000;
-    }
-
-    .yoxview_popupBarPanel {
-        z-index: 100000;
-    }
-</style>
 
 
 <h3 class="title">Новости</h3>

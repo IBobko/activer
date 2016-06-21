@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
-public class FriendsData1 implements Serializable {
+public class FriendsData implements Serializable {
     private List<FriendData> friends;
     private List<FriendData> outRequest;
     private List<FriendData> inRequest;

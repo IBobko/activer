@@ -28,6 +28,17 @@ public class ProfileData implements Serializable {
     private boolean isOnline;
     private boolean isShowPremium;
     private boolean isPremium;
+    private boolean isFriend;
+    private boolean isShowOnline;
+    private boolean my = false;
+
+    public boolean isFriend() {
+        return isFriend;
+    }
+
+    public void setFriend(boolean friend) {
+        isFriend = friend;
+    }
 
     public boolean isPremium() {
         return isShowPremium && isPremium;
@@ -36,8 +47,6 @@ public class ProfileData implements Serializable {
     public void setPremium(boolean premium) {
         isPremium = premium;
     }
-
-    private boolean isShowOnline;
 
     public boolean isShowPremium() {
         return isShowPremium;
@@ -54,8 +63,6 @@ public class ProfileData implements Serializable {
     public void setShowOnline(boolean showOnline) {
         isShowOnline = showOnline;
     }
-
-    private boolean my = false;
 
     public BigDecimal getBalance() {
         return balance;

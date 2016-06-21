@@ -27,7 +27,7 @@
 <ul class="gifts">
     <c:forEach items="${pagedData.elements}" var="gift">
     <li>
-    <a href="<c:url value="/admin/gifts/add?id=${gift.id}"/>"><img src="http://todo100.ru:18080/static/upload/files/${gift.file}.jpg"/><br/>${gift.name}</a>
+    <a href="<c:url value="/admin/gifts/add?id=${gift.id}"/>"><img src="${staticFiles}/${gift.file}.jpg"/><br/>${gift.name}</a>
     </li>
 </c:forEach>
 </ul>

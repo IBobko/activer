@@ -7,10 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.dao.FriendDao;
 import ru.todo100.activer.dao.PhotosDao;
 import ru.todo100.activer.dao.WallDao;
-import ru.todo100.activer.data.MessageData;
-import ru.todo100.activer.data.ProfileData;
+import ru.todo100.activer.data.*;
 import ru.todo100.activer.form.ChangeProfileForm;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.PhotoItem;
@@ -51,6 +51,9 @@ public class ProfilePageController
 
 	@Autowired
 	private FriendsService friendsService;
+
+	@Autowired
+	private FriendDao friendDao;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String index(final HttpServletRequest request)
@@ -107,18 +110,40 @@ public class ProfilePageController
 	public String people(Model model, @PathVariable Integer id,HttpServletRequest request)
 	{
 		ProfileData profile = accountService.getCurrentProfileData(request.getSession());
+		ProfileData currentProfile = accountService.getCurrentProfileData(request.getSession());
+
 		if (!profile.getId().equals(id)) {
 			final AccountItem account = accountService.get(id);
 			profile = profilePopulator.populate(account);
+			FriendsData friends = friendDao.getFriends(profile.getId());
+
+
+			for (FriendData friendData: friends.getFriends()) {
+				if (friendData.getId().equals(currentProfile.getId())){
+					profile.setFriend(true);
+				}
+			}
+
+			for (FriendData friendData: friends.getOutRequest()) {
+				if (friendData.getId().equals(currentProfile.getId())){
+					profile.setFriend(true);
+				}
+			}
+			model.addAttribute("friends", friendDao.getFriends(profile.getId()));
+		} else {
+			model.addAttribute("friends", friendsService.getFriendData(request.getSession()));
 		}
 
 		final List<PhotoItem> photos = photosDao.getByAccount(profile.getId());
 
-		final String photo = photoService1.getSizedPhoto(profile.getId()).getPhotoAvatar();
+		final PhotoAvatarSizeData avatarPhotos = photoService1.getSizedPhoto(profile.getId());
+
 		model.addAttribute("profile", profile);
-		model.addAttribute("friends", friendsService.getFriendData1(request.getSession()));
+
 		model.addAttribute("photos", photos);
-		model.addAttribute("photo", photo);
+
+		model.addAttribute("showingPhoto", avatarPhotos.getPhotoShowing());
+		model.addAttribute("photo", avatarPhotos.getPhotoAvatar());
 		populatePersonOfPage(model, profile);
 		return "profile/index";
 	}

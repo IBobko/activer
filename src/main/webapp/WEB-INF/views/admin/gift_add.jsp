@@ -16,7 +16,7 @@
         <form:hidden path="id"/>
         <c:if test="${not empty giftAddForm.id}">
 
-            <img src="http://todo100.ru:18080/static/upload/files/${giftAddForm.fileName}.jpg"/>
+            <img src="${staticFiles}/${giftAddForm.fileName}.jpg"/>
 
         </c:if>
         <div style="margin: 15px 0">

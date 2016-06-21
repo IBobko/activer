@@ -12,7 +12,7 @@
 <ul class="gifts">
 <c:forEach items="${gifts}" var="gift">
     <li> От ${gift.senderFirstName} ${gift.senderLastName} (${gift.givenDate})<br/>
-        <img src="http://todo100.ru:18080/static/upload/files/${gift.fileName}.jpg"/><br/>
+        <img src="${staticFiles}/${gift.fileName}.jpg"/><br/>
             ${gift.message}<br/><br/><br/>
     </li>
 </c:forEach>

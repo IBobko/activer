@@ -68,6 +68,11 @@
 		<put-attribute name="content" value="/WEB-INF/views/friend/index.jsp"/>
 	</definition>
 
+	<definition name="friend/list" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/friend/list.jsp"/>
+	</definition>
+
+
 	<definition name="test/test" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/test/test.jsp"/>
 	</definition>

@@ -41,7 +41,7 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
 	{
 		getAccountService().initCurrentProfile(httpServletRequest.getSession());
 		/*@todo возможно не стоит этот методо все таки вызывать здесь*/
-		httpServletRequest.setAttribute("friendsData", friendsService.getFriendData1(httpServletRequest.getSession()));
+		httpServletRequest.setAttribute("friendsData", friendsService.getFriendData(httpServletRequest.getSession()));
 		httpServletRequest.getSession().setAttribute("unreadMessages",messageService.unreadCount(accountService.getCurrentProfileData(httpServletRequest.getSession()).getId()));
 		if (httpServletRequest.getParameter("remember-me") != null) {
 			Cookie cookie = new Cookie("remember-me", "1");

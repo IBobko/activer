@@ -3,13 +3,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<link href="<c:url value="/resources/yoxview/yoxview.css"/>" rel="stylesheet"/>
+
 <!-- Info panel -->
 <div class="container-fluid info-panel">
     <div class="row">
         <ul class="nav nav-pills">
-            <li><a href="#">${profile.gifts.size()} подарков</a></li>
-            <li><a href="#">${friends.friends.size()} друга</a></li>
-            <li><a href="#">${photos.size()} фото</a></li>
+            <li><a href="<c:url value="/gifts/id${profile.id}"/>">${profile.gifts.size()} подарков</a></li>
+            <li><a href="<c:url value="/friend/list/id${profile.id}"/>">${friends.friends.size()} друга</a></li>
+            <li><a href="<c:url value="/photos/?accountId=${profile.id}"/>">${photos.size()} фото</a></li>
             <li><a href="#">${profile.interests.size()} интересов</a></li>
         </ul>
     </div>
@@ -26,14 +28,24 @@
     </div>
     <div class="row">
         <div class="media">
-            <div class="media-left media-heading">
-                <a href="#">
-                    <img class="media-object" src="http://todo100.ru:18080/static/upload/files/${photo}.png">
+            <div class="media-left media-heading yoxview">
+                <a href="${staticFiles}/${showingPhoto}.jpg">
+                    <img alt="First" title="First image" class="media-object" src="${staticFiles}/${photo}.">
                 </a>
             </div>
             <div class="media-body">
-                <a href="javascript:window.ACTIVER.Global.submit({action:'add-to-friend','id':1});">Добавить в
-                    друзья</a>
+
+                <c:if test="${!profile.my}">
+                    <c:if test="${profile.friend}">
+                        <a href="<c:url value="/friend/delete/${profile.id}"/>">Убрать из друзей</a>
+                    </c:if>
+
+                    <c:if test="${!profile.friend}">
+                        <a href="<c:url value="/friend/add/${profile.id}"/>">Добавить в друзья</a>
+                    </c:if>
+                </c:if>
+
+
                 <h4 class="media-heading">${profile.firstName}&nbsp;${profile.lastName}'27</h4>
                 <table class="table">
                     <tr>
@@ -107,7 +119,9 @@
 <!-- Photos -->
 <div class="container-fluid photos">
     <div class="row">
-        <p class="status-line">Фотографии - ${photos.size()} <a class="pull-right" href="<c:url value="/photos/"/><c:if test="${!profile.my}">?accountId=${profile.id}</c:if>">все фото</a></p>
+        <p class="status-line">Фотографии - ${photos.size()} <a class="pull-right"
+                                                                href="<c:url value="/photos/"/><c:if test="${!profile.my}">?accountId=${profile.id}</c:if>">все
+            фото</a></p>
     </div>
     <div class="row">
         <div class="text-justify">
@@ -118,7 +132,9 @@
                 </c:forEach>
             </div>
             <c:if test="${profile.my}">
-                <button onclick="document.location='<c:url value="/photos"/>';" class="btn btn-default upload-photo">Загрузить фото</button>
+                <button onclick="document.location='<c:url value="/photos"/>';" class="btn btn-default upload-photo">
+                    Загрузить фото
+                </button>
             </c:if>
         </div>
     </div>
@@ -137,8 +153,10 @@
             </c:forEach>
             <c:if test="${profile.my}">
                 <li>
-                <button class="btn btn-default" onclick="document.location='<c:url value="/settings/interests"/>'">+ Добавить</button>
-            </li>
+                    <button class="btn btn-default" onclick="document.location='<c:url value="/settings/interests"/>'">+
+                        Добавить
+                    </button>
+                </li>
             </c:if>
         </ul>
 
@@ -146,32 +164,59 @@
 </div>
 <!-- /Interests -->
 <style type="text/css">
-    .worldmap {fill:white;stroke:black;stroke-width:0.5px;}
-    .worldmap:hover {fill:#e0e0e0;stroke:black;stroke-width:0.5px;}
+    .worldmap {
+        fill: white;
+        stroke: black;
+        stroke-width: 0.5px;
+    }
 
-    .worldmap_1 {fill:#f08080;stroke:black;stroke-width:0.5px;}
-    .worldmap_1:hover {fill:#ff0000;stroke:black;stroke-width:1px;}
+    .worldmap:hover {
+        fill: #e0e0e0;
+        stroke: black;
+        stroke-width: 0.5px;
+    }
 
-    .worldmap_2 {fill:#8080f0;stroke:black;stroke-width:0.5px;}
-    .worldmap_2:hover {fill:#0000ff;stroke:black;stroke-width:1px;}
+    .worldmap_1 {
+        fill: #f08080;
+        stroke: black;
+        stroke-width: 0.5px;
+    }
+
+    .worldmap_1:hover {
+        fill: #ff0000;
+        stroke: black;
+        stroke-width: 1px;
+    }
+
+    .worldmap_2 {
+        fill: #8080f0;
+        stroke: black;
+        stroke-width: 0.5px;
+    }
+
+    .worldmap_2:hover {
+        fill: #0000ff;
+        stroke: black;
+        stroke-width: 1px;
+    }
 </style>
 <script src="<c:url value="/resources/js/worldmap.js"/>"></script>
-
-
-
 
 
 <!-- Travels -->
 <div class="container-fluid travels">
     <div class="row">
-        <p class="status-line">Мои путешествия - ${profile.trips.size()} <a class="pull-right" href="<c:url value="/settings/trips"/>">добавить</a></p>
+        <p class="status-line">Мои путешествия - ${profile.trips.size()} <a class="pull-right"
+                                                                            href="<c:url value="/settings/trips"/>">добавить</a>
+        </p>
     </div>
     <div class="row">
         <div id="worldmap" width="640" height="400" style="overflow:hidden;float:left"></div>
         <div class="col-lg-5 col-xs-6">
             <ul class="list-unstyled">
                 <c:forEach items="${profile.trips}" var="trip">
-                    <li><a href="#">${trip.country} (${trip.countryCode.substring(0,2)}) <span class="hidden-xs hidden-sm">${trip.year}</span></a> ${trip.city}</li>
+                    <li><a href="#">${trip.country} (${trip.countryCode.substring(0,2)}) <span
+                            class="hidden-xs hidden-sm">${trip.year}</span></a> ${trip.city}</li>
                 </c:forEach>
             </ul>
         </div>
@@ -181,17 +226,14 @@
 <jsp:useBean id="worldMap" class="ru.todo100.activer.jsp.WorldMap"/>
 <script type="text/javascript">
 
-    var map=new WorldMap({
-        element : 'worldmap',
-        width : 640,
-        height : 400,
+    var map = new WorldMap({
+        element: 'worldmap',
+        width: 640,
+        height: 400,
         c: {${worldMap.generateCData(profile.trips)}}
     })
 
 </script>
-
-
-
 
 
 <!-- Dreams -->
@@ -200,13 +242,12 @@
         <p class="status-line">Мои мечты - ${profile.dreams.size()} <a class="pull-right" href="#">добавить</a></p>
     </div>
     <div class="row">
-
         <c:forEach items="${profile.dreams}" var="dream">
             <div class="col-xs-4">
                 <div class="media">
                     <div class="media-left media-middle">
                         <a href="#">
-                            <img class="media-object " src="http://todo100.ru:18080/static/upload/files/${dream.photo}.png">
+                            <img class="media-object" src="${staticFiles}/${dream.photo}.png">
                         </a>
                     </div>
                     <div class="media-body media-middle hidden-sm hidden-xs">
@@ -215,7 +256,6 @@
                 </div>
             </div>
         </c:forEach>
-
     </div>
 </div>
 <!-- /Dreams -->
@@ -240,37 +280,39 @@
             <c:forEach items="${wall}" var="item">
                 <li class="media">
                     <div class="media-body">
-                        <h4 class="media-heading">${item.from.firstName} ${item.from.lastName}<span> - <fmt:formatDate value="${item.date.time}" pattern="yyyy-MM-dd H:m:s"/></span></h4>
+                        <h4 class="media-heading">${item.from.firstName} ${item.from.lastName}<span> - <fmt:formatDate
+                                value="${item.date.time}" pattern="yyyy-MM-dd H:m:s"/></span></h4>
                         <p>${item.message}</p>
                     </div>
                 </li>
             </c:forEach>
 
             <c:if test="${profile.my}">
-            <form class="add-thought" id="wall">
-                <div class="form-group">
-                    <textarea class="form-control" id="wall-text" placeholder="Есть мысли?" maxlength="140" rows="2"></textarea>
+                <form class="add-thought" id="wall">
+                    <div class="form-group">
+                        <textarea class="form-control" id="wall-text" placeholder="Есть мысли?" maxlength="140"
+                                  rows="2"></textarea>
                             <span class="pull-right">
 
                             </span>
-                    <button type="submit" class="btn btn-default pull-right "><span class="fa fa-pencil"></span>
-                        Опубликовать
-                    </button>
-                </div>
-            </form>
+                        <button type="submit" class="btn btn-default pull-right "><span class="fa fa-pencil"></span>
+                            Опубликовать
+                        </button>
+                    </div>
+                </form>
             </c:if>
             <script type="text/javascript">
-                $('#wall').submit(function(){
+                $('#wall').submit(function () {
                     var data = {
                         id: ${profile.id},
                         text: $('#wall-text').val()
                     };
-                    $.post('<c:url value="/wall/publish"/>',data,function(response){
-                        var data = JSON.parse(response);
+                    $.post('<c:url value="/wall/publish"/>', data, function (data) {
+                        console.log(data);
                         var template = $('#wall-template').html();
-                        template = template.replace("%{sender-name}",data.from.firstName + " " + data.from.lastName);
-                        template = template.replace("%{text}",data.text);
-                        template = template.replace("%{date}",data.date);
+                        template = template.replace("%{sender-name}", data.from.firstName + " " + data.from.lastName);
+                        template = template.replace("%{text}", data.message);
+                        template = template.replace("%{date}", data.date);
                         $('#profile-wall').prepend(template);
                     });
                     return false;
@@ -280,3 +322,23 @@
     </div>
 </div>
 <!-- /Thoughts -->
+
+
+<script src="<c:url value="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"/>"></script>
+
+<script type="text/javascript">
+    jQuery.noConflict();
+    jQuery(document).ready(function () {
+
+
+        jQuery(".yoxview").yoxview(
+                {
+                    backgroundColor: '#000000',
+                    backgroundOpacity: 0.8,
+                    lang: 'ru',
+                });
+
+    });
+</script>
+<script type="text/javascript" src="<c:url value="/resources/yoxview/yoxview-init.js"/>"></script>
+

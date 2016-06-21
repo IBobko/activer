@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.HandlerMapping;
 import ru.todo100.activer.dao.AccountDao;
 
+import ru.todo100.activer.dao.FriendDao;
 import ru.todo100.activer.data.FriendData;
-import ru.todo100.activer.data.FriendsData1;
+import ru.todo100.activer.data.FriendsData;
 import ru.todo100.activer.form.FriendSearchForm;
-import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.qualifier.AccountQualifier;
 import ru.todo100.activer.service.FriendsService;
 
@@ -32,6 +32,9 @@ public class FriendsPageController
 
 	@Autowired
 	private FriendsService friendsService;
+
+	@Autowired
+	private FriendDao friendDao;
 
 	@RequestMapping(value = {"","/in","/out","/search"})
 	public String index(final Model model, final HttpServletRequest request, @ModelAttribute final FriendSearchForm friendSearchForm)
@@ -55,7 +58,7 @@ public class FriendsPageController
 		}
 
 		model.addAttribute("pageType","friends");
-		final FriendsData1 friends = friendsService.getFriendData1(request.getSession());
+		final FriendsData friends = friendsService.getFriendData(request.getSession());
 		model.addAttribute("friendData",friends);
 		return "friend/index";
 	}
@@ -76,9 +79,18 @@ public class FriendsPageController
 		return "redirect:/friend";
 	}
 
+	@RequestMapping(value = "/list/id{id}")
+	public String list(@PathVariable final Integer id,Model model)
+	{
+		model.addAttribute("friends",friendDao.getFriends(id));
+		return "friend/list";
+	}
+
+
+
 	@ResponseBody
 	@RequestMapping(value = "/ajax")
-	public FriendsData1 ajax(final HttpServletRequest request) {
-		return friendsService.getFriendData1(request.getSession());
+	public FriendsData ajax(final HttpServletRequest request) {
+		return friendsService.getFriendData(request.getSession());
 	}
 }
