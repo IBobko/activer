@@ -26,6 +26,35 @@ public class ProfileData implements Serializable {
     private List<AccountGiftData> gifts;
     private String role;
     private boolean isOnline;
+    private boolean isShowPremium;
+    private boolean isPremium;
+
+    public boolean isPremium() {
+        return isShowPremium && isPremium;
+    }
+
+    public void setPremium(boolean premium) {
+        isPremium = premium;
+    }
+
+    private boolean isShowOnline;
+
+    public boolean isShowPremium() {
+        return isShowPremium;
+    }
+
+    public void setShowPremium(boolean showPremium) {
+        isShowPremium = showPremium;
+    }
+
+    public boolean isShowOnline() {
+        return isShowOnline;
+    }
+
+    public void setShowOnline(boolean showOnline) {
+        isShowOnline = showOnline;
+    }
+
     private boolean my = false;
 
     public BigDecimal getBalance() {
@@ -61,7 +90,7 @@ public class ProfileData implements Serializable {
     }
 
     public boolean isOnline() {
-        return isOnline;
+        return isShowOnline && isOnline;
     }
 
     public void setOnline(boolean online) {

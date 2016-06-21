@@ -94,11 +94,13 @@ ${profile.balance}
                     </tr>
                 </table>
             </div>
-            <div class="media-right hidden-sm hidden-xs">
-                <a href="#">
-                    <img class="media-object" src="<c:url value="/resources/img/premium.png"/>">
-                </a>
-            </div>
+            <c:if test="${profile.premium}">
+                <div class="media-right hidden-sm hidden-xs">
+                    <a href="#">
+                        <img class="media-object" src="<c:url value="/resources/img/premium.png"/>">
+                    </a>
+                </div>
+            </c:if>
         </div>
     </div>
 

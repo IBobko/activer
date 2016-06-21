@@ -160,6 +160,12 @@ public class AccountDao extends AbstractDao
 				if (value.getName().equals("balance")) {
 					profileData.setBalance((BigDecimal) value.getValue());
 				}
+				if (value.getName().equals("showOnline")) {
+					profileData.setShowOnline((Boolean) value.getValue());
+				}
+				if (value.getName().equals("showPremium")) {
+					profileData.setShowPremium((Boolean) value.getValue());
+				}
 			}
 			synchronizers.remove(profileData.getId());
 		}

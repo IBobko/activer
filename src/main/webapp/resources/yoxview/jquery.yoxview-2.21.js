@@ -1877,17 +1877,20 @@ if (typeof Yox == "undefined")
                     }
                 });
 
+                if (typeof deletePhoto != 'undefined') {
+                    infoPanel.append(
+                        $("<div>", {
+                            id: "",
+                            css: {
+                                "float": "right",
+                                "padding-top": "5px"
+                            },
+                            html: "<a href='#' onclick='deletePhoto()'>Удалить</a>"
+                        })
+                    );
+                }
 
-                infoPanel.append(
-                    $("<div>", {
-                        id: "",
-                        css: {
-                            "float": "right",
-                            "padding-top": "5px"
-                        },
-                        html: "<a href='#' onclick='deletePhoto()'>Удалить</a>"
-                    })
-                );
+
 
                 if (options.infoBackOpacity === 0) {
                     infoPanel.css("background", "none");

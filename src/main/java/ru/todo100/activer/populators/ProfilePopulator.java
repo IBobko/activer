@@ -1,10 +1,7 @@
 package ru.todo100.activer.populators;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.todo100.activer.dao.AccountGiftDao;
-import ru.todo100.activer.dao.BalanceDao;
-import ru.todo100.activer.dao.GiftDao;
-import ru.todo100.activer.dao.PhotoDao;
+import ru.todo100.activer.dao.*;
 import ru.todo100.activer.data.*;
 import ru.todo100.activer.model.*;
 
@@ -28,6 +25,10 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
     private InterestPopulator interestPopulator;
     private TripPopulator tripPopulator;
     private DreamPopulator dreamPopulator;
+
+    @Autowired
+    private SettingDao settingService;
+
     @Autowired
     private AccountGiftDao accountGiftDao;
     @Autowired
@@ -177,6 +178,12 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         }
         profileData.setGifts(giftData);
         profileData.setBalance(getBalanceDao().createOrGet(accountItem).getSum());
+
+        profileData.setShowPremium(accountItem.getAuthorities().contains("ROLE_PARTNER"));
+
+        profileData.setShowOnline(Boolean.valueOf(settingService.getAccountSetting(profileData.getId(),"showOnline")));
+        profileData.setShowPremium(Boolean.valueOf(settingService.getAccountSetting(profileData.getId(),"showPremium")));
+
         return profileData;
     }
 }

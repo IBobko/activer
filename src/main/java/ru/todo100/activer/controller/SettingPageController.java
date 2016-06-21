@@ -231,7 +231,7 @@ public class SettingPageController {
 
     @ResponseBody
     @RequestMapping(value = "/uploadphoto", method = RequestMethod.POST)
-    public PhotoAvatarSizeData uploadPhoto(final HttpServletRequest req, @RequestParam(value = "photo", required = false) MultipartFile photo) throws IOException {
+    public PhotoAvatarSizeData uploadPhoto(@RequestParam(value = "photo", required = false) final MultipartFile photo) throws IOException {
         final String contentType = photo.getContentType();
 
         final File originalFile = new File(photo.getOriginalFilename());
@@ -242,14 +242,14 @@ public class SettingPageController {
         final PhotoAvatarSizeData photoAvatarSizeData = new PhotoAvatarSizeData();
         photoAvatarSizeData.setPhotoOriginal(theString);
 
-        final File fileShowingSize = getNewFile(originalFile, 300, 300);
+        final File fileShowingSize = getNewFile(originalFile, 1100, 700);
         String showingSize = sendFile(fileShowingSize, contentType);
 
 
         photoAvatarSizeData.setPhotoShowing(showingSize);
 
 
-        final File fileThumbnailSize = getNewFile(originalFile, 100, 100);
+        final File fileThumbnailSize = getNewFile(originalFile, 200, 200);
         String size100 = sendFile(fileThumbnailSize, contentType);
 
 

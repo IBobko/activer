@@ -49,8 +49,8 @@ public class PrivatePageController {
         final AccountItem accountItem = getAccountService().getCurrentAccount();
         if (!model.containsAttribute("privateForm")) {
             final PrivateForm privateForm = new PrivateForm();
-            privateForm.setShowOnline(Boolean.valueOf(getSettingService().getAccountSetting(accountItem.getId(), "showOnline")));
-            privateForm.setShowPremium(Boolean.valueOf(getSettingService().getAccountSetting(accountItem.getId(), "ShowPremium")));
+            privateForm.setShowOnline(!Boolean.valueOf(getSettingService().getAccountSetting(accountItem.getId(), "showOnline")));
+            privateForm.setShowPremium(!Boolean.valueOf(getSettingService().getAccountSetting(accountItem.getId(), "ShowPremium")));
             model.addAttribute("privateForm", privateForm);
         }
         return "private/index";
@@ -60,8 +60,11 @@ public class PrivatePageController {
     public String post(@Valid final PrivateForm privateForm, final BindingResult bindingResult) {
         if (!bindingResult.hasErrors()) {
             final AccountItem accountItem = getAccountService().getCurrentAccount();
-            getSettingService().setAccountSetting(accountItem.getId(), "showOnline", String.valueOf(privateForm.getShowOnline()));
-            getSettingService().setAccountSetting(accountItem.getId(), "showPremium", String.valueOf(privateForm.getShowPremium()));
+            getSettingService().setAccountSetting(accountItem.getId(), "showOnline", String.valueOf(!privateForm.getShowOnline()));
+            getSettingService().setAccountSetting(accountItem.getId(), "showPremium", String.valueOf(!privateForm.getShowPremium()));
+            getAccountService().addSynchronizer(accountItem.getId(),"showOnline",privateForm.getShowOnline());
+            getAccountService().addSynchronizer(accountItem.getId(),"showPremium",privateForm.getShowPremium());
+
         }
         return "redirect:/private";
     }
