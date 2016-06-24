@@ -1,5 +1,6 @@
 package ru.todo100.activer.data;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import ru.todo100.activer.json.CustomDateSerializer;
 
@@ -13,7 +14,7 @@ public class MessageData implements Serializable {
     /**
      * Идентификатор сообщения в системе
      */
-    private Integer id;
+    private Number id;
     /**
      * Тело сигнала
      */
@@ -29,7 +30,7 @@ public class MessageData implements Serializable {
     /**
      * Дата сигнала
      */
-    private Calendar date;
+    private String date;
     /**
      * Прочитан ли сигнал получателем
      */
@@ -57,11 +58,11 @@ public class MessageData implements Serializable {
     }
 
     @JsonSerialize(using = CustomDateSerializer.class)
-    public Calendar getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(final Calendar date) {
+    public void setDate(final String date) {
         this.date = date;
     }
 
@@ -81,7 +82,7 @@ public class MessageData implements Serializable {
         this.from = from;
     }
 
-    public Integer getId() {
+    public Number getId() {
         return id;
     }
 

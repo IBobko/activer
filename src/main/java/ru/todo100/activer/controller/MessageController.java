@@ -16,6 +16,7 @@ import ru.todo100.activer.data.MessageData;
 import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.MessageItem;
+import ru.todo100.activer.populators.Facade;
 import ru.todo100.activer.service.PhotoService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,7 +70,7 @@ public class MessageController {
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
             /*todo испорчено*/
-            messageData.setDate(messageItem.getAddedDate());
+            messageData.setDate(Facade.FORMAT_DD_MM_yyyy_HH_mm_ss.format(messageItem.getAddedDate().getTime()));
             DialogData dialogData = new DialogData();
             dialogDataList.add(dialogData);
             dialogData.setLastMessage(messageData);
@@ -135,8 +136,7 @@ public class MessageController {
                 data.setInterlocutor(item.getAccountFrom());
             }
 
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
-            data.setDate(item.getAddedDate());
+            data.setDate(Facade.FORMAT_DD_MM_yyyy_HH_mm_ss.format(item.getAddedDate().getTime()));
             data.setRead(item.getRead() == 1);
 
             messageData.add(data);
@@ -161,8 +161,7 @@ public class MessageController {
             messageData.setFrom(sender);
             messageData.setMessage(messageItem.getText());
 
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
-            messageData.setDate(messageItem.getAddedDate());
+            messageData.setDate(Facade.FORMAT_DD_MM_yyyy_HH_mm_ss.format(messageItem.getAddedDate().getTime()));
             DialogData dialogData = new DialogData();
             dialogDataList.add(dialogData);
             dialogData.setLastMessage(messageData);

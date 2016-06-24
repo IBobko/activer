@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
 public class MessageAccountData implements Serializable {
-    private Integer id;
+    private Number id;
     private String firstName;
     private String lastName;
     private String photo60x60;
@@ -45,7 +45,7 @@ public class MessageAccountData implements Serializable {
         this.firstName = firstName;
     }
 
-    public Integer getId() {
+    public Number getId() {
         return id;
     }
 

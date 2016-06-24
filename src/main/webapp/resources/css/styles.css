@@ -429,7 +429,7 @@ body #page-content-wrapper .thoughts .media-list form.add-thought textarea::-moz
   font-size: 12px;
   font-weight: 600;
 }
-body #page-content-wrapper .thoughts .media-list form.add-thought button {
+body #page-content-wrapper .thoughts form.add-thought button {
   font-size: 10px;
   font-weight: bold;
   color: #fff;

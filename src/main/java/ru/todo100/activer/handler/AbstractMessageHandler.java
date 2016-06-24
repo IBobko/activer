@@ -5,6 +5,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import ru.todo100.activer.data.MessageAccountData;
 import ru.todo100.activer.data.ReceiveMessageData;
 import ru.todo100.activer.model.AccountItem;
+import ru.todo100.activer.populators.Facade;
 import ru.todo100.activer.populators.MessageAccountDataPopulator;
 
 import java.security.Principal;
@@ -12,7 +13,7 @@ import java.security.Principal;
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
-public abstract class AbstractMessageHandler {
+public abstract class AbstractMessageHandler implements Facade {
     private SimpMessagingTemplate template;
     protected SimpMessagingTemplate getTemplate() {
         return template;

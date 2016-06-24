@@ -64,7 +64,7 @@ public class DisputeHandler extends AbstractMessageHandler {
 
         final PacketMessageData messageData = new PacketMessageData();
         messageData.setFrom(generateAccountData(account));
-        messageData.setDate(new GregorianCalendar());
+        messageData.setDate(FORMAT_DD_MM_yyyy_HH_mm_ss.format(new GregorianCalendar().getTime()));
         messageData.setType(PopupMessageType.DISPUTE_MESSAGE);
         messageData.setMessage(message.getMessage());
         messageData.setInterlocutor(happenedDisputeItem.getId());

@@ -1,6 +1,7 @@
 package ru.todo100.activer.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.proxy.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -24,7 +25,11 @@ import ru.todo100.activer.util.InputError;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 @Controller
@@ -105,10 +110,38 @@ public class ProfilePageController
 	}
 
 
+	public static class T {
+		public T(){}
+	}
+
 
 	@RequestMapping(value = "/id{id:\\d+}", method = RequestMethod.GET)
 	public String people(Model model, @PathVariable Integer id,HttpServletRequest request)
 	{
+
+
+
+		org.springframework.cglib.proxy.Enhancer enhancer = new Enhancer();
+		enhancer.setSuperclass(T.class);
+		enhancer.setCallback(new MethodInterceptor() {
+		@Override
+		public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy)
+		throws Throwable {
+			return "sss";
+//			if(method.getDeclaringClass() != Object.class
+//					&& method.getReturnType() == String.class) {
+//				return "Hello cglib!";
+//			} else {
+//				return proxy.invokeSuper(obj, args);
+//			}
+		}
+	});
+
+		T t = (T)enhancer.create();
+
+		model.addAttribute("TTT",t);
+
+
 		ProfileData profile = accountService.getCurrentProfileData(request.getSession());
 		ProfileData currentProfile = accountService.getCurrentProfileData(request.getSession());
 
@@ -141,6 +174,15 @@ public class ProfilePageController
 		model.addAttribute("profile", profile);
 
 		model.addAttribute("photos", photos);
+
+		model.addAttribute("calendar", new GregorianCalendar() {
+			{
+				this.set(YEAR,3000);
+			}
+			public String toString(){
+				return "It'm my short calendar string" + get(YEAR);
+			}
+		});
 
 		model.addAttribute("showingPhoto", avatarPhotos.getPhotoShowing());
 		model.addAttribute("photo", avatarPhotos.getPhotoAvatar());

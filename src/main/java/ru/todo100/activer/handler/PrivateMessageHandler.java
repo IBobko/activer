@@ -54,13 +54,13 @@ public class PrivateMessageHandler extends AbstractMessageHandler {
         messageData.setFrom(generateAccountData(from));
         final AccountItem to = accountService.get(message.getTo());
         messageData.setTo(generateAccountData(to));
-        messageData.setDate(new GregorianCalendar());
+        messageData.setDate(FORMAT_DD_MM_yyyy_HH_mm_ss.format(new GregorianCalendar().getTime()));
 
         String messageText = message.getMessage();
         if (messageText.startsWith("gift:")) {
             final PacketMessageData spentMessage = new PacketMessageData();
             spentMessage.setType(PopupMessageType.SPENT);
-            spentMessage.setDate(new GregorianCalendar());
+            spentMessage.setDate(FORMAT_DD_MM_yyyy_HH_mm_ss.format(new GregorianCalendar().getTime()));
             BigDecimal costOfGift = new BigDecimal("1");
             if (getBalanceService().subtractAccountBalanceSum(from.getId(), costOfGift, "Оплата подарка")) {
                 Integer giftId = Integer.parseInt(messageText.substring(messageText.indexOf("gift:") + 5));

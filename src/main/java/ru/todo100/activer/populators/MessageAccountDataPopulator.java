@@ -20,7 +20,7 @@ public class MessageAccountDataPopulator implements Populator<AccountItem,Messag
         messageAccountData.setLastName(account.getLastName());
         messageAccountData.setId(account.getId());
         final PhotoAvatarSizeData photos = photoService1.getSizedPhoto(account.getId());
-        messageAccountData.setPhoto60x60(photos.getPhotoAvatar());
+        messageAccountData.setPhoto60x60(photos.getPhotoMini());
         return messageAccountData;
     }
 }

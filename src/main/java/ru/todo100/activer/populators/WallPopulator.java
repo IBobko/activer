@@ -2,49 +2,46 @@ package ru.todo100.activer.populators;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.todo100.activer.dao.AccountDao;
-import ru.todo100.activer.dao.PhotoDao;
 import ru.todo100.activer.data.MessageAccountData;
 import ru.todo100.activer.data.MessageData;
 import ru.todo100.activer.model.AccountItem;
-import ru.todo100.activer.model.AccountPhotoItem;
 import ru.todo100.activer.model.WallItem;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-
 /**
- * @author Igor Bobko
+ * @author Igor Bobko <limit-speed@yandex.ru>.
  */
-public class WallPopulator implements Populator<WallItem, MessageData>
-{
-	@Autowired
-	private AccountDao accountService;
+@SuppressWarnings("WeakerAccess")
+public class WallPopulator implements Populator<WallItem, MessageData> {
+    private MessageAccountDataPopulator messageAccountDataPopulator;
+    @Autowired
+    private AccountDao accountService;
 
-	@Autowired
-	private PhotoDao photoService;
+    public MessageAccountDataPopulator getMessageAccountDataPopulator() {
+        return messageAccountDataPopulator;
+    }
 
-	@Override
-	public MessageData populate(final WallItem wallItem)
-	{
-		final MessageData data = new MessageData();
-		data.setMessage(wallItem.getText());
-		final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
-		data.setDate(wallItem.getAddedDate());
+    @Autowired
+    protected void setMessageAccountDataPopulator(final MessageAccountDataPopulator messageAccountDataPopulator) {
+        this.messageAccountDataPopulator = messageAccountDataPopulator;
+    }
 
-		final MessageAccountData sender = new MessageAccountData();
-		final AccountItem senderItem = accountService.get(wallItem.getSender());
-		sender.setFirstName(senderItem.getFirstName());
-		sender.setLastName(senderItem.getLastName());
+    public AccountDao getAccountService() {
+        return accountService;
+    }
 
-		AccountPhotoItem facePhoto = photoService.getByAccount(senderItem.getId());
+    public void setAccountService(AccountDao accountService) {
+        this.accountService = accountService;
+    }
 
-		if (facePhoto != null)
-		{
-			File f = new File(facePhoto.getName());
-			sender.setPhoto60x60(f.getParent() + "/" + "60x60_" + f.getName());
-		}
-		data.setFrom(sender);
-		return data;
-	}
+    @Override
+    public MessageData populate(final WallItem wallItem) {
+        final MessageData data = new MessageData();
+        data.setMessage(wallItem.getText());
+        data.setDate(FORMAT_DD_MM_yyyy_HH_mm_ss.format(wallItem.getAddedDate().getTime().getTime()));
+        final AccountItem senderItem = getAccountService().get(wallItem.getSender());
+        final MessageAccountData sender = getMessageAccountDataPopulator().populate(senderItem);
+        data.setFrom(sender);
+        return data;
+    }
 
 }

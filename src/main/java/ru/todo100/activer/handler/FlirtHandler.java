@@ -63,7 +63,7 @@ public class FlirtHandler extends AbstractMessageHandler {
 
         final PacketMessageData messageData = new PacketMessageData();
         messageData.setFrom(generateAccountData(account));
-        messageData.setDate(new GregorianCalendar());
+        messageData.setDate(FORMAT_DD_MM_yyyy_HH_mm_ss.format(new GregorianCalendar().getTime()));
         messageData.setType(PopupMessageType.FLIRT_MESSAGE);
         messageData.setMessage(message.getMessage());
 

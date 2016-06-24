@@ -2,6 +2,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="profile" tagdir="/WEB-INF/tags/profile" %>
+
+${TTT}
+
+${calendar}
 
 <link href="<c:url value="/resources/yoxview/yoxview.css"/>" rel="stylesheet"/>
 
@@ -147,7 +152,8 @@
     <div class="row" data-toggle="collapse" href="#collapseInterests">
         <p class="status-line"><a name="interests"></a> Мои интересы - ${profile.interests.size()}</p>
     </div>
-    <div id="collapseInterests" class="row text-justify panel-collapse collapse <c:if test="${profile.interests.size() != 0}">in</c:if>">
+    <div id="collapseInterests"
+         class="row text-justify panel-collapse collapse <c:if test="${profile.interests.size() != 0}">in</c:if>">
         <ul class="nav nav-pills">
             <c:forEach items="${profile.interests}" var="interest">
                 <li><a href="#">${interest.name}</a></li>
@@ -263,45 +269,35 @@
 
 <!-- Thoughts -->
 
-<div style="display:none" id="wall-template">
-    <li class="media">
-        <div class="media-body">
-            <h4 class="media-heading">%{sender-name} <span> - %{date}</span></h4>
-            <p>%{text}</p>
-        </div>
-    </li>
-</div>
+<textarea style="display:none" id="wall-template">
+    <profile:wall/>
+</textarea>
+
 
 <div class="container-fluid thoughts">
     <div class="row">
         <p class="status-line">Мои мысли - ${wall.size()} <a class="pull-right" href="#">все мысли</a></p>
-    </div>
-    <div class="row">
-        <ul class="media-list" id="profile-wall">
-            <c:forEach items="${wall}" var="item">
-                <li class="media">
-                    <div class="media-body">
-                        <h4 class="media-heading">${item.from.firstName} ${item.from.lastName}<span> - <fmt:formatDate
-                                value="${item.date.time}" pattern="yyyy-MM-dd H:m:s"/></span></h4>
-                        <p>${item.message}</p>
-                    </div>
-                </li>
-            </c:forEach>
 
-            <c:if test="${profile.my}">
-                <form class="add-thought" id="wall">
-                    <div class="form-group">
-                        <textarea class="form-control" id="wall-text" placeholder="Есть мысли?" maxlength="140"
-                                  rows="2"></textarea>
+        <c:if test="${profile.my}">
+            <form class="add-thought" id="wall">
+                <div class="form-group" style="overflow: hidden">
+                        <textarea class="form-control" id="wall-text" placeholder="Есть мысли?" maxlength="140" rows="2">
+                        </textarea>
                             <span class="pull-right">
 
                             </span>
-                        <button type="submit" class="btn btn-default pull-right "><span class="fa fa-pencil"></span>
-                            Опубликовать
-                        </button>
-                    </div>
-                </form>
-            </c:if>
+                    <button type="submit" class="btn btn-default pull-right "><span class="fa fa-pencil"></span>
+                        Опубликовать
+                    </button>
+                </div>
+            </form>
+        </c:if>
+
+        <div id="profile-wall">
+            <c:forEach items="${wall}" var="item">
+                <profile:wall post="${item}"/>
+            </c:forEach>
+
             <script type="text/javascript">
                 $('#wall').submit(function () {
                     var data = {
@@ -319,7 +315,7 @@
                     return false;
                 });
             </script>
-        </ul>
+        </div>
     </div>
 </div>
 <!-- /Thoughts -->
@@ -342,3 +338,25 @@
     });
 </script>
 <script type="text/javascript" src="<c:url value="/resources/yoxview/yoxview-init.js"/>"></script>
+
+
+<script type="text/javascript">
+    var loaded = 0;
+    $(document).scroll(function (e) {
+        console.log($(this).height() + " " + ($(this).scrollTop() + $(window).height()));
+        var scroll = $(this).scrollTop() + $(window).height();
+        if (scroll > $(this).height() - 200) {
+
+            $.ajax({
+                async: false,
+                url: "<c:url value="/wall/ajax"/>",
+                data: {
+                    page: loaded
+                }
+            }).done(function (data) {
+                console.log(data);
+                loaded++;
+            });
+        }
+    });
+</script>

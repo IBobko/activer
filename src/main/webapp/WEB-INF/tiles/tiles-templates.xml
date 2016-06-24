@@ -127,6 +127,8 @@
 		<put-attribute name="content" value="/WEB-INF/views/private/index.jsp"/>
 	</definition>
 
+
+
 	<definition name="themes/index" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/themes/index.jsp"/>
 	</definition>

@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
-public interface Populator<SOURCE,TARGET> extends Facade
-{
-	TARGET populate(final SOURCE source);
+public interface Facade {
+    SimpleDateFormat FORMAT_DD_MM_yyyy_HH_mm_ss = new SimpleDateFormat("dd.MM.yyyy HH.mm.ss");
 }
