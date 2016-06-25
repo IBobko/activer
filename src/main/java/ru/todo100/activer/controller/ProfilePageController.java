@@ -18,6 +18,7 @@ import ru.todo100.activer.model.PhotoItem;
 import ru.todo100.activer.model.WallItem;
 import ru.todo100.activer.populators.ProfilePopulator;
 import ru.todo100.activer.populators.WallPopulator;
+import ru.todo100.activer.qualifier.WallQualifier;
 import ru.todo100.activer.service.FriendsService;
 import ru.todo100.activer.service.PhotoService;
 import ru.todo100.activer.util.InputError;
@@ -174,9 +175,18 @@ public class ProfilePageController
 		response.getOutputStream().print("Successful");
 	}
 
+	static Integer DOWNLOAD_OF = 10;
+
 	private void populatePersonOfPage(Model model, ProfileData account) {
 		final List<MessageData> wall = new ArrayList<>();
-		final List<WallItem> posts = wallService.getAllByAccount(account.getId());
+
+		WallQualifier qualifier = new WallQualifier();
+		qualifier.setAccountId(account.getId());
+		qualifier.setStart(0);
+		qualifier.setCount(DOWNLOAD_OF);
+
+
+		final List<WallItem> posts = wallService.getByQualifier(qualifier);
 		for (final WallItem item: posts) {
 			final MessageData data = wallPopulator.populate(item);
 			wall.add(data);

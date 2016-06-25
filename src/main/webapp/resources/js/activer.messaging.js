@@ -27,10 +27,16 @@ window.ACTIVER.Dialog = {
 
     this.submit = function(data){
       $.post(url, data, function (data) {
-        var template={val:$(templateId).val()};
-        that.r(data,"",template);
-        callback(template.val);
+        var template=this.getHtmlPost(data);
+        callback(template);
       });
     }
+
+    this.getHtmlPost = function(data) {
+      var template={val:$(templateId).val()};
+      that.r(data,"",template);
+      return template.val;
+    }
+
   }
 };

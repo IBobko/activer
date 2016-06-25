@@ -8,7 +8,7 @@
 
 <!-- Info panel -->
 <div class="container-fluid info-panel">
-    <div class="row"
+    <div class="row">
         <ul class="nav nav-pills">
             <li><a href="<c:url value="/gifts/id${profile.id}"/>">${profile.gifts.size()} подарков</a></li>
             <li><a href="<c:url value="/friend/list/id${profile.id}"/>">${friends.friends.size()} друга</a></li>
@@ -272,14 +272,8 @@
         <c:if test="${profile.my}">
             <form class="add-thought" id="wall">
                 <div class="form-group" style="overflow: hidden">
-                        <textarea class="form-control" id="wall-text" placeholder="Есть мысли?" maxlength="140" rows="2">
-                        </textarea>
-                            <span class="pull-right">
-
-                            </span>
-                    <button type="submit" class="btn btn-default pull-right "><span class="fa fa-pencil"></span>
-                        Опубликовать
-                    </button>
+                        <textarea class="form-control" id="wall-text" placeholder="Есть мысли?" maxlength="140" rows="2"></textarea>
+                        <button type="submit" class="btn btn-default pull-right "><span class="fa fa-pencil"></span> Опубликовать</button>
                 </div>
             </form>
         </c:if>
@@ -332,19 +326,37 @@
 
 <script type="text/javascript">
     var loaded = 0;
+    var end = false;
+    var already_downloading = false;
+    var lastScrollTop = 0;
     $(document).scroll(function (e) {
-        console.log($(this).height() + " " + ($(this).scrollTop() + $(window).height()));
+        var st = $(this).scrollTop();
+        if (st < lastScrollTop){
+            return;
+        }
+        lastScrollTop = st;
+
+        if (end) return;
+        if (already_downloading) return;
         var scroll = $(this).scrollTop() + $(window).height();
         if (scroll > $(this).height() - 200) {
-
+            already_downloading = true;
             $.ajax({
-                async: false,
                 url: "<c:url value="/wall/ajax"/>",
                 data: {
                     page: loaded
                 }
             }).done(function (data) {
+                already_downloading = false;
+                if (data.elements.length == 0){
+                    end = true;
+                };
                 console.log(data);
+
+                for (var index in data.elements) {
+                    $('#profile-wall').append(m.getHtmlPost(data.elements[index]));
+                }
+
                 loaded++;
             });
         }

@@ -8,14 +8,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.WallDao;
 import ru.todo100.activer.data.MessageData;
+import ru.todo100.activer.data.PagedData;
 import ru.todo100.activer.data.ReceiveWallData;
+import ru.todo100.activer.form.PagedForm;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.WallItem;
 import ru.todo100.activer.populators.WallPopulator;
+import ru.todo100.activer.qualifier.Qualifier;
+import ru.todo100.activer.qualifier.WallQualifier;
 import ru.todo100.activer.service.NewsService;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
@@ -23,6 +30,8 @@ import java.util.GregorianCalendar;
 @Controller
 @RequestMapping("/wall")
 public class WallController {
+
+
     private AccountDao accountService;
     private WallPopulator wallPopulator;
     private WallDao wallService;
@@ -80,6 +89,28 @@ public class WallController {
             return getWallPopulator().populate(post);
         }
         return null;
+    }
+
+    static private final Integer DOWNLOAD_OF = 10;
+
+    @RequestMapping("/ajax")
+    @ResponseBody
+    public PagedData<MessageData> ajax(final PagedForm pagedForm, final HttpSession session) {
+        final PagedData<MessageData> pagedData = new PagedData<>();
+        pagedData.setPage(pagedForm.getPage());
+
+        final WallQualifier qualifier = new WallQualifier();
+        qualifier.setAccountId(getAccountService().getCurrentProfileData(session).getId());
+        qualifier.setStart(pagedForm.getPage() * DOWNLOAD_OF);
+        qualifier.setCount(DOWNLOAD_OF);
+        final List<MessageData> wall = new ArrayList<>();
+        final List<WallItem> posts = getWallService().getByQualifier(qualifier);
+        for (final WallItem item: posts) {
+            final MessageData data = getWallPopulator().populate(item);
+            wall.add(data);
+        }
+        pagedData.setElements(wall);
+        return pagedData;
     }
 }
 
