@@ -36,8 +36,9 @@ public class WallPopulator implements Populator<WallItem, MessageData> {
     @Override
     public MessageData populate(final WallItem wallItem) {
         final MessageData data = new MessageData();
+        data.setId(wallItem.getId());
         data.setMessage(wallItem.getText());
-        data.setDate(FORMAT_DD_MM_yyyy_HH_mm_ss.format(wallItem.getAddedDate().getTime().getTime()));
+        data.setDate(FORMAT_DD_MM_yyyy_HH_mm_ss.format(wallItem.getAddedDate().getTime()));
         final AccountItem senderItem = getAccountService().get(wallItem.getSender());
         final MessageAccountData sender = getMessageAccountDataPopulator().populate(senderItem);
         data.setFrom(sender);

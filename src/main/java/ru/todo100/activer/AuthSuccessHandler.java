@@ -39,6 +39,8 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
 	public void onAuthenticationSuccess(final HttpServletRequest httpServletRequest, final HttpServletResponse httpServletResponse,
 	                                    final Authentication authentication) throws IOException, ServletException
 	{
+
+
 		getAccountService().initCurrentProfile(httpServletRequest.getSession());
 		/*@todo возможно не стоит этот методо все таки вызывать здесь*/
 		httpServletRequest.setAttribute("friendsData", friendsService.getFriendData(httpServletRequest.getSession()));

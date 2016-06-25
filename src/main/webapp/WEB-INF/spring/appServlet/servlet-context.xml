@@ -79,7 +79,7 @@
 		pre-post-annotations="enabled" />
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/*" />
+			<mvc:mapping path="/**" />
 			<beans:bean
 				id="localeChangeInterceptor"
 				class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
@@ -89,6 +89,10 @@
 		<mvc:interceptor>
 			<mvc:mapping path="/auth/**"/>
 			<beans:bean class="ru.todo100.activer.interceptor.AuthInterceptor"/>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<beans:bean class="ru.todo100.activer.interceptor.AttributesInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>
 

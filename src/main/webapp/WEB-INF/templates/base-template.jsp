@@ -41,8 +41,11 @@
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
 
+
+
+    <![endif]-->
+    <script src="http://stevenlevithan.com/assets/misc/date.format.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
 
     <script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
@@ -52,6 +55,7 @@
     <script type="text/javascript" src="<c:url value="/resources/js/bootstrap-datetimepicker.min.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/locales/bootstrap-datetimepicker.ru.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/activer.global.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/resources/js/activer.messaging.js"/>"></script>
 
     <script type="text/javascript">
 

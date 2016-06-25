@@ -1,11 +1,6 @@
 package ru.todo100.activer.data;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import ru.todo100.activer.json.CustomDateSerializer;
-
 import java.io.Serializable;
-import java.util.Calendar;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
@@ -57,7 +52,6 @@ public class MessageData implements Serializable {
         this.interlocutor = interlocutor;
     }
 
-    @JsonSerialize(using = CustomDateSerializer.class)
     public String getDate() {
         return date;
     }

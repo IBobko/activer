@@ -4,15 +4,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="profile" tagdir="/WEB-INF/tags/profile" %>
 
-${TTT}
-
-${calendar}
-
 <link href="<c:url value="/resources/yoxview/yoxview.css"/>" rel="stylesheet"/>
 
 <!-- Info panel -->
 <div class="container-fluid info-panel">
-    <div class="row">
+    <div class="row"
         <ul class="nav nav-pills">
             <li><a href="<c:url value="/gifts/id${profile.id}"/>">${profile.gifts.size()} подарков</a></li>
             <li><a href="<c:url value="/friend/list/id${profile.id}"/>">${friends.friends.size()} друга</a></li>
@@ -269,11 +265,6 @@ ${calendar}
 
 <!-- Thoughts -->
 
-<textarea style="display:none" id="wall-template">
-    <profile:wall/>
-</textarea>
-
-
 <div class="container-fluid thoughts">
     <div class="row">
         <p class="status-line">Мои мысли - ${wall.size()} <a class="pull-right" href="#">все мысли</a></p>
@@ -294,23 +285,22 @@ ${calendar}
         </c:if>
 
         <div id="profile-wall">
+            <textarea style="display:none" id="wall-template">
+                <profile:wall/>
+            </textarea>
+
             <c:forEach items="${wall}" var="item">
                 <profile:wall post="${item}"/>
             </c:forEach>
 
             <script type="text/javascript">
+                var m = new window.ACTIVER.Dialog.Messages('#wall-template',"<c:url value="/wall/publish"/>",function(result){
+                    $('#profile-wall').prepend(result);
+                });
                 $('#wall').submit(function () {
-                    var data = {
+                    m.submit({
                         id: ${profile.id},
                         text: $('#wall-text').val()
-                    };
-                    $.post('<c:url value="/wall/publish"/>', data, function (data) {
-                        console.log(data);
-                        var template = $('#wall-template').html();
-                        template = template.replace("%{sender-name}", data.from.firstName + " " + data.from.lastName);
-                        template = template.replace("%{text}", data.message);
-                        template = template.replace("%{date}", data.date);
-                        $('#profile-wall').prepend(template);
                     });
                     return false;
                 });

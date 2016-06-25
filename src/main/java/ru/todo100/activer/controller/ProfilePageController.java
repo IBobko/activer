@@ -118,30 +118,6 @@ public class ProfilePageController
 	@RequestMapping(value = "/id{id:\\d+}", method = RequestMethod.GET)
 	public String people(Model model, @PathVariable Integer id,HttpServletRequest request)
 	{
-
-
-
-		org.springframework.cglib.proxy.Enhancer enhancer = new Enhancer();
-		enhancer.setSuperclass(T.class);
-		enhancer.setCallback(new MethodInterceptor() {
-		@Override
-		public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy)
-		throws Throwable {
-			return "sss";
-//			if(method.getDeclaringClass() != Object.class
-//					&& method.getReturnType() == String.class) {
-//				return "Hello cglib!";
-//			} else {
-//				return proxy.invokeSuper(obj, args);
-//			}
-		}
-	});
-
-		T t = (T)enhancer.create();
-
-		model.addAttribute("TTT",t);
-
-
 		ProfileData profile = accountService.getCurrentProfileData(request.getSession());
 		ProfileData currentProfile = accountService.getCurrentProfileData(request.getSession());
 
