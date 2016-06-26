@@ -64,8 +64,9 @@ public class MailService {
 	            model.put("fullName", account.getFirstName() + " " + account.getLastName());
 	            model.put("login", account.getUsername());
 	            model.put("password", account.getPassword());
-	            String text = VelocityEngineUtils.mergeTemplateIntoString(
-	               velocityEngine, "/forgot.vm", model);
+
+				String text = VelocityEngineUtils.mergeTemplateIntoString(
+	               velocityEngine, "/forgot.vm", "UTF-8",model);
 	            message.setText(text, true);
 			}
 		};

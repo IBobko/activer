@@ -36,7 +36,7 @@ public class DisputeServiceImpl implements DisputeService {
     public List<DisputeThemeItem> getItemByQualifier(DisputeThemeQualifier qualifier) {
 
         final Criteria criteria = disputeThemeDao.getCriteria();
-        if (qualifier.getStart()!=null) {
+        if (qualifier.getStart() != null) {
             criteria.setFirstResult(qualifier.getStart());
         }
 
@@ -57,7 +57,7 @@ public class DisputeServiceImpl implements DisputeService {
     public List<DisputeThemeData> getDataByQualifier(DisputeThemeQualifier qualifier) {
         final List<DisputeThemeItem> items = getItemByQualifier(qualifier);
         final List<DisputeThemeData> result = new ArrayList<>();
-        for (DisputeThemeItem item: items) {
+        for (DisputeThemeItem item : items) {
             final DisputeThemeData data = new DisputeThemeData();
             data.setId(item.getId().toString());
             data.setName(item.getName());
@@ -74,7 +74,7 @@ public class DisputeServiceImpl implements DisputeService {
         if (form.getId() == null) {
             disputeThemeItem = new DisputeThemeItem();
         } else {
-            disputeThemeItem = getDisputeThemeDao().getSession().get(DisputeThemeItem.class,form.getId());
+            disputeThemeItem = getDisputeThemeDao().getSession().get(DisputeThemeItem.class, form.getId());
             if (disputeThemeItem == null) {
                 disputeThemeItem = new DisputeThemeItem();
             }
@@ -88,7 +88,7 @@ public class DisputeServiceImpl implements DisputeService {
 
     @Override
     public DisputeThemeItem get(Integer id) {
-        return (DisputeThemeItem)getDisputeThemeDao().getSession().get(getDisputeThemeDao().getItemClass(),id);
+        return (DisputeThemeItem) getDisputeThemeDao().getSession().get(getDisputeThemeDao().getItemClass(), id);
     }
 
     @Override
