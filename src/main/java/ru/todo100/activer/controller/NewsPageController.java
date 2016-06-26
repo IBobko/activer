@@ -76,7 +76,7 @@ public class NewsPageController {
         return accounts;
     }
 
-    public final static Integer COUNT_PER_PAGE = 2;
+    public final static Integer COUNT_PER_PAGE = 10;
 
     @RequestMapping("/ajax")
     @ResponseBody

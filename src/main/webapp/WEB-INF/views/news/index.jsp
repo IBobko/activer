@@ -34,9 +34,19 @@
     </c:forEach>
 </div>
 
+<textarea style="display:none" id="news-template">
+    <news:item />
+</textarea>
 
 <script type="text/javascript">
-    var loaded = 0;
+
+
+    var m = new window.ACTIVER.Dialog.Messages('#news-template',"<c:url value="/wall/publish"/>",function(result){
+
+    });
+
+
+    var loaded = 1;
     $('#newsBand').scroll(function (e) {
 
         var scroll = $(this).scrollTop() + $(this).height();
@@ -52,7 +62,10 @@
             }).done(function (data) {
                 console.log(data);
                 for (var index in data) {
-                    $("#newsBand").append("<div style='height:200px'>" + data + "</div>");
+
+                    var template = m.getHtmlPost(data[index]);
+
+                    $("#newsBand").append(template);
                 }
                 loaded++;
             });

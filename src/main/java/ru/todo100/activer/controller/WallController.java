@@ -14,7 +14,6 @@ import ru.todo100.activer.form.PagedForm;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.WallItem;
 import ru.todo100.activer.populators.WallPopulator;
-import ru.todo100.activer.qualifier.Qualifier;
 import ru.todo100.activer.qualifier.WallQualifier;
 import ru.todo100.activer.service.NewsService;
 
@@ -32,6 +31,7 @@ import java.util.List;
 public class WallController {
 
 
+    static private final Integer DOWNLOAD_OF = 10;
     private AccountDao accountService;
     private WallPopulator wallPopulator;
     private WallDao wallService;
@@ -91,8 +91,6 @@ public class WallController {
         return null;
     }
 
-    static private final Integer DOWNLOAD_OF = 10;
-
     @RequestMapping("/ajax")
     @ResponseBody
     public PagedData<MessageData> ajax(final PagedForm pagedForm, final HttpSession session) {
@@ -105,7 +103,7 @@ public class WallController {
         qualifier.setCount(DOWNLOAD_OF);
         final List<MessageData> wall = new ArrayList<>();
         final List<WallItem> posts = getWallService().getByQualifier(qualifier);
-        for (final WallItem item: posts) {
+        for (final WallItem item : posts) {
             final MessageData data = getWallPopulator().populate(item);
             wall.add(data);
         }
