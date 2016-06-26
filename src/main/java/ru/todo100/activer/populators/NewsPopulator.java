@@ -16,7 +16,7 @@ import ru.todo100.activer.service.PhotoService;
 public class NewsPopulator implements Populator<NewsItem, NewsData> {
     private MessageAccountDataPopulator messageAccountDataPopulator;
 
-    @Value(value = "${staticFiles}")
+    @Value(value = "${static.host.files}")
     String staticFiles;
 
     @Autowired

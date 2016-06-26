@@ -45,21 +45,32 @@
 
     });
 
-
+    var end = false;
+    var already_downloading = false;
     var loaded = 1;
+    var lastScrollTop = 0;
     $('#newsBand').scroll(function (e) {
-
+        var st = $(this).scrollTop();
+        if (st < lastScrollTop){
+            return;
+        }
+        lastScrollTop = st;
+        if (end) return;
+        if (already_downloading) return;
         var scroll = $(this).scrollTop() + $(this).height();
 
         if (scroll > this.scrollHeight - 200) {
-
+            already_downloading = true;
             $.ajax({
-                async: false,
                 url: "<c:url value="/news/ajax"/>",
                 data: {
                     page: loaded
                 }
             }).done(function (data) {
+                already_downloading = false;
+                if (data.length == 0){
+                    end = true;
+                }
                 console.log(data);
                 for (var index in data) {
 
