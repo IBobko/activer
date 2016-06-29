@@ -342,7 +342,7 @@
         if (scroll > $(this).height() - 200) {
             already_downloading = true;
             $.ajax({
-                url: "<c:url value="/wall/ajax"/>",
+                url: "<c:url value="/wall/ajax${profile.id}"/>",
                 data: {
                     page: loaded
                 }

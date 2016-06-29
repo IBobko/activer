@@ -3,6 +3,7 @@ package ru.todo100.activer.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ru.todo100.activer.dao.AccountDao;
@@ -91,14 +92,19 @@ public class WallController {
         return null;
     }
 
-    @RequestMapping("/ajax")
+    @RequestMapping("/ajax{id}")
     @ResponseBody
-    public PagedData<MessageData> ajax(final PagedForm pagedForm, final HttpSession session) {
+    public PagedData<MessageData> ajax(@PathVariable final Integer id, final PagedForm pagedForm, final HttpSession session) {
         final PagedData<MessageData> pagedData = new PagedData<>();
         pagedData.setPage(pagedForm.getPage());
 
         final WallQualifier qualifier = new WallQualifier();
-        qualifier.setAccountId(getAccountService().getCurrentProfileData(session).getId());
+        if (id != null && !id.equals(0)) {
+            qualifier.setAccountId(id);
+        } else {
+            qualifier.setAccountId(getAccountService().getCurrentProfileData(session).getId());
+        }
+
         qualifier.setStart(pagedForm.getPage() * DOWNLOAD_OF);
         qualifier.setCount(DOWNLOAD_OF);
         final List<MessageData> wall = new ArrayList<>();

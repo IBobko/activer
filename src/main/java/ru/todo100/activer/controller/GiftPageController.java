@@ -7,7 +7,6 @@ import com.paypal.base.rest.PayPalRESTException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -110,12 +109,11 @@ public class GiftPageController {
     }
 
     @RequestMapping("/id{id}")
-    @Transactional
     public String show(final Model model, @PathVariable final Integer id) {
         model.addAttribute("pageType", "profile/gifts/index");
         final List<AccountGiftItem> gifts = accountGiftDao.getGiftsByAccount(id);
         final List<AccountGiftData> giftData = new ArrayList<>();
-        for (AccountGiftItem accountGiftItem : gifts) {
+        for (final AccountGiftItem accountGiftItem : gifts) {
             giftData.add(getAccountGiftDataPopulator().populate(accountGiftItem));
         }
         model.addAttribute("gifts", giftData);
