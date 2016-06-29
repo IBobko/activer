@@ -157,24 +157,10 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
             profileData.setPhoto60x60(f.getParent() + "/" + "60x60_" + f.getName());
         }
 
-
         final List<AccountGiftItem> gifts = accountGiftDao.getGiftsByAccount(profileData.getId());
-        final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
         final List<AccountGiftData> giftData = new ArrayList<>();
-        for (AccountGiftItem accountGiftItem : gifts) {
-            AccountGiftData accountGiftData = new AccountGiftData();
-            accountGiftData.setSenderFirstName("Иосиф");
-            accountGiftData.setSenderLastName("Сталин");
-            // accountGiftData.set
-
-
-            GiftItem giftItem = (GiftItem) giftDao.get(accountGiftItem.getGiftId());
-
-            accountGiftData.setFileName(giftItem.getFile());
-            accountGiftData.setMessage(accountGiftItem.getMessage());
-
-            accountGiftData.setGivenDate(format.format(accountGiftItem.getGivenDate().getTime()));
-            giftData.add(accountGiftData);
+        for (final AccountGiftItem accountGiftItem : gifts) {
+            giftData.add(getAccountGiftDataPopulator().populate(accountGiftItem));
         }
         profileData.setGifts(giftData);
         profileData.setBalance(getBalanceDao().createOrGet(accountItem).getSum());
@@ -186,4 +172,15 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
 
         return profileData;
     }
+
+    public AccountGiftDataPopulator getAccountGiftDataPopulator() {
+        return accountGiftDataPopulator;
+    }
+
+    @Autowired
+    public void setAccountGiftDataPopulator(AccountGiftDataPopulator accountGiftDataPopulator) {
+        this.accountGiftDataPopulator = accountGiftDataPopulator;
+    }
+
+    private AccountGiftDataPopulator accountGiftDataPopulator;
 }

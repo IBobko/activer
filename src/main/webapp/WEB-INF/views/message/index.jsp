@@ -243,8 +243,7 @@
                         <img style="margin:10px;float:left" width="60" src="${staticFiles}/${dialog.owner.photo60x60}." height="60"/>
                         <div style="margin:10px;">
                             <span style="color:#337ab7">${dialog.owner.lastName} ${dialog.owner.firstName}</span><br/>
-                            <span style="font-weight: normal;font-size: 12px"><fmt:formatDate
-                                    value="${dialog.lastMessage.date.time}" pattern="yyyy-MM-dd H:m:s"/></span>
+                            <span style="font-weight: normal;font-size: 12px">${dialog.lastMessage.date}</span>
                             <br/>
                             <span style="font-weight: normal;font-size: 12px">${dialog.owner.online? "online":"offline"}</span>
 

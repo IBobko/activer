@@ -16,15 +16,19 @@ public class AccountGiftItem {
     private Integer id;
 
     @NotNull
-    @Column(name = "gift_id", nullable = false)
-    private Integer giftId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "gift_id", nullable = false)
+    private GiftItem gift;
 
     @NotNull
-    @Column(name = "account_id", nullable = false)
-    private Integer accountId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", nullable = false)
+    private AccountItem account;
 
-    @Column(name = "account_from_id")
-    private Integer accountFormId;
+    @NotNull
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "account_from_id", nullable = false)
+    private AccountItem from;
 
     @Column(name = "message")
     private String message;
@@ -33,12 +37,12 @@ public class AccountGiftItem {
     @Column(name = "given_date", nullable = false)
     private Calendar givenDate;
 
-    public Integer getGiftId() {
-        return giftId;
+    public GiftItem getGift() {
+        return gift;
     }
 
-    public void setGiftId(Integer giftId) {
-        this.giftId = giftId;
+    public void setGift(GiftItem gift) {
+        this.gift = gift;
     }
 
     public Integer getId() {
@@ -65,21 +69,20 @@ public class AccountGiftItem {
         this.message = message;
     }
 
-    public Integer getAccountFormId() {
-        return accountFormId;
+    public AccountItem getFrom() {
+        return from;
     }
 
-    public void setAccountFormId(Integer accountFormId) {
-        this.accountFormId = accountFormId;
+    public void setFrom(AccountItem from) {
+        this.from = from;
     }
 
-    public Integer getAccountId() {
-        return accountId;
+    public AccountItem getAccount() {
+        return account;
     }
 
-    public void setAccountId(Integer accountId) {
-        this.accountId = accountId;
+    public void setAccount(AccountItem account) {
+        this.account = account;
     }
-
 
 }

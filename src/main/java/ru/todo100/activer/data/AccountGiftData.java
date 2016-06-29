@@ -5,8 +5,7 @@ package ru.todo100.activer.data;
  */
 public class AccountGiftData {
     private Integer id;
-    private String senderFirstName;
-    private String senderLastName;
+    private MessageAccountData from;
     private String givenDate;
     private String fileName;
     private String message;
@@ -19,20 +18,12 @@ public class AccountGiftData {
         this.id = id;
     }
 
-    public String getSenderFirstName() {
-        return senderFirstName;
+    public MessageAccountData getFrom() {
+        return from;
     }
 
-    public void setSenderFirstName(String senderFirstName) {
-        this.senderFirstName = senderFirstName;
-    }
-
-    public String getSenderLastName() {
-        return senderLastName;
-    }
-
-    public void setSenderLastName(String senderLastName) {
-        this.senderLastName = senderLastName;
+    public void setFrom(MessageAccountData from) {
+        this.from = from;
     }
 
     public String getGivenDate() {

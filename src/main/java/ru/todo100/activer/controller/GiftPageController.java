@@ -13,23 +13,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import org.springframework.web.servlet.ModelAndView;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.AccountGiftDao;
-import ru.todo100.activer.dao.GiftDao;
 import ru.todo100.activer.data.AccountGiftData;
 import ru.todo100.activer.data.ProfileData;
-import ru.todo100.activer.qualifier.Qualifier;
 import ru.todo100.activer.model.AccountGiftItem;
-import ru.todo100.activer.model.GiftItem;
+import ru.todo100.activer.populators.AccountGiftDataPopulator;
 import ru.todo100.activer.service.PayPalService;
-
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Igor Bobko <ibobko@beeline.ru>.
@@ -38,6 +35,9 @@ import java.util.*;
 @RequestMapping("/gifts")
 public class GiftPageController {
     private AccountDao accountService;
+    private AccountGiftDao accountGiftDao;
+    private PayPalService payPalService;
+    private AccountGiftDataPopulator accountGiftDataPopulator;
 
     public AccountDao getAccountService() {
         return accountService;
@@ -47,22 +47,6 @@ public class GiftPageController {
     public void setAccountService(AccountDao accountService) {
         this.accountService = accountService;
     }
-
-    private AccountGiftDao accountGiftDao;
-
-    private PayPalService payPalService;
-
-    public GiftDao getGiftDao() {
-        return giftDao;
-    }
-
-    @Autowired
-    public void setGiftDao(GiftDao giftDao) {
-        this.giftDao = giftDao;
-    }
-
-
-    private GiftDao giftDao;
 
     public AccountGiftDao getAccountGiftDao() {
         return accountGiftDao;
@@ -104,7 +88,7 @@ public class GiftPageController {
         Integer gift_id = (Integer) request.getSession().getAttribute("GIFT_FOR_BUY");
         Integer account_id = (Integer) request.getSession().getAttribute("GIFT_FOR_ACCOUNT");
         ProfileData account = getAccountService().getCurrentProfileData(request.getSession());
-        getAccountGiftDao().give(account.getId(),account_id,gift_id,"Дарю тебе от всего сердца столь дорогую вещь");
+        getAccountGiftDao().give(account.getId(), account_id, gift_id, "Дарю тебе от всего сердца столь дорогую вещь");
         return "Спасибо за покупку подарка " + gift_id + " для " + account_id;
     }
 
@@ -116,31 +100,25 @@ public class GiftPageController {
         return "Отмена покупки " + gift_id + " для " + account_id;
     }
 
+    public AccountGiftDataPopulator getAccountGiftDataPopulator() {
+        return accountGiftDataPopulator;
+    }
+
+    @Autowired
+    public void setAccountGiftDataPopulator(AccountGiftDataPopulator accountGiftDataPopulator) {
+        this.accountGiftDataPopulator = accountGiftDataPopulator;
+    }
+
     @RequestMapping("/id{id}")
     @Transactional
     public String show(final Model model, @PathVariable final Integer id) {
-        model.addAttribute("pageType","profile/gifts/index");
-
+        model.addAttribute("pageType", "profile/gifts/index");
         final List<AccountGiftItem> gifts = accountGiftDao.getGiftsByAccount(id);
-        final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
         final List<AccountGiftData> giftData = new ArrayList<>();
-        for (AccountGiftItem accountGiftItem: gifts) {
-            AccountGiftData accountGiftData = new AccountGiftData();
-            accountGiftData.setSenderFirstName("Иосиф");
-            accountGiftData.setSenderLastName("Сталин");
-           // accountGiftData.set
-
-
-            GiftItem giftItem = (GiftItem)getGiftDao().get(accountGiftItem.getGiftId());
-
-            accountGiftData.setFileName(giftItem.getFile());
-            accountGiftData.setMessage(accountGiftItem.getMessage());
-
-            accountGiftData.setGivenDate(format.format(accountGiftItem.getGivenDate().getTime()));
-            giftData.add(accountGiftData);
+        for (AccountGiftItem accountGiftItem : gifts) {
+            giftData.add(getAccountGiftDataPopulator().populate(accountGiftItem));
         }
-
-        model.addAttribute("gifts",giftData);
+        model.addAttribute("gifts", giftData);
         return "gifts/index";
     }
 
@@ -215,12 +193,5 @@ public class GiftPageController {
         }
 
         return createdPayment;
-    }
-
-    @RequestMapping("/popup")
-    public String popup(final Model model) {
-        List<GiftItem> gifts = getGiftDao().getGiftsByQualifier(new Qualifier());
-        model.addAttribute("gifts",gifts);
-        return "gifts/popup";
     }
 }
