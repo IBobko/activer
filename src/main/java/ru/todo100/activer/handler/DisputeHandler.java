@@ -1,16 +1,18 @@
 package ru.todo100.activer.handler;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import ru.todo100.activer.PopupMessageType;
-import ru.todo100.activer.dao.AccountDao;
-import ru.todo100.activer.dao.DisputeMessageDao;
-import ru.todo100.activer.dao.HappenedDisputeDao;
+import ru.todo100.activer.dao.*;
 import ru.todo100.activer.data.PacketMessageData;
 import ru.todo100.activer.data.ReceiveMessageData;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.DisputeMessageItem;
+import ru.todo100.activer.model.GiftItem;
 import ru.todo100.activer.model.HappenedDisputeItem;
+import ru.todo100.activer.service.BalanceService;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.GregorianCalendar;
 
@@ -19,6 +21,24 @@ import java.util.GregorianCalendar;
  */
 public class DisputeHandler extends AbstractMessageHandler {
 
+    @Value("${static.host.files}")
+    private String staticHost;
+
+    public BalanceService getBalanceService() {
+        return balanceService;
+    }
+    @Autowired
+    public void setBalanceService(BalanceService balanceService) {
+        this.balanceService = balanceService;
+    }
+
+    @Autowired
+    private GiftDao giftDao;
+
+    @Autowired
+    private AccountGiftDao accountGiftDao;
+
+    private BalanceService balanceService;
     private DisputeMessageDao disputeMessageDao;
     private HappenedDisputeDao happenedDisputeDao;
     private AccountDao accountService;
@@ -53,7 +73,7 @@ public class DisputeHandler extends AbstractMessageHandler {
     @Override
     public void handle(ReceiveMessageData message, final Principal principal) {
         final HappenedDisputeItem happenedDisputeItem = (HappenedDisputeItem) getHappenedDisputeDao().get(message.getTo());
-
+        final PacketMessageData messageData = new PacketMessageData();
         final AccountItem account = accountService.get(principal.getName());
         final AccountItem opponent;
         if (happenedDisputeItem.getAccountAppliedId().equals(account.getId())) {
@@ -62,11 +82,34 @@ public class DisputeHandler extends AbstractMessageHandler {
             opponent = accountService.get(happenedDisputeItem.getAccountAppliedId());
         }
 
-        final PacketMessageData messageData = new PacketMessageData();
+
+        String messageText = message.getMessage();
+        if (messageText.startsWith("gift:")) {
+            final PacketMessageData spentMessage = new PacketMessageData();
+            spentMessage.setType(PopupMessageType.SPENT);
+            spentMessage.setDate(FORMAT_DD_MM_yyyy_HH_mm_ss.format(new GregorianCalendar().getTime()));
+            BigDecimal costOfGift = new BigDecimal("1");
+            if (getBalanceService().subtractAccountBalanceSum(account.getId(), costOfGift, "Оплата подарка")) {
+                Integer giftId = Integer.parseInt(messageText.substring(messageText.indexOf("gift:") + 5));
+                GiftItem gift = (GiftItem) giftDao.get(giftId);
+                messageText = "<img src='" + staticHost + "/" + gift.getFile() + ".'/>";
+                spentMessage.setMessage(costOfGift.toString());
+                accountGiftDao.give(account.getId(),opponent.getId(),giftId,"Из споров");
+            } else {
+                spentMessage.setMessage("0");
+            }
+            getTemplate().convertAndSendToUser(principal.getName(), "/global2", spentMessage);
+            if (spentMessage.getMessage().equals("0")) {
+                return;
+            }
+        }
+
+
+
         messageData.setFrom(generateAccountData(account));
         messageData.setDate(FORMAT_DD_MM_yyyy_HH_mm_ss.format(new GregorianCalendar().getTime()));
         messageData.setType(PopupMessageType.DISPUTE_MESSAGE);
-        messageData.setMessage(message.getMessage());
+        messageData.setMessage(messageText);
         messageData.setInterlocutor(happenedDisputeItem.getId());
 
         final DisputeMessageItem disputeMessageItem = new DisputeMessageItem();

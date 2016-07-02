@@ -1,5 +1,46 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="dating" tagdir="/WEB-INF/tags/dating" %>
+
+<!-- Modal -->
+<div class="modal fade" id="giftsPopup" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Подарок. Ваш баланс: <span id="balanceInModal">${profile.balance}</span>$</h4>
+            </div>
+            <div class="modal-body">
+                <ul class="gifts-list">
+                    <c:forEach items="${gifts}" var="gift">
+                        <li>
+                            <a href="#" class="giftForAdd" gift-id="${gift.id}"><img src="<c:url value="${staticFiles}/${gift.file}."/>"></a>
+                            <br/>
+                            Стоимость: 1$
+                        </li>
+                    </c:forEach>
+                </ul>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var interlocutor = ${disputeData.opponentId};
+    $('.giftForAdd').click(function(){
+        var data = ACTIVER.Global.message;
+        data.to = interlocutor;
+        data.message = "gift:" + $(this).attr("gift-id");
+        data.type = "DISPUTE_MESSAGE";
+        ACTIVER.Global.submit(data);
+        $('#giftsPopup').modal('hide');
+    });
+</script>
 
 <div>
     <div style="overflow: hidden">
@@ -7,12 +48,15 @@
         <h4 style="color: #3F51B5;font-weight:bold;">Знакомство "Спор"</h4>Докажите собеседнику, что вы правы на все 100%. Защищайте свою позицию.
     </div>
 
+
+
     <div style="text-align: center">
         <h3 style="font-weight: bold; color:orange">${disputeData.themeTitle}</h3>
-        <table style="width:300px" align="center">
+        <table style="width:600px;font-weight: normal" align="center">
             <tr>
                 <td>
-                    ${profile.firstName} ${profile.lastName}<br/>${disputeData.yourPosition}
+                    <div style="color: #3F51B5;font-weight: bold">${profile.firstName} ${profile.lastName}</div>
+                    ${disputeData.yourPosition}
                 </td>
                 <td>
                     <img src="${staticFiles}/${photo}.jpg" style="width:117px;margin:10px"/>
@@ -20,11 +64,11 @@
                 <td>
                     <img src="<c:url value="/resources/img/vs.jpg"/>" style="margin:10px"/></td>
                 <td>
-                    <img src="${staticFiles}/${disputeData.opponentAvatar}.jpg"
-                         style="width:117px;margin:10px"/>
+                    <img src="${staticFiles}/${disputeData.opponentAvatar}." style="width:117px;margin:10px"/>
                 </td>
                 <td>
-                    ${disputeData.opponentFistName} ${disputeData.opponentLastName}<br/>${disputeData.opponentPosition}
+                    <div style="color: #3F51B5;font-weight: bold">${disputeData.opponentFistName} ${disputeData.opponentLastName}</div>
+                    ${disputeData.opponentPosition}
                 </td>
             </tr>
         </table>
@@ -32,20 +76,21 @@
     </div>
     <br/>
     <form id="disputeForm">
-        <input type="text" name="disputeMessage" class="form-control" style="float:left; width:700px"/>
-        <input type="submit" value="Отправить" class="std-button btn btn-default"/>
+
+        <button type="submit" style="float:right;margin-left:7px" class="std-button btn btn-default"><span class="fa fa-comment"></span>&nbsp;Отправить</button>
+        <a data-toggle="modal" data-target="#giftsPopup" class="std-button btn btn-default" style="background-color:#eb1e63;margin-left:15px;font-size: 14px;width:34px;padding:7px 11px;float:right"><span class="fa fa-gift"></span></a>
+        <div style="overflow: hidden">
+            <input type="text" name="disputeMessage" class="form-control"/>
+        </div>
+
     </form>
 </div>
 
 <script type="text/javascript">
+    var m = new window.ACTIVER.Dialog.Messages('#disputeMessageTemplate',"",function(result){});
+
     window.ACTIVER.Global.handlers["DISPUTE_MESSAGE"] = function (data) {
-        var message = $('#disputeMessageTemplate').html();
-        var dateObj = new Date(data.date);
-        message = message.replace("#message", data.message);
-        message = message.replace("#name", data.from.firstName + " " + data.from.lastName);
-        message = message.replace("#avatar", data.from.photo60x60 + ".jpg");
-        message = message.replace("#time", dateObj.getHours() + ":" + dateObj.getMinutes());
-        $('#disputeMessageDialog').append(message);
+        $('#disputeMessageDialog').append(m.getHtmlPost(data));
         var objDiv = document.getElementById("disputeMessageDialog");
         objDiv.scrollTop = objDiv.scrollHeight;
     };
@@ -60,14 +105,7 @@
         window.ACTIVER.Global.submit(data);
         return false;
     });
-
-    var dateObj = new Date();
-
 </script>
-<div style="display:none" id="disputeMessageTemplate">
-    <div style="overflow: hidden">
-        <img src="${staticFiles}/#avatar" style="float:left;margin:10px;width:50px;"/>
-        #name<br/><span style="font-weight: normal">#message</span><span
-            style="float:right">#time</span>
-    </div>
-</div>
+<textarea style="display:none" id="disputeMessageTemplate">
+    <dating:message/>
+</textarea>

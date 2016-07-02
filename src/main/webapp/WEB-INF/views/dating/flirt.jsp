@@ -1,5 +1,47 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="dating" tagdir="/WEB-INF/tags/dating" %>
+
+
+<!-- Modal -->
+<div class="modal fade" id="giftsPopup" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Подарок. Ваш баланс: <span id="balanceInModal">${profile.balance}</span>$</h4>
+            </div>
+            <div class="modal-body">
+                <ul class="gifts-list">
+                    <c:forEach items="${gifts}" var="gift">
+                        <li>
+                            <a href="#" class="giftForAdd" gift-id="${gift.id}"><img src="<c:url value="${staticFiles}/${gift.file}."/>"></a>
+                            <br/>
+                            Стоимость: 1$
+                        </li>
+                    </c:forEach>
+                </ul>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('.giftForAdd').click(function() {
+        var data = ACTIVER.Global.message;
+        data.to = ${flirtData.id};
+        data.message = "gift:" + $(this).attr("gift-id");
+        data.type = "FLIRT_MESSAGE";
+        ACTIVER.Global.submit(data);
+        $('#giftsPopup').modal('hide');
+    });
+</script>
+
 
 <div style="overflow: hidden">
     <img src="<c:url value="/resources/img/flirt.jpg"/>" style="float: left;margin: 0 30px"/>
@@ -14,7 +56,7 @@
 
         <img src="${staticFiles}/${flirtData.opponentAvatar}.jpg"
              style="width:117px;float:left;margin:10px"/>
-        <h4 style="color: #3F51B5;font-weight:bold;">${flirtData.opponentFirstName} ${flirtData.opponentLastName}</h4>
+        <h4 style="color: #3F51B5;font-weight:bold;">${F.opponentFirstName} ${flirtData.opponentLastName}</h4>
         <div style="margin:10px 0;font-weight: normal">Ваш собеседник</div>
         ${flirtData.age} лет
         <br/>
@@ -25,7 +67,7 @@
 
         <h4 style="color: #3F51B5;font-weight:bold;">Интересы</h4>
         <ul>
-            <c:forEach items="${flirtData.interests}" var="interest">
+            <c:forEach items="${F.interests}" var="interest">
                 <li>${interest}</li>
             </c:forEach>
         </ul>
@@ -38,24 +80,20 @@
         </div>
         <div style="margin-top:20px">
             <form id="flirtForm">
-                <input type="submit" style="float:right;margin-left:15px" class="std-button btn btn-default"
-                       value="Отправить"/>
+                <button type="submit" style="float:right;margin-left:7px" class="std-button btn btn-default"><span class="fa fa-comment"></span>&nbsp;Отправить</button>
+                <a data-toggle="modal" data-target="#giftsPopup" class="std-button btn btn-default" style="background-color:#eb1e63;margin-left:15px;font-size: 14px;width:34px;padding:7px 11px;float:right"><span class="fa fa-gift"></span></a>
                 <div style="overflow: hidden">
-                    <input name="flirtMessage" type="text" class="form-control"/>&nbsp;
+                    <input type="text" name="flirtMessage" class="form-control"/>
                 </div>
             </form>
         </div>
     </div>
 </div>
 <script type="text/javascript">
+    var m = new window.ACTIVER.Dialog.Messages('#flirtMessageTemplate',"",function(result){});
+
     window.ACTIVER.Global.handlers["FLIRT_MESSAGE"] = function (data) {
-        var message = $('#flirtMessageTemplate').html();
-        var dateObj = new Date(data.date);
-        message = message.replace("#message", data.message);
-        message = message.replace("#name", data.from.firstName + " " + data.from.lastName);
-        message = message.replace("#avatar", data.from.photo60x60 + ".jpg");
-        message = message.replace("#time", dateObj.getHours() + ":" + dateObj.getMinutes());
-        $('#flirtMessageDialog').append(message);
+        $('#flirtMessageDialog').append(m.getHtmlPost(data));
         var objDiv = document.getElementById("flirtMessageDialog");
         objDiv.scrollTop = objDiv.scrollHeight;
     };
@@ -91,14 +129,9 @@
     timer();
 </script>
 
-<div style="display:none" id="flirtMessageTemplate">
-    <div style="overflow: hidden">
-        <img src="${staticFiles}/#avatar" style="float:left;margin:10px;width:50px;"/>
-        #name<br/><span style="font-weight: normal">#message</span><span
-            style="float:right">#time</span>
-    </div>
-</div>
-
+<textarea style="display:none" id="flirtMessageTemplate">
+    <dating:message/>
+</textarea>
 
 <div class="modal fade" tabindex="-1" id="myModal" role="dialog">
     <div class="modal-dialog">

@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ru.todo100.activer.PopupMessageType;
-import ru.todo100.activer.dao.AccountDao;
-import ru.todo100.activer.dao.DisputeThemeDao;
-import ru.todo100.activer.dao.HappenedDisputeDao;
-import ru.todo100.activer.dao.HappenedFlirtDao;
+import ru.todo100.activer.dao.*;
 import ru.todo100.activer.data.*;
 import ru.todo100.activer.model.*;
 import ru.todo100.activer.service.PhotoService;
@@ -43,6 +40,18 @@ public class DatingPageController {
 
     private HappenedFlirtDao happenedFlirtDao;
 
+    public GiftDao getGiftDao() {
+        return giftDao;
+    }
+
+    @Autowired
+    public void setGiftDao(GiftDao giftDao) {
+        this.giftDao = giftDao;
+    }
+
+
+    private GiftDao giftDao;
+
     public AccountDao getAccountDao() {
         return accountDao;
     }
@@ -60,7 +69,6 @@ public class DatingPageController {
             model.addAttribute("dialog", dialog);
         } catch (NumberFormatException ignored) {
         }
-        model.addAttribute("templatePost", MessageController.generateTemplateMessageData());
         return "dating/index";
     }
 
@@ -95,6 +103,8 @@ public class DatingPageController {
             model.addAttribute("photo",photos.getPhotoAvatar());
 
             model.addAttribute("profile", profileData);
+
+            model.addAttribute("gifts", getGiftDao().getAll());
             return "dating/flirt";
         }
         return "redirect:/dating";
@@ -114,7 +124,7 @@ public class DatingPageController {
         final PhotoAvatarSizeData photos = photoService1.getSizedPhoto(opponent.getId());
         happenedFlirtData.setOpponentAvatar(photos.getPhotoAvatar());
 
-
+        happenedFlirtData.setOpponentId(opponent.getId());
         happenedFlirtData.setStartedDate(happenedFlirt.getStartedDate());
         happenedFlirtData.setBirthday(opponent.getBirthdate());
 
@@ -198,10 +208,9 @@ public class DatingPageController {
 
             final PhotoAvatarSizeData photos = photoService1.getSizedPhoto(profileData.getId());
             model.addAttribute("photo",photos.getPhotoAvatar());
-
             model.addAttribute("profile",profileData);
-            /*todo ИСПОРЧЕНО*/
-            model.addAttribute("templatePost", MessageController.generateTemplateMessageData());
+
+            model.addAttribute("gifts", getGiftDao().getAll());
             return "dating/dispute";
         }
         return "redirect:/dating";

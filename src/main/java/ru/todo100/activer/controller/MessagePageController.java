@@ -30,7 +30,7 @@ import java.util.*;
 @SuppressWarnings("Duplicates")
 @Controller
 @RequestMapping("/message")
-public class MessageController {
+public class MessagePageController {
     @Autowired
     private PhotoService photoService1;
     @Autowired
@@ -40,18 +40,6 @@ public class MessageController {
 
     @Autowired
     private GiftDao giftDao;
-
-    public static MessageData generateTemplateMessageData() {
-        final MessageData template = new MessageData();
-        template.setMessage("%text%");
-        final MessageAccountData sender = new MessageAccountData();
-        sender.setFirstName("%firstName%");
-        sender.setLastName("%lastName%");
-        /*ИСПОРЧЕНО*/
-        //template.setDate("%date%");
-        template.setFrom(sender);
-        return template;
-    }
 
     @RequestMapping
     public String index(final Model model, final HttpSession session) {

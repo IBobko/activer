@@ -10,11 +10,20 @@ public class HappenedFlirtData {
     private Integer id;
     private Integer age;
     private Calendar startedDate;
+    private Integer opponentId;
     private String opponentAvatar;
     private String opponentFirstName;
     private String opponentLastName;
     private List<String> interests;
     private Calendar birthday;
+
+    public Integer getOpponentId() {
+        return opponentId;
+    }
+
+    public void setOpponentId(Integer opponentId) {
+        this.opponentId = opponentId;
+    }
 
     public int getAge() {
         Calendar dob = getBirthday();
