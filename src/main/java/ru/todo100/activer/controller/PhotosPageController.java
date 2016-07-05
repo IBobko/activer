@@ -141,6 +141,9 @@ public class PhotosPageController {
             accountId = accountService.getCurrentProfileData(session).getId();
         }
         final PhotoAlbumItem album = getPhotoAlbumDao().getAlbum(accountId, id);
+        if (album == null) {
+            return "redirect:/photos?accountId=" + accountId;
+        }
         model.addAttribute("photos", album.getPhotos());
         model.addAttribute("album", album);
         return "photos/album";

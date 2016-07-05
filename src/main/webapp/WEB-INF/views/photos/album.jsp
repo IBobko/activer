@@ -36,11 +36,11 @@
                 {
                     backgroundColor: '#000000',
                     backgroundOpacity: 0.8,
-                    lang: 'ru',
+                    lang: 'ru'
                 });
-        if (document.location.hash!="") {
+        if (document.location.hash != "") {
             var result = document.location.hash.match(/(\S+)=(\d+)/);
-            $(".yoxview li a#photo-"+result[2]+" img").click();
+            $(".yoxview li a#photo-" + result[2] + " img").click();
         }
 
     });
@@ -58,12 +58,12 @@
 </div>
 
 <script type="text/javascript">
-    $('#addingPhoto').change(function(event){
+    $('#addingPhoto').change(function (event) {
         var files = event.target.files;
         var data = new FormData();
 
         data.append("file", files[0]);
-        data.append("album",1);
+        data.append("album", ${album.id});
 
         $.ajax({
             url: '<c:url value="/photos/upload"/>',
@@ -73,11 +73,8 @@
             dataType: 'json',
             processData: false, // Don't process the files
             contentType: false, // Set content type to false as jQuery will tell the server its a query string request
-            success: function(data, textStatus, jqXHR)
-            {
-                console.log(data);
-
-                $("#photos").append("<li><a href=\"${staticFiles}/" + data["originalPath"] +".jpg\"><img photo-id=\""+data["id"]+"\" style=\"width:200px; height:130px\" src=\"${staticFiles}/"+ data["middlePath"] +"${photo.middlePath.trim()}.jpg\" alt=\"${photo.description}\"></a></li>");
+            success: function (data) {
+                $("#photos").append("<li><a href=\"${staticFiles}/" + data["originalPath"] + ".jpg\"><img photo-id=\"" + data["id"] + "\" style=\"width:200px; height:130px\" src=\"${staticFiles}/" + data["middlePath"] + "${photo.middlePath.trim()}.jpg\" alt=\"${photo.description}\"></a></li>");
 
                 jQuery(".yoxview").yoxview(
                         {
@@ -86,16 +83,12 @@
                             lang: 'ru',
                         });
             },
-            error: function(jqXHR, textStatus, errorThrown)
-            {
+            error: function (jqXHR, textStatus, errorThrown) {
                 // Handle errors here
                 console.log('ERRORS: ' + textStatus);
                 // STOP LOADING SPINNER
             }
         });
-
-
-
     });
 </script>
 
@@ -107,10 +100,10 @@
     <c:forEach items="${photos}" var="photo">
         <li>
             <a id="photo-${photo.id}" href="${staticFiles}/${photo.path.trim()}.jpg"><img photo-id="${photo.id}"
-                                                                   style="width:200px; height:130px"
-                                                                   src="${staticFiles}/${photo.middlePath.trim()}.jpg"
-                                                                   alt="${photo.description}"
-                                                                   title="${photo.description}"/></a>
+                                                                                          style="width:200px; height:130px"
+                                                                                          src="${staticFiles}/${photo.middlePath.trim()}.jpg"
+                                                                                          alt="${photo.description}"
+                                                                                          title="${photo.description}"/></a>
         </li>
     </c:forEach>
 </ul>
