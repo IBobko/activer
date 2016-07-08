@@ -1,5 +1,7 @@
 package ru.todo100.activer.data;
 
+import org.springframework.web.multipart.MultipartFile;
+
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
@@ -7,6 +9,15 @@ package ru.todo100.activer.data;
 public class ReceiveWallData {
     private Integer id;
     private String text;
+    private MultipartFile photo;
+
+    public MultipartFile getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(MultipartFile photo) {
+        this.photo = photo;
+    }
 
     public Integer getId() {
         return id;

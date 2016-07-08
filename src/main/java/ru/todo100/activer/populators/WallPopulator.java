@@ -1,10 +1,12 @@
 package ru.todo100.activer.populators;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.data.MessageAccountData;
 import ru.todo100.activer.data.MessageData;
 import ru.todo100.activer.model.AccountItem;
+import ru.todo100.activer.model.WallAttachmentItem;
 import ru.todo100.activer.model.WallItem;
 
 /**
@@ -12,6 +14,8 @@ import ru.todo100.activer.model.WallItem;
  */
 @SuppressWarnings("WeakerAccess")
 public class WallPopulator implements Populator<WallItem, MessageData> {
+    @Value(value = "${static.host.files}")
+    String staticFiles;
     private MessageAccountDataPopulator messageAccountDataPopulator;
     @Autowired
     private AccountDao accountService;
@@ -42,6 +46,11 @@ public class WallPopulator implements Populator<WallItem, MessageData> {
         final AccountItem senderItem = getAccountService().get(wallItem.getSender());
         final MessageAccountData sender = getMessageAccountDataPopulator().populate(senderItem);
         data.setFrom(sender);
+        if (wallItem.getAttachments() != null && !wallItem.getAttachments().isEmpty()) {
+            WallAttachmentItem wallAttachmentItem = wallItem.getAttachments().iterator().next();
+            data.setAttachmentFile(wallAttachmentItem.getPhoto());
+            data.setAttachmentHtml("<img style='max-width:300px;max-height:300px' src='" + staticFiles + "/" + wallAttachmentItem.getPhoto() + ".'/>");
+        }
         return data;
     }
 

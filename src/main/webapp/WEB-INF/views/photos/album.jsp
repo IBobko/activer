@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link href="<c:url value="/resources/yoxview/yoxview.css"/>" rel="stylesheet"/>
+
 <style type="text/css">
     .photo_menu {
         margin: 0;
@@ -109,6 +110,7 @@
 </ul>
 
 <script type="text/javascript">
+    window.deletePhotoAction = ${currentProfileData.id == album.id ? "1" : "0"};
     function deletePhoto() {
         var data = {
             photoId: window.currentImage
@@ -118,6 +120,5 @@
             $('.yoxview').find("[photo-id='" + data + "']").closest("li").remove();
 
         });
-
     }
 </script>

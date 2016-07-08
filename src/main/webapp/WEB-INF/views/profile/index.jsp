@@ -275,6 +275,14 @@
                         <textarea class="form-control" id="wall-text" placeholder="Есть мысли?" maxlength="140" rows="2"></textarea>
                         <button type="submit" class="btn btn-default pull-right "><span class="fa fa-pencil"></span> Опубликовать</button>
                 </div>
+
+                <input id="choosePhoto" name="photo" type="file"
+                           style="cursor:pointer;position:absolute;height:34px;opacity: 0;overflow: hidden;width:165px">
+                <div style="margin:20px 0">
+                    <a id="choosePhotoButton" href="#" class="std-button btn btn-default"><span
+                            class="fa fa-camera"></span>&nbsp;Прикрепить фото</a>
+                </div>
+                <img style="max-width:200px; max-height:200px" id="renderImage"/>
             </form>
         </c:if>
 
@@ -290,12 +298,35 @@
             <script type="text/javascript">
                 var m = new window.ACTIVER.Dialog.Messages('#wall-template',"<c:url value="/wall/publish"/>",function(result){
                     $('#profile-wall').prepend(result);
+                    jQuery(".yoxview").yoxview(
+                            {
+                                backgroundColor: '#000000',
+                                backgroundOpacity: 0.8,
+                                lang: 'ru',
+                            });
                 });
+
+
+                var formData = new FormData();
+                $('#choosePhoto').change(function(){
+
+
+                    var fileData = $('#choosePhoto').prop('files')[0];
+                    formData.set('photo', fileData);
+
+                    var reader2 = new FileReader();
+                    reader2.onload = function(frEvent) {
+                        document.getElementById("renderImage").src = frEvent.target.result;
+                    };
+                    reader2.readAsDataURL(fileData);
+
+
+                });
+
                 $('#wall').submit(function () {
-                    m.submit({
-                        id: ${profile.id},
-                        text: $('#wall-text').val()
-                    });
+                    formData.set("id",${profile.id});
+                    formData.set("text",$('#wall-text').val());
+                    m.submit(formData);
                     return false;
                 });
             </script>
@@ -325,7 +356,7 @@
 
 
 <script type="text/javascript">
-    var loaded = 0;
+    var loaded = 1;
     var end = false;
     var already_downloading = false;
     var lastScrollTop = 0;
@@ -351,7 +382,6 @@
                 if (data.elements.length == 0){
                     end = true;
                 };
-                console.log(data);
 
                 for (var index in data.elements) {
                     $('#profile-wall').append(m.getHtmlPost(data.elements[index]));
@@ -361,4 +391,21 @@
             });
         }
     });
+
+
+    function deleteWallPost(id) {
+        $.get("<c:url value="/wall/remove/"/>" + id,function(response){
+            $("[wall-id='"+response+"']").remove();
+        })
+
+    }
+
+
+
 </script>
+
+<style>
+    .wallRemove{
+    <c:if test="${currentProfileData.id != profile.id}">display:none</c:if>
+    }
+</style>

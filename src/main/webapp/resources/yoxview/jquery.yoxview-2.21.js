@@ -1877,7 +1877,7 @@ if (typeof Yox == "undefined")
                     }
                 });
 
-                if (typeof deletePhoto != 'undefined') {
+                if (typeof deletePhoto != 'undefined' && window.deletePhotoAction == 1) {
                     infoPanel.append(
                         $("<div>", {
                             id: "",

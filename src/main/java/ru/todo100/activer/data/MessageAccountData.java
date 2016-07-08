@@ -49,7 +49,7 @@ public class MessageAccountData implements Serializable {
         return id;
     }
 
-    public void setId(final Integer id) {
+    public void setId(final Number id) {
         this.id = id;
     }
 }

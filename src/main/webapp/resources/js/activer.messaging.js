@@ -19,7 +19,9 @@ window.ACTIVER.Dialog = {
                 if (data.hasOwnProperty(index) && typeof data[index] === "object") {
                     r(data[index], Path, template);
                 } else {
-                    template.val = template.val.replace("#" + Path, data[index]);
+
+
+                    template.val = template.val.replace(new RegExp('#' + Path ,'g'), data[index]);
                 }
             }
         };
@@ -27,7 +29,14 @@ window.ACTIVER.Dialog = {
 
         this.submit = function (data) {
             var that = this;
-            $.post(url, data, function (data) {
+
+            $.ajax({
+                url: url,
+                data:data,
+                type: 'POST',
+                contentType: false,
+                processData: false
+            }).done(function(data){
                 var template = that.getHtmlPost(data);
                 callback(template);
             });

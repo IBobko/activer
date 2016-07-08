@@ -163,7 +163,7 @@
                     var fileData = $('#choosePhoto').prop('files')[0];
                     formData.append('photo', fileData);
 
-                        var reader2 = new FileReader();
+                    var reader2 = new FileReader();
 
                     reader2.onload = function(frEvent) {
                         document.getElementById("renderImage").src = frEvent.target.result;

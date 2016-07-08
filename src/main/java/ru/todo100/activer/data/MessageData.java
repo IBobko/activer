@@ -30,11 +30,31 @@ public class MessageData implements Serializable {
      * Прочитан ли сигнал получателем
      */
     private Boolean read;
+
+    private String attachmentFile;
+
+    public String getAttachmentHtml() {
+        return attachmentHtml;
+    }
+
+    public void setAttachmentHtml(String attachmentHtml) {
+        this.attachmentHtml = attachmentHtml;
+    }
+
+    private String attachmentHtml;
     /**
      * Собеседник, противоположная сторона. Часто может совпадать либо с from.id, либо с to.id
      * Также может содержать ID диалога
      */
-    private Integer interlocutor;
+    private Number interlocutor;
+
+    public String getAttachmentFile() {
+        return attachmentFile;
+    }
+
+    public void setAttachmentFile(String attachmentFile) {
+        this.attachmentFile = attachmentFile;
+    }
 
     public Boolean getRead() {
         return read;
@@ -44,11 +64,11 @@ public class MessageData implements Serializable {
         this.read = read;
     }
 
-    public Integer getInterlocutor() {
+    public Number getInterlocutor() {
         return interlocutor;
     }
 
-    public void setInterlocutor(Integer interlocutor) {
+    public void setInterlocutor(Number interlocutor) {
         this.interlocutor = interlocutor;
     }
 
@@ -80,7 +100,7 @@ public class MessageData implements Serializable {
         return id;
     }
 
-    public void setId(final Integer id) {
+    public void setId(final Number id) {
         this.id = id;
     }
 
