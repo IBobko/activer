@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.CountryDao;
 import ru.todo100.activer.dao.PhotoDao;
@@ -331,6 +332,7 @@ public class SettingPageController {
         account.setInterestItems(interests);
         accountService.save(account);
         accountService.deleteOldInterests();
+        accountService.addSynchronizer(account.getId(),"interests",interests);
 
     }
 
@@ -347,9 +349,9 @@ public class SettingPageController {
     public String trips(final Model model) {
         model.addAttribute("pageType", "settings/info/trip");
 
-        final TripForm tripForm = new TripForm();
-        model.addAttribute("tripForm", tripForm);
-
+        if (!model.containsAttribute("tripForm")) {
+            model.addAttribute("tripForm", new TripForm());
+        }
         final List<TripData> trips = new ArrayList<>();
         final AccountItem account = accountService.getCurrentAccount();
 
@@ -362,7 +364,7 @@ public class SettingPageController {
     }
 
     @RequestMapping(value = "/trips", method = RequestMethod.POST)
-    public String tripsPost(@Valid final TripForm tripForm, BindingResult bindingResult) {
+    public String tripsPost(@Valid final TripForm tripForm, final BindingResult bindingResult,final RedirectAttributes attr) {
         if (!bindingResult.hasErrors()) {
             final AccountItem account = accountService.getCurrentAccount();
             final TripItem tripItem = new TripItem();
@@ -378,6 +380,9 @@ public class SettingPageController {
             trips.add(tripItem);
             accountService.addSynchronizer(account.getId(),"trips",trips);
             accountService.save(account);
+        }else {
+            attr.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + "tripForm", bindingResult);
+            attr.addFlashAttribute("tripForm", tripForm);
         }
         return "redirect:/settings/trips";
     }

@@ -39,7 +39,7 @@
                     </c:forEach>
                 </form:select>
             </td>
-            <td><form:errors path="country"/> </td>
+            <td><form:errors  path="country"/></td>
         </tr>
         <tr>
             <td>Город / Поселение</td>
@@ -54,7 +54,7 @@
                     <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                 </div>
-            <td><form:errors path="year"/> </td>
+            <td><form:errors path="year"/></td>
         </tr>
         <tr>
             <td colspan="=2">

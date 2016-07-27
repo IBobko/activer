@@ -1,16 +1,19 @@
 package ru.todo100.activer.form;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
 public class TripForm {
-    @NotNull
+    @Pattern(regexp = "\\S+",message = "Страна должна быть указана")
     private String country;
-    @NotNull
+
+    @Pattern(regexp = "\\d{2}/\\d{4}",message = "Год должен быть указан")
     private String year;
-    @NotNull
+
+    @Pattern(regexp = "\\S+",message = "Город должен быть указан")
     private String city;
 
     public String getCountry() {

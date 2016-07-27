@@ -15,6 +15,7 @@ import ru.todo100.activer.data.*;
 import ru.todo100.activer.form.FriendSearchForm;
 import ru.todo100.activer.form.RegisterForm;
 import ru.todo100.activer.model.*;
+import ru.todo100.activer.populators.InterestPopulator;
 import ru.todo100.activer.populators.ProfilePopulator;
 import ru.todo100.activer.populators.TripPopulator;
 import ru.todo100.activer.qualifier.AccountQualifier;
@@ -35,347 +36,334 @@ import java.util.concurrent.ThreadLocalRandom;
 
 
 class ProfileValue {
-	private String name;
-	private Object value;
+    private String name;
+    private Object value;
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Object getValue() {
-		return value;
-	}
+    public Object getValue() {
+        return value;
+    }
 
-	public void setValue(Object value) {
-		this.value = value;
-	}
+    public void setValue(Object value) {
+        this.value = value;
+    }
 }
 
 @SuppressWarnings(value = {"unused", "SqlResolve", "unchecked"})
 @Transactional
-public class AccountDao extends AbstractDao
-{
-	@Autowired
-	private ReferService referService;
-	@Autowired
-	private PromoService promoService;
+public class AccountDao extends AbstractDao {
+    @Autowired
+    PhotoService photoService1;
+    @Autowired
+    private ReferService referService;
+    @Autowired
+    private PromoService promoService;
+    @Autowired
+    private TripPopulator tripPopulator;
+    @Autowired
+    private InterestPopulator interestPopulator;
+    @Autowired
+    private ProfilePopulator profilePopulator;
+    private HashMap<Integer, List<ProfileValue>> synchronizers = new HashMap<>();
 
-	public List<AccountItem> getAll()
-	{
-		return getCriteria().setMaxResults(10).list();
-	}
+    public List<AccountItem> getAll() {
+        return getCriteria().setMaxResults(10).list();
+    }
 
-	@Override
-	public Class<AccountItem> getItemClass()
-	{
-		return AccountItem.class;
-	}
+    @Override
+    public Class<AccountItem> getItemClass() {
+        return AccountItem.class;
+    }
 
-	public AccountItem get(Integer id)
-	{
-		return getSession().get(this.getItemClass(), id);
-	}
+    public AccountItem get(Integer id) {
+        return getSession().get(this.getItemClass(), id);
+    }
 
-	public void save(final AccountItem account)
-	{
-		final Session session = getSession();
-		session.saveOrUpdate(account);
-	}
+    public void save(final AccountItem account) {
+        final Session session = getSession();
+        session.saveOrUpdate(account);
+    }
 
-	public AccountItem get(String login)
-	{
-		return (AccountItem) getCriteria().add(Restrictions.eq("username", login)).uniqueResult();
-	}
+    public AccountItem get(String login) {
+        return (AccountItem) getCriteria().add(Restrictions.eq("username", login)).uniqueResult();
+    }
 
-	public AccountItem getByEmail(String email)
-	{
-		return (AccountItem) getCriteria().add(Restrictions.eq("email", email)).uniqueResult();
-	}
+    public AccountItem getByEmail(String email) {
+        return (AccountItem) getCriteria().add(Restrictions.eq("email", email)).uniqueResult();
+    }
 
-	public AccountItem getCurrentAccountForProfile() {
-		getSession().enableFetchProfile("account-for-profile");
-		AccountItem accountItem = getCurrentAccount();
-		getSession().disableFetchProfile("account-for-profile");
-		return accountItem;
-	}
+    public AccountItem getCurrentAccountForProfile() {
+        getSession().enableFetchProfile("account-for-profile");
+        AccountItem accountItem = getCurrentAccount();
+        getSession().disableFetchProfile("account-for-profile");
+        return accountItem;
+    }
 
-	@Autowired
-	private TripPopulator tripPopulator;
+    public AccountItem getCurrentAccount() {
+        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-	public AccountItem getCurrentAccount()
-	{
-		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated()) {
 
-		if (auth != null && auth.isAuthenticated()) {
+            for (final GrantedAuthority authority : auth.getAuthorities()) {
+                if (authority.getAuthority().equals("ROLE_ANONYMOUS")) {
+                    return null;
+                }
+            }
 
-			for (final GrantedAuthority authority: auth.getAuthorities()) {
-				if (authority.getAuthority().equals("ROLE_ANONYMOUS")) {
-					return null;
-				}
-			}
+            final AccountItem accountItem = get(auth.getName());
+            accountItem.setLastActivity(new GregorianCalendar());
+            save(accountItem);
+            return accountItem;
+        }
+        return null;
+    }
 
-			final AccountItem accountItem = get(auth.getName());
-			accountItem.setLastActivity(new GregorianCalendar());
-			save(accountItem);
-			return accountItem;
-		}
-		return null;
-	}
+    public void addSynchronizer(final Integer accountId, final String name, final Object value) {
+        final List<ProfileValue> profileValues;
+        if (synchronizers.containsKey(accountId)) {
+            profileValues = synchronizers.get(accountId);
+        } else {
+            profileValues = new ArrayList<>();
+            synchronizers.put(accountId, profileValues);
+        }
+        final ProfileValue profileValue = new ProfileValue();
+        profileValue.setName(name);
+        profileValue.setValue(value);
+        profileValues.add(profileValue);
+    }
 
-	public void addSynchronizer(final Integer accountId,final String name, final Object value) {
-		final List<ProfileValue> profileValues;
-		if (synchronizers.containsKey(accountId)) {
-			profileValues = synchronizers.get(accountId);
-		} else {
-			profileValues = new ArrayList<>();
-			synchronizers.put(accountId,profileValues);
-		}
-		final ProfileValue profileValue = new ProfileValue();
-		profileValue.setName(name);
-		profileValue.setValue(value);
-		profileValues.add(profileValue);
-	}
+    public void initCurrentProfile(HttpSession session) {
+        final AccountItem account = getCurrentAccountForProfile();
+        final ProfileData profile = profilePopulator.populate(account);
+        profile.setMy(true);
+        session.setAttribute("currentProfileData", profile);
+    }
 
-	@Autowired
-	private ProfilePopulator profilePopulator;
+    public ProfileData getCurrentProfileData(HttpSession session) {
+        if (session.getAttribute("currentProfileData") == null) {
+            initCurrentProfile(session);
+        }
+        final ProfileData profileData = (ProfileData) session.getAttribute("currentProfileData");
+        if (synchronizers.containsKey(profileData.getId())) {
+            final List<ProfileValue> values = synchronizers.get(profileData.getId());
+            for (ProfileValue value : values) {
+                if (value.getName().equals("balance")) {
+                    profileData.setBalance((BigDecimal) value.getValue());
+                }
+                if (value.getName().equals("showOnline")) {
+                    profileData.setShowOnline((Boolean) value.getValue());
+                }
+                if (value.getName().equals("showPremium")) {
+                    profileData.setShowPremium((Boolean) value.getValue());
+                }
+                if (value.getName().equals("trips")) {
+                    final List<TripData> trips = new ArrayList<>();
+                    for (TripItem item : (Set<TripItem>) value.getValue()) {
+                        trips.add(tripPopulator.populate(item));
+                    }
+                    profileData.setTrips(trips);
+                }
+                if (value.getName().equals("interests")) {
+                    final List<InterestData> interests = new ArrayList<>();
+                    for (InterestItem item : (Set<InterestItem>) value.getValue()) {
+                        interests.add(interestPopulator.populate(item));
+                    }
+                    profileData.setInterests(interests);
+                }
+            }
+            synchronizers.remove(profileData.getId());
+        }
+        return profileData;
+    }
 
-	private HashMap<Integer,List<ProfileValue>> synchronizers = new HashMap<>();
+    public void addFriend(AccountItem account, Integer friendId) {
+        account.getFriends().add(get(friendId));
+        save(account);
+    }
 
-	public void initCurrentProfile(HttpSession session) {
-		final AccountItem account = getCurrentAccountForProfile();
-		final ProfileData profile = profilePopulator.populate(account);
-		profile.setMy(true);
-		session.setAttribute("currentProfileData",profile);
-	}
+    public void deleteOldInterests() {
+        getSession().createSQLQuery("DELETE FROM INTEREST WHERE account_id is null").executeUpdate();
+    }
 
-	public ProfileData getCurrentProfileData(HttpSession session)
-	{
-		if (session.getAttribute("currentProfileData")==null){
-			initCurrentProfile(session);
-		}
-		final ProfileData profileData = (ProfileData)session.getAttribute("currentProfileData");
-		if (synchronizers.containsKey(profileData.getId())) {
-			final List<ProfileValue> values = synchronizers.get(profileData.getId());
-			for (ProfileValue value: values) {
-				if (value.getName().equals("balance")) {
-					profileData.setBalance((BigDecimal) value.getValue());
-				}
-				if (value.getName().equals("showOnline")) {
-					profileData.setShowOnline((Boolean) value.getValue());
-				}
-				if (value.getName().equals("showPremium")) {
-					profileData.setShowPremium((Boolean) value.getValue());
-				}
-				if (value.getName().equals("trips")) {
-					final List<TripData> trips = new ArrayList<>();
-					for (TripItem item : (Set<TripItem>)value.getValue()) {
-						trips.add(tripPopulator.populate(item));
-					}
-					profileData.setTrips(trips);
-				}
-			}
-			synchronizers.remove(profileData.getId());
-		}
-		return profileData;
-	}
+    public AccountItem saveForm(RegisterForm registerForm) throws InputError {
+        String password = RandomStringUtils.randomAlphanumeric(6);
+        InputError ie = new InputError();
 
-	public void addFriend(AccountItem account, Integer friendId)
-	{
-		account.getFriends().add(get(friendId));
-		save(account);
-	}
+        if (registerForm.getEmail().equals("")) {
+            ie.addError("E-mail is empty");
+        }
 
-	public void deleteOldInterests() {
-		getSession().createSQLQuery("DELETE FROM INTEREST WHERE account_id is null").executeUpdate();
-	}
+        if (!MailService.isValidEmailAddress(registerForm.getEmail())) {
+            ie.addError("E-mail is invalid");
+        }
 
-	public AccountItem saveForm(RegisterForm registerForm) throws InputError {
-		String password = RandomStringUtils.randomAlphanumeric(6);
-		InputError ie = new InputError();
+        AccountItem exists = this.get(registerForm.getEmail());
+        if (exists != null) {
+            ie.addError("Login is busy");
+        }
 
-		if (registerForm.getEmail().equals(""))
-		{
-			ie.addError("E-mail is empty");
-		}
+        if (registerForm.getFirstName().trim().equals("")) {
+            ie.addError("First name is empty");
+        }
 
-		if (!MailService.isValidEmailAddress(registerForm.getEmail()))
-		{
-			ie.addError("E-mail is invalid");
-		}
+        if (registerForm.getLastName().trim().equals("")) {
+            ie.addError("Last name is empty");
+        }
 
-		AccountItem exists = this.get(registerForm.getEmail());
-		if (exists != null)
-		{
-			ie.addError("Login is busy");
-		}
+        PromoCodeItem promoCode = null;
+        if (StringUtils.isNotEmpty(registerForm.getPromo())) {
+            promoCode = promoService.getPromo(registerForm.getPromo());
+            if (promoCode != null) {
+                if (promoCode.getUsed() != null) {
+                    ie.addError("Promo is used");
+                }
+            } else {
+                ie.addError("Promo is invalid");
+            }
+        }
 
-		if (registerForm.getFirstName().trim().equals(""))
-		{
-			ie.addError("First name is empty");
-		}
+        if (!ie.getErrors().isEmpty()) {
+            throw ie;
+        }
 
-		if (registerForm.getLastName().trim().equals(""))
-		{
-			ie.addError("Last name is empty");
-		}
+        final AccountItem account = new AccountItem();
+        account.setEmail(registerForm.getEmail());
+        account.setUsername(registerForm.getEmail());
+        account.setPassword(password);
+        account.setFirstName(registerForm.getFirstName());
+        account.setLastName(registerForm.getLastName());
+        account.addRole("ROLE_USER");
+        account.setCreatedDate(new GregorianCalendar());
+        account.setReferCode(RandomStringUtils.randomAlphanumeric(6));
 
-		PromoCodeItem promoCode = null;
-		if (StringUtils.isNotEmpty(registerForm.getPromo())){
-			promoCode = promoService.getPromo(registerForm.getPromo());
-			if (promoCode != null) {
-				if (promoCode.getUsed() != null) {
-					ie.addError("Promo is used");
-				}
-			}
-			else
-			{
-				ie.addError("Promo is invalid");
-			}
-		}
+        final AccountItem referAccount = referService.getUserByRefer(registerForm.getRefer());
+        if (referAccount != null) {
+            account.setUsedReferCode(referAccount.getReferCode());
+        }
+        save(account);
+        if (promoCode != null) {
+            promoCode.setUsed(account);
+            getSession().save(promoCode);
+        }
+        return account;
+    }
 
-		if (!ie.getErrors().isEmpty())
-		{
-			throw ie;
-		}
+    public void deleteTrip(Integer id) {
+        final AccountItem account = getCurrentAccount();
+        for (TripItem trip : account.getTripItems()) {
+            if (Objects.equals(trip.getId(), id)) {
+                account.getTripItems().remove(trip);
+                break;
+            }
+        }
+        addSynchronizer(account.getId(), "trips", account.getTripItems());
+    }
 
-		final AccountItem account = new AccountItem();
-		account.setEmail(registerForm.getEmail());
-		account.setUsername(registerForm.getEmail());
-		account.setPassword(password);
-		account.setFirstName(registerForm.getFirstName());
-		account.setLastName(registerForm.getLastName());
-		account.addRole("ROLE_USER");
-		account.setCreatedDate(new GregorianCalendar());
-		account.setReferCode(RandomStringUtils.randomAlphanumeric(6));
+    public AccountItem getRandomOnlineAccount(HttpSession session) {
+        ProfileData profileData = getCurrentProfileData(session);
 
-		final AccountItem referAccount = referService.getUserByRefer(registerForm.getRefer());
-		if (referAccount != null) {
-			account.setUsedReferCode(referAccount.getReferCode());
-		}
-		save(account);
-		if (promoCode != null) {
-			promoCode.setUsed(account);
-			getSession().save(promoCode);
-		}
-		return account;
-	}
+        final List<BigDecimal> result = getSession().createSQLQuery(
+                "select id from (select id,extract( day from diff )*24*60*60*1000 + " +
+                        " extract( hour from diff )*60*60*1000 + " +
+                        " extract( minute from diff )*60*1000 + " +
+                        " round(extract( second from diff )*1000) total_milliseconds " +
+                        "from (select id,(systimestamp - ACCOUNT_LAST_ACTIVITY) diff from ACCOUNT)) where total_milliseconds < 10906720 and id !=" + profileData.getId()).list();
 
-	public void deleteTrip(Integer id) {
-		final AccountItem account = getCurrentAccount();
-		for (TripItem trip : account.getTripItems()) {
-			if (Objects.equals(trip.getId(), id)) {
-				account.getTripItems().remove(trip);
-				break;
-			}
-		}
-		addSynchronizer(account.getId(),"trips",account.getTripItems());
-	}
+        final Integer index = ThreadLocalRandom.current().nextInt(0, result.size());
+        return getSession().load(AccountItem.class, result.get(index).intValue());
+    }
 
-	public AccountItem getRandomOnlineAccount(HttpSession session) {
-		ProfileData profileData = getCurrentProfileData(session);
+    public void deleteDream(Integer id) {
+        final AccountItem account = getCurrentAccount();
+        for (DreamItem dream : account.getDreamItems()) {
+            if (Objects.equals(dream.getId(), id)) {
+                account.getDreamItems().remove(dream);
+                break;
+            }
+        }
+    }
 
-		final List<BigDecimal> result = getSession().createSQLQuery(
-				"select id from (select id,extract( day from diff )*24*60*60*1000 + " +
-						" extract( hour from diff )*60*60*1000 + " +
-						" extract( minute from diff )*60*1000 + " +
-						" round(extract( second from diff )*1000) total_milliseconds " +
-						"from (select id,(systimestamp - ACCOUNT_LAST_ACTIVITY) diff from ACCOUNT)) where total_milliseconds < 10906720 and id !=" + profileData.getId()).list();
+    public List<FriendData> getByQualifier(AccountQualifier qualifier) {
+        if (qualifier.getFriendSearchForm().isNull()) {
+            return new ArrayList<>();
+        }
+        Criteria criteria = getCriteria();
+        if (qualifier.getStart() != null) {
+            criteria.setFirstResult(qualifier.getStart());
+        }
 
-		final Integer index = ThreadLocalRandom.current().nextInt(0, result.size());
-		return getSession().load(AccountItem.class, result.get(index).intValue());
-	}
+        if (qualifier.getCount() != null) {
+            criteria.setMaxResults(qualifier.getCount());
+        }
 
-	public void deleteDream(Integer id) {
-		final AccountItem account = getCurrentAccount();
-		for (DreamItem dream : account.getDreamItems()) {
-			if (Objects.equals(dream.getId(), id)) {
-				account.getDreamItems().remove(dream);
-				break;
-			}
-		}
-	}
+        final FriendSearchForm friendSearchForm = qualifier.getFriendSearchForm();
+        if (StringUtils.isNotEmpty(friendSearchForm.getEmail())) {
+            criteria.add(Restrictions.eq("email", friendSearchForm.getEmail()));
+        }
 
-	public List<FriendData> getByQualifier(AccountQualifier qualifier) {
-		if (qualifier.getFriendSearchForm().isNull()) {
-			return new ArrayList<>();
-		}
-		Criteria criteria = getCriteria();
-		if (qualifier.getStart() != null) {
-			criteria.setFirstResult(qualifier.getStart());
-		}
+        if (friendSearchForm.getSex() != null) {
+            criteria.add(Restrictions.eq("sex", friendSearchForm.getSex()));
+        }
 
-		if (qualifier.getCount() != null) {
-			criteria.setMaxResults(qualifier.getCount());
-		}
+        if (StringUtils.isNotEmpty(friendSearchForm.getFirstName())) {
+            criteria.add(Restrictions.eq("firstName", friendSearchForm.getFirstName()));
+        }
 
-		final FriendSearchForm friendSearchForm = qualifier.getFriendSearchForm();
-		if (StringUtils.isNotEmpty(friendSearchForm.getEmail())){
-			criteria.add(Restrictions.eq("email",friendSearchForm.getEmail()));
-		}
+        if (StringUtils.isNotEmpty(friendSearchForm.getLastName())) {
+            criteria.add(Restrictions.eq("lastName", friendSearchForm.getLastName()));
+        }
 
-		if (friendSearchForm.getSex() != null){
-			criteria.add(Restrictions.eq("sex",friendSearchForm.getSex()));
-		}
+        if (StringUtils.isNotEmpty(friendSearchForm.getBirthDay())) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/mm/yyyy");
+            try {
+                Date date = simpleDateFormat.parse(friendSearchForm.getBirthDay());
+                Calendar calendar = new GregorianCalendar();
+                calendar.setTime(date);
+                criteria.add(Restrictions.eq("birthdate", calendar));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
-		if (StringUtils.isNotEmpty(friendSearchForm.getFirstName())){
-			criteria.add(Restrictions.eq("firstName",friendSearchForm.getFirstName()));
-		}
+        }
+        final List<AccountItem> result = criteria.list();
 
-		if (StringUtils.isNotEmpty(friendSearchForm.getLastName())){
-			criteria.add(Restrictions.eq("lastName",friendSearchForm.getLastName()));
-		}
+        final List<FriendData> datas = new ArrayList<>();
+        for (AccountItem item : result) {
+            FriendData friendData = new FriendData();
+            friendData.setFirstName(item.getFirstName());
+            friendData.setLastName(item.getLastName());
+            friendData.setId(item.getId());
 
-		if (StringUtils.isNotEmpty(friendSearchForm.getBirthDay())){
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/mm/yyyy");
-			try {
-				Date date = simpleDateFormat.parse(friendSearchForm.getBirthDay());
-				Calendar calendar = new GregorianCalendar();
-				calendar.setTime(date);
-				criteria.add(Restrictions.eq("birthdate",calendar));
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
+            JobData jobData = new JobData();
 
-		}
-		final List<AccountItem> result = criteria.list();
+            if (item.getJobItems() != null && !item.getJobItems().isEmpty()) {
+                JobItem jobItem = (JobItem) item.getJobItems().toArray()[item.getJobItems().size() - 1];
+                jobData.setCity(jobItem.getCity());
+                jobData.setPost(jobItem.getPost());
+                jobData.setWork(jobItem.getWorkplace());
+            }
+            friendData.setJob(jobData);
 
-		final List<FriendData> datas = new ArrayList<>();
-		for (AccountItem item: result) {
-			FriendData friendData = new FriendData();
-			friendData.setFirstName(item.getFirstName());
-			friendData.setLastName(item.getLastName());
-			friendData.setId(item.getId());
+            PhotoAvatarSizeData sized = photoService1.getSizedPhoto(item.getId());
+            if (sized != null) {
+                friendData.setPhoto60x60(sized.getPhotoMini());
+            }
+            datas.add(friendData);
+        }
 
-			JobData jobData = new JobData();
+        return datas;
+    }
 
-			if (item.getJobItems() != null && !item.getJobItems().isEmpty()) {
-				JobItem jobItem = (JobItem)item.getJobItems().toArray()[item.getJobItems().size()-1];
-				jobData.setCity(jobItem.getCity());
-				jobData.setPost(jobItem.getPost());
-				jobData.setWork(jobItem.getWorkplace());
-			}
-			friendData.setJob(jobData);
-
-			PhotoAvatarSizeData sized = photoService1.getSizedPhoto(item.getId());
-			if (sized != null) {
-				friendData.setPhoto60x60(sized.getPhotoMini());
-			}
-			datas.add(friendData);
-		}
-
-		return datas;
-	}
-
-	@Autowired
-	PhotoService photoService1;
-
-	public Long getCountByQualifier(Qualifier qualifier) {
-		final Criteria criteria = getCriteria();
-		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-	}
+    public Long getCountByQualifier(Qualifier qualifier) {
+        final Criteria criteria = getCriteria();
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
 
 }

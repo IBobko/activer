@@ -9,12 +9,13 @@
 <div style="overflow:hidden;margin-bottom: 10px;" wall-id="${post.id}">
     <p class="status-line" style="background-color: #f3f3f3">
         <span style="float:right" class="wallRemove"><a href="javascript:deleteWallPost(${post.id})">Удалить</a></span>
-
         ${post.from.firstName} ${post.from.lastName}<span> - ${post.date}</span>
     </p>
     <p>
         <img style="float:left" src="${staticFiles}/${post.from.photo60x60}.">
         <div style="margin-left:75px;">${post.message}</div>
-        <div style="margin-left:75px;" class="yoxview"><li><a href="${staticFiles}/${post.attachmentFile}.jpg">${post.attachmentHtml}</a></li></div>
+        <div style="margin-left:75px;" class="yoxview">
+            <a href="${staticFiles}/${post.attachmentFile}.jpg">${post.attachmentHtml}</a>
+        </div>
     </p>
 </div>
