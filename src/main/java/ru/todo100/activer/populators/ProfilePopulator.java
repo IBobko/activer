@@ -8,6 +8,7 @@ import ru.todo100.activer.model.*;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -170,7 +171,26 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         profileData.setShowOnline(Boolean.valueOf(settingService.getAccountSetting(profileData.getId(),"showOnline")));
         profileData.setShowPremium(Boolean.valueOf(settingService.getAccountSetting(profileData.getId(),"showPremium")));
 
+
+
+        profileData.setAge(calculateAge(accountItem.getBirthdate()));
+
         return profileData;
+    }
+
+    public static Integer calculateAge(final Calendar dob)
+    {
+        if (dob == null) return 0;
+        Calendar today = Calendar.getInstance();
+
+        // include day of birth
+        dob.add(Calendar.DAY_OF_MONTH, -1);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+        if (today.get(Calendar.DAY_OF_YEAR) <= dob.get(Calendar.DAY_OF_YEAR)) {
+            age--;
+        }
+        return age;
     }
 
     public AccountGiftDataPopulator getAccountGiftDataPopulator() {

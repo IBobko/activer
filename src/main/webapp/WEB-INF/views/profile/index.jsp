@@ -47,7 +47,7 @@
                 </c:if>
 
 
-                <h4 class="media-heading">${profile.firstName}&nbsp;${profile.lastName}'27</h4>
+                <h4 class="media-heading">${profile.firstName}&nbsp;${profile.lastName}'${profile.age}</h4>
                 <table class="table">
                     <tr>
                         <td width="200">Дата рождения:</td>

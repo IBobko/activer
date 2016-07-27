@@ -31,6 +31,15 @@ public class ProfileData implements Serializable {
     private boolean isFriend;
     private boolean isShowOnline;
     private boolean my = false;
+    private Integer age;
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
 
     public boolean isFriend() {
         return isFriend;
