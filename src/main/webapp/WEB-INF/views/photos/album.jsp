@@ -110,7 +110,7 @@
 </ul>
 
 <script type="text/javascript">
-    window.deletePhotoAction = ${currentProfileData.id == album.id ? "1" : "0"};
+    window.deletePhotoAction = ${currentProfileData.id == album.accountId ? "1" : "0"};
     function deletePhoto() {
         var data = {
             photoId: window.currentImage

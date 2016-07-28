@@ -1883,7 +1883,8 @@ if (typeof Yox == "undefined")
                             id: "",
                             css: {
                                 "float": "right",
-                                "padding-top": "5px"
+                                "padding-top": "5px",
+                                "padding-right":"10px"
                             },
                             html: "<a href='#' onclick='deletePhoto()'>Удалить</a>"
                         })
