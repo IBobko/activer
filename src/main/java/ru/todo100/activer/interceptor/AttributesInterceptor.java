@@ -18,13 +18,13 @@ public class AttributesInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-        if (modelAndView != null) {
+        if (modelAndView != null && !modelAndView.getViewName().startsWith("redirect:")) {
             modelAndView.addObject("DATE_FORMAT_WITH_TIME", Facade.FORMAT_DD_MM_yyyy_HH_mm_ss.toPattern());
         }
     }
 
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
-        System.out.println("hello world");
+
     }
 }

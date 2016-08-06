@@ -5,8 +5,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-
-
 <c:choose>
     <c:when test="${pageType == 'auth'}">
 
@@ -25,10 +23,10 @@
             <ul class="nav navbar-nav">
                 <li <c:if test="${pageType == 'news'}">class="active"</c:if>><a
                         href="<c:url value="/news/"/>">Новости</a></li>
-                <li <c:if test="${mainPage == 'dating'}">class="active"</c:if>><a href="<c:url value="/dating/"/>">Знакомства</a>
+                <li <c:if test="${mainPage == 'dating'}">class="active"</c:if>><a href="<c:url value="/dating"/>">Знакомства</a>
                 </li>
                 <li <c:if test="${mainPage == 'gifts'}">class="active"</c:if>><a
-                        href="<c:url value="/gifts/"/>">Подарки</a></li>
+                        href="<c:url value="/gifts"/>">Подарки</a></li>
                 <li <c:if test="${mainPage == 'balance'}">class="active"</c:if>>
                     <a href="<c:url value="/balance"/>">Баланс</a>
                 </li>

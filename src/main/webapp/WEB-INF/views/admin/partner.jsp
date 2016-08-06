@@ -32,7 +32,7 @@
             </div>
             <div class="modal-body">
                 <input type="text" class="form-control" id="myReferLink" readonly
-                       value="http://onoffline/auth/signup?referCode=02398"/>
+                       value="http://onoffline.ru/auth/signup?referCode=${currentProfileData.referCode}"/>
                 <div style="line-height: 50px">
                     Введи E-mail друга, чтобы он тоже смог присоедениться к нам
                     <input class="form-control" type="email">

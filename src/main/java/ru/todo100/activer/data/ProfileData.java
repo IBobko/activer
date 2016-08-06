@@ -32,6 +32,15 @@ public class ProfileData implements Serializable {
     private boolean isShowOnline;
     private boolean my = false;
     private Integer age;
+    private String referCode;
+
+    public String getReferCode() {
+        return referCode;
+    }
+
+    public void setReferCode(String referCode) {
+        this.referCode = referCode;
+    }
 
     public Integer getAge() {
         return age;

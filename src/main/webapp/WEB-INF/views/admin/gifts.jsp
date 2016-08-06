@@ -19,15 +19,22 @@
 
 
 <style type="text/css">
-    .gifts li{
-        float:left;
+    .gifts{
+        list-style: none;
+    }
+    .gifts li {
+        float: left;
+        width:256px;
+        height:256px;
     }
 </style>
 
 <ul class="gifts">
     <c:forEach items="${pagedData.elements}" var="gift">
-    <li>
-    <a href="<c:url value="/admin/gifts/add?id=${gift.id}"/>"><img src="${staticFiles}/${gift.file}.jpg"/><br/>${gift.name}</a>
-    </li>
-</c:forEach>
+        <li>
+            <a href="<c:url value="/admin/gifts/remove"/>?id=${gift.id}">Удалить</a>
+            <a href="<c:url value="/admin/gifts/add?id=${gift.id}"/>"><img
+                    width="256" height="256" src="${staticFiles}/${gift.file}.jpg"/><br/>${gift.name}</a>
+        </li>
+    </c:forEach>
 </ul>

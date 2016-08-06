@@ -171,7 +171,7 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         profileData.setShowOnline(Boolean.valueOf(settingService.getAccountSetting(profileData.getId(),"showOnline")));
         profileData.setShowPremium(Boolean.valueOf(settingService.getAccountSetting(profileData.getId(),"showPremium")));
 
-
+        profileData.setReferCode(accountItem.getReferCode());
 
         profileData.setAge(calculateAge(accountItem.getBirthdate()));
 

@@ -119,9 +119,9 @@
 
 <!-- Photos -->
 <div class="container-fluid photos">
-    <div class="row" data-toggle="collapse" href="#collapsePhoto">
+    <div class="row">
         <p class="status-line">Фотографии - ${photos.size()} <a class="pull-right"
-                                                                href="<c:url value="/photos/"/><c:if test="${!profile.my}">?accountId=${profile.id}</c:if>">все
+                                                                href="<c:url value="/photos"/><c:if test="${!profile.my}">?accountId=${profile.id}</c:if>">все
             фото</a></p>
     </div>
     <div id="collapsePhoto" class="row panel-collapse collapse <c:if test="${photos.size() != 0}">in</c:if>">
@@ -282,7 +282,7 @@
                     <a id="choosePhotoButton" href="#" class="std-button btn btn-default"><span
                             class="fa fa-camera"></span>&nbsp;Прикрепить фото</a>
                 </div>
-                <img style="max-width:200px; max-height:200px" id="renderImage"/>
+                <img src="#" style="max-width:200px; max-height:200px" id="renderImage"/>
             </form>
         </c:if>
 
@@ -337,19 +337,14 @@
 
 
 <script src="<c:url value="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"/>"></script>
-
 <script type="text/javascript">
     jQuery.noConflict();
     jQuery(document).ready(function () {
-
-
-        jQuery(".yoxview").yoxview(
-                {
-                    backgroundColor: '#000000',
-                    backgroundOpacity: 0.8,
-                    lang: 'ru',
-                });
-
+        jQuery(".yoxview").yoxview({
+            backgroundColor: '#000000',
+            backgroundOpacity: 0.8,
+            lang: 'ru',
+        });
     });
 </script>
 <script type="text/javascript" src="<c:url value="/resources/yoxview/yoxview-init.js"/>"></script>
@@ -404,8 +399,8 @@
 
 </script>
 
-<style>
-    .wallRemove{
+<style type="text/css">
+    .wallRemove {
     <c:if test="${currentProfileData.id != profile.id}">display:none</c:if>
     }
 </style>

@@ -14,6 +14,7 @@
         padding: 10px 15px !important;
         margin: 10px 0 !important;
     }
+
     .modal {
         font-weight: normal;
     }
@@ -40,46 +41,44 @@
 
 
 <div class="datingBlock">
-        <img src="<c:url value="/resources/img/flirt.jpg"/>" style="float: left;margin: 0 30px"/>
-        <h4 style="color: #3F51B5;font-weight:bold;">Флирт</h4>
-        У вас есть 5 минут, чтобы познакомиться с собеседником и узнать его поближе.
-        Проверьте свое обаяние на собеседнике.
-        <br/>
-        <button id="searchFlirt" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Выбрать</button>
-        <span style="font-weight: normal">Вы учавствовали 58 раз</span>
+    <img src="<c:url value="/resources/img/flirt.jpg"/>" style="float: left;margin: 0 30px"/>
+    <h4 style="color: #3F51B5;font-weight:bold;">Флирт</h4>
+    У вас есть 5 минут, чтобы познакомиться с собеседником и узнать его поближе.
+    Проверьте свое обаяние на собеседнике.
+    <br/>
+    <button id="searchFlirt" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Выбрать</button>
 
-        <script type="text/javascript">
-            $('#searchFlirt').click(function () {
-                $('#pleaseWaitingWindow').modal('show');
-                $.get("<c:url value="/dating/search/flirt"/>", function (data) {
-                    document.location = "<c:url value="/dating/flirt"/>" + "?id=" + data.trim();
-                });
+    <script type="text/javascript">
+        $('#searchFlirt').click(function () {
+            $('#pleaseWaitingWindow').modal('show');
+            $.get("<c:url value="/dating/search/flirt"/>", function (data) {
+                document.location = "<c:url value="/dating/flirt"/>" + "?id=" + data.trim();
             });
-        </script>
-    </div>
+        });
+    </script>
+</div>
 
 <div class="datingBlock">
-        <img src="<c:url value="/resources/img/dispute.jpg"/>" style="float: left;margin: 0 30px"/>
-        <h4 style="color: #3F51B5;font-weight:bold;">Споры</h4>
-        В начале диалога мы даем вам тему и обозначаем вашу позицию относительно проблемы. У вас есть 7 минут, чтобы
-        доказать собеседнику, что вы правы на все 100%.
-        <br/>
-        <button id="searchDispute" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Выбрать</button>
-        <span style="font-weight: normal">Вы учавствовали 58 раз</span>
-        <script type="text/javascript">
-            $('#searchDispute').click(function () {
-                $('#pleaseWaitingWindow').modal('show');
-                $.get("<c:url value="/dating/search"/>", function (data) {
-                    document.location = "<c:url value="/dating/dispute"/>" + "?id=" + data.trim();
-                });
+    <img src="<c:url value="/resources/img/dispute.jpg"/>" style="float: left;margin: 0 30px"/>
+    <h4 style="color: #3F51B5;font-weight:bold;">Споры</h4>
+    В начале диалога мы даем вам тему и обозначаем вашу позицию относительно проблемы. У вас есть 7 минут, чтобы
+    доказать собеседнику, что вы правы на все 100%.
+    <br/>
+    <button id="searchDispute" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Выбрать</button>
+    <script type="text/javascript">
+        $('#searchDispute').click(function () {
+            $('#pleaseWaitingWindow').modal('show');
+            $.get("<c:url value="/dating/search"/>", function (data) {
+                document.location = "<c:url value="/dating/dispute"/>" + "?id=" + data.trim();
             });
-        </script>
-    </div>
-<div class="datingBlock">
-        <img src="<c:url value="/resources/img/top.jpg"/>" style="float: left;margin: 0 30px"/>
-        <h4 style="color: #3F51B5;font-weight:bold;">TOP LINE</h4>
-        Хотите больше знакомтс и друзей? Просто нажмите на кнопку ниже и попадите в TOP LINE
-        <br/>
-    <button class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Выбрать</button>
-    </div>
+        });
+    </script>
+</div>
+<%--<div class="datingBlock">--%>
+    <%--<img src="<c:url value="/resources/img/top.jpg"/>" style="float: left;margin: 0 30px"/>--%>
+    <%--<h4 style="color: #3F51B5;font-weight:bold;">TOP LINE</h4>--%>
+    <%--Хотите больше знакомтс и друзей? Просто нажмите на кнопку ниже и попадите в TOP LINE--%>
+    <%--<br/>--%>
+    <%--<button class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Выбрать</button>--%>
+<%--</div>--%>
 

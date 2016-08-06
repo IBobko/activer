@@ -12,6 +12,7 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -119,10 +120,20 @@ public class WallController {
 
             getWallService().save(post);
 
-            getNewsService().addNews(currentAccount.getId(), "WALL", receiveWallData.getText());
+            getNewsService().addNews(currentAccount.getId(), "WALL", generateWallNews(post));
             return getWallPopulator().populate(post);
         }
         return null;
+    }
+
+    @Value(value = "${static.host.files}")
+    private String staticFiles;
+    public String generateWallNews(final WallItem post) {
+        String result = post.getText() + "<br>";
+        if (!post.getAttachments().isEmpty()) {
+            result += "<img src='" + staticFiles + "/" + post.getAttachments().iterator().next().getPhoto() + ".'/>";
+        }
+        return result;
     }
 
     public PhotoAvatarSizeData upload(MultipartFile photo) throws IOException {

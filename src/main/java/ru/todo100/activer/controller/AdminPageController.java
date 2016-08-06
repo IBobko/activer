@@ -165,6 +165,12 @@ public class AdminPageController {
         return "admin/gifts";
     }
 
+    @RequestMapping("/gifts/remove")
+    public String removeGift(@RequestParam(required = false, defaultValue = "0") Integer id) {
+        giftDao.delete(id);
+        return "redirect:/admin/gifts";
+    }
+
     @RequestMapping("/gifts/add")
     public String giftsAdd(final Model model,@RequestParam(required = false, defaultValue = "0") Integer id) {
         model.addAttribute("pageType", "admin/gifts/add");
