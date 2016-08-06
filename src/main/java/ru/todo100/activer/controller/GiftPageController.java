@@ -56,7 +56,7 @@ public class GiftPageController {
         this.accountGiftDao = accountGiftDao;
     }
 
-    @RequestMapping("/")
+    @RequestMapping
     public String index(HttpServletRequest request) {
         final ProfileData account = getAccountService().getCurrentProfileData(request.getSession());
         return "redirect:/gifts/id" + account.getId();
