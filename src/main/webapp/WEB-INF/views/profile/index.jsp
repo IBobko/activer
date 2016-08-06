@@ -28,6 +28,21 @@
         </p>
     </div>
     <div class="row">
+        <c:if test="${profile.showPremium}">
+            <div class="media-right hidden-sm hidden-xs" style="float:right">
+                <a href="#">
+                    <c:if test="${profile.status == 'ROLE_USER'}">
+                        <img class="media-object" src="<c:url value="/resources/img/statuses/0.png"/>">
+                    </c:if>
+                    <c:if test="${profile.status == 'ROLE_PARTNER'}">
+                        <img class="media-object" src="<c:url value="/resources/img/statuses/1.png"/>">
+                    </c:if>
+                    <c:if test="${profile.status == 'ROLE_CREATOR'}">
+                        <img class="media-object" src="<c:url value="/resources/img/statuses/2.png"/>">
+                    </c:if>
+                </a>
+            </div>
+        </c:if>
         <div class="media">
             <div class="media-left media-heading yoxview">
                 <a href="${staticFiles}/${showingPhoto}.jpg">
@@ -104,13 +119,7 @@
                     </tr>
                 </table>
             </div>
-            <c:if test="${profile.premium}">
-                <div class="media-right hidden-sm hidden-xs">
-                    <a href="#">
-                        <img class="media-object" src="<c:url value="/resources/img/premium.png"/>">
-                    </a>
-                </div>
-            </c:if>
+
         </div>
     </div>
 

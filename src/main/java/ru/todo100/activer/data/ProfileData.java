@@ -33,6 +33,15 @@ public class ProfileData implements Serializable {
     private boolean my = false;
     private Integer age;
     private String referCode;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getReferCode() {
         return referCode;
@@ -66,7 +75,7 @@ public class ProfileData implements Serializable {
         isPremium = premium;
     }
 
-    public boolean isShowPremium() {
+    public boolean getShowPremium() {
         return isShowPremium;
     }
 

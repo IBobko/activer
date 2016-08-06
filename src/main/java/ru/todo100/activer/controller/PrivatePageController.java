@@ -50,7 +50,7 @@ public class PrivatePageController {
         if (!model.containsAttribute("privateForm")) {
             final PrivateForm privateForm = new PrivateForm();
             privateForm.setShowOnline(!Boolean.valueOf(getSettingService().getAccountSetting(accountItem.getId(), "showOnline")));
-            privateForm.setShowPremium(!Boolean.valueOf(getSettingService().getAccountSetting(accountItem.getId(), "ShowPremium")));
+            privateForm.setShowPremium(!Boolean.valueOf(getSettingService().getAccountSetting(accountItem.getId(), "showPremium")));
             model.addAttribute("privateForm", privateForm);
         }
         return "private/index";

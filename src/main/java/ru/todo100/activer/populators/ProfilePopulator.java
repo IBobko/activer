@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
@@ -166,7 +167,14 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         profileData.setGifts(giftData);
         profileData.setBalance(getBalanceDao().createOrGet(accountItem).getSum());
 
-        profileData.setShowPremium(accountItem.getAuthorities().contains("ROLE_PARTNER"));
+
+        if (authorityContains(accountItem.getAuthorities(),"ROLE_CREATOR")) {
+            profileData.setStatus("ROLE_CREATOR");
+        } else if (authorityContains(accountItem.getAuthorities(),"ROLE_PARTNER")) {
+            profileData.setStatus("ROLE_PARTNER");
+        } else {
+            profileData.setStatus("ROLE_USER");
+        }
 
         profileData.setShowOnline(Boolean.valueOf(settingService.getAccountSetting(profileData.getId(),"showOnline")));
         profileData.setShowPremium(Boolean.valueOf(settingService.getAccountSetting(profileData.getId(),"showPremium")));
@@ -176,6 +184,12 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         profileData.setAge(calculateAge(accountItem.getBirthdate()));
 
         return profileData;
+    }
+
+    public boolean authorityContains(Set<AuthorityItem> authorities, String role) {
+        for (AuthorityItem authority: authorities)
+            if (authority.getRole().equals(role)) return true;
+        return false;
     }
 
     public static Integer calculateAge(final Calendar dob)
