@@ -348,17 +348,14 @@ public class SettingPageController {
     @RequestMapping(value = "/trips", method = RequestMethod.GET)
     public String trips(final Model model) {
         model.addAttribute("pageType", "settings/info/trip");
-
         if (!model.containsAttribute("tripForm")) {
             model.addAttribute("tripForm", new TripForm());
         }
         final List<TripData> trips = new ArrayList<>();
         final AccountItem account = accountService.getCurrentAccount();
-
         for (final TripItem trip : account.getTripItems()) {
             trips.add(getTripPopulator().populate(trip));
         }
-
         model.addAttribute("trips", trips);
         return "settings/trips";
     }

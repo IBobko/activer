@@ -1,5 +1,8 @@
 package ru.todo100.activer.model;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -23,6 +26,7 @@ public class PhotoAlbumItem extends Item {
     private String description;
 
     @ManyToOne
+    @NotFound(action= NotFoundAction.EXCEPTION)
     @JoinColumn(name = "photo_id")
     private PhotoItem cover;
 

@@ -46,7 +46,7 @@
         <div class="media">
             <div class="media-left media-heading yoxview">
                 <a href="${staticFiles}/${showingPhoto}.jpg">
-                    <img alt="First" title="First image" class="media-object" src="${staticFiles}/${photo}.">
+                    <img alt="First" title="<c:if test="${profile.my}"><a href='<c:url value="/settings"/>'>Изменить</a></c:if>" class="media-object" src="${staticFiles}/${photo}.">
                 </a>
             </div>
             <div class="media-body">
@@ -90,26 +90,23 @@
                                     не указано
                                 </c:when>
                                 <c:when test="${profile.maritalStatus == 1}">
-                                    не указано
+                                    не женат / не замужем
                                 </c:when>
                                 <c:when test="${profile.maritalStatus == 2}">
-                                    не указано
+                                    встречаюсь
                                 </c:when>
                                 <c:when test="${profile.maritalStatus == 3}">
-                                    не указано
+                                    женат / замужем
                                 </c:when>
                                 <c:when test="${profile.maritalStatus == 4}">
-                                    не указано
+                                    влюблен
                                 </c:when>
                                 <c:when test="${profile.maritalStatus == 5}">
-                                    не указано
+                                    все сложно
                                 </c:when>
                                 <c:when test="${profile.maritalStatus == 6}">
-                                    не указано
+                                    в активном поиске
                                 </c:when>
-                                <c:otherwise>
-                                    не указано
-                                </c:otherwise>
                             </c:choose>
                         </td>
                     </tr>
@@ -128,8 +125,8 @@
 
 <!-- Photos -->
 <div class="container-fluid photos">
-    <div class="row">
-        <p class="status-line">Фотографии - ${photos.size()} <a class="pull-right"
+    <div class="row" data-toggle="collapse" href="#collapsePhoto">
+        <p class="status-line">Фотографии - ${photos.size()} <a onclick="document.location=this.href" class="pull-right"
                                                                 href="<c:url value="/photos"/><c:if test="${!profile.my}">?accountId=${profile.id}</c:if>">все
             фото</a></p>
     </div>
@@ -218,7 +215,7 @@
 <!-- Travels -->
 <div class="container-fluid travels">
     <div class="row" data-toggle="collapse" href="#collapseTrips">
-        <p class="status-line">Мои путешествия - ${profile.trips.size()} <a class="pull-right"
+        <p class="status-line">Мои путешествия - ${profile.trips.size()} <a onclick="document.location=this.href" class="pull-right"
                                                                             href="<c:url value="/settings/trips"/>">добавить</a>
         </p>
     </div>
@@ -251,7 +248,7 @@
 <!-- Dreams -->
 <div class="container-fluid dreams">
     <div class="row">
-        <p class="status-line">Мои мечты - ${profile.dreams.size()} <a class="pull-right" href="#">добавить</a></p>
+        <p class="status-line">Мои мечты - ${profile.dreams.size()} <a onclick="document.location=this.href" class="pull-right" href="#">добавить</a></p>
     </div>
     <div class="row">
         <c:forEach items="${profile.dreams}" var="dream">
@@ -279,20 +276,22 @@
         <p class="status-line">Мои мысли - ${wall.size()} <a class="pull-right" href="#">все мысли</a></p>
 
         <c:if test="${profile.my}">
+
+
             <form class="add-thought" id="wall">
                 <div class="form-group" style="overflow: hidden">
-                        <textarea class="form-control" id="wall-text" placeholder="Есть мысли?" maxlength="140" rows="2"></textarea>
-                        <button type="submit" class="btn btn-default pull-right "><span class="fa fa-pencil"></span> Опубликовать</button>
-                </div>
-
-                <input id="choosePhoto" name="photo" type="file"
+                    <button type="submit" class="btn btn-default pull-right" style="margin-top:0px;margin-left: 10px;float: right;"><span class="fa fa-pencil"></span> Опубликовать</button>
+                    <div style="float:right">
+                        <input id="choosePhoto" name="photo" type="file"
                            style="cursor:pointer;position:absolute;height:34px;opacity: 0;overflow: hidden;width:165px">
-                <div style="margin:20px 0">
-                    <a id="choosePhotoButton" href="#" class="std-button btn btn-default"><span
-                            class="fa fa-camera"></span>&nbsp;Прикрепить фото</a>
+                        <a href="#" class="std-button btn btn-default"><span class="fa fa-camera"></span>&nbsp;Прикрепить фото</a>
+                    </div>
+                    <textarea  style="width: calc(100% - 340px);" class="form-control" id="wall-text" placeholder="Есть мысли?" maxlength="140" rows="2"></textarea>
                 </div>
-                <img src="#" style="max-width:200px; max-height:200px" id="renderImage"/>
+                <img src="#" style="max-width:200px; max-height:200px;display: none;" id="renderImage"/>
             </form>
+
+
         </c:if>
 
         <div id="profile-wall">
@@ -325,11 +324,10 @@
 
                     var reader2 = new FileReader();
                     reader2.onload = function(frEvent) {
+                        document.getElementById("renderImage").style.display = 'inline';
                         document.getElementById("renderImage").src = frEvent.target.result;
                     };
                     reader2.readAsDataURL(fileData);
-
-
                 });
 
                 $('#wall').submit(function () {

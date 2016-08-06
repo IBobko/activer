@@ -1,7 +1,10 @@
 package ru.todo100.activer.dao;
 
+import org.hibernate.ObjectNotFoundException;
+import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import ru.todo100.activer.model.PhotoAlbumItem;
+import ru.todo100.activer.model.PhotoItem;
 
 import javax.transaction.Transactional;
 import java.util.List;

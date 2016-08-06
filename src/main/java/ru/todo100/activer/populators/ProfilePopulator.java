@@ -183,6 +183,8 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
 
         profileData.setAge(calculateAge(accountItem.getBirthdate()));
 
+        profileData.setMaritalStatus(accountItem.getMaritalStatus());
+
         return profileData;
     }
 
