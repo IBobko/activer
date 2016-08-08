@@ -125,10 +125,9 @@
 
 <!-- Photos -->
 <div class="container-fluid photos">
-    <div class="row" data-toggle="collapse" href="#collapsePhoto">
+    <div class="row">
         <p class="status-line">Фотографии - ${photos.size()} <a onclick="document.location=this.href" class="pull-right"
-                                                                href="<c:url value="/photos"/><c:if test="${!profile.my}">?accountId=${profile.id}</c:if>">все
-            фото</a></p>
+                                                                href="<c:url value="/photos"/><c:if test="${!profile.my}">?accountId=${profile.id}</c:if>">все фото</a></p>
     </div>
     <div id="collapsePhoto" class="row panel-collapse collapse <c:if test="${photos.size() != 0}">in</c:if>">
         <div class="text-justify">
@@ -151,7 +150,7 @@
 
 <!-- Interests -->
 <div class="container-fluid interests">
-    <div class="row" data-toggle="collapse" href="#collapseInterests">
+    <div class="row">
         <p class="status-line"><a name="interests"></a> Мои интересы - ${profile.interests.size()}</p>
     </div>
     <div id="collapseInterests"
@@ -214,7 +213,7 @@
 
 <!-- Travels -->
 <div class="container-fluid travels">
-    <div class="row" data-toggle="collapse" href="#collapseTrips">
+    <div class="row">
         <p class="status-line">Мои путешествия - ${profile.trips.size()} <a onclick="document.location=this.href" class="pull-right"
                                                                             href="<c:url value="/settings/trips"/>">добавить</a>
         </p>
@@ -224,8 +223,7 @@
         <div class="col-lg-5 col-xs-6">
             <ul class="list-unstyled">
                 <c:forEach items="${profile.trips}" var="trip">
-                    <li><a href="#">${trip.country} (${trip.countryCode.substring(0,2)}) <span
-                            class="hidden-xs hidden-sm">${trip.year}</span></a> ${trip.city}</li>
+                    <li style="width: 400px">${trip.country} - ${trip.city} - ${trip.year}</li>
                 </c:forEach>
             </ul>
         </div>
@@ -273,11 +271,9 @@
 
 <div class="container-fluid thoughts">
     <div class="row">
-        <p class="status-line">Мои мысли - ${wall.size()} <a class="pull-right" href="#">все мысли</a></p>
+        <p class="status-line">Мои мысли - ${wall.size()}</p>
 
         <c:if test="${profile.my}">
-
-
             <form class="add-thought" id="wall">
                 <div class="form-group" style="overflow: hidden">
                     <button type="submit" class="btn btn-default pull-right" style="margin-top:0px;margin-left: 10px;float: right;"><span class="fa fa-pencil"></span> Опубликовать</button>
@@ -290,8 +286,6 @@
                 </div>
                 <img src="#" style="max-width:200px; max-height:200px;display: none;" id="renderImage"/>
             </form>
-
-
         </c:if>
 
         <div id="profile-wall">

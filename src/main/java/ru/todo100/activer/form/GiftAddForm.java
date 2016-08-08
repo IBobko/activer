@@ -2,6 +2,8 @@ package ru.todo100.activer.form;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
+
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
@@ -12,6 +14,16 @@ public class GiftAddForm {
     private String fileName;
     private Integer id;
     private Boolean enabled;
+
+    private BigDecimal cost;
+
+    public BigDecimal getCost() {
+        return cost;
+    }
+
+    public void setCost(BigDecimal cost) {
+        this.cost = cost;
+    }
 
     public Boolean getEnabled() {
         return enabled;

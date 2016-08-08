@@ -18,7 +18,7 @@
 <h4 style="color:#337ab7;font-weight:bold">Добавить мечту</h4>
 
 <c:url value="/settings/dreams/upload" var="uploadUrl"/>
-<form:form commandName="dreamForm" action="${uploadUrl}" enctype="multipart/form-data">
+<form:form modelAttribute="dreamForm" action="${uploadUrl}" enctype="multipart/form-data">
     <form:input path="id" type="hidden"/>
     <table>
         <tr>

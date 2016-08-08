@@ -72,20 +72,14 @@
 		</property>
 	</bean>
 
-	<bean id="velocityEngine" class="ru.todo100.activer.velocity.Engine">
-		<constructor-arg index="0" ref="servletContext"/>
-		<property name="velocityProperties">
-			<props>
-				<prop key="resource.loader">webapp</prop>
-				<prop key="webapp.resource.loader.class">org.apache.velocity.tools.view.WebappResourceLoader</prop>
-				<prop key="webapp.resource.loader.path">/WEB-INF/velocity/email/</prop>
-			</props>
-		</property>
+	<bean id="freemarkerMailConfiguration"
+		  class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
+		<property name="templateLoaderPath" value="/WEB-INF/velocity/email/" />
 	</bean>
 
 	<bean id="mailService" class="ru.todo100.activer.util.MailService">
 		<property name="mailSender" ref="mailSender" />
-		<property name="velocityEngine" ref="velocityEngine" />
+		<property name="freemarkerMailConfiguration" ref="freemarkerMailConfiguration"/>
 	</bean>
 
 	<!-- Localization -->

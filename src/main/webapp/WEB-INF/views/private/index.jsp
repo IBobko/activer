@@ -22,7 +22,7 @@
 <h3 style="color:#337ab7;font-weight:bold">Приватность</h3>
 Функции данного раздела доступны только премиум пользователям
 <p>
-    <form:form method="post" commandName="privateForm">
+    <form:form method="post" modelAttribute="privateForm">
         <form:checkbox path="showOnline" id="switch-state"
                     /> не показывать другим пользователям, что я on-line
         <br/>

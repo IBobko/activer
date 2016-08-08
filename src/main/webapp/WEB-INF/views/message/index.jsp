@@ -120,7 +120,7 @@
                     <li>
                         <a href="#" class="giftForAdd" gift-id="${gift.id}"><img src="<c:url value="${staticFiles}/${gift.file}."/>"></a>
                         <br/>
-                        Стоимость: 1$
+                        Стоимость: ${gift.cost}$
                     </li>
                 </c:forEach>
                 </ul>

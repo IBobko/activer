@@ -34,7 +34,7 @@
 
 <h4 style="color: #3F51B5;font-weight:bold; text-align: center">Мы меняем взгляд на социальные сети</h4>
 
-<form:form method="post" commandName="registerForm">
+<form:form method="post" modelAttribute="registerForm">
     <table>
         <tr>
             <td style="width:100%">

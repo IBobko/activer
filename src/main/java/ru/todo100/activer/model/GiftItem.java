@@ -2,6 +2,7 @@ package ru.todo100.activer.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
@@ -10,19 +11,34 @@ import javax.validation.constraints.NotNull;
 @Table(name = "gift")
 public class GiftItem {
     @Id
-    @SequenceGenerator(name = "default_gen", sequenceName = "gift_seq", allocationSize = 1)
+    @SequenceGenerator(name = "default_gen", sequenceName = "gift_seq")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")
     private Integer id;
+
     @Column(name = "category_id")
     private Integer category;
+
     @Column(name = "gift_file")
     private String file;
+
     @Column(name = "gift_name")
     private String name;
 
     @NotNull
-    @Column(name = "gift_enabled",nullable = false,columnDefinition = "NUMBER DEFAULT 1 NOT NULL")
+    @Column(name = "gift_enabled", nullable = false, columnDefinition = "NUMBER DEFAULT 1 NOT NULL")
     private Boolean enabled;
+
+    @NotNull
+    @Column(name = "gift_cost", nullable = false, columnDefinition = "NUMBER DEFAULT 1 NOT NULL")
+    private BigDecimal cost;
+
+    public BigDecimal getCost() {
+        return cost;
+    }
+
+    public void setCost(BigDecimal cost) {
+        this.cost = cost;
+    }
 
     public Boolean getEnabled() {
 

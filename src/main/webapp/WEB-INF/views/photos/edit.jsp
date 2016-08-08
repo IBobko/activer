@@ -33,7 +33,7 @@
 <a href="<c:url value="/photos"/>" class="std-button btn btn-default"><span
         class="glyphicon glyphicon-arrow-left"></span>&nbsp;Назад</a>
 
-<form:form commandName="photoAlbumForm" method="post">
+<form:form modelAttribute="photoAlbumForm" method="post">
     <form:hidden path="id"/>
 <div style="margin-top:20px">
     <div style="width:300px;height: 150px;overflow: hidden;float:left;text-align: center">

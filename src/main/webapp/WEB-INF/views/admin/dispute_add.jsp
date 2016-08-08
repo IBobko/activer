@@ -10,7 +10,7 @@
 
 <c:url var="formUrl" value="/admin/dispute/upload"/>
 
-<form:form method="post" commandName="disputeThemeForm" action="${formUrl}" enctype="multipart/form-data">
+<form:form method="post" modelAttribute="disputeThemeForm" action="${formUrl}" enctype="multipart/form-data">
     Тема
     <form:input path="name" type="text" name="name"/>
     Позиция 1

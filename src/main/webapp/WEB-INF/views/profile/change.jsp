@@ -18,7 +18,7 @@
             Изменения успешно сохранены
         </div>
     </c:if>
-    <form:form method="post" commandName="changeProfileForm" enctype="multipart/form-data">
+    <form:form method="post" modelAttribute="changeProfileForm" enctype="multipart/form-data">
         <profile:change_form/>
         <div class="form-group">
             <input type="submit" class="btn btn-primary" value="Change"/>

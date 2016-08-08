@@ -16,26 +16,50 @@ import java.security.Principal;
 @SuppressWarnings("StatementWithEmptyBody")
 @Controller
 public class GlobalListenerController {
-    @Autowired
-    PrivateMessageHandler privateMessageHandler;
-    @Autowired
+    private PrivateMessageHandler privateMessageHandler;
     private DisputeHandler disputeHandler;
-    @Autowired
     private FlirtHandler flirtHandler;
+
+    public PrivateMessageHandler getPrivateMessageHandler() {
+        return privateMessageHandler;
+    }
+
+    @Autowired
+    public void setPrivateMessageHandler(PrivateMessageHandler privateMessageHandler) {
+        this.privateMessageHandler = privateMessageHandler;
+    }
+
+    public DisputeHandler getDisputeHandler() {
+        return disputeHandler;
+    }
+
+    @Autowired
+    public void setDisputeHandler(DisputeHandler disputeHandler) {
+        this.disputeHandler = disputeHandler;
+    }
+
+    public FlirtHandler getFlirtHandler() {
+        return flirtHandler;
+    }
+
+    @Autowired
+    public void setFlirtHandler(FlirtHandler flirtHandler) {
+        this.flirtHandler = flirtHandler;
+    }
 
     @MessageMapping("/actions")
     public void message(final ReceiveMessageData message, final Principal principal) {
         if (message.getType().equals("DISPUTE_MESSAGE")) {
-            disputeHandler.handle(message,principal);
+            getDisputeHandler().handle(message, principal);
             return;
         }
         if (message.getType().equals("FLIRT_MESSAGE")) {
-            flirtHandler.handle(message, principal);
+            getFlirtHandler().handle(message, principal);
             return;
         }
 
         if (message.getType().equals("PRIVATE_MESSAGE")) {
-            privateMessageHandler.handle(message, principal);
+            getPrivateMessageHandler().handle(message, principal);
             return;
         }
 

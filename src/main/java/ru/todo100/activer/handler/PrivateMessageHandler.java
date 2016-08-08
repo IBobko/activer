@@ -61,12 +61,11 @@ public class PrivateMessageHandler extends AbstractMessageHandler {
             final PacketMessageData spentMessage = new PacketMessageData();
             spentMessage.setType(PopupMessageType.SPENT);
             spentMessage.setDate(FORMAT_DD_MM_yyyy_HH_mm_ss.format(new GregorianCalendar().getTime()));
-            BigDecimal costOfGift = new BigDecimal("1");
-            if (getBalanceService().subtractAccountBalanceSum(from.getId(), costOfGift, "Оплата подарка")) {
-                Integer giftId = Integer.parseInt(messageText.substring(messageText.indexOf("gift:") + 5));
-                GiftItem gift = (GiftItem) giftDao.get(giftId);
+            Integer giftId = Integer.parseInt(messageText.substring(messageText.indexOf("gift:") + 5));
+            final GiftItem gift = (GiftItem) giftDao.get(giftId);
+            if (getBalanceService().subtractAccountBalanceSum(from.getId(), gift.getCost(), "Оплата подарка")) {
                 messageText = "<img src='" + staticHost + "/" + gift.getFile() + ".'/>";
-                spentMessage.setMessage(costOfGift.toString());
+                spentMessage.setMessage(gift.getCost().toString());
                 accountGiftDao.give(from.getId(),to.getId(),giftId,"Из сообщений");
             } else {
                 spentMessage.setMessage("0");

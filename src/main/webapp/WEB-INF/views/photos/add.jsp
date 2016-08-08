@@ -77,7 +77,7 @@
 
             <c:url value="/photos/upload" var="action"/>
 
-            <form:form method="post" enctype="multipart/form-data" commandName="photoForm" action="${action}">
+            <form:form method="post" enctype="multipart/form-data" modelAttribute="photoForm" action="${action}">
                 <form:hidden path="album"/>
                 <form:input type="file" path="file"
                             cssStyle="cursor:pointer;position:absolute;left:350px;height:34px;opacity: 0;overflow: hidden;width:165px"/>

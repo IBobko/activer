@@ -29,7 +29,7 @@
 
 <h4 style="color:#337ab7;font-weight:bold">Добавить путешествия</h4>
 
-<form:form commandName="tripForm" method="post">
+<form:form modelAttribute="tripForm" method="post">
     <table>
         <tr>
             <td>Страна путешествия</td>

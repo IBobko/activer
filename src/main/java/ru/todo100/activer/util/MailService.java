@@ -1,19 +1,28 @@
 package ru.todo100.activer.util;
 
-import org.apache.velocity.app.VelocityEngine;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
-import org.springframework.ui.velocity.VelocityEngineUtils;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import ru.todo100.activer.model.AccountItem;
 
-import javax.mail.internet.MimeMessage;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MailService {
     private JavaMailSenderImpl mailSender;
-    private VelocityEngine velocityEngine;
+
+    public Configuration getFreemarkerMailConfiguration() {
+        return freemarkerMailConfiguration;
+    }
+
+    public void setFreemarkerMailConfiguration(Configuration freemarkerMailConfiguration) {
+        this.freemarkerMailConfiguration = freemarkerMailConfiguration;
+    }
+
+    private Configuration freemarkerMailConfiguration;
 
     public static boolean isValidEmailAddress(String email) {
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(".+@.+\\.[a-z]+");
@@ -21,51 +30,38 @@ public class MailService {
         return m.matches();
     }
 
-    public VelocityEngine getVelocityEngine() {
-        return velocityEngine;
-    }
-
-    public void setVelocityEngine(VelocityEngine velocityEngine) {
-        this.velocityEngine = velocityEngine;
-    }
-
     public void sendCompleteSignUp(final AccountItem account) {
-        MimeMessagePreparator preparator = new MimeMessagePreparator() {
-            @Override
-            public void prepare(MimeMessage mimeMessage) throws Exception {
-                MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true);
-                message.setFrom("support@todo100.ru");
-                message.setTo(account.getEmail());
-                message.setSubject("Registration on todo100.ru");
-                Map<String, Object> model = new HashMap<>();
-                model.put("fullName", account.getFirstName() + " " + account.getLastName());
-                model.put("login", account.getUsername());
-                model.put("password", account.getPassword());
+        MimeMessagePreparator preparator = mimeMessage -> {
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true);
+            message.setFrom("support@todo100.ru");
+            message.setTo(account.getEmail());
+            message.setSubject("Registration on todo100.ru");
+            Map<String, Object> model = new HashMap<>();
+            model.put("fullName", account.getFirstName() + " " + account.getLastName());
+            model.put("login", account.getUsername());
+            model.put("password", account.getPassword());
 
-                String text = VelocityEngineUtils.mergeTemplateIntoString(getVelocityEngine(), "registration.vm", "UTF-8", model);
-                message.setText(text, true);
-            }
+            Template t = getFreemarkerMailConfiguration().getTemplate("registration.vm");
+            String text = FreeMarkerTemplateUtils.processTemplateIntoString(t,model);
+            message.setText(text, true);
         };
         getMailSender().send(preparator);
     }
 
     public void sendForgotPassword(final AccountItem account) {
-        MimeMessagePreparator preparator = new MimeMessagePreparator() {
-            @Override
-            public void prepare(MimeMessage mimeMessage) throws Exception {
-                MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true);
-                message.setTo(account.getEmail());
-                message.setFrom("no-replay@3dplenty.com");
-                message.setSubject("Registration on onoffline.ru");
-                Map<String, Object> model = new HashMap<>();
-                model.put("fullName", account.getFirstName() + " " + account.getLastName());
-                model.put("login", account.getUsername());
-                model.put("password", account.getPassword());
+        MimeMessagePreparator preparator = mimeMessage -> {
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true);
+            message.setTo(account.getEmail());
+            message.setFrom("no-replay@3dplenty.com");
+            message.setSubject("Registration on onoffline.ru");
+            Map<String, Object> model = new HashMap<>();
+            model.put("fullName", account.getFirstName() + " " + account.getLastName());
+            model.put("login", account.getUsername());
+            model.put("password", account.getPassword());
 
-                String text = VelocityEngineUtils.mergeTemplateIntoString(
-                        getVelocityEngine(), "forgot.vm", "UTF-8", model);
-                message.setText(text, true);
-            }
+            Template t = getFreemarkerMailConfiguration().getTemplate("forgot.vm");
+            String text = FreeMarkerTemplateUtils.processTemplateIntoString(t,model);
+            message.setText(text, true);
         };
         getMailSender().send(preparator);
     }

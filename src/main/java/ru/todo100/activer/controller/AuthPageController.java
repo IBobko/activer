@@ -129,7 +129,7 @@ public class AuthPageController
 	{
 		model.addAttribute("pageType", "forgot");
 		if (!bindingResult.hasErrors()) {
-			AccountItem account = accountEmailForm.getAccount();
+			final AccountItem account = accountEmailForm.getAccount();
 			String password = RandomStringUtils.random(8, true, true);
 			account.setPassword(password);
 			accountService.save(account);

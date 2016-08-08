@@ -27,7 +27,7 @@
 </ul>
 
 
-<form:form commandName="videoForm" method="post">
+<form:form modelAttribute="videoForm" method="post">
     <form:textarea path="body"/>
     <form:textarea path="description"/>
     <input type="submit"/>

@@ -92,7 +92,7 @@
         <div role="tabpanel" class="tab-pane" id="searchFriends">
             <div class="searchBlock">
                 <c:url var="action" value="/friend/search"/>
-            <form:form commandName="friendSearchForm" method="post" action="${action}">
+            <form:form modelAttribute="friendSearchForm" method="post" action="${action}">
                 <div class="advancedSearch" style="text-align:center;">
                     <table id="advancedSearch">
                         <tr>

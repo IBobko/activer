@@ -80,18 +80,16 @@ public class FlirtHandler extends AbstractMessageHandler {
             opponent = getAccountService().get(happenedFlirtItem.getAccountAppliedId());
         }
 
-
         String messageText = message.getMessage();
         if (messageText.startsWith("gift:")) {
             final PacketMessageData spentMessage = new PacketMessageData();
             spentMessage.setType(PopupMessageType.SPENT);
             spentMessage.setDate(FORMAT_DD_MM_yyyy_HH_mm_ss.format(new GregorianCalendar().getTime()));
-            BigDecimal costOfGift = new BigDecimal("1");
-            if (getBalanceService().subtractAccountBalanceSum(account.getId(), costOfGift, "Оплата подарка")) {
-                Integer giftId = Integer.parseInt(messageText.substring(messageText.indexOf("gift:") + 5));
-                GiftItem gift = (GiftItem) giftDao.get(giftId);
+            Integer giftId = Integer.parseInt(messageText.substring(messageText.indexOf("gift:") + 5));
+            GiftItem gift = (GiftItem) giftDao.get(giftId);
+            if (getBalanceService().subtractAccountBalanceSum(account.getId(), gift.getCost(), "Оплата подарка")) {
                 messageText = "<img src='" + staticHost + "/" + gift.getFile() + ".'/>";
-                spentMessage.setMessage(costOfGift.toString());
+                spentMessage.setMessage(gift.getCost().toString());
                 accountGiftDao.give(account.getId(), opponent.getId(), giftId, "Из флирта");
             } else {
                 spentMessage.setMessage("0");

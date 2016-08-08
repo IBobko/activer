@@ -1,7 +1,9 @@
 package ru.todo100.activer.controller;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -36,6 +38,7 @@ import ru.todo100.activer.model.GiftItem;
 import ru.todo100.activer.qualifier.DisputeThemeQualifier;
 import ru.todo100.activer.qualifier.Qualifier;
 import ru.todo100.activer.service.*;
+import ru.todo100.activer.util.ResizeImage;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -49,6 +52,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class AdminPageController {
+    @Value("${static.host}")
+    private String staticHost;
+
     @Value("${admin.partner.perpage}")
     private Integer COUNT_PER_PAGE;
     private GiftService giftService;
@@ -214,20 +220,34 @@ public class AdminPageController {
         return "redirect:/admin/gifts";
     }
 
-    @Transactional
-    @RequestMapping("/gifts/upload")
-    public String giftsUpload(final GiftAddForm giftAddForm) throws IOException {
+    public String sendFile(File file, String contentType) throws IOException {
         final HttpClient httpclient = HttpClientBuilder.create().build();
         final MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-        final File file = new File(giftAddForm.getPhoto().getName());
-        FileUtils.writeByteArrayToFile(file, giftAddForm.getPhoto().getBytes());
-        final HttpPost httppost = new HttpPost("http://192.168.1.65:18080/static/upload");
-        builder.addPart("image", new FileBody(file, ContentType.create(giftAddForm.getPhoto().getContentType())));
+        final HttpPost httppost = new HttpPost(staticHost + "/static/upload");
+        builder.addPart("image", new FileBody(file, ContentType.create(contentType)));
         httppost.setEntity(builder.build());
         final HttpResponse response = httpclient.execute(httppost);
         final StringWriter writer = new StringWriter();
         IOUtils.copy(response.getEntity().getContent(), writer, "UTF-8");
-        final String theString = writer.toString();
+        return writer.toString();
+    }
+
+    public File getNewFile(File file, int width, int height) {
+        String newName = RandomStringUtils.randomAlphanumeric(6);
+        final File newFile = new File(newName);
+        String extension = FilenameUtils.getExtension(file.getName());
+        ResizeImage.resize(file, newFile, extension, width, height);
+        return newFile;
+    }
+
+    @Transactional
+    @RequestMapping("/gifts/upload")
+    public String giftsUpload(final GiftAddForm giftAddForm) throws IOException {
+        final File originalFile = new File(giftAddForm.getPhoto().getOriginalFilename());
+        FileUtils.writeByteArrayToFile(originalFile, giftAddForm.getPhoto().getBytes());
+
+        final File fileShowingSize = getNewFile(originalFile, 256, 256);
+        final String theString= sendFile(fileShowingSize, giftAddForm.getPhoto().getContentType());
 
 
         GiftItem giftItem = new GiftItem();
@@ -242,6 +262,7 @@ public class AdminPageController {
         giftItem.setName(giftAddForm.getDescription());
         giftItem.setCategory(giftAddForm.getCategory());
         giftItem.setEnabled(giftAddForm.getEnabled());
+        giftItem.setCost(giftAddForm.getCost());
         Session session = giftDao.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         session.save(giftItem);

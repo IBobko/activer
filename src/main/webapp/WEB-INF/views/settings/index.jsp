@@ -200,7 +200,7 @@
             </script>
             <div style="margin:40px 0">
                 <h4 style="color:#337ab7;font-weight:bold">Основная информация</h4>
-                <form:form method="post" commandName="mainInfoForm">
+                <form:form method="post" modelAttribute="mainInfoForm">
                     <table>
                         <tr>
                             <td width="300">
@@ -291,7 +291,7 @@
 
             <div style="margin: 30px 0">
             <c:url var="advancedPost" value="/settings/advancedPost"/>
-            <form:form method="post" action="${advancedPost}" commandName="childrenEducationJobForm">
+            <form:form method="post" action="${advancedPost}" modelAttribute="childrenEducationJobForm">
                 <h4 style="color:#337ab7;font-weight:bold">Образование</h4>
 
                 <table>
@@ -427,7 +427,7 @@
             </div>
 
             <h4 style="color:#337ab7;font-weight:bold">Привязка к PayPal</h4>
-            <form:form method="post" commandName="payPalForm">
+            <form:form method="post" modelAttribute="payPalForm">
                 <table>
                     <tr>
                         <td width="300">

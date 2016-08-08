@@ -11,7 +11,7 @@
 </style>
 
 <h3 style="color:#337ab7;font-weight:bold">Смена пароля</h3>
-<form:form method="post" commandName="changePasswordForm">
+<form:form method="post" modelAttribute="changePasswordForm">
     <table>
         <tr>
             <td>
