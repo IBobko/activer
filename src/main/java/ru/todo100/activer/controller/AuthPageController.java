@@ -4,10 +4,12 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.form.AccountEmailForm;
 import ru.todo100.activer.form.RegisterForm;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.PromoCodeItem;
@@ -17,6 +19,7 @@ import ru.todo100.activer.util.InputError;
 import ru.todo100.activer.util.MailService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value = "/auth")
@@ -116,30 +119,22 @@ public class AuthPageController
 	@RequestMapping(value = "/forgot", method = RequestMethod.GET)
 	public String forgot(final Model model)
 	{
+		model.addAttribute("accountEmailForm", new AccountEmailForm());
 		model.addAttribute("pageType", "forgot");
 		return "auth/forgot";
 	}
 
-	/* @todo Передавать все проверки по возможно binding */
 	@RequestMapping(value = "/forgot", method = RequestMethod.POST)
-	public String forgotPost(HttpServletRequest request, Model model)
+	public String forgotPost(final Model model, @Valid final AccountEmailForm accountEmailForm, final BindingResult bindingResult)
 	{
 		model.addAttribute("pageType", "forgot");
-		String email = request.getParameter("email");
-		AccountItem account = accountService.getByEmail(email);
-		if (account != null)
-		{
+		if (!bindingResult.hasErrors()) {
+			AccountItem account = accountEmailForm.getAccount();
 			String password = RandomStringUtils.random(8, true, true);
 			account.setPassword(password);
 			accountService.save(account);
 			mail.sendForgotPassword(account);
 			model.addAttribute("account", account);
-		}
-		else
-		{
-			InputError ie = new InputError();
-			ie.addError("User not found");
-			model.addAttribute("ie", ie);
 		}
 		return "auth/forgot";
 	}
