@@ -35,10 +35,26 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
     private AccountGiftDao accountGiftDao;
     @Autowired
     private GiftDao giftDao;
+    private AccountGiftDataPopulator accountGiftDataPopulator;
+
+    public static Integer calculateAge(final Calendar dob) {
+        if (dob == null) return 0;
+        Calendar today = Calendar.getInstance();
+
+        // include day of birth
+        dob.add(Calendar.DAY_OF_MONTH, -1);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+        if (today.get(Calendar.DAY_OF_YEAR) <= dob.get(Calendar.DAY_OF_YEAR)) {
+            age--;
+        }
+        return age;
+    }
 
     public BalanceDao getBalanceDao() {
         return balanceDao;
     }
+
     @Autowired
     public void setBalanceDao(BalanceDao balanceDao) {
         this.balanceDao = balanceDao;
@@ -168,45 +184,32 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         profileData.setBalance(getBalanceDao().createOrGet(accountItem).getSum());
 
 
-        if (authorityContains(accountItem.getAuthorities(),"ROLE_CREATOR")) {
+        if (authorityContains(accountItem.getAuthorities(), "ROLE_CREATOR")) {
             profileData.setStatus("ROLE_CREATOR");
-        } else if (authorityContains(accountItem.getAuthorities(),"ROLE_PARTNER")) {
+        } else if (authorityContains(accountItem.getAuthorities(), "ROLE_PARTNER")) {
             profileData.setStatus("ROLE_PARTNER");
         } else {
             profileData.setStatus("ROLE_USER");
         }
 
-        profileData.setShowOnline(Boolean.valueOf(settingService.getAccountSetting(profileData.getId(),"showOnline")));
-        profileData.setShowPremium(Boolean.valueOf(settingService.getAccountSetting(profileData.getId(),"showPremium")));
-
+        profileData.setShowOnline(Boolean.valueOf(settingService.getAccountSetting(profileData.getId(), "showOnline")));
+        profileData.setShowPremium(Boolean.valueOf(settingService.getAccountSetting(profileData.getId(), "showPremium")));
         profileData.setReferCode(accountItem.getReferCode());
-
-        profileData.setAge(calculateAge(accountItem.getBirthdate()));
-
         profileData.setMaritalStatus(accountItem.getMaritalStatus());
+
+        if (accountItem.getBirthdate() != null) {
+            profileData.setAge(calculateAge(accountItem.getBirthdate()));
+            Calendar birthdate = accountItem.getBirthdate();
+            profileData.setZodiac(zodiac(birthdate.get(Calendar.MONTH) + 1, birthdate.get(Calendar.DAY_OF_MONTH)));
+        }
 
         return profileData;
     }
 
     public boolean authorityContains(Set<AuthorityItem> authorities, String role) {
-        for (AuthorityItem authority: authorities)
+        for (AuthorityItem authority : authorities)
             if (authority.getRole().equals(role)) return true;
         return false;
-    }
-
-    public static Integer calculateAge(final Calendar dob)
-    {
-        if (dob == null) return 0;
-        Calendar today = Calendar.getInstance();
-
-        // include day of birth
-        dob.add(Calendar.DAY_OF_MONTH, -1);
-
-        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
-        if (today.get(Calendar.DAY_OF_YEAR) <= dob.get(Calendar.DAY_OF_YEAR)) {
-            age--;
-        }
-        return age;
     }
 
     public AccountGiftDataPopulator getAccountGiftDataPopulator() {
@@ -218,5 +221,31 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         this.accountGiftDataPopulator = accountGiftDataPopulator;
     }
 
-    private AccountGiftDataPopulator accountGiftDataPopulator;
+    int zodiac(int month, int day) {
+        if ((month == 12 && day >= 22 && day <= 31) || (month == 1 && day >= 1 && day <= 19))
+            return 1;
+        else if ((month == 1 && day >= 20 && day <= 31) || (month == 2 && day >= 1 && day <= 17))
+            return 2;
+        else if ((month == 2 && day >= 18 && day <= 29) || (month == 3 && day >= 1 && day <= 19))
+            return 3;
+        else if ((month == 3 && day >= 20 && day <= 31) || (month == 4 && day >= 1 && day <= 19))
+            return 4;
+        else if ((month == 4 && day >= 20 && day <= 30) || (month == 5 && day >= 1 && day <= 20))
+            return 5;
+        else if ((month == 5 && day >= 21 && day <= 31) || (month == 6 && day >= 1 && day <= 20))
+            return 6;
+        else if ((month == 6 && day >= 21 && day <= 30) || (month == 7 && day >= 1 && day <= 22))
+            return 7;
+        else if ((month == 7 && day >= 23 && day <= 31) || (month == 8 && day >= 1 && day <= 22))
+            return 8;
+        else if ((month == 8 && day >= 23 && day <= 31) || (month == 9 && day >= 1 && day <= 22))
+            return 9;
+        else if ((month == 9 && day >= 23 && day <= 30) || (month == 10 && day >= 1 && day <= 22))
+            return 10;
+        else if ((month == 10 && day >= 23 && day <= 31) || (month == 11 && day >= 1 && day <= 21))
+            return 11;
+        else if ((month == 11 && day >= 22 && day <= 30) || (month == 12 && day >= 1 && day <= 21))
+            return 12;
+        return 0;
+    }
 }

@@ -67,10 +67,59 @@
                     <tr>
                         <td width="200">Дата рождения:</td>
                         <td>${profile.birthDate}&nbsp;
-                            <!--<a href="#" class="zodiac">
-                                <span class="fa fa-venus"></span>
-                                Весы
-                            </a>-->
+                            <a href="#" class="zodiac">
+                                <c:choose>
+                                    <c:when test="${profile.zodiac == 1}">
+                                        <span class="fa">&#9809;</span>
+                                        Козерог
+                                    </c:when>
+                                    <c:when test="${profile.zodiac == 2}">
+                                        <span class="fa">&#9810;</span>
+                                        Водолей
+                                    </c:when>
+                                    <c:when test="${profile.zodiac == 3}">
+                                        <span class="fa">&#9811;</span>
+                                        Рыбы
+                                    </c:when>
+                                    <c:when test="${profile.zodiac == 4}">
+                                        <span class="fa">&#9800;</span>
+                                        Овен
+                                    </c:when>
+                                    <c:when test="${profile.zodiac == 5}">
+                                        <span class="fa">&#9801;</span>
+                                        Телец
+                                    </c:when>
+                                    <c:when test="${profile.zodiac == 6}">
+                                        <span class="fa">&#9802;</span>
+                                        Близнец
+                                    </c:when>
+                                    <c:when test="${profile.zodiac == 7}">
+                                        <span class="fa">&#9803;</span>
+                                        Рак
+                                    </c:when>
+                                    <c:when test="${profile.zodiac == 8}">
+                                        <span class="fa">&#9804;</span>
+                                        Лев
+                                    </c:when>
+                                    <c:when test="${profile.zodiac == 9}">
+                                        <span class="fa">&#9805;</span>
+                                        Дева
+                                    </c:when>
+                                    <c:when test="${profile.zodiac == 10}">
+                                        <span class="fa">&#9806;</span>
+                                        Весы
+                                    </c:when>
+                                    <c:when test="${profile.zodiac == 11}">
+                                        <span class="fa">&#9807;</span>
+                                        Скорпион
+                                    </c:when>
+                                    <c:when test="${profile.zodiac == 12}">
+                                        <span class="fa">&#9808;</span>
+                                        Стрелец
+                                    </c:when>
+                                </c:choose>
+
+                            </a>
                         </td>
                     </tr>
                     <tr>

@@ -34,6 +34,15 @@ public class ProfileData implements Serializable {
     private Integer age;
     private String referCode;
     private String status;
+    private Integer zodiac;
+
+    public Integer getZodiac() {
+        return zodiac;
+    }
+
+    public void setZodiac(Integer zodiac) {
+        this.zodiac = zodiac;
+    }
 
     public String getStatus() {
         return status;
