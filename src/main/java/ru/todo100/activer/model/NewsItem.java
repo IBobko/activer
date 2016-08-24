@@ -1,5 +1,7 @@
 package ru.todo100.activer.model;
 
+import org.hibernate.annotations.DiscriminatorFormula;
+
 import javax.persistence.*;
 import java.util.Calendar;
 
@@ -8,6 +10,8 @@ import java.util.Calendar;
  */
 @Entity
 @Table(name = "news")
+@Inheritance(strategy=InheritanceType.JOINED)
+@DiscriminatorColumn(name="NEWS_TYPE", discriminatorType=DiscriminatorType.STRING)
 public class NewsItem extends Item {
     @Id
     @SequenceGenerator(name = "default_gen", sequenceName = "news_seq", allocationSize = 1)
@@ -17,17 +21,10 @@ public class NewsItem extends Item {
     @Column(name = "news_text")
     private String text;
 
+    @Transient
     public String getType() {
-        return type;
+        return this.getClass().getAnnotation(DiscriminatorValue.class).value();
     }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    @Column(name = "news_type")
-    private String type;
-
 
     @Column(name = "news_date")
     private Calendar date;

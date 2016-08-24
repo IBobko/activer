@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import ru.todo100.activer.dao.NewsDao;
 import ru.todo100.activer.model.NewsItem;
+import ru.todo100.activer.model.WallItem;
 import ru.todo100.activer.qualifier.Qualifier;
 import ru.todo100.activer.service.NewsService;
 
@@ -31,13 +32,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Transactional
-    @Override
-    public void addNews(final Integer objectId, final String type, final String news) {
-        NewsItem newsItem = new NewsItem();
-        newsItem.setText(news);
-        newsItem.setType(type);
-        newsItem.setDate(new GregorianCalendar());
-        newsItem.setAccountId(objectId);
+    public void addNews(final NewsItem newsItem) {
         getNewsDao().save(newsItem);
     }
 

@@ -27,10 +27,7 @@ import ru.todo100.activer.data.PagedData;
 import ru.todo100.activer.data.PhotoAvatarSizeData;
 import ru.todo100.activer.data.ReceiveWallData;
 import ru.todo100.activer.form.PagedForm;
-import ru.todo100.activer.model.AccountItem;
-import ru.todo100.activer.model.PhotoItem;
-import ru.todo100.activer.model.WallAttachmentItem;
-import ru.todo100.activer.model.WallItem;
+import ru.todo100.activer.model.*;
 import ru.todo100.activer.populators.WallPopulator;
 import ru.todo100.activer.qualifier.WallQualifier;
 import ru.todo100.activer.service.NewsService;
@@ -120,7 +117,14 @@ public class WallController {
 
             getWallService().save(post);
 
-            getNewsService().addNews(currentAccount.getId(), "WALL", generateWallNews(post));
+            WallNewsItem wallNewsItem = new WallNewsItem();
+            wallNewsItem.setWall(post);
+            wallNewsItem.setAccountId(account.getId());
+            wallNewsItem.setDate(new GregorianCalendar());
+            wallNewsItem.setText(generateWallNews(post));
+
+
+            getNewsService().addNews(wallNewsItem);
             return getWallPopulator().populate(post);
         }
         return null;

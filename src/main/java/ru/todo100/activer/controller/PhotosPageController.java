@@ -24,6 +24,7 @@ import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.form.PhotoAlbumForm;
 import ru.todo100.activer.model.PhotoAlbumItem;
 import ru.todo100.activer.model.PhotoItem;
+import ru.todo100.activer.model.PhotoNewsItem;
 import ru.todo100.activer.service.NewsService;
 import ru.todo100.activer.util.ResizeImage;
 
@@ -33,6 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -204,7 +206,13 @@ public class PhotosPageController {
         result.put("middlePath", theString2);
         result.put("id", photo1.getId());
 
-        newsService.addNews(accountService.getCurrentAccount().getId(),"PHOTO",theString + ";" + theString2);
+
+        PhotoNewsItem photoNewsItem = new PhotoNewsItem();
+        photoNewsItem.setAccountId(accountService.getCurrentAccount().getId());
+        photoNewsItem.setDate(new GregorianCalendar());
+        photoNewsItem.setText(theString + ";" + theString2);
+
+        newsService.addNews(photoNewsItem);
 
         return result.toString();
     }

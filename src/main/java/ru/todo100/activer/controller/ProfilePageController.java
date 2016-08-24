@@ -193,9 +193,4 @@ public class ProfilePageController
 		}
 		model.addAttribute("wall",wall);
 	}
-
-	@ExceptionHandler(Exception.class)
-	public void handleNullPointerException(NullPointerException ex) {
-		System.out.println("hello world");
-	}
 }

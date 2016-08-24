@@ -6,7 +6,9 @@ import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.data.NewsData;
 import ru.todo100.activer.data.NewsPhotoData;
 import ru.todo100.activer.model.AccountItem;
+import ru.todo100.activer.model.AvatarNewsItem;
 import ru.todo100.activer.model.NewsItem;
+import ru.todo100.activer.model.PhotoNewsItem;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
@@ -30,7 +32,7 @@ public class NewsPopulator implements Populator<NewsItem, NewsData> {
     @Override
     public NewsData populate(final NewsItem newsItem) {
         NewsData newsData;
-        if (newsItem.getType().equals("PHOTO") || newsItem.getType().equals("AVATAR")) {
+        if (newsItem instanceof PhotoNewsItem || newsItem instanceof AvatarNewsItem) {
             newsData = new NewsPhotoData();
             if (newsItem.getText() != null) {
                 String[] photos = newsItem.getText().split(";");

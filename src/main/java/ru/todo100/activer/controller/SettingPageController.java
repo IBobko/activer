@@ -38,10 +38,7 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
@@ -263,7 +260,12 @@ public class SettingPageController {
 
         photoService1.setPhoto(accountService.getCurrentAccount().getId(), photoAvatarSizeData);
 
-        newsService.addNews(accountService.getCurrentAccount().getId(), "AVATAR",showingSize + ";" + size100);
+        AvatarNewsItem avatarNewsItem = new AvatarNewsItem();
+        avatarNewsItem.setText(showingSize + ";" + size100);
+        avatarNewsItem.setDate(new GregorianCalendar());
+        avatarNewsItem.setAccountId(accountService.getCurrentAccount().getId());
+
+        newsService.addNews(avatarNewsItem);
 
         return photoAvatarSizeData;
     }
