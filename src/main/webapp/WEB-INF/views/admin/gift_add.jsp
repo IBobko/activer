@@ -25,7 +25,7 @@
 
         </c:if>
         <div style="margin: 15px 0">
-            <form:input id="choosePhoto" type="file" path="photo" class="fileChoice"/>
+            <form:input id="choosePhoto" type="file" path="file" class="fileChoice"/>
             <a href="#" class="std-button btn btn-default">
                 <span class="glyphicon glyphicon-pencil"></span>&nbsp;Выбрать фото
             </a>

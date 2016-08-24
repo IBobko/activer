@@ -41,6 +41,7 @@ import ru.todo100.activer.service.*;
 import ru.todo100.activer.util.ResizeImage;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -178,9 +179,9 @@ public class AdminPageController {
     }
 
     @RequestMapping("/gifts/add")
-    public String giftsAdd(final Model model,@RequestParam(required = false, defaultValue = "0") Integer id) {
+    public String giftsAdd(final Model model,@RequestParam(required = false, defaultValue = "0") final Integer id) {
         model.addAttribute("pageType", "admin/gifts/add");
-        GiftAddForm giftAddForm = new GiftAddForm();
+        final GiftAddForm giftAddForm = new GiftAddForm();
         if (!id.equals(0)) {
             final Session session = giftDao.getSessionFactory().openSession();
             final GiftItem giftItem = (GiftItem)session.get(giftDao.getItemClass(),id);
@@ -190,6 +191,7 @@ public class AdminPageController {
             giftAddForm.setDescription(giftItem.getName());
             giftAddForm.setFileName(giftItem.getFile());
             giftAddForm.setEnabled(giftItem.getEnabled());
+            giftAddForm.setCost(giftItem.getCost());
 
         }
         model.addAttribute("giftAddForm", giftAddForm);
@@ -240,33 +242,26 @@ public class AdminPageController {
         return newFile;
     }
 
-    @Transactional
     @RequestMapping("/gifts/upload")
-    public String giftsUpload(final GiftAddForm giftAddForm) throws IOException {
-        final File originalFile = new File(giftAddForm.getPhoto().getOriginalFilename());
-        FileUtils.writeByteArrayToFile(originalFile, giftAddForm.getPhoto().getBytes());
-
-        final File fileShowingSize = getNewFile(originalFile, 256, 256);
-        final String theString= sendFile(fileShowingSize, giftAddForm.getPhoto().getContentType());
-
-
+    public String giftsUpload(@Valid final GiftAddForm giftAddForm, final BindingResult bindingResult) throws IOException {
+        System.out.println(bindingResult);
         GiftItem giftItem = new GiftItem();
-        if (giftAddForm.getId()!=null) {
-            final Session session = giftDao.getSessionFactory().openSession();
-            final Transaction tx = session.beginTransaction();
-            giftItem = (GiftItem)session.get(giftDao.getItemClass(),giftAddForm.getId());
-            tx.commit();
+        if (giftAddForm.getId() != null) {
+            giftItem = (GiftItem)giftDao.get(giftAddForm.getId());
+        } else {
+            final File originalFile = new File(giftAddForm.getFile().getOriginalFilename());
+            FileUtils.writeByteArrayToFile(originalFile, giftAddForm.getFile().getBytes());
+
+            final File fileShowingSize = getNewFile(originalFile, 256, 256);
+            final String theString= sendFile(fileShowingSize, giftAddForm.getFile().getContentType());
+            giftItem.setFile(theString);
         }
 
-        giftItem.setFile(theString);
         giftItem.setName(giftAddForm.getDescription());
         giftItem.setCategory(giftAddForm.getCategory());
         giftItem.setEnabled(giftAddForm.getEnabled());
         giftItem.setCost(giftAddForm.getCost());
-        Session session = giftDao.getSessionFactory().openSession();
-        Transaction tx = session.beginTransaction();
-        session.save(giftItem);
-        tx.commit();
+        giftDao.save(giftItem);
         return "redirect:/admin/gifts";
     }
 

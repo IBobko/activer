@@ -9,7 +9,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "gift")
-public class GiftItem {
+public class GiftItem extends Item {
     @Id
     @SequenceGenerator(name = "default_gen", sequenceName = "gift_seq")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")
