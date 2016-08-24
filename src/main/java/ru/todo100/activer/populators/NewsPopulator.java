@@ -46,7 +46,7 @@ public class NewsPopulator implements Populator<NewsItem, NewsData> {
         final AccountItem account = accountService.get(newsItem.getAccountId());
         newsData.setAccountData(getMessageAccountDataPopulator().populate(account));
         newsData.setType(newsItem.getType());
-        newsData.setDate(newsItem.getDate());
+        newsData.setDate(FORMAT_DD_MM_yyyy_HH_mm_ss.format(newsItem.getDate().getTime()));
         newsData.setText(newsItem.getText());
 
         String text = "";

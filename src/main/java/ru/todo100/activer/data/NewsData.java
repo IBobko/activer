@@ -1,13 +1,11 @@
 package ru.todo100.activer.data;
 
-import java.util.Calendar;
-
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
 public class NewsData {
     private MessageAccountData accountData;
-    private Calendar date;
+    private String date;
     private String text;
     private String type;
 
@@ -35,11 +33,11 @@ public class NewsData {
         this.text = text;
     }
 
-    public Calendar getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Calendar date) {
+    public void setDate(String date) {
         this.date = date;
     }
 }
