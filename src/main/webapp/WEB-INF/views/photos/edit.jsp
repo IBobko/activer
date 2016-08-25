@@ -102,8 +102,8 @@
                         aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Фотографии альбома</h4>
             </div>
-            <div class="modal-body">
-                ...
+            <div class="modal-body" style="overflow: hidden">
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
@@ -112,10 +112,8 @@
     </div>
 </div>
 <div style="display:none" id="photoItem">
-    <div photo-id="#id" onclick="choosePhoto(this)">
-        <img src="${staticFiles}/#photo." style="width:200px;height:100px">
-        <br/>
-        #description
+    <div photo-id="#id" onclick="choosePhoto(this)" style="margin:10px;float:left">
+        <img src="${staticFiles}/#photo." style="border:3px solid #b5bdec;width:200px;height:100px">
     </div>
 </div>
 
@@ -123,7 +121,7 @@
 
     function choosePhoto(obj) {
         $('#albumPhoto').attr('src', $(obj).find('img').attr('src'));
-        $('[name="photoId"]').val(obj.getAttribute("photo-id"));
+        $('[name="photoId"]').val(obj.getAttribute("photo-id"));з
         $('#photosOfAlbum').modal('hide');
     }
 
@@ -136,7 +134,6 @@
                 var line = template;
                 line = line.replace("#id", response[index].id);
                 line = line.replace("#photo", response[index].middlePath);
-                line = line.replace("#description", response[index].description);
                 photoWindow.append(line);
             }
         }

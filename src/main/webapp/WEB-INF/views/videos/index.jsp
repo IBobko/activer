@@ -9,6 +9,10 @@
         overflow: hidden;
     }
 
+    #albums {
+        list-style: none;
+    }
+
     .video_menu li {
         font-size: 18px;
         text-transform: uppercase;
@@ -22,13 +26,15 @@
 <a class="std-button btn btn-default" style="float:right" href="<c:url value="/videos/edit"/>"><span
         class="glyphicon glyphicon-plus"></span> Добавить видео</a>
 <ul style="margin-top:36px;" class="video_menu">
-    <li>Мои видеозаписи (5 видео)</li>
+    <li>Мои видеозаписи</li>
 </ul>
 
 <ul id="albums">
     <c:forEach items="${videos}" var="video">
-        <li>${video.body}<br/>
-            <pre>${video.description}</pre>
+        <li><a href="<c:url value="/videos/remove/?id=${video.id}"/>">Удалить</a><br/>
+        ${video.body}<br/>
+            ${video.description}
+            <hr/>
         </li>
     </c:forEach>
 </ul>

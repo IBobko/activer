@@ -4,13 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.VideoDao;
 import ru.todo100.activer.form.VideoForm;
 import ru.todo100.activer.model.VideoItem;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -40,6 +43,12 @@ public class VideosPageController {
         model.addAttribute("pageType", "videos");
         model.addAttribute("videoForm", new VideoForm());
         return "videos/edit";
+    }
+
+    @RequestMapping(value = "/remove")
+    public String remove(HttpServletRequest request) {
+        videoDao.delete(Integer.valueOf(request.getParameter("id")));
+        return "redirect:/videos";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)

@@ -28,7 +28,8 @@
 
 
 <form:form modelAttribute="videoForm" method="post">
-    <form:textarea path="body"/>
-    <form:textarea path="description"/>
-    <input type="submit"/>
+    Ссылка на видео с другого сайта: <form:input path="body" cssClass="form-control"/>
+    Описание видео
+    <form:textarea path="description" cssClass="form-control"/><br/>
+    <input type="submit" value="Сохранить" class="std-button btn btn-default"/>
 </form:form>
