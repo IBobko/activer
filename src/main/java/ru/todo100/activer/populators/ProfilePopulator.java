@@ -16,10 +16,8 @@ import java.util.Set;
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
 public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
     @Autowired
     private PhotoDao photoService;
-
     private BalanceDao balanceDao;
     private EducationPopulator educationPopulator;
     private JobPopulator jobPopulator;
@@ -129,7 +127,7 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
 
         profileData.setId(accountItem.getId());
         if (accountItem.getBirthdate() != null) {
-            profileData.setBirthDate(simpleDateFormat.format(accountItem.getBirthdate().getTime()));
+            profileData.setBirthDate(FORMAT_DD_MM_yyyy.format(accountItem.getBirthdate().getTime()));
         }
 
         /* Educations populate*/
@@ -221,7 +219,7 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         this.accountGiftDataPopulator = accountGiftDataPopulator;
     }
 
-    int zodiac(int month, int day) {
+    public int zodiac(int month, int day) {
         if ((month == 12 && day >= 22 && day <= 31) || (month == 1 && day >= 1 && day <= 19))
             return 1;
         else if ((month == 1 && day >= 20 && day <= 31) || (month == 2 && day >= 1 && day <= 17))

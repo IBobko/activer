@@ -15,9 +15,7 @@ import ru.todo100.activer.data.*;
 import ru.todo100.activer.form.FriendSearchForm;
 import ru.todo100.activer.form.RegisterForm;
 import ru.todo100.activer.model.*;
-import ru.todo100.activer.populators.InterestPopulator;
-import ru.todo100.activer.populators.ProfilePopulator;
-import ru.todo100.activer.populators.TripPopulator;
+import ru.todo100.activer.populators.*;
 import ru.todo100.activer.qualifier.AccountQualifier;
 import ru.todo100.activer.qualifier.Qualifier;
 import ru.todo100.activer.service.PhotoService;
@@ -70,7 +68,16 @@ public class AccountDao extends AbstractDao {
     @Autowired
     private InterestPopulator interestPopulator;
     @Autowired
+    private DreamPopulator dreamsPopulator;
+    @Autowired
     private ProfilePopulator profilePopulator;
+    @Autowired
+    private EducationPopulator educationPopulator;
+    @Autowired
+    private JobPopulator jobPopulator;
+    @Autowired
+    private ChildrenPopulator childrenPopulator;
+
     private HashMap<Integer, List<ProfileValue>> synchronizers = new HashMap<>();
 
     public List<AccountItem> getAll() {
@@ -176,6 +183,53 @@ public class AccountDao extends AbstractDao {
                         interests.add(interestPopulator.populate(item));
                     }
                     profileData.setInterests(interests);
+                }
+                if (value.getName().equals("dreams")) {
+                    final List<DreamData> dreams = new ArrayList<>();
+                    for (DreamItem item : (Set<DreamItem>) value.getValue()) {
+                        dreams.add(dreamsPopulator.populate(item));
+                    }
+                    profileData.setDreams(dreams);
+                }
+
+                if (value.getName().equals("firstName")) {
+                    profileData.setFirstName((String)value.getValue());
+                }
+
+                if (value.getName().equals("lastName")) {
+                    profileData.setLastName((String)value.getValue());
+                }
+
+                if (value.getName().equals("sex")) {
+                    profileData.setSex((Integer) value.getValue());
+                }
+
+                if (value.getName().equals("maritalStatus")) {
+                    profileData.setMaritalStatus((Integer)value.getValue());
+                }
+                /*TODO find best solution.*/
+                if (value.getName().equals("birthdate")) {
+                    profileData.setBirthDate(Facade.FORMAT_DD_MM_yyyy.format(((Calendar)value.getValue()).getTime()));
+                    profileData.setZodiac(profilePopulator.zodiac(((Calendar)value.getValue()).get(Calendar.MONTH)+1,((Calendar)value.getValue()).get(Calendar.DAY_OF_MONTH)));
+                }
+
+
+                if (value.getName().equals("education")) {
+                    profileData.setEducation(educationPopulator.populate((EducationItem)value.getValue()));
+                }
+
+                if (value.getName().equals("job")) {
+                    profileData.setJob(jobPopulator.populate((JobItem) value.getValue()));
+                }
+
+                if (value.getName().equals("children")) {
+                    List<ChildrenData> childrenDataList = new ArrayList<>();
+                    for (ChildrenItem children: (Set<ChildrenItem>) value.getValue()) {
+                        childrenDataList.add(childrenPopulator.populate(children));
+                    }
+                    if (!childrenDataList.isEmpty()) {
+                        profileData.setChildren(childrenDataList.get(0));
+                    }
                 }
             }
             synchronizers.remove(profileData.getId());

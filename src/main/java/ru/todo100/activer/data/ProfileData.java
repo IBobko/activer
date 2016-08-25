@@ -35,6 +35,15 @@ public class ProfileData implements Serializable {
     private String referCode;
     private String status;
     private Integer zodiac;
+    private Integer sex;
+
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
 
     public Integer getZodiac() {
         return zodiac;

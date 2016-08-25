@@ -163,6 +163,12 @@ public class SettingPageController {
             account.setMaritalStatus(mainInfoForm.getMaritalStatus());
             account.setBirthdate(mainInfoForm.getBirthDate());
             accountService.save(account);
+
+            accountService.addSynchronizer(account.getId(),"firstName",account.getFirstName());
+            accountService.addSynchronizer(account.getId(),"lastName",account.getLastName());
+            accountService.addSynchronizer(account.getId(),"sex",account.getSex());
+            accountService.addSynchronizer(account.getId(),"maritalStatus",account.getMaritalStatus());
+            accountService.addSynchronizer(account.getId(),"birthdate",account.getBirthdate());
         }
         return "redirect:/settings";
     }
@@ -223,6 +229,10 @@ public class SettingPageController {
             child.setBirthdateYear(childrenEducationJobForm.getChildrenForm().getYear());
 
             accountService.save(account);
+
+            accountService.addSynchronizer(account.getId(),"education",account.getEducationItems());
+            accountService.addSynchronizer(account.getId(),"job",account.getJobItems());
+            accountService.addSynchronizer(account.getId(),"children",account.getChildrenItems());
         }
         return "redirect:/settings";
     }
@@ -457,8 +467,9 @@ public class SettingPageController {
                 System.out.println(theString);
                 dreamItem.setPhoto(theString);
             }
-            final Set<DreamItem> dreamItems = account.getDreamItems();
-            dreamItems.add(dreamItem);
+            final Set<DreamItem> dreams = account.getDreamItems();
+            dreams.add(dreamItem);
+            accountService.addSynchronizer(account.getId(),"dreams",dreams);
             accountService.save(account);
         }
         return "redirect:/settings/dreams";
