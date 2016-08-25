@@ -41,7 +41,6 @@ public class NewsPageController {
     @Autowired
     private FriendsService friendsService;
 
-
     private NewsService newsService;
 
     @Autowired
