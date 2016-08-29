@@ -81,6 +81,11 @@ public class PhotosPageController {
         return photoId.toString();
     }
 
+    @RequestMapping("/delete/{id}")
+    public String deleteAlbum(@PathVariable final Integer id) {
+        getPhotoAlbumDao().delete(id);
+        return "redirect:/photos";
+    }
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String edit(final Model model, final HttpServletRequest request) {

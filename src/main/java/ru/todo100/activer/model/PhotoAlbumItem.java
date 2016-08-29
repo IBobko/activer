@@ -34,7 +34,7 @@ public class PhotoAlbumItem extends Item {
     @Column(name = "account_id", nullable = false)
     private Integer accountId;
 
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "album_id")
     private Set<PhotoItem> photos;
 

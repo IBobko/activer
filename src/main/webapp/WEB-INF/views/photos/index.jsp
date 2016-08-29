@@ -18,9 +18,10 @@
         list-style: none;
         margin: 0 50px 20px 0;
     }
+
     #albums {
-        margin:0px;
-        padding:0px;
+        margin: 0;
+        padding: 0;
     }
 
     #albums li {
@@ -29,10 +30,21 @@
         list-style: none;
         text-align: center;
         border: 3px solid #e4e4e4;
-        height:250px;
-        float:left;
-        margin-right:30px;
-        cursor:pointer;
+        height: 250px;
+        float: left;
+        margin-right: 30px;
+        cursor: pointer;
+    }
+
+    div.descriptionWindow:hover {
+        opacity:0.7;
+    }
+    div.descriptionWindow {
+        opacity:0;
+        background-color: #2b669a;
+        position: absolute;
+        height: 180px;
+        width: 344px;
     }
 </style>
 
@@ -45,13 +57,15 @@
 
 <ul id="albums">
     <c:forEach items="${albums}" var="album">
-        <li onclick='goToAlbum(${album.id})' id="album${album.id}"><div class="descriptionWindow" onmouseout="albumOut(${album.id})"style="position:absolute;height:202px;background-color:#2b669a;width:344px;opacity: 0.7;display:none">${album.description}</div>
-            <a href="<c:url value="/photos/edit?id=${album.id}"/>"><span class="fa fa-cog"
-                                                                         style="font-size:20px;float:right"></span></a>
-            <div onmousemove="albumIn(${album.id})" style="height: 202px;" class="photoWindow">
+        <li onclick='goToAlbum(${album.id})' id="album${album.id}">
+            <div style="overflow: hidden">
+                <a href="<c:url value="/photos/edit?id=${album.id}" />" style="font-size:20px;float:right"><span class="fa fa-cog"></span></a>
+            </div>
+            <div class="descriptionWindow"></div>
+            <div class="photoWindow">
                 <c:if test="${empty album.cover}">
                     <span class="fa fa-camera-retro" style="margin-top:45px;font-size:120px"></span>
-            </c:if>
+                </c:if>
                 <c:if test="${not empty album.cover}">
                     <img src="${staticFiles}/${album.cover.middlePath}." style="width:344px;height:180px"/>
                 </c:if>
@@ -65,17 +79,8 @@
     </c:forEach>
 </ul>
 
-<script>
-
+<script type="text/javascript">
     function goToAlbum(id) {
         document.location = "<c:url value="/photos/album"/>" + id + "?accountId=${accountId}";
-    }
-
-    function albumIn(id){
-        $('#album' + id).find('.descriptionWindow').show();
-    }
-
-    function albumOut(id){
-        $('#album' + id).find('.descriptionWindow').hide();
     }
 </script>

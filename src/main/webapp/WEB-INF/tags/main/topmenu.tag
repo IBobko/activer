@@ -22,7 +22,7 @@
         <nav class="navbar navbar-default navbar-static-top my-navbar-top">
             <ul class="nav navbar-nav">
                 <li <c:if test="${pageType == 'news'}">class="active"</c:if>><a
-                        href="<c:url value="/news/"/>">Новости</a></li>
+                        href="<c:url value="/news"/>">Новости</a></li>
                 <li <c:if test="${mainPage == 'dating'}">class="active"</c:if>><a href="<c:url value="/dating"/>">Знакомства</a>
                 </li>
                 <li <c:if test="${mainPage == 'gifts'}">class="active"</c:if>><a

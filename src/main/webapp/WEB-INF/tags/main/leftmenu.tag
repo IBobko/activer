@@ -88,7 +88,7 @@
             </a>
         </li>
         <li>
-            <a href="<c:url value="/photos/"/>">
+            <a href="<c:url value="/photos"/>">
                 <span class="fa fa-photo"></span>
                 Фотографии
             </a>
@@ -130,7 +130,7 @@
             </a>
         </li>
         <li>
-            <a href="<c:url value="/photos/"/>">
+            <a href="<c:url value="/photos"/>">
                 <span class="fa fa-photo"></span>
                 Фотографии
             </a>
@@ -171,7 +171,7 @@
             </a>
         </li>
         <li>
-            <a href="<c:url value="/photos/"/>">
+            <a href="<c:url value="/photos"/>">
                 <span class="fa fa-photo"></span>
                 Фотографии
             </a>
@@ -212,7 +212,7 @@
             </a>
         </li>
         <li class="active">
-            <a href="<c:url value="/photos/"/>">
+            <a href="<c:url value="/photos"/>">
                 <span class="fa fa-photo"></span>
                 Фотографии
             </a>
@@ -252,7 +252,7 @@
             </a>
         </li>
         <li>
-            <a href="<c:url value="/photos/"/>">
+            <a href="<c:url value="/photos"/>">
                 <span class="fa fa-photo"></span>
                 Фотографии
             </a>
