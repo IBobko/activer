@@ -8,6 +8,14 @@ window.ACTIVER.Dialog = {
 
     },
 
+    /**
+     * Used in case the use of the template, sending data, and reload the template.
+     *
+     * @param templateId It is a id of html tag.
+     * @param url URL for sending of data.
+     * @param callback Function is called by receiving data.
+     * @constructor
+     */
     Messages: function (templateId, url, callback) {
         this.r = function r(data, path, template) {
             for (var index in data) {

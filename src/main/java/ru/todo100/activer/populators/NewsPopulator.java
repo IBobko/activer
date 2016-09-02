@@ -76,7 +76,7 @@ public class NewsPopulator implements Populator<NewsItem, NewsData> {
 
         if (newsData.getType().equals("AVATAR") && ((NewsPhotoData) newsData).getPhotoShowing() != null) {
             text = "обновил аватар<br/>\n" +
-                    "<a href=\"${staticFiles}/${news.photoShowing}.jpg\"><img alt=\"First\" title=\"First image\"  style=\"width:200px\" src=\"${staticFiles}/${news.photoThumbnail}.\"/></a>\n";
+                    "<a href=\"${staticFiles}/${news.photoShowing}.jpg\"><img alt=\"First\" title=\"First image\"  style=\"max-width:300px;max-height:300px;\" src=\"${staticFiles}/${news.photoThumbnail}.\"/></a>\n";
             text = text.replace("${staticFiles}", staticFiles);
             text = text.replace("${news.photoShowing}", ((NewsPhotoData) newsData).getPhotoShowing());
             text = text.replace("${news.photoThumbnail}", ((NewsPhotoData) newsData).getPhotoThumbnail());
@@ -86,7 +86,7 @@ public class NewsPopulator implements Populator<NewsItem, NewsData> {
 
         if (newsData.getType().equals("PHOTO") && ((NewsPhotoData) newsData).getPhotoShowing() != null) {
             text = "добавил фото<br/>\n" +
-                    "<a href=\"${staticFiles}/${news.photoShowing}.jpg\"><img alt=\"First\" title=\"First image\"  style=\"width:200px\" src=\"${staticFiles}/${news.photoThumbnail}.\"/></a>\n";
+                    "<a href=\"${staticFiles}/${news.photoShowing}.jpg\"><img alt=\"First\" title=\"First image\"  style=\"max-width:300px;max-height:300px;\" src=\"${staticFiles}/${news.photoThumbnail}.\"/></a>\n";
             text = text.replace("${staticFiles}", staticFiles);
             text = text.replace("${news.photoShowing}", ((NewsPhotoData) newsData).getPhotoShowing());
             text = text.replace("${news.photoThumbnail}", ((NewsPhotoData) newsData).getPhotoThumbnail());
