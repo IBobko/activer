@@ -34,6 +34,7 @@ public class NewsPopulator implements Populator<NewsItem, NewsData> {
     @Override
     public NewsData populate(final NewsItem newsItem) {
         NewsData newsData;
+        String text = "";
         if (newsItem instanceof PhotoNewsItem || newsItem instanceof AvatarNewsItem) {
             newsData = new NewsPhotoData();
             if (newsItem.getText() != null) {
@@ -45,6 +46,23 @@ public class NewsPopulator implements Populator<NewsItem, NewsData> {
             }
         } else if (newsItem instanceof WallNewsItem) {
             newsData = new NewsWallData();
+            final NewsWallData newsWallData = (NewsWallData)newsData;
+            final WallNewsItem wallNewsItem = (WallNewsItem)newsItem;
+            final WallItem wall = wallNewsItem.getWall();
+            final List<AttachmentData> attachments = new ArrayList<>();
+            newsWallData.setAttachments(attachments);
+            if (wall == null) return null;
+
+            text = wall.getText();
+
+            if (wallNewsItem.getWall().getAttachments() != null) {
+                for (WallAttachmentItem attachmentItem: wallNewsItem.getWall().getAttachments()) {
+                    AttachmentData attachment = new AttachmentData();
+                    attachment.setUrl(attachmentItem.getPhoto());
+                    attachments.add(attachment);
+                }
+            }
+
         } else {
             newsData = new NewsData();
         }
@@ -55,21 +73,6 @@ public class NewsPopulator implements Populator<NewsItem, NewsData> {
         newsData.setDate(FORMAT_DD_MM_yyyy_HH_mm_ss.format(newsItem.getDate().getTime()));
         newsData.setText(newsItem.getText());
 
-        String text = "";
-
-        if (newsData.getType().equals("WALL")) {
-            text = "<strong>написал:</strong><br/><span style=\"font-weight: normal;\">${news.text}</span>";
-            text = text.replace("${news.text}", newsItem.getText());
-
-            WallNewsItem wallNewsItem = (WallNewsItem)newsItem;
-            if (wallNewsItem.getWall().getAttachments()!=null && !wallNewsItem.getWall().getAttachments().isEmpty()){
-                NewsWallData newsWallData = (NewsWallData)newsData;
-                List<AttachmentData> attachments = new ArrayList<>();
-                AttachmentData attachment = new AttachmentData();
-
-            }
-
-        }
 
         if (newsData.getType().equals("AVATAR") && ((NewsPhotoData) newsData).getPhotoShowing() != null) {
             text = "обновил аватар<br/>\n" +

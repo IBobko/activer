@@ -13,9 +13,23 @@
     </p>
     <p>
         <img style="float:left" src="${staticFiles}/${news.accountData.photo60x60}."/>
-        <div style="margin-left:75px">${news.text}</div>
-    <%--<div style="margin-left:75px;" class="yoxview">--%>
-        <%--<a href="${staticFiles}/${post.attachmentFile}.jpg">${post.attachmentHtml}</a>--%>
-    <%--</div>--%>
+
+        <div style="margin-left:75px;font-weight:normal">
+        <c:choose>
+            <c:when test="${news.type.equalsIgnoreCase('wall')}">
+                ${news.text}<br/><br/>
+                <c:forEach items="${news.attachments}" var="attachment">
+                    <img style="width:200px;" src="${staticFiles}/${attachment.url}."/>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                ${news.text}
+                <%--<div style="margin-left:75px;" class="yoxview">--%>
+                <%--<a href="${staticFiles}/${post.attachmentFile}.jpg">${post.attachmentHtml}</a>--%>
+                <%--</div>--%>
+            </c:otherwise>
+        </c:choose>
+        </div>
+
     </p>
 </div>
