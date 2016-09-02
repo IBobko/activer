@@ -30,12 +30,12 @@ public class WallItem extends Item {
     @Column(name = "sender_id", nullable = false)
     private Integer sender;
 
-    @OneToMany(mappedBy = "wall",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "wall",fetch = FetchType.EAGER)
     private Set<WallAttachmentItem> attachments;
 
     @SuppressWarnings("unused")
     @OneToMany(mappedBy = "wall",orphanRemoval = true)
-    /* It is needed inly for deleting. When wall item going to be deleted then news too.*/
+    /* It is needed only for deleting. When wall item going to be deleted then news too.*/
     private Set<WallNewsItem> news;
 
     public Integer getId() {

@@ -103,15 +103,12 @@ public class WallController {
 
             Set<WallAttachmentItem> attachments = new HashSet<>();
 
-            WallAttachmentItem wallAttachmentItem = null;
             if (receiveWallData.getPhoto()!=null) {
-
                 PhotoAvatarSizeData photos = upload(receiveWallData.getPhoto());
-                wallAttachmentItem = new WallAttachmentItem();
+                WallAttachmentItem wallAttachmentItem = new WallAttachmentItem();
                 wallAttachmentItem.setWall(post);
                 wallAttachmentItem.setPhoto(photos.getPhotoOriginal());
                 attachments.add(wallAttachmentItem);
-
             }
             post.setAttachments(attachments);
 
@@ -121,23 +118,11 @@ public class WallController {
             wallNewsItem.setWall(post);
             wallNewsItem.setAccountId(account.getId());
             wallNewsItem.setDate(new GregorianCalendar());
-            wallNewsItem.setText(generateWallNews(post));
-
 
             getNewsService().addNews(wallNewsItem);
             return getWallPopulator().populate(post);
         }
         return null;
-    }
-
-    @Value(value = "${static.host.files}")
-    private String staticFiles;
-    public String generateWallNews(final WallItem post) {
-        String result = post.getText() + "<br>";
-        if (!post.getAttachments().isEmpty()) {
-            result += "<img src='" + staticFiles + "/" + post.getAttachments().iterator().next().getPhoto() + ".'/>";
-        }
-        return result;
     }
 
     public PhotoAvatarSizeData upload(MultipartFile photo) throws IOException {
