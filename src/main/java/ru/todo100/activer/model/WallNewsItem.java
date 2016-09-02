@@ -14,7 +14,6 @@ import javax.persistence.*;
 @PrimaryKeyJoinColumn(name="NEWS_ID")
 @DiscriminatorValue("WALL")
 public class WallNewsItem extends NewsItem {
-
     @ManyToOne
     @JoinColumn(name = "wall_id")
     private WallItem wall;

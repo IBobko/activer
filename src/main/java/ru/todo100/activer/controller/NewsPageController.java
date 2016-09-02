@@ -45,12 +45,12 @@ public class NewsPageController {
 
     @Autowired
     private NewsPopulator newsPopulator;
-    @RequestMapping("/")
+    @RequestMapping
     public String index(final HttpSession session,final Model model) {
         final List<Integer> accounts = getAccounts(session);
         final List<NewsItem> news = getNewsService().getNews(accounts);
         final List<NewsData> newsData = new ArrayList<>();
-        for (NewsItem n:news){
+        for (final NewsItem n:news){
             newsData.add(newsPopulator.populate(n));
         }
         model.addAttribute("news",newsData);

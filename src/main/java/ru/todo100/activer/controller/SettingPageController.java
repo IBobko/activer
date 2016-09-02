@@ -478,10 +478,10 @@ public class SettingPageController {
     @RequestMapping(value = "/dreams/remove")
     public String removeDream(final HttpServletRequest request) {
         try {
-            Integer id = Integer.parseInt(request.getParameter("dream"));
+            final Integer id = Integer.parseInt(request.getParameter("dream"));
             accountService.deleteDream(id);
-        } catch (NumberFormatException ignored) {
-        }
+            accountService.addSynchronizer(accountService.getCurrentAccount().getId(),"dreams",accountService.getCurrentAccount().getDreamItems());
+        } catch (NumberFormatException ignored) {}
         return "redirect:/settings/dreams";
     }
 

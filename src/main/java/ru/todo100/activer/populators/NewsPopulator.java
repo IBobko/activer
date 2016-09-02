@@ -3,12 +3,14 @@ package ru.todo100.activer.populators;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.data.AttachmentData;
 import ru.todo100.activer.data.NewsData;
 import ru.todo100.activer.data.NewsPhotoData;
-import ru.todo100.activer.model.AccountItem;
-import ru.todo100.activer.model.AvatarNewsItem;
-import ru.todo100.activer.model.NewsItem;
-import ru.todo100.activer.model.PhotoNewsItem;
+import ru.todo100.activer.data.NewsWallData;
+import ru.todo100.activer.model.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
@@ -41,6 +43,8 @@ public class NewsPopulator implements Populator<NewsItem, NewsData> {
                     ((NewsPhotoData) newsData).setPhotoThumbnail(photos[1]);
                 }
             }
+        } else if (newsItem instanceof WallNewsItem) {
+            newsData = new NewsWallData();
         } else {
             newsData = new NewsData();
         }
@@ -56,6 +60,15 @@ public class NewsPopulator implements Populator<NewsItem, NewsData> {
         if (newsData.getType().equals("WALL")) {
             text = "<strong>написал:</strong><br/><span style=\"font-weight: normal;\">${news.text}</span>";
             text = text.replace("${news.text}", newsItem.getText());
+
+            WallNewsItem wallNewsItem = (WallNewsItem)newsItem;
+            if (wallNewsItem.getWall().getAttachments()!=null && !wallNewsItem.getWall().getAttachments().isEmpty()){
+                NewsWallData newsWallData = (NewsWallData)newsData;
+                List<AttachmentData> attachments = new ArrayList<>();
+                AttachmentData attachment = new AttachmentData();
+
+            }
+
         }
 
         if (newsData.getType().equals("AVATAR") && ((NewsPhotoData) newsData).getPhotoShowing() != null) {
