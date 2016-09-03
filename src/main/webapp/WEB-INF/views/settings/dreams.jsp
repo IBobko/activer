@@ -1,4 +1,3 @@
-<%--suppress XmlDuplicatedId --%>
 <%--@elvariable id="staticFiles" type=""--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -47,99 +46,55 @@
 
 <script type="text/javascript">
     var edit = function (e) {
-        console.log($(e).find("img"));
         $('#text').text($(e).find('span').text());
         $('#id').val($(e).attr('dream-id'));
-
-
-
-
         setPhoto($(e).find("img")[0]);
-
-
     };
 
-
-    var setPhoto = function(img2) {
-        console.log(img2.src);
-        var img = new Image();
-        img.src = img2.src;
-
-        var initialData = $(img).cropper('getCanvasData');
-
+    var setPhoto = function(img) {
         var width = 0;
         var height = 0;
         var r = 0;
 
-        if (initialData.naturalWidth > 150) {
-            r = initialData.naturalWidth/initialData.naturalHeight;
+        if (img.naturalWidth > 150) {
+            r = img.naturalWidth/img.naturalHeight;
             width = 150;
             height = width * r;
         }
 
-        if (initialData.naturalHeight > 150) {
-            r = initialData.naturalWidth/initialData.naturalHeight;
+        if (height > 150) {
+            r = img.naturalHeight/img.naturalWidth;
             height = 150;
             width = height * r;
         }
-        var t = $(img).cropper('getCroppedCanvas',{
-            width:width,
-            height:height
-        });
+        var oc = document.createElement('canvas');
+        var canvas = oc.getContext('2d');
+        canvas.width = width;
+        canvas.height = height;
+        canvas.drawImage(img, 0, 0, height,width);
 
+        var previewImage = new Image();
+        previewImage.src = oc.toDataURL();
+        previewImage.style.marginTop = "-23px";
 
-        t[0].style.marginTop = "-23px";
-
-        $("#preview").html(t[0]);
-
-
+        $("#preview").html(previewImage);
     };
-
 
     $("#choosePhoto").change(function () {
         var fileData = $(this).prop('files')[0];
         var reader = new FileReader();
-
         reader.onload = function (frEvent) {
             var img = new Image();
-            img.style.marginTop = "-23px";
             img.src = frEvent.target.result;
-
-            var initialData = $(img).cropper('getImageData');
-
-            var width = 0;
-            var height = 0;
-            var r = 0;
-
-            if (initialData.naturalWidth > 150) {
-                r = initialData.naturalWidth/initialData.naturalHeight;
-                width = 150;
-                height = width * r;
-            }
-
-            if (initialData.naturalHeight > 150) {
-                r = initialData.naturalWidth/initialData.naturalHeight;
-                height = 150;
-                width = height * r;
-            }
-            var t = $(img).cropper('getCroppedCanvas',{
-                width:width,
-                height:height
-            });
-
-            t.style.marginTop = "-23px";
-
-            $("#preview").html(t);
+            setPhoto(img);
         };
         reader.readAsDataURL(fileData);
     });
-
-
 </script>
 
 <c:forEach items="${dreams}" var="dream">
     <div dream-id="${dream.id}" onclick="edit(this)">
-        <img style="width:100px;float:left" class="media-object" src="${staticFiles}/${dream.photo}.">
+        <img crossOrigin="anonymous" style="width:100px;float:left" class="media-object" src="${staticFiles}/${dream.photo}.">
         <span>${dream.text}</span>
         <a class="std-button btn btn-default"
            href="<c:url value="/settings/dreams/remove?dream=${dream.id}"/>">Удалить</a>
