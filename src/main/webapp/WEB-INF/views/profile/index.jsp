@@ -1,4 +1,5 @@
 <%--suppress ALL --%>
+<%--@elvariable id="staticImages" type="java.lang.String"--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -45,8 +46,8 @@
         </c:if>
         <div class="media">
             <div class="media-left media-heading yoxview">
-                <a href="${staticFiles}/${showingPhoto}.jpg">
-                    <img alt="First" title="<c:if test="${profile.my}"><a href='<c:url value="/settings"/>'>Изменить</a></c:if>" class="media-object" src="${staticFiles}/${photo}.">
+                <a href="${staticImages}/${showingPhoto}">
+                    <img alt="First" title="<c:if test="${profile.my}"><a href='<c:url value="/settings"/>'>Изменить</a></c:if>" class="media-object" src="${staticImages}/${photo}">
                 </a>
             </div>
             <div class="media-body">
@@ -183,7 +184,7 @@
             <div class="gallery">
                 <c:forEach items="${photos}" var="photo">
                     <a href="<c:url value="/photos/album${photo.albumId}?accountId=${profile.id}#rrr=${photo.id}"/>">
-                        <img class="img-responsive" src="${staticFiles}/${photo.smallPath}.jpg"/>
+                        <img class="img-responsive" src="${staticImages}/${photo.smallPath}"/>
                     </a>
                 </c:forEach>
             </div>
@@ -303,7 +304,7 @@
                 <div class="media">
                     <div class="media-left media-middle">
                         <a href="#">
-                            <img class="media-object" src="${staticFiles}/${dream.photo}.png">
+                            <img class="media-object" src="${staticImages}/${dream.photo}">
                         </a>
                     </div>
                     <div class="media-body media-middle hidden-sm hidden-xs">
@@ -357,7 +358,6 @@
                             });
                 });
 
-
                 var formData = new FormData();
                 $('#choosePhoto').change(function(){
 
@@ -399,7 +399,6 @@
 </script>
 <script type="text/javascript" src="<c:url value="/resources/yoxview/yoxview-init.js"/>"></script>
 
-
 <script type="text/javascript">
     var loaded = 1;
     var end = false;
@@ -437,15 +436,12 @@
         }
     });
 
-
     function deleteWallPost(id) {
         $.get("<c:url value="/wall/remove/"/>" + id,function(response){
             $("[wall-id='"+response+"']").remove();
         })
 
     }
-
-
 
 </script>
 

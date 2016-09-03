@@ -1,6 +1,24 @@
+<%--@elvariable id="staticImages" type="java.lang.String"--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="dating" tagdir="/WEB-INF/tags/dating" %>
+
+<style type="text/css">
+    .gifts-list {
+        overflow: hidden;
+    }
+
+    .gifts-list li {
+        list-style: none;
+        float: left;
+        font-weight: normal;
+        text-align: center;
+    }
+
+    .gifts-list img {
+        width: 128px;
+    }
+</style>
 
 <!-- Modal -->
 <div class="modal fade" id="giftsPopup" tabindex="-1" role="dialog">
@@ -15,9 +33,9 @@
                 <ul class="gifts-list">
                     <c:forEach items="${gifts}" var="gift">
                         <li>
-                            <a href="#" class="giftForAdd" gift-id="${gift.id}"><img src="<c:url value="${staticFiles}/${gift.file}."/>"></a>
+                            <a href="#" class="giftForAdd" gift-id="${gift.id}"><img src="<c:url value="${staticImages}/${gift.file}"/>"></a>
                             <br/>
-                            Стоимость: 1$
+                            Стоимость: ${gift.cost}$
                         </li>
                     </c:forEach>
                 </ul>
@@ -48,8 +66,6 @@
         <h4 style="color: #3F51B5;font-weight:bold;">Знакомство "Спор"</h4>Докажите собеседнику, что вы правы на все 100%. Защищайте свою позицию.
     </div>
 
-
-
     <div style="text-align: center">
         <h3 style="font-weight: bold; color:orange">${disputeData.themeTitle}</h3>
         <table style="width:600px;font-weight: normal" align="center">
@@ -59,12 +75,12 @@
                     ${disputeData.yourPosition}
                 </td>
                 <td>
-                    <img src="${staticFiles}/${photo}.jpg" style="width:117px;margin:10px"/>
+                    <img src="${staticImages}/${photo}" style="width:117px;margin:10px"/>
                 </td>
                 <td>
                     <img src="<c:url value="/resources/img/vs.jpg"/>" style="margin:10px"/></td>
                 <td>
-                    <img src="${staticFiles}/${disputeData.opponentAvatar}." style="width:117px;margin:10px"/>
+                    <img src="${staticImages}/${disputeData.opponentAvatar}" style="width:117px;margin:10px"/>
                 </td>
                 <td>
                     <div style="color: #3F51B5;font-weight: bold">${disputeData.opponentFistName} ${disputeData.opponentLastName}</div>

@@ -1,5 +1,5 @@
 <%--suppress HtmlUnknownAnchorTarget,CssUnusedSymbol --%>
-<%--@elvariable id="staticFiles" type="java.lang.String"--%>
+<%--@elvariable id="staticImages" type="java.lang.String"--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -10,7 +10,7 @@
         dialogMessageRow: function (message) {
 
             var template = $(this.messageTemplate).html();
-            template = template.replace("#avatar", '${staticFiles}/' + message.from.photo60x60 + '.');
+            template = template.replace("#avatar", '${staticImages}/' + message.from.photo60x60);
             template = template.replace("#sender", message.from.firstName + " " + message.from.lastName);
             template = template.replace("#message", message.message);
             template = template.replace("#time", message.date);
@@ -118,7 +118,7 @@
                 <ul class="gifts-list">
                 <c:forEach items="${gifts}" var="gift">
                     <li>
-                        <a href="#" class="giftForAdd" gift-id="${gift.id}"><img src="<c:url value="${staticFiles}/${gift.file}."/>"></a>
+                        <a href="#" class="giftForAdd" gift-id="${gift.id}"><img src="<c:url value="${staticImages}/${gift.file}"/>"></a>
                         <br/>
                         Стоимость: ${gift.cost}$
                     </li>
@@ -133,11 +133,8 @@
     </div>
 </div>
 
-
-
 <script type="text/javascript">
     $(function () {
-
         $('.giftForAdd').click(function(){
             var data = ACTIVER.Global.message;
             data.to = interlocutor;
@@ -146,8 +143,6 @@
             ACTIVER.Global.submit(data);
             $('#giftsPopup').modal('hide');
         });
-
-
 
         var interlocutors = $('#interlocutors');
 
@@ -240,7 +235,7 @@
                 <c:forEach items="${dialogs}" var="dialog">
                     <div style="overflow: hidden" class="interlocutor" interlocutor-id="${dialog.owner.id}">
                         <div id="counter" style="float:right;padding-top:22px"><c:if test="${dialog.countNotRed != 0}"><span class='badge'>${dialog.countNotRed}</span></c:if></div>
-                        <img style="margin:10px;float:left" width="60" src="${staticFiles}/${dialog.owner.photo60x60}." height="60"/>
+                        <img style="margin:10px;float:left" width="60" src="${staticImages}/${dialog.owner.photo60x60}" height="60"/>
                         <div style="margin:10px;">
                             <span style="color:#337ab7">${dialog.owner.lastName} ${dialog.owner.firstName}</span><br/>
                             <span style="font-weight: normal;font-size: 12px">${dialog.lastMessage.date}</span>
@@ -271,7 +266,6 @@
 <br/><br/><br/>
 
 <script type="text/javascript">
-
     var interlocutor = ${not empty param["dialog"]?param["dialog"]:0};
 
     if (interlocutor != undefined && interlocutor != 0) {
@@ -337,7 +331,7 @@
 
 <div id="friendTemplate" style="display:none">
     <div class="manBlock" style="overflow:hidden;margin:10px" friend-id="#id">
-        <img filename="#photo" class="friend_photo" src="${staticFiles}/#photo." width="80" style="float:left">
+        <img filename="#photo" class="friend_photo" src="${staticImages}/#photo" width="80" style="float:left">
         <div style="margin: 0 100px">
             <a class="friend_name" href="<c:url value="/profile/id"/>#id">#name</a><br>
             <a style="font-weight: normal" href="javascript:addFried('#id')">Написать сообщение</a>
@@ -349,7 +343,7 @@
 
 <div style="display:none" id="dialogTemplate">
     <div style="overflow: hidden" class="interlocutor" interlocutor-id="#id">
-        <img style="margin:10px;float:left" width="60" src="${staticFiles}/#ownerphoto." height="60"/>
+        <img style="margin:10px;float:left" width="60" src="${staticImages}/#ownerphoto" height="60"/>
         <div style="margin:10px">
             <span style="color:#337ab7">#ownerlastname #ownerfirstname</span><br/>
             <span style="font-weight: normal;font-size: 12px">#date</span><br/>
@@ -373,10 +367,6 @@
     });
 
     ACTIVER.Global.handlers["PRIVATE_MESSAGE"] = function (data) {
-        console.log(data);
-
-
-
         var owner = null;
         if (data.to.id == ${profile.id}) {
             owner = data.from.id;

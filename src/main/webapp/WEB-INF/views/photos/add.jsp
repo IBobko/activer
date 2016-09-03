@@ -2,9 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<link href="/ROOT/resources/cropper.css" rel="stylesheet">
-<script src="/ROOT/resources/cropper.js"></script>
-
+<link href="<c:url value="/resources/cropper.css"/>" rel="stylesheet">
+<script src="<c:url value="/resources/cropper.js"/>"></script>
 
 <script type="text/javascript">
     $(function () {
@@ -51,7 +50,7 @@
             </div>
             <div class="modal-body">
                 <div>
-                   <img id="image" style="position:absolute" src="/ROOT/resources/img/image.jpg" />
+                   <img id="image" style="position:absolute" src="<c:url value="/resources/img/image.jpg"/>"/>
                 </div>
             </div>
             <div class="modal-footer">
@@ -89,11 +88,7 @@
     </tr>
 </table>
 
-
-
 <script type="text/javascript">
-
-
     $('[name="file"]').change(function(){
         var reader = new FileReader();
         reader.onload = function (e) {
@@ -105,25 +100,4 @@
         reader.readAsDataURL(this.files[0]);
 
     });
-
-
-
-
-//    function readURL(input) {
-//
-//        if (input.files && input.files[0]) {
-//
-//
-//            reader.onload = function (e) {
-//                $("#preview").html("<img src='" + e.target.result + "'/>");
-//            }
-//
-//            reader.readAsDataURL(input.files[0]);
-//        }
-//    }
-//
-//    $("[name='file']").change(function(){
-//        readURL(this);
-//    });
-
 </script>

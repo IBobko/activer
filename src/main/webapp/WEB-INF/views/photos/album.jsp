@@ -1,3 +1,5 @@
+<%--@elvariable id="staticImages" type="java.lang.String"--%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link href="<c:url value="/resources/yoxview/yoxview.css"/>" rel="stylesheet"/>
@@ -75,7 +77,7 @@
             processData: false, // Don't process the files
             contentType: false, // Set content type to false as jQuery will tell the server its a query string request
             success: function (data) {
-                $("#photos").append("<li><a href=\"${staticFiles}/" + data["originalPath"] + ".jpg\"><img photo-id=\"" + data["id"] + "\" style=\"width:200px; height:130px\" src=\"${staticFiles}/" + data["middlePath"] + "${photo.middlePath.trim()}.jpg\" alt=\"${photo.description}\"></a></li>");
+                $("#photos").append("<li><a href=\"${staticImages}/" + data["originalPath"] + "\"><img photo-id=\"" + data["id"] + "\" style=\"width:200px; height:130px\" src=\"${staticImages}/" + data["middlePath"] + "\" alt=\"${photo.description}\"></a></li>");
 
                 jQuery(".yoxview").yoxview(
                         {
@@ -100,9 +102,9 @@
 <ul id="photos" class="thumbnails yoxview">
     <c:forEach items="${photos}" var="photo">
         <li>
-            <a id="photo-${photo.id}" href="${staticFiles}/${photo.path.trim()}.jpg"><img photo-id="${photo.id}"
+            <a id="photo-${photo.id}" href="${staticImages}/${photo.path.trim()}"><img photo-id="${photo.id}"
                                                                                           style="width:200px; height:130px"
-                                                                                          src="${staticFiles}/${photo.middlePath.trim()}.jpg"
+                                                                                          src="${staticImages}/${photo.middlePath}"
                                                                                           alt="${photo.description}"
                                                                                           title="${photo.description}"/></a>
         </li>

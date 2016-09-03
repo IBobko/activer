@@ -1,4 +1,4 @@
-<%--@elvariable id="staticFiles" type="java.lang.String"--%>
+<%--@elvariable id="staticImages" type="java.lang.String"--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -67,7 +67,7 @@
                     <span class="fa fa-camera-retro" style="margin-top:45px;font-size:120px"></span>
                 </c:if>
                 <c:if test="${not empty album.cover}">
-                    <img src="${staticFiles}/${album.cover.middlePath}." style="width:344px;height:180px"/>
+                    <img src="${staticImages}/${album.cover.middlePath}" style="width:344px;height:180px"/>
                 </c:if>
             </div>
 
