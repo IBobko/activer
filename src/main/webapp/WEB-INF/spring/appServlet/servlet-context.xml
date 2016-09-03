@@ -15,16 +15,13 @@
 	<!--<context:annotation-config/>-->
 	<!--<beans:bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration"/>-->
 
-
 	<!--<beans:bean class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">-->
 		<!--<beans:property name="hostName" value="192.168.1.65"/>-->
 		<!--<beans:property name="port" value="6379"/>-->
 	<!--</beans:bean>-->
 
+	<context:property-placeholder location="/WEB-INF/local.properties,/WEB-INF/servlet.properties"/>
 
-	<!--@todo Подумать обязательно ли указывать пропертис в двух файлах-->
-	<context:property-placeholder location="/WEB-INF/local.properties" ignore-unresolvable="true"/>
-	<context:property-placeholder location="/WEB-INF/servlet.properties" />
 	<!-- DispatcherServlet Context: defines this servlet's request-processing 
 		infrastructure -->
 	<!-- Enables the Spring MVC @Controller programming model -->
@@ -36,13 +33,9 @@
 		mapping="/resources/**"
 		location="/resources/" />
 
-	<context:component-scan base-package="ru.todo100.activer.controller" />
+	<context:component-scan base-package="ru.todo100.activer.controller"  />
 
 	<context:component-scan base-package="ru.todo100.activer.config"/>
-
-
-
-
 
 
 	<beans:bean id="abstractMessageHandler" abstract="true" class="ru.todo100.activer.handler.AbstractMessageHandler"/>
@@ -53,14 +46,9 @@
 
 	<!-- Configure Apache Tiles for the view -->
 
-
-
-
-
 	<beans:bean
 		id="tilesConfigurer"
-		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer"
-	>
+		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
 		<beans:property
 			name="definitions"
 			value="/WEB-INF/tiles/tiles-templates.xml" />
@@ -71,22 +59,25 @@
 
 	<beans:bean
 		id="viewResolver"
-		class="org.springframework.web.servlet.view.tiles3.TilesViewResolver"
-	>
+		class="org.springframework.web.servlet.view.tiles3.TilesViewResolver">
 		<beans:property
 			name="viewClass"
 			value="org.springframework.web.servlet.view.tiles3.TilesView" />
 		<beans:property name="attributes">
 			<beans:props>
 				<beans:prop key="staticFiles">${static.host.files}</beans:prop>
+				<beans:prop key="staticImages">${static.host.images}</beans:prop>
 			</beans:props>
 		</beans:property>
 	</beans:bean>
+
 	<beans:bean
 		class="org.springframework.web.multipart.support.StandardServletMultipartResolver"
 		id="multipartResolver" />
+
 	<security:global-method-security
 		pre-post-annotations="enabled" />
+
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />

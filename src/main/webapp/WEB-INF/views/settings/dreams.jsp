@@ -27,8 +27,10 @@
     <table>
         <tr>
             <td style="padding:30px">
-                <div id="preview" style="overflow:hidden;background-color:#acb5e9;padding-top:23px;position:absolute;height:150px;width:150px;text-align: center">
-                    Загрузить изображение<span class="fa fa-photo" style="font-size: 50px"></span>
+                <div id="preview" style="text-align: center;position:absolute;width:150px">
+                    <div style="overflow:hidden;background-color:#acb5e9;padding-top:23px;height:150px;">
+                        Загрузить изображение<span class="fa fa-photo" style="font-size: 50px"></span>
+                    </div>
                 </div>
                 <form:input path="photo" id="choosePhoto" type="file" style="opacity:0;height:150px;width:150px"/>
             </td>
@@ -51,33 +53,33 @@
         setPhoto($(e).find("img")[0]);
     };
 
-    var setPhoto = function(img) {
+    var setPhoto = function (img) {
         var width = 0;
         var height = 0;
         var r = 0;
 
         if (img.naturalWidth > 150) {
-            r = img.naturalWidth/img.naturalHeight;
+            r = img.naturalWidth / img.naturalHeight;
             width = 150;
-            height = width * r;
+            height = width / r;
         }
 
         if (height > 150) {
-            r = img.naturalHeight/img.naturalWidth;
+            r = img.naturalHeight / img.naturalWidth;
             height = 150;
-            width = height * r;
+            width = height / r;
         }
-        var oc = document.createElement('canvas');
-        var canvas = oc.getContext('2d');
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
         canvas.width = width;
         canvas.height = height;
-        canvas.drawImage(img, 0, 0, height,width);
-
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         var previewImage = new Image();
-        previewImage.src = oc.toDataURL();
-        previewImage.style.marginTop = "-23px";
-
-        $("#preview").html(previewImage);
+        previewImage.src = canvas.toDataURL();
+        var preview = $('#preview');
+        preview.find("img").remove();
+        preview.find("div").css("display", "none");
+        preview.prepend(previewImage);
     };
 
     $("#choosePhoto").change(function () {
@@ -93,10 +95,24 @@
 </script>
 
 <c:forEach items="${dreams}" var="dream">
-    <div dream-id="${dream.id}" onclick="edit(this)">
-        <img crossOrigin="anonymous" style="width:100px;float:left" class="media-object" src="${staticFiles}/${dream.photo}.">
-        <span>${dream.text}</span>
-        <a class="std-button btn btn-default"
-           href="<c:url value="/settings/dreams/remove?dream=${dream.id}"/>">Удалить</a>
+    <div dream-id="${dream.id}" style="width:250px;margin: 10px;font-weight:normal;border: #acb5e9 1px dashed;padding:5px" onclick="edit(this)">
+        <div style="position:absolute; margin-left:130px;float: right"></div>
+        <div style="margin:auto;text-align:center;width:150px;height:150px;">
+            <c:choose>
+                <c:when test="${dream.photo != null && dream.photo != ''}">
+                    <img crossOrigin="anonymous" style="max-width:150px;max-height:150px;" class="media-object" src="${staticImages}/${dream.photo}">
+                </c:when>
+                <c:otherwise>
+                    <div style="overflow:hidden;background-color:#acb5e9;padding-top:50px;height:150px;">
+                        <span class="fa fa-photo" style="font-size: 50px"></span>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </div>
+        <div style="margin-top:20px">
+                ${dream.text}
+            <a class="std-button btn btn-default"
+               href="<c:url value="/settings/dreams/remove?dream=${dream.id}"/>">Удалить</a>
+        </div>
     </div>
 </c:forEach>
