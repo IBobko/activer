@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -432,6 +433,9 @@ public class SettingPageController {
         return "settings/dreams";
     }
 
+    @Value(value = "${static.host.upload}")
+    private String STATIC_HOST_UPLOAD;
+
     @RequestMapping(value = "/dreams/upload", method = RequestMethod.POST)
     public String dreamsUpload(@Valid DreamForm dreamForm, BindingResult bindingResult) throws IOException {
         if (!bindingResult.hasErrors()) {
@@ -442,6 +446,12 @@ public class SettingPageController {
                 for (DreamItem item : account.getDreamItems()) {
                     if (item.getId().equals(dreamForm.getId())) {
                         dreamItem = item;
+
+                        if (dreamForm.getPhoto() != null && !StringUtils.isEmpty(dreamItem.getPhoto())){
+                            final HttpClient httpclient = HttpClientBuilder.create().build();
+                            final HttpPost httppost = new HttpPost("http://192.168.1.65:18080/static/remove/file?filename="+dreamItem.getPhoto());
+                            httpclient.execute(httppost);
+                        }
                     }
                 }
             }
