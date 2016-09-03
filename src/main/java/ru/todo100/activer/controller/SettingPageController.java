@@ -39,6 +39,7 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -436,8 +437,16 @@ public class SettingPageController {
     @Value(value = "${static.host.upload}")
     private String STATIC_HOST_UPLOAD;
 
+
+    private void deletePhoto(String filename) throws IOException {
+        final HttpClient httpclient = HttpClientBuilder.create().build();
+        final HttpPost httppost = new HttpPost(STATIC_HOST_UPLOAD + "/static/remove/file?filename="+ URLEncoder.encode(filename, "UTF-8"));
+        httpclient.execute(httppost);
+    }
+
+
     @RequestMapping(value = "/dreams/upload", method = RequestMethod.POST)
-    public String dreamsUpload(@Valid DreamForm dreamForm, BindingResult bindingResult) throws IOException {
+    public String dreamsUpload(@Valid final DreamForm dreamForm, BindingResult bindingResult) throws IOException {
         if (!bindingResult.hasErrors()) {
             final AccountItem account = accountService.getCurrentAccount();
 
@@ -447,10 +456,11 @@ public class SettingPageController {
                     if (item.getId().equals(dreamForm.getId())) {
                         dreamItem = item;
 
-                        if (dreamForm.getPhoto() != null && !StringUtils.isEmpty(dreamItem.getPhoto())){
-                            final HttpClient httpclient = HttpClientBuilder.create().build();
-                            final HttpPost httppost = new HttpPost("http://192.168.1.65:18080/static/remove/file?filename="+dreamItem.getPhoto());
-                            httpclient.execute(httppost);
+                        //delete photo
+                        if (!StringUtils.isEmpty(dreamItem.getPhoto()) &&
+                                (dreamForm.getRemovePhoto() || (dreamForm.getPhoto() != null && !dreamForm.getPhoto().isEmpty()))) {
+                            deletePhoto(dreamItem.getPhoto());
+                            dreamItem.setPhoto(null);
                         }
                     }
                 }
@@ -467,7 +477,7 @@ public class SettingPageController {
                 final MultipartEntityBuilder builder = MultipartEntityBuilder.create();
                 final File file = new File(dreamForm.getPhoto().getName());
                 FileUtils.writeByteArrayToFile(file, dreamForm.getPhoto().getBytes());
-                final HttpPost httppost = new HttpPost("http://192.168.1.65:18080/static/upload");
+                final HttpPost httppost = new HttpPost(STATIC_HOST_UPLOAD + "/static/upload");
                 builder.addPart("image", new FileBody(file, ContentType.create(dreamForm.getPhoto().getContentType())));
                 httppost.setEntity(builder.build());
                 final HttpResponse response = httpclient.execute(httppost);
@@ -486,9 +496,20 @@ public class SettingPageController {
     }
 
     @RequestMapping(value = "/dreams/remove")
-    public String removeDream(final HttpServletRequest request) {
+    public String removeDream(final HttpServletRequest request) throws IOException {
         try {
             final Integer id = Integer.parseInt(request.getParameter("dream"));
+
+            final AccountItem account = accountService.getCurrentAccount();
+            for (DreamItem dream : account.getDreamItems()) {
+                if (Objects.equals(dream.getId(), id)) {
+                    if (!StringUtils.isEmpty(dream.getPhoto())) {
+                        deletePhoto(dream.getPhoto());
+                    }
+                    break;
+                }
+            }
+
             accountService.deleteDream(id);
             accountService.addSynchronizer(accountService.getCurrentAccount().getId(),"dreams",accountService.getCurrentAccount().getDreamItems());
         } catch (NumberFormatException ignored) {}

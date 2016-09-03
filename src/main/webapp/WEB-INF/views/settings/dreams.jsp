@@ -17,7 +17,7 @@
 <c:url value="/settings/dreams/upload" var="uploadUrl"/>
 <form:form modelAttribute="dreamForm" action="${uploadUrl}" enctype="multipart/form-data">
     <form:input path="id" type="hidden"/>
-    <input type="hidden" name="removePhoto" value="false"/>
+    <form:input type="hidden" path="removePhoto" value="false"/>
     <table>
         <tr>
             <td style="padding:30px">
@@ -47,6 +47,9 @@
     var edit = function (e) {
         $('#text').text($(e).find('.dream-description').text());
         $('#id').val($(e).attr('dream-id'));
+        var choosePhoto = $("#choosePhoto");
+        choosePhoto.replaceWith(choosePhoto.clone());
+        initialChangePhoto();
         setPhoto($(e).find("img")[0]);
     };
 
@@ -78,6 +81,7 @@
             previewImage.src = canvas.toDataURL();
             preview.find(".noImage").css("display", "none");
             preview.find(".removing").css("display", "block");
+            $('[name="removePhoto"]').val(false);
             preview.append(previewImage);
         } else {
             preview.find("div").css("display", "block");
@@ -93,19 +97,23 @@
         $('[name="removePhoto"]').val(true);
         var choosePhoto = $("#choosePhoto");
         choosePhoto.replaceWith(choosePhoto.clone());
+        initialChangePhoto();
     });
 
-    $("#choosePhoto").change(function () {
-
-        var fileData = $(this).prop('files')[0];
-        var reader = new FileReader();
-        reader.onload = function (frEvent) {
-            var img = new Image();
-            img.src = frEvent.target.result;
-            setPhoto(img);
-        };
-        reader.readAsDataURL(fileData);
-    });
+    function initialChangePhoto() {
+        $("#choosePhoto").change(function () {
+            $('[name="removePhoto"]').val(false);
+            var fileData = $(this).prop('files')[0];
+            var reader = new FileReader();
+            reader.onload = function (frEvent) {
+                var img = new Image();
+                img.src = frEvent.target.result;
+                setPhoto(img);
+            };
+            reader.readAsDataURL(fileData);
+        });
+    }
+    initialChangePhoto();
 </script>
 
 <c:forEach items="${dreams}" var="dream">

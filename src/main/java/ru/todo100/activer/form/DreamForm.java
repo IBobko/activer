@@ -9,6 +9,15 @@ public class DreamForm {
     private Integer id;
     private MultipartFile photo;
     private String text;
+    private Boolean removePhoto;
+
+    public Boolean getRemovePhoto() {
+        return removePhoto;
+    }
+
+    public void setRemovePhoto(Boolean removePhoto) {
+        this.removePhoto = removePhoto;
+    }
 
     public Integer getId() {
         return id;
