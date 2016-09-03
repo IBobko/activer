@@ -295,7 +295,7 @@
 <!-- Dreams -->
 <div class="container-fluid dreams">
     <div class="row">
-        <p class="status-line">Мои мечты - ${profile.dreams.size()} <a onclick="document.location=this.href" class="pull-right" href="#">добавить</a></p>
+        <p class="status-line">Мои мечты - ${profile.dreams.size()} <a onclick="document.location=this.href" class="pull-right" href="<c:url value="/settings/dreams"/>">добавить</a></p>
     </div>
     <div class="row">
         <c:forEach items="${profile.dreams}" var="dream">

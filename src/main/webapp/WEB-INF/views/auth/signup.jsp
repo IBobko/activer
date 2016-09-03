@@ -95,7 +95,7 @@
 
     <table>
         <tr>
-            <td><img src="<c:url value="/resources/img/onoffline_desktop.png"/>"/></td>
+            <td><img src="<c:url value="/resources/img/meet.png"/>"/></td>
             <td style="padding-left:50px;">
                 <table>
                     <tr>
@@ -126,10 +126,10 @@
                 </table>
                 <div style="margin:20px 0">Приятный интерфейс, подарки и сюрпризы.</div>
             </td>
-            <td><img src="<c:url value="/resources/img/onoffline_desktop.png"/>"/></td>
+            <td><img src="<c:url value="/resources/img/gifts.png"/>"/></td>
         </tr>
         <tr>
-            <td><img src="<c:url value="/resources/img/onoffline_desktop.png"/>"/></td>
+            <td><img src="<c:url value="/resources/img/earn.png"/>"/></td>
             <td style="padding-left:50px;">
                 <table>
                     <tr>
@@ -160,10 +160,10 @@
                 </table>
                 <div style="margin:20px 0">Участие в ежегодных розыгрышах компании</div>
             </td>
-            <td><img src="<c:url value="/resources/img/onoffline_desktop.png"/>"/></td>
+            <td><img src="<c:url value="/resources/img/successful.png"/>"/></td>
         </tr>
         <tr>
-            <td><img src="<c:url value="/resources/img/onoffline_desktop.png"/>"/></td>
+            <td><img src="<c:url value="/resources/img/communication.png"/>"/></td>
             <td style="padding-left:50px;">
                 <table>
                     <tr>
