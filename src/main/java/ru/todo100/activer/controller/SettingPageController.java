@@ -27,7 +27,6 @@ import ru.todo100.activer.dao.PhotoDao;
 import ru.todo100.activer.data.*;
 import ru.todo100.activer.form.*;
 import ru.todo100.activer.model.*;
-import ru.todo100.activer.populators.DreamPopulator;
 import ru.todo100.activer.populators.InterestPopulator;
 import ru.todo100.activer.populators.TripPopulator;
 import ru.todo100.activer.service.NewsService;
@@ -35,6 +34,7 @@ import ru.todo100.activer.service.PhotoService;
 import ru.todo100.activer.util.ResizeImage;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
@@ -59,7 +59,6 @@ public class SettingPageController {
 
     private InterestPopulator interestPopulator;
     private TripPopulator tripPopulator;
-    private DreamPopulator dreamPopulator;
     @Autowired
     private NewsService newsService;
     private PhotoDao photoDao;
@@ -408,29 +407,13 @@ public class SettingPageController {
         return "redirect:/settings/trips";
     }
 
-    public DreamPopulator getDreamPopulator() {
-        return dreamPopulator;
-    }
-
-    @Autowired
-    public void setDreamPopulator(DreamPopulator dreamPopulator) {
-        this.dreamPopulator = dreamPopulator;
-    }
-
     @RequestMapping("/dreams")
-    public String dreams(Model model) {
+    public String dreams(final Model model, final HttpSession session) {
         model.addAttribute("pageType", "settings/info/dream");
         final DreamForm dreamForm = new DreamForm();
         model.addAttribute("dreamForm", dreamForm);
-        final AccountItem account = accountService.getCurrentAccount();
-        final List<DreamData> dreams = new ArrayList<>();
-
-        for (DreamItem dreamItem : account.getDreamItems()) {
-            final DreamData dreamData = getDreamPopulator().populate(dreamItem);
-            dreams.add(dreamData);
-        }
-
-        model.addAttribute("dreams", dreams);
+        final ProfileData profileData = accountService.getCurrentProfileData(session);
+        model.addAttribute("dreams", profileData.getDreams());
         return "settings/dreams";
     }
 
@@ -443,7 +426,6 @@ public class SettingPageController {
         final HttpPost httppost = new HttpPost(STATIC_HOST_UPLOAD + "/static/remove/file?filename="+ URLEncoder.encode(filename, "UTF-8"));
         httpclient.execute(httppost);
     }
-
 
     @RequestMapping(value = "/dreams/upload", method = RequestMethod.POST)
     public String dreamsUpload(@Valid final DreamForm dreamForm, BindingResult bindingResult) throws IOException {
@@ -484,7 +466,6 @@ public class SettingPageController {
                 final StringWriter writer = new StringWriter();
                 IOUtils.copy(response.getEntity().getContent(), writer, "UTF-8");
                 final String theString = writer.toString();
-                System.out.println(theString);
                 dreamItem.setPhoto(theString);
             }
             final Set<DreamItem> dreams = account.getDreamItems();

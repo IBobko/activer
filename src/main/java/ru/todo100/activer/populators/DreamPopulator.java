@@ -10,11 +10,9 @@ public class DreamPopulator implements Populator<DreamItem,DreamData> {
     @Override
     public DreamData populate(final DreamItem dreamItem) {
         final DreamData dreamData = new DreamData();
-        if (dreamItem.getPhoto()!=null) {
-            dreamData.setPhoto(dreamItem.getPhoto().trim());
-        }
-        dreamData.setText(dreamItem.getName());
         dreamData.setId(dreamItem.getId());
+        dreamData.setPhoto(dreamItem.getPhoto());
+        dreamData.setText(dreamItem.getName());
         return dreamData;
     }
 }
