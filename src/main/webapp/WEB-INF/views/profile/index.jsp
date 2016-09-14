@@ -1,4 +1,4 @@
-<%--suppress ALL --%>
+﻿<%--suppress ALL --%>
 <%--@elvariable id="staticImages" type="java.lang.String"--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -11,10 +11,10 @@
 <div class="container-fluid info-panel">
     <div class="row">
         <ul class="nav nav-pills">
-            <li><a href="<c:url value="/gifts/id${profile.id}"/>">${profile.gifts.size()} подарков</a></li>
-            <li><a href="<c:url value="/friend/list/id${profile.id}"/>">${friends.friends.size()} друга</a></li>
-            <li><a href="<c:url value="/photos/?accountId=${profile.id}"/>">${photos.size()} фото</a></li>
-            <li><a href="#interests">${profile.interests.size()} интересов</a></li>
+            <li><a class="text-color-dark" href="<c:url value="/gifts/id${profile.id}"/>">${profile.gifts.size()} подарков</a></li>
+            <li><a class="text-color-dark" href="<c:url value="/friend/list/id${profile.id}"/>">${friends.friends.size()} друга</a></li>
+            <li><a class="text-color-dark" href="<c:url value="/photos/?accountId=${profile.id}"/>">${photos.size()} фото</a></li>
+            <li><a class="text-color-dark" href="#interests">${profile.interests.size()} интересов</a></li>
         </ul>
     </div>
 </div>
@@ -308,7 +308,7 @@
                         </a>
                     </div>
                     <div class="media-body media-middle hidden-sm hidden-xs">
-                        <a href="#">${dream.text}</a>
+                        <a class="text-color-dark" href="#">${dream.text}</a>
                     </div>
                 </div>
             </div>
