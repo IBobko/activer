@@ -30,10 +30,10 @@
 </ul>
 
 <ul id="albums">
-    <c:forEach items="${videos}" var="video">
+    <c:forEach items="${profile.videos}" var="video">
         <li><a href="<c:url value="/videos/remove/?id=${video.id}"/>">Удалить</a><br/>
-        ${video.body}<br/>
-            ${video.description}
+                ${video.body}<br/>
+                ${video.description}
             <hr/>
         </li>
     </c:forEach>

@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.VideoDao;
-import ru.todo100.activer.data.VideoData;
+import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.form.VideoForm;
+import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.VideoItem;
-import ru.todo100.activer.populators.VideoPopulator;
+import ru.todo100.activer.populators.ProfilePopulator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,26 +28,44 @@ import java.util.regex.Pattern;
 @RequestMapping("/videos")
 public class VideosPageController {
     private static final Pattern YOUTUBE_LINK = Pattern.compile("^https://www.youtube.com/watch\\?v=(.+)$");
-    private VideoPopulator videoPopulator;
-    @Autowired
     private AccountDao accountService;
-    @Autowired
     private VideoDao videoDao;
+    private ProfilePopulator profilePopulator;
 
-    public VideoPopulator getVideoPopulator() {
-        return videoPopulator;
+    public AccountDao getAccountService() {
+        return accountService;
     }
 
     @Autowired
-    public void setVideoPopulator(VideoPopulator videoPopulator) {
-        this.videoPopulator = videoPopulator;
+    public void setAccountService(AccountDao accountService) {
+        this.accountService = accountService;
+    }
+
+
+    public VideoDao getVideoDao() {
+        return videoDao;
+    }
+
+    @Autowired
+    public void setVideoDao(VideoDao videoDao) {
+        this.videoDao = videoDao;
+    }
+
+    public ProfilePopulator getProfilePopulator() {
+
+        return profilePopulator;
+    }
+
+    @Autowired
+    public void setProfilePopulator(ProfilePopulator profilePopulator) {
+        this.profilePopulator = profilePopulator;
     }
 
     @RequestMapping
     public String index(final Model model, @RequestParam(required = false, defaultValue = "") String accountId, HttpSession session) {
         final Integer accountIdInt;
         if (accountId.isEmpty()) {
-            accountIdInt = accountService.getCurrentProfileData(session).getId();
+            accountIdInt = getAccountService().getCurrentProfileData(session).getId();
             return "redirect:/videos?accountId=" + accountIdInt;
         } else {
             try {
@@ -58,11 +76,13 @@ public class VideosPageController {
             }
         }
         model.addAttribute("pageType", "videos");
-        final List<VideoData> videoDatas = new ArrayList<>();
-        for (final VideoItem videoItem : videoDao.getVideosByAccount(accountIdInt)) {
-            videoDatas.add(getVideoPopulator().populate(videoItem));
+        if (getAccountService().getCurrentProfileData(session).getId().equals(accountIdInt)) {
+            model.addAttribute("profile", getAccountService().getCurrentProfileData(session));
+        } else {
+            AccountItem accountItem = getAccountService().get(accountIdInt);
+            ProfileData profileData = getProfilePopulator().populate(accountItem);
+            model.addAttribute("profile", profileData);
         }
-        model.addAttribute("videos", videoDatas);
         return "videos/index";
     }
 
@@ -77,8 +97,8 @@ public class VideosPageController {
     public String remove(HttpServletRequest request) {
         videoDao.delete(Integer.valueOf(request.getParameter("id")));
 
-        Integer accountId = accountService.getCurrentAccount().getId();
-        List<VideoItem> videos = videoDao.getVideosByAccount(accountId);
+        Integer accountId = getAccountService().getCurrentAccount().getId();
+        List<VideoItem> videos = getVideoDao().getVideosByAccount(accountId);
         accountService.addSynchronizer(accountId, "videos", videos);
 
         return "redirect:/videos";
@@ -91,14 +111,14 @@ public class VideosPageController {
             String id = m.group(1);
             String iframe = "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/" + id + "\" frameborder=\"0\" allowfullscreen></iframe>";
             VideoItem videoItem = new VideoItem();
-            Integer accountId = accountService.getCurrentAccount().getId();
+            Integer accountId = getAccountService().getCurrentAccount().getId();
             videoItem.setAccountId(accountId);
             videoItem.setBody(iframe);
             videoItem.setDescription(videoForm.getDescription());
-            videoDao.save(videoItem);
+            getVideoDao().save(videoItem);
 
-            List<VideoItem> videos = videoDao.getVideosByAccount(accountId);
-            accountService.addSynchronizer(accountId, "videos", videos);
+            List<VideoItem> videos = getVideoDao().getVideosByAccount(accountId);
+            getAccountService().addSynchronizer(accountId, "videos", videos);
         }
         return "redirect:/videos";
     }
