@@ -26,7 +26,7 @@
 <a class="std-button btn btn-default" style="float:right" href="<c:url value="/videos/edit"/>"><span
         class="glyphicon glyphicon-plus"></span> Добавить видео</a>
 <ul style="margin-top:36px;" class="video_menu">
-    <li>Мои видеозаписи</li>
+    <li>Видеозаписи</li>
 </ul>
 
 <ul id="albums">

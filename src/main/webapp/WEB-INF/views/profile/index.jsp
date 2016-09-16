@@ -14,6 +14,7 @@
             <li><a class="text-color-dark" href="<c:url value="/gifts/id${profile.id}"/>">${profile.gifts.size()} подарков</a></li>
             <li><a class="text-color-dark" href="<c:url value="/friend/list/id${profile.id}"/>">${friends.friends.size()} друга</a></li>
             <li><a class="text-color-dark" href="<c:url value="/photos/?accountId=${profile.id}"/>">${photos.size()} фото</a></li>
+            <li><a class="text-color-dark" href="<c:url value="/videos/?accountId=${profile.id}"/>">${profile.videos.size()} видео</a></li>
             <li><a class="text-color-dark" href="#interests">${profile.interests.size()} интересов</a></li>
         </ul>
     </div>

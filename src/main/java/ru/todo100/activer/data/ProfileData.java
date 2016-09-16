@@ -15,6 +15,7 @@ public class ProfileData implements Serializable {
     private String birthDate;
     private String photo60x60;
     private List<ProfileData> friends;
+    private List<VideoData> videos;
     private EducationData education;
     private JobData job;
     private ChildrenData children;
@@ -37,6 +38,14 @@ public class ProfileData implements Serializable {
     private Integer zodiac;
     private Integer sex;
     private String theme;
+
+    public List<VideoData> getVideos() {
+        return videos;
+    }
+
+    public void setVideos(List<VideoData> videos) {
+        this.videos = videos;
+    }
 
     public String getTheme() {
         return theme;

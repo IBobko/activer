@@ -6,7 +6,6 @@ import ru.todo100.activer.data.*;
 import ru.todo100.activer.model.*;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -26,9 +25,9 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
     private TripPopulator tripPopulator;
     private DreamPopulator dreamPopulator;
 
+    private VideoPopulator videoPopulator;
     @Autowired
     private SettingDao settingService;
-
     @Autowired
     private AccountGiftDao accountGiftDao;
     @Autowired
@@ -47,6 +46,15 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
             age--;
         }
         return age;
+    }
+
+    public VideoPopulator getVideoPopulator() {
+        return videoPopulator;
+    }
+
+    @Autowired
+    public void setVideoPopulator(VideoPopulator videoPopulator) {
+        this.videoPopulator = videoPopulator;
     }
 
     public BalanceDao getBalanceDao() {
@@ -201,6 +209,13 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
             Calendar birthdate = accountItem.getBirthdate();
             profileData.setZodiac(zodiac(birthdate.get(Calendar.MONTH) + 1, birthdate.get(Calendar.DAY_OF_MONTH)));
         }
+
+        List<VideoData> videos = new ArrayList<>();
+        for (VideoItem videoItem : accountItem.getVideosItems()) {
+            videos.add(getVideoPopulator().populate(videoItem));
+        }
+        profileData.setVideos(videos);
+
 
         return profileData;
     }

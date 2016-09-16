@@ -101,7 +101,7 @@
 	<bean id="newsPopulator" class="ru.todo100.activer.populators.NewsPopulator"/>
 	<bean id="messageAccountDataPopulator" class="ru.todo100.activer.populators.MessageAccountDataPopulator"/>
 	<bean id="accountGiftDataPopulator" class="ru.todo100.activer.populators.AccountGiftDataPopulator"/>
-
+	<bean id="videoPopulator" class="ru.todo100.activer.populators.VideoPopulator"/>
 
 	<bean id="photoStrategy" class="ru.todo100.activer.strategy.PhotoStrategy">
 		<property name="pathToSave" value="/resources/photos"/>

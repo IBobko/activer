@@ -1,5 +1,6 @@
 <%--suppress XmlPathReference --%>
 <%--@elvariable id="friendsData" type="ru.todo100.activer.data.FriendsData"--%>
+<%--@elvariable id="currentProfileData" type="ru.todo100.activer.data.ProfileData"--%>
 
 <%@ tag language="java" trimDirectiveWhitespaces="true" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -94,7 +95,7 @@
             </a>
         </li>
         <li>
-            <a href="<c:url value="/videos/"/>">
+            <a href="<c:url value="/videos?accountId=${currentProfileData.id}"/>">
                 <span class="fa fa-play-circle"></span>
                 Видео
             </a>
@@ -136,7 +137,7 @@
             </a>
         </li>
         <li>
-            <a href="<c:url value="/videos/"/>">
+            <a href="<c:url value="/videos?accountId=${currentProfileData.id}"/>">
                 <span class="fa fa-play-circle"></span>
                 Видео
             </a>
@@ -177,7 +178,7 @@
             </a>
         </li>
         <li>
-            <a href="<c:url value="/videos/"/>">
+            <a href="<c:url value="/videos?accountId=${currentProfileData.id}"/>">
                 <span class="fa fa-play-circle"></span>
                 Видео
             </a>
@@ -218,7 +219,7 @@
             </a>
         </li>
         <li>
-            <a href="<c:url value="/videos/"/>">
+            <a href="<c:url value="/videos?accountId=${currentProfileData.id}"/>">
                 <span class="fa fa-play-circle"></span>
                 Видео
             </a>
@@ -257,8 +258,8 @@
                 Фотографии
             </a>
         </li>
-        <li class="active">
-            <a href="<c:url value="/videos/"/>">
+        <li>
+            <a href="<c:url value="/videos?accountId=${currentProfileData.id}"/>">
                 <span class="fa fa-play-circle"></span>
                 Видео
             </a>

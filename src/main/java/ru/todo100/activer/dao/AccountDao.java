@@ -79,6 +79,16 @@ public class AccountDao extends AbstractDao {
     private ChildrenPopulator childrenPopulator;
 
     private HashMap<Integer, List<ProfileValue>> synchronizers = new HashMap<>();
+    private VideoPopulator videoPopulator;
+
+    public VideoPopulator getVideoPopulator() {
+        return videoPopulator;
+    }
+
+    @Autowired
+    public void setVideoPopulator(VideoPopulator videoPopulator) {
+        this.videoPopulator = videoPopulator;
+    }
 
     public List<AccountItem> getAll() {
         return getCriteria().setMaxResults(10).list();
@@ -192,12 +202,20 @@ public class AccountDao extends AbstractDao {
                     profileData.setDreams(dreams);
                 }
 
+                if (value.getName().equals("videos")) {
+                    final List<VideoData> videos = new ArrayList<>();
+                    for (VideoItem item : (Set<VideoItem>) value.getValue()) {
+                        videos.add(getVideoPopulator().populate(item));
+                    }
+                    profileData.setVideos(videos);
+                }
+
                 if (value.getName().equals("firstName")) {
-                    profileData.setFirstName((String)value.getValue());
+                    profileData.setFirstName((String) value.getValue());
                 }
 
                 if (value.getName().equals("lastName")) {
-                    profileData.setLastName((String)value.getValue());
+                    profileData.setLastName((String) value.getValue());
                 }
 
                 if (value.getName().equals("sex")) {
@@ -205,7 +223,7 @@ public class AccountDao extends AbstractDao {
                 }
 
                 if (value.getName().equals("maritalStatus")) {
-                    profileData.setMaritalStatus((Integer)value.getValue());
+                    profileData.setMaritalStatus((Integer) value.getValue());
                 }
                 /*TODO find best solution.*/
                 if (value.getName().equals("birthdate")) {

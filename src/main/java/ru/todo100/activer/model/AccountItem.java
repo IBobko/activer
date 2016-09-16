@@ -34,7 +34,7 @@ public class AccountItem extends DateChanges implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")
     private Integer id;
 
-    @OneToOne(mappedBy="account")
+    @OneToOne(mappedBy = "account")
     private BalanceItem balance;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -88,6 +88,9 @@ public class AccountItem extends DateChanges implements Serializable {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     private Set<InterestItem> interestItems;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id")
+    private Set<VideoItem> videosItems;
     /*
     orphanRemoval = true
     It means that if you delete items from collection that item will be deleted from database.
@@ -104,6 +107,14 @@ public class AccountItem extends DateChanges implements Serializable {
     private Set<TripItem> tripItems;
     @Column(name = "account_last_activity")
     private Calendar lastActivity;
+
+    public Set<VideoItem> getVideosItems() {
+        return videosItems;
+    }
+
+    public void setVideosItems(Set<VideoItem> videosItems) {
+        this.videosItems = videosItems;
+    }
 
     public BalanceItem getBalance() {
         return balance;
