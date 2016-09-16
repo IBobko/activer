@@ -351,33 +351,35 @@
             <script type="text/javascript">
                 var m = new window.ACTIVER.Dialog.Messages('#wall-template',"<c:url value="/wall/publish"/>",function(result){
                     $('#profile-wall').prepend(result);
-                    jQuery(".yoxview").yoxview(
-                            {
+                    jQuery(".yoxview").yoxview( {
                                 backgroundColor: '#000000',
                                 backgroundOpacity: 0.8,
                                 lang: 'ru',
                             });
                 });
 
+                var renderImageForPublish = document.getElementById("renderImage");
                 var formData = new FormData();
                 $('#choosePhoto').change(function(){
-
-
                     var fileData = $('#choosePhoto').prop('files')[0];
                     formData.set('photo', fileData);
-
-                    var reader2 = new FileReader();
-                    reader2.onload = function(frEvent) {
-                        document.getElementById("renderImage").style.display = 'inline';
-                        document.getElementById("renderImage").src = frEvent.target.result;
+                    var reader = new FileReader();
+                    reader.onload = function(frEvent) {
+                        renderImageForPublish.style.display = 'inline';
+                        renderImageForPublish.src = frEvent.target.result;
                     };
-                    reader2.readAsDataURL(fileData);
+                    reader.readAsDataURL(fileData);
                 });
 
                 $('#wall').submit(function () {
+                    $wallText = $('#wall-text');
                     formData.set("id",${profile.id});
-                    formData.set("text",$('#wall-text').val());
+                    formData.set("text",$wallText.val());
                     m.submit(formData);
+                    // cleaning
+                    $wallText.val("");
+                    renderImageForPublish.style.display = 'none';
+                    formData = new FormData();
                     return false;
                 });
             </script>
@@ -431,7 +433,6 @@
                 for (var index in data.elements) {
                     $('#profile-wall').append(m.getHtmlPost(data.elements[index]));
                 }
-
                 loaded++;
             });
         }
