@@ -24,12 +24,15 @@ window.ACTIVER.Dialog = {
                     Path += "_";
                 }
                 Path += index;
-                if (data.hasOwnProperty(index) && typeof data[index] === "object") {
-                    r(data[index], Path, template);
-                } else {
-
-
-                    template.val = template.val.replace(new RegExp('#' + Path ,'g'), data[index]);
+                if (data.hasOwnProperty(index)) {
+                    if (typeof data[index] === "object" && data[index] != null) {
+                        r(data[index], Path, template);
+                    } else {
+                        if (data[index] == null) {
+                            data[index] = "";
+                        }
+                        template.val = template.val.replace(new RegExp('#' + Path, 'g'), data[index]);
+                    }
                 }
             }
         };
