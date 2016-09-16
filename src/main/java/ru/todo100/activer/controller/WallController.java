@@ -10,14 +10,12 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import ru.todo100.activer.dao.AccountDao;
@@ -27,7 +25,10 @@ import ru.todo100.activer.data.PagedData;
 import ru.todo100.activer.data.PhotoAvatarSizeData;
 import ru.todo100.activer.data.ReceiveWallData;
 import ru.todo100.activer.form.PagedForm;
-import ru.todo100.activer.model.*;
+import ru.todo100.activer.model.AccountItem;
+import ru.todo100.activer.model.WallAttachmentItem;
+import ru.todo100.activer.model.WallItem;
+import ru.todo100.activer.model.WallNewsItem;
 import ru.todo100.activer.populators.WallPopulator;
 import ru.todo100.activer.qualifier.WallQualifier;
 import ru.todo100.activer.service.NewsService;
@@ -45,13 +46,13 @@ import java.util.*;
 @Controller
 @RequestMapping("/wall")
 public class WallController {
-
-
     static private final Integer DOWNLOAD_OF = 10;
     private AccountDao accountService;
     private WallPopulator wallPopulator;
     private WallDao wallService;
     private NewsService newsService;
+    @Value(value = "${static.host.upload}")
+    private String STATIC_HOST_UPLOAD;
 
     public WallPopulator getWallPopulator() {
         return wallPopulator;
@@ -103,7 +104,7 @@ public class WallController {
 
             Set<WallAttachmentItem> attachments = new HashSet<>();
 
-            if (receiveWallData.getPhoto()!=null) {
+            if (receiveWallData.getPhoto() != null) {
                 PhotoAvatarSizeData photos = upload(receiveWallData.getPhoto());
                 WallAttachmentItem wallAttachmentItem = new WallAttachmentItem();
                 wallAttachmentItem.setWall(post);
@@ -132,7 +133,7 @@ public class WallController {
         FileUtils.writeByteArrayToFile(file, photo.getBytes());
 
 
-        final HttpPost httppost = new HttpPost("http://192.168.1.65:18080/static/upload");
+        final HttpPost httppost = new HttpPost(STATIC_HOST_UPLOAD + "/static/upload");
         builder.addPart("image", new FileBody(file, ContentType.create(photo.getContentType())));
         httppost.setEntity(builder.build());
         final HttpResponse response = httpclient.execute(httppost);
@@ -144,7 +145,7 @@ public class WallController {
 //        File middleFile = generateMiddlePath(file);
 //        final MultipartEntityBuilder builder2 = MultipartEntityBuilder.create();
 //        builder2.addPart("image", new FileBody(middleFile, ContentType.create(photo.getContentType())));
-//        final HttpPost httppost2 = new HttpPost("http://192.168.1.65:18080/static/upload");
+//        final HttpPost httppost2 = new HttpPost(STATIC_HOST_UPLOAD + "/static/upload");
 //        httppost2.setEntity(builder2.build());
 //        final HttpResponse response2 = httpclient.execute(httppost2);
 //        final StringWriter writer2 = new StringWriter();
@@ -185,7 +186,6 @@ public class WallController {
         } else {
             qualifier.setAccountId(getAccountService().getCurrentProfileData(session).getId());
         }
-
         qualifier.setStart(pagedForm.getPage() * DOWNLOAD_OF);
         qualifier.setCount(DOWNLOAD_OF);
         final List<MessageData> wall = new ArrayList<>();

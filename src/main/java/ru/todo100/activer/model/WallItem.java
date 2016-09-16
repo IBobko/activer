@@ -30,7 +30,7 @@ public class WallItem extends Item {
     @Column(name = "sender_id", nullable = false)
     private Integer sender;
 
-    @OneToMany(mappedBy = "wall",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "wall",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<WallAttachmentItem> attachments;
 
     @SuppressWarnings("unused")

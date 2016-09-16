@@ -12,6 +12,7 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -43,6 +44,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/photos")
 public class PhotosPageController {
+    @Value(value = "${static.host.upload}")
+    private String STATIC_HOST_UPLOAD;
 
     private PhotoAlbumDao photoAlbumDao;
     @Autowired
@@ -175,7 +178,7 @@ public class PhotosPageController {
         FileUtils.writeByteArrayToFile(file, photo.getBytes());
 
 
-        final HttpPost httppost = new HttpPost("http://192.168.1.65:18080/static/upload");
+        final HttpPost httppost = new HttpPost(STATIC_HOST_UPLOAD + "/static/upload");
         builder.addPart("image", new FileBody(file, ContentType.create(photo.getContentType())));
         httppost.setEntity(builder.build());
         final HttpResponse response = httpclient.execute(httppost);
@@ -187,7 +190,7 @@ public class PhotosPageController {
         File middleFile = generateMiddlePath(file);
         final MultipartEntityBuilder builder2 = MultipartEntityBuilder.create();
         builder2.addPart("image", new FileBody(middleFile, ContentType.create(photo.getContentType())));
-        final HttpPost httppost2 = new HttpPost("http://192.168.1.65:18080/static/upload");
+        final HttpPost httppost2 = new HttpPost(STATIC_HOST_UPLOAD + "/static/upload");
         httppost2.setEntity(builder2.build());
         final HttpResponse response2 = httpclient.execute(httppost2);
         final StringWriter writer2 = new StringWriter();

@@ -16,7 +16,7 @@
 	<!--<beans:bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration"/>-->
 
 	<!--<beans:bean class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">-->
-		<!--<beans:property name="hostName" value="192.168.1.65"/>-->
+		<!--<beans:property name="hostName" value=""/>-->
 		<!--<beans:property name="port" value="6379"/>-->
 	<!--</beans:bean>-->
 
