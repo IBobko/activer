@@ -32,7 +32,16 @@
 
     <!-- Custom CSS -->
 
+    <c:if test="${empty profile}">
+        <c:set var="profile" value="${currentProfileData}"/>
+    </c:if>
+
     <c:choose>
+        <c:when test="${profile.theme == 'kitty'}">
+            <link href="<c:url value="/resources/css/styles-hello_kitty.css"/>" rel="stylesheet">
+            <link href="<c:url value="/resources/css/sidebar-hello_kitty.css"/>" rel="stylesheet">
+        </c:when>
+
         <c:when test="${profile.theme == 'kitty'}">
             <link href="<c:url value="/resources/css/styles-hello_kitty.css"/>" rel="stylesheet">
             <link href="<c:url value="/resources/css/sidebar-hello_kitty.css"/>" rel="stylesheet">
