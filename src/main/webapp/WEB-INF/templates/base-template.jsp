@@ -31,8 +31,23 @@
           type='text/css'>
 
     <!-- Custom CSS -->
-    <link href="<c:url value="/resources/css/styles.css"/>" rel="stylesheet">
-    <link href="<c:url value="/resources/css/sidebar.css"/>" rel="stylesheet">
+
+    <c:choose>
+        <c:when test="${profile.theme == 'kitty'}">
+            <link href="<c:url value="/resources/css/styles-hello_kitty.css"/>" rel="stylesheet">
+            <link href="<c:url value="/resources/css/sidebar-hello_kitty.css"/>" rel="stylesheet">
+        </c:when>
+        <c:when test="${profile.theme == 'carbone'}">
+            <link href="<c:url value="/resources/css/styles-carbone.css"/>" rel="stylesheet">
+            <link href="<c:url value="/resources/css/sidebar-carbone.css"/>" rel="stylesheet">
+        </c:when>
+        <c:otherwise>
+            <link href="<c:url value="/resources/css/styles.css"/>" rel="stylesheet">
+            <link href="<c:url value="/resources/css/sidebar.css"/>" rel="stylesheet">
+        </c:otherwise>
+    </c:choose>
+
+
     <link href="<c:url value="/resources/font-awesome/css/font-awesome.min.css"/>" rel="stylesheet">
     <link href="<c:url value="/resources/css/bootstrap-datetimepicker.css"/>" rel="stylesheet">
 

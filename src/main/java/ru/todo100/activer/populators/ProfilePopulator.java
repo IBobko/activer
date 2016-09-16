@@ -192,6 +192,7 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
 
         profileData.setShowOnline(Boolean.valueOf(settingService.getAccountSetting(profileData.getId(), "showOnline")));
         profileData.setShowPremium(Boolean.valueOf(settingService.getAccountSetting(profileData.getId(), "showPremium")));
+        profileData.setTheme(settingService.getAccountSetting(profileData.getId(), "theme"));
         profileData.setReferCode(accountItem.getReferCode());
         profileData.setMaritalStatus(accountItem.getMaritalStatus());
 

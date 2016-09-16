@@ -36,6 +36,15 @@ public class ProfileData implements Serializable {
     private String status;
     private Integer zodiac;
     private Integer sex;
+    private String theme;
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
 
     public Integer getSex() {
         return sex;

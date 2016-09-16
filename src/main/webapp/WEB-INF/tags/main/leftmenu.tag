@@ -272,6 +272,7 @@
 <%--@elvariable id="SettingsInfoDreamMenu" type="java.lang.String"--%>
 <%--@elvariable id="SettingsSafetyMenu" type="java.lang.String"--%>
 <%--@elvariable id="SettingsPrivateMenu" type="java.lang.String"--%>
+<%--@elvariable id="SettingsThemeMenu" type="java.lang.String"--%>
 <c:if test="${mainPage == 'settings'}">
     <ul class="sidebar-nav">
         <li>
@@ -298,6 +299,12 @@
             <a href="<c:url value="/private"/>">
                 <span class="fa fa-photo"></span>
                 Приватность
+            </a>
+        </li>
+        <li ${SettingsThemeMenu}>
+            <a href="<c:url value="/themes"/>">
+                <span class="fa fa-photo"></span>
+                Тема профиля
             </a>
         </li>
     </ul>

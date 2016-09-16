@@ -209,13 +209,13 @@ public class AccountDao extends AbstractDao {
                 }
                 /*TODO find best solution.*/
                 if (value.getName().equals("birthdate")) {
-                    profileData.setBirthDate(Facade.FORMAT_DD_MM_yyyy.format(((Calendar)value.getValue()).getTime()));
-                    profileData.setZodiac(profilePopulator.zodiac(((Calendar)value.getValue()).get(Calendar.MONTH)+1,((Calendar)value.getValue()).get(Calendar.DAY_OF_MONTH)));
+                    profileData.setBirthDate(Facade.FORMAT_DD_MM_yyyy.format(((Calendar) value.getValue()).getTime()));
+                    profileData.setZodiac(profilePopulator.zodiac(((Calendar) value.getValue()).get(Calendar.MONTH) + 1, ((Calendar) value.getValue()).get(Calendar.DAY_OF_MONTH)));
                 }
 
 
                 if (value.getName().equals("education")) {
-                    profileData.setEducation(educationPopulator.populate((EducationItem)value.getValue()));
+                    profileData.setEducation(educationPopulator.populate((EducationItem) value.getValue()));
                 }
 
                 if (value.getName().equals("job")) {
@@ -224,12 +224,16 @@ public class AccountDao extends AbstractDao {
 
                 if (value.getName().equals("children")) {
                     List<ChildrenData> childrenDataList = new ArrayList<>();
-                    for (ChildrenItem children: (Set<ChildrenItem>) value.getValue()) {
+                    for (ChildrenItem children : (Set<ChildrenItem>) value.getValue()) {
                         childrenDataList.add(childrenPopulator.populate(children));
                     }
                     if (!childrenDataList.isEmpty()) {
                         profileData.setChildren(childrenDataList.get(0));
                     }
+                }
+
+                if (value.getName().equals("theme")) {
+                    profileData.setTheme(value.getValue().toString());
                 }
             }
             synchronizers.remove(profileData.getId());
