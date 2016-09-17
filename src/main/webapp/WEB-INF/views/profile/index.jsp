@@ -2,7 +2,6 @@
 <%--@elvariable id="staticImages" type="java.lang.String"--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="profile" tagdir="/WEB-INF/tags/profile" %>
 
 <link href="<c:url value="/resources/yoxview/yoxview.css"/>" rel="stylesheet"/>
