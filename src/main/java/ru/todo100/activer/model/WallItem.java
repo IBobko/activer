@@ -19,8 +19,7 @@ public class WallItem extends Item {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", nullable = false)
     private AccountItem account;
-    @NotNull
-    @Column(name = "text", nullable = false)
+    @Column(name = "text")
     private String text;
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)

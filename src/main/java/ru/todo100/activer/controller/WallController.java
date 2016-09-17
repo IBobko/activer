@@ -35,6 +35,7 @@ import ru.todo100.activer.service.NewsService;
 import ru.todo100.activer.util.ResizeImage;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -90,36 +91,32 @@ public class WallController {
         this.newsService = newsService;
     }
 
-    @RequestMapping("/publish")
     @ResponseBody
-    public MessageData publish(final ReceiveWallData receiveWallData, final BindingResult bindingResult) throws IOException {
+    @RequestMapping("/publish")
+    public MessageData publish(@Valid final ReceiveWallData receiveWallData, final BindingResult bindingResult) throws IOException {
         if (!bindingResult.hasErrors()) {
             final AccountItem account = getAccountService().get(receiveWallData.getId());
             final AccountItem currentAccount = getAccountService().getCurrentAccount();
-            WallItem post = new WallItem();
+            final WallItem post = new WallItem();
             post.setAccount(account);
             post.setText(receiveWallData.getText());
             post.setAddedDate(new GregorianCalendar());
             post.setSender(currentAccount.getId());
-
-            Set<WallAttachmentItem> attachments = new HashSet<>();
-
+            final Set<WallAttachmentItem> attachments = new HashSet<>();
             if (receiveWallData.getPhoto() != null) {
-                PhotoAvatarSizeData photos = upload(receiveWallData.getPhoto());
-                WallAttachmentItem wallAttachmentItem = new WallAttachmentItem();
+                final PhotoAvatarSizeData photos = upload(receiveWallData.getPhoto());
+                final WallAttachmentItem wallAttachmentItem = new WallAttachmentItem();
                 wallAttachmentItem.setWall(post);
                 wallAttachmentItem.setPhoto(photos.getPhotoOriginal());
                 attachments.add(wallAttachmentItem);
             }
             post.setAttachments(attachments);
-
             getWallService().save(post);
 
-            WallNewsItem wallNewsItem = new WallNewsItem();
+            final WallNewsItem wallNewsItem = new WallNewsItem();
             wallNewsItem.setWall(post);
             wallNewsItem.setAccountId(account.getId());
             wallNewsItem.setDate(new GregorianCalendar());
-
             getNewsService().addNews(wallNewsItem);
             return getWallPopulator().populate(post);
         }

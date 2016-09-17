@@ -1,11 +1,12 @@
 package ru.todo100.activer.data;
 
 import org.springframework.web.multipart.MultipartFile;
+import ru.todo100.activer.validators.WallPublish;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
-
+@WallPublish
 public class ReceiveWallData {
     private Integer id;
     private String text;

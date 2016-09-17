@@ -48,6 +48,7 @@ window.ACTIVER.Dialog = {
                 contentType: false,
                 processData: false
             }).done(function(data){
+                if (data === "") return;
                 var template = that.getHtmlPost(data);
                 callback(template);
             });
