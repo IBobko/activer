@@ -4,4 +4,4 @@
 <h3 class="title">Покупка Premium Аккаунта</h3>
 Цена покупки составляет: ${premiumPrice} <br/>
 Ваш баланс: ${currentProfileData.balance} <br/><br/>
-<a href="<c:url value="/premium/buy"/>" class="btn btn-default" >Купить Premium аккаунт</a>
+<a href="<c:url value="/premium/buy"/>" class="std-button btn btn-default" >Купить Premium аккаунт</a>
