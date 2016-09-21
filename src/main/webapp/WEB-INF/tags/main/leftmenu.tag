@@ -12,7 +12,6 @@
 
 <c:set var="countNotRead" value="<span ${displayCountNotRead} id='globalUnreadMessageBadge' class='badge'>${sessionScope.get('unreadMessages')}</span>"/>
 
-
 <c:if test="${pageType == 'auth'}">
     <ul class="sidebar-nav">
         <li class="active">
@@ -29,7 +28,6 @@
         </li>
     </ul>
 </c:if>
-
 
 <c:if test="${pageType == 'register'}">
     <ul class="sidebar-nav">
@@ -103,8 +101,6 @@
     </ul>
 </c:if>
 
-
-
 <c:if test="${pageType == 'friends'}">
     <ul class="sidebar-nav">
         <li>
@@ -145,7 +141,6 @@
     </ul>
 </c:if>
 
-
 <c:if test="${pageType == 'message'}">
     <ul class="sidebar-nav">
         <li>
@@ -185,7 +180,6 @@
         </li>
     </ul>
 </c:if>
-
 
 <c:if test="${pageType == 'photos'}">
     <ul class="sidebar-nav">
@@ -345,7 +339,8 @@
     </ul>
 </c:if>
 
-
-<!--<a href="<c:url value="/paypal"/>" style="color:orange">Купить аккаунт</a>-->
+<div style="text-align: center">
+    <a href="<c:url value="/premium"/>" style="color:orange">Купить аккаунт</a>
+</div>
 
 

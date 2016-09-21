@@ -173,7 +173,6 @@
 		<put-attribute name="content" value="/WEB-INF/views/balance/index.jsp"/>
 	</definition>
 
-
 	<!-- Photos -->
 
 	<definition name="photos/photo" extends="base-template">
@@ -195,4 +194,11 @@
 		<put-attribute name="content" value="/WEB-INF/views/photos/index.jsp"/>
 	</definition>
 
+	<definition name="premium/success" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/premium/success.jsp"/>
+	</definition>
+
+	<definition name="premium/index" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/premium/index.jsp"/>
+	</definition>
 </tiles-definitions> 

@@ -11,8 +11,6 @@ import ru.todo100.activer.model.DisputeMessageItem;
 import ru.todo100.activer.model.GiftItem;
 import ru.todo100.activer.model.HappenedDisputeItem;
 import ru.todo100.activer.service.BalanceService;
-
-import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.GregorianCalendar;
 
@@ -102,22 +100,17 @@ public class DisputeHandler extends AbstractMessageHandler {
             }
         }
 
-
-
         messageData.setFrom(generateAccountData(account));
         messageData.setDate(FORMAT_DD_MM_yyyy_HH_mm_ss.format(new GregorianCalendar().getTime()));
         messageData.setType(PopupMessageType.DISPUTE_MESSAGE);
         messageData.setMessage(messageText);
         messageData.setInterlocutor(happenedDisputeItem.getId());
-
         final DisputeMessageItem disputeMessageItem = new DisputeMessageItem();
         disputeMessageItem.setAccountId(account.getId());
         disputeMessageItem.setDisputeId(happenedDisputeItem.getId());
         disputeMessageItem.setMessage(message.getMessage());
         disputeMessageItem.setSentDate(new GregorianCalendar());
-
         getDisputeMessageDao().save(disputeMessageItem);
-
         getTemplate().convertAndSendToUser(opponent.getUsername(), "/global2", messageData);
         getTemplate().convertAndSendToUser(principal.getName(), "/global2", messageData);
 
