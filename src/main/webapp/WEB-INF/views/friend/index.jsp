@@ -1,14 +1,15 @@
+<%--@elvariable id="friendsActive" type="java.lang.String"--%>
+<%--@elvariable id="outActive" type="java.lang.String"--%>
+<%--@elvariable id="inActive" type="java.lang.String"--%>
+<%--@elvariable id="searchActive" type="java.lang.String"--%>
 <%--@elvariable id="friendData" type="ru.todo100.activer.data.FriendsData"--%>
 <%--@elvariable id="staticFiles" type="java.lang.String"--%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
 <style type="text/css">
     .manBlock {
         margin: 20px 0;
-        overflow: hidden;
-        float:left;
     }
 
     .searchBlock{
@@ -46,7 +47,6 @@
 
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="Friends" >
-
             <c:forEach items="${friendData.friends}" var="friend">
                 <div class="manBlock">
                     <img src="${staticFiles}/${friend.photo60x60}." width="80" style="float:left">
@@ -61,7 +61,6 @@
         <div role="tabpanel" class="tab-pane" id="outFriends" onclick="tabClick('out')">
             <c:forEach items="${friendData.outRequest}" var="friend">
                 <div class="manBlock">
-
                     <img src="${staticFiles}/${friend.photo60x60}." width="80" style="float:left">
                     <div style="margin: 0 100px">
                         <a href="<c:url value="/profile/id${friend.id}"/>">${friend.firstName}&nbsp;${friend.lastName}</a><br/>
@@ -75,13 +74,11 @@
         <div role="tabpanel" class="tab-pane" id="inFriends" onclick="tabClick('in')">
             <c:forEach items="${friendData.inRequest}" var="friend">
                 <div class="manBlock">
-
                     <img src="${staticFiles}/${friend.photo60x60}." width="80" style="float:left">
                     <div style="margin: 0 100px">
                         <a href="<c:url value="/profile/id${friend.id}"/>">${friend.firstName}&nbsp;${friend.lastName}</a><br/>
                         <span style="font-weight: normal">${friend.job.post} ${friend.job.work}</span><br/>
                         <a class="std-button btn btn-default" style="padding:5px 10px;margin-top:16px;" href="<c:url value="/message?dialog=${friend.id}"/>"><span class="fa fa-envelope"></span>Сообщение</a><br/>
-
                         <a style="font-weight: normal" href="<c:url value="/friend/delete/${friend.id}"/>">Отменить заявку</a><br/>
                     </div>
                 </div>
@@ -151,7 +148,6 @@
         </div>
     </div>
 </div>
-
 
 <script type="text/javascript">
     $('.nav-tabs a[href="#${listType}Friends"]').tab('show');
