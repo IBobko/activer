@@ -136,6 +136,7 @@ public class AccountDao extends AbstractDao {
 
             final AccountItem accountItem = get(auth.getName());
             accountItem.setLastActivity(new GregorianCalendar());
+            addSynchronizer(accountItem.getId(),"lastActivity",accountItem.getLastActivity());
             save(accountItem);
             return accountItem;
         }
@@ -252,6 +253,10 @@ public class AccountDao extends AbstractDao {
 
                 if (value.getName().equals("theme")) {
                     profileData.setTheme(value.getValue().toString());
+                }
+
+                if (value.getName().equals("lastActivity")) {
+                    profileData.setOnline(true);
                 }
             }
             synchronizers.remove(profileData.getId());

@@ -50,6 +50,11 @@ public class PremiumPageController {
         return "premium/index";
     }
 
+    @RequestMapping(value="/buy_topline", method = RequestMethod.GET)
+    public String buyTop() {
+        return "redirect:/premium";
+    }
+
     @RequestMapping(value = "/buy", method = RequestMethod.GET)
     public String buy() {
         final AccountItem accountItem = getAccountService().getCurrentAccount();
