@@ -16,18 +16,6 @@
         margin: 20px 0;
     }
 
-    button[type="submit"] {
-        font-size: 10px;
-        font-weight: bold;
-        color: #fff;
-        background-color: #2f40a0;
-        text-transform: uppercase;
-        border-radius: 30px;
-        border: none;
-        padding: 10px 15px;
-        margin: 0 10px;
-    }
-
     .advancedSearch{
         font-weight: normal;
     }
@@ -130,7 +118,7 @@
                             </td>
                         </tr>
                     </table>
-                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span>&nbsp;Искать</button>
+                    <button type="submit" class="std-button btn btn-default"><span class="glyphicon glyphicon-search"></span>&nbsp;Искать</button>
                 </div>
             </form:form>
             </div>

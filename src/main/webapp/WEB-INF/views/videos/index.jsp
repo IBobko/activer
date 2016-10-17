@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-
 <style type="text/css">
     .video_menu {
         margin: 0;
@@ -31,7 +30,7 @@
 
 <ul id="albums">
     <c:forEach items="${profile.videos}" var="video">
-        <li><a href="<c:url value="/videos/remove/?id=${video.id}"/>">Удалить</a><br/>
+        <li><c:if test="${profile.my}"><a href="<c:url value="/videos/remove/?id=${video.id}"/>">Удалить</a><br/></c:if>
                 ${video.body}<br/>
                 ${video.description}
             <hr/>

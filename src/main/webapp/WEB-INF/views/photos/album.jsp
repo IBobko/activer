@@ -52,13 +52,15 @@
 <script type="text/javascript" src="<c:url value="/resources/yoxview/yoxview-init.js"/>"></script>
 
 
-<a href="<c:url value="/photos"/>" class="std-button btn btn-default" style="float:left"><span
+<a href="<c:url value="/photos?accountId=${album.accountId}"/>" class="std-button btn btn-default" style="float:left"><span
         class="fa fa-arrow-left"></span>&nbsp;Назад</a>
 
-<div style="float:right">
-    <input type="file" id="addingPhoto" style="cursor:pointer;position:absolute;height:34px;opacity: 0;width:165px"/>
-    <a href="#" class="std-button btn btn-default"><span class="fa fa-pencil"></span>&nbsp;Добавить фото</a>
-</div>
+<c:if test="${currentProfileData.id == album.accountId}">
+    <div style="float:right">
+        <input type="file" id="addingPhoto" style="cursor:pointer;position:absolute;height:34px;opacity: 0;width:165px"/>
+        <a href="#" class="std-button btn btn-default"><span class="fa fa-pencil"></span>&nbsp;Добавить фото</a>
+    </div>
+</c:if>
 
 <script type="text/javascript">
     $('#addingPhoto').change(function (event) {
@@ -103,10 +105,10 @@
     <c:forEach items="${photos}" var="photo">
         <li>
             <a id="photo-${photo.id}" href="${staticImages}/${photo.path.trim()}"><img photo-id="${photo.id}"
-                                                                                          style="width:200px; height:130px"
-                                                                                          src="${staticImages}/${photo.middlePath}"
-                                                                                          alt="${photo.description}"
-                                                                                          title="${photo.description}"/></a>
+                                                                                       style="width:200px; height:130px"
+                                                                                       src="${staticImages}/${photo.middlePath}"
+                                                                                       alt="${photo.description}"
+                                                                                       title="${photo.description}"/></a>
         </li>
     </c:forEach>
 </ul>

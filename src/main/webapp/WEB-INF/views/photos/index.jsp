@@ -47,9 +47,10 @@
         width: 344px;
     }
 </style>
-
+<c:if test="${currentProfileData.id == accountId}">
 <a class="std-button btn btn-default" style="float:right" href="<c:url value="/photos/edit"/>"><span
         class="glyphicon glyphicon-plus"></span> Добавить альбом</a>
+    </c:if>
 <ul class="photo_menu">
     <li>Мои альбомы</li>
     <li>Все фотографии</li>

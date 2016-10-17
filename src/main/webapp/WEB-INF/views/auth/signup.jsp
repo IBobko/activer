@@ -1,25 +1,14 @@
 <%--suppress XmlDuplicatedId,CssUnusedSymbol --%>
+<%--@elvariable id="ie" type="ru.todo100.activer.util.InputError"--%>
+<%--@elvariable id="referAccount" type="ru.todo100.activer.model.AccountItem"--%>
 <%@ page language="java" trimDirectiveWhitespaces="true" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <style type="text/css">
-    button[type="submit"] {
-        font-size: 10px;
-        font-weight: bold;
-        color: #fff;
-        background-color: #2f40a0;
-        text-transform: uppercase;
-        border-radius: 30px;
-        border: none;
-        padding: 10px 15px;
-        letter-spacing: 3px;
-    }
-
     #page-content-wrapper{
         font-weight: normal;
     }
-
 </style>
 
 <h4 style="color: #3F51B5;font-weight:bold; text-align: center">Добро пожаловать</h4>
@@ -38,7 +27,7 @@
         <tr>
             <td style="width:100%">
                 <div style="width:350px;">
-                        <%--@elvariable id="ie" type="ru.todo100.activer.util.InputError"--%>
+
                     <c:if test="${ie != null}">
                         <div class="alert alert-danger">
                             <ul>
@@ -49,7 +38,7 @@
                             </ul>
                         </div>
                     </c:if>
-                        <%--@elvariable id="referAccount" type="ru.todo100.activer.model.AccountItem"--%>
+
                     <c:if test="${referAccount != null}">
                         Вы пришли сюда по ссылке ${referAccount}
                         <form:input path="refer" type="hidden"/>
@@ -80,7 +69,7 @@
                     </div>
                     <br/>
                             <div style="text-align: center">
-                                <form:button type="submit" class="btn btn-default"><span
+                                <form:button type="submit" class="std-button btn btn-default"><span
                                         class="glyphicon glyphicon-edit">&nbsp;</span>Зарегистрироваться
                                 </form:button>
                             </div>
@@ -181,7 +170,7 @@
 
     <div style="text-align: center; margin:30px;">Переверни мир, сделай шаг к мечте!
         <br/><br/>
-        <form:button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-edit">&nbsp;</span>Зарегистрироваться
+        <form:button type="submit" class="std-button btn btn-default"><span class="glyphicon glyphicon-edit">&nbsp;</span>Зарегистрироваться
         </form:button>
 
     </div>
