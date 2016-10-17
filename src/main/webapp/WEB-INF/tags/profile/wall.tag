@@ -1,13 +1,21 @@
-<%@ tag pageEncoding="utf-8" trimDirectiveWhitespaces="true" %>
-<%@ attribute name="post" required="true" type="ru.todo100.activer.data.MessageData" %>
+<%@ tag pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ attribute name="post" required="false" type="ru.todo100.activer.data.MessageData" %>
+<%@ taglib prefix="value" uri="/WEB-INF/tlds/DefaultValue.tld" %>
 
-<div style="overflow:hidden">
-    <div style="float:left;margin-right: 20px">
-        <img src="${post.sender.photo60x60}" style="border-radius: 4px"/>
-    </div>
-    <span style="font-size:10px">${post.date}</span>
-    <br/>
-    <strong>${post.sender.firstName}&nbsp;${post.sender.lastName}</strong>
-    <br/>
-    ${post.text}
+
+<value:default var="${post}" type="ru.todo100.activer.data.MessageData" varName="post"/>
+
+<div style="overflow:hidden;margin-bottom: 10px;" wall-id="${post.id}">
+    <p class="status-line" style="background-color: #f3f3f3">
+        <span style="float:right" class="wallRemove"><a href="javascript:deleteWallPost(${post.id})">Удалить</a></span>
+        ${post.from.firstName} ${post.from.lastName}<span> - ${post.date}</span>
+    </p>
+    <p>
+        <img style="float:left" src="${staticFiles}/${post.from.photo60x60}.">
+        <div style="margin-left:75px;">${post.message}</div>
+        <div style="margin-left:75px;" class="yoxview">
+            <a href="${staticFiles}/${post.attachmentFile}.jpg">${post.attachmentHtml}</a>
+        </div>
+    </p>
 </div>

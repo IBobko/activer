@@ -1,88 +1,88 @@
 package ru.todo100.activer.model;
 
-import java.util.Calendar;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Calendar;
+import java.util.Set;
 
 /**
  * @author Igor Bobko
  */
-@SuppressWarnings({"JpaDataSourceORMInspection", "unused"})
 @Entity
 @Table(name = "wall")
-public class WallItem extends Item
-{
-	@Id
-	@SequenceGenerator(name = "default_gen", sequenceName = "wall_seq", allocationSize = 1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "default_gen")
-	private Integer id;
+public class WallItem extends Item {
+    @Id
+    @SequenceGenerator(name = "default_gen", sequenceName = "wall_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")
+    private Integer id;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", nullable = false)
+    private AccountItem account;
+    @Column(name = "text")
+    private String text;
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "added_date", nullable = false)
+    private Calendar addedDate;
+    @NotNull
+    @Column(name = "sender_id", nullable = false)
+    private Integer sender;
 
-	public Integer getId()
-	{
-		return id;
-	}
+    @OneToMany(mappedBy = "wall",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<WallAttachmentItem> attachments;
 
-	public void setId(Integer id)
-	{
-		this.id = id;
-	}
-	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "account_id",nullable = false)
-	private AccountItem account;
+    @SuppressWarnings("unused")
+    @OneToMany(mappedBy = "wall",orphanRemoval = true)
+    /* It is needed only for deleting. When wall item going to be deleted then news too.*/
+    private Set<WallNewsItem> news;
 
-	@NotNull
-	@Column(name = "text",nullable = false)
-	private String   text;
+    public Integer getId() {
+        return id;
+    }
 
-	@NotNull
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "added_date",nullable = false)
-	private Calendar addedDate;
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@NotNull
-	@Column(name = "sender_id",nullable = false)
-	private Integer sender;
+    public Set<WallAttachmentItem> getAttachments() {
+        return attachments;
+    }
 
-	public Integer getSender()
-	{
-		return sender;
-	}
+    public void setAttachments(Set<WallAttachmentItem> attachments) {
+        this.attachments = attachments;
+    }
 
-	public void setSender(final Integer sender)
-	{
-		this.sender = sender;
-	}
+    public Integer getSender() {
+        return sender;
+    }
 
-	public Calendar getAddedDate()
-	{
-		return addedDate;
-	}
+    public void setSender(final Integer sender) {
+        this.sender = sender;
+    }
 
-	public void setAddedDate(final Calendar addedDate)
-	{
-		this.addedDate = addedDate;
-	}
+    public Calendar getAddedDate() {
+        return addedDate;
+    }
 
-	public AccountItem getAccount()
-	{
-		return account;
-	}
+    public void setAddedDate(final Calendar addedDate) {
+        this.addedDate = addedDate;
+    }
 
-	public void setAccount(final AccountItem account)
-	{
-		this.account = account;
-	}
+    public AccountItem getAccount() {
+        return account;
+    }
 
-	public String getText()
-	{
-		return text;
-	}
+    public void setAccount(final AccountItem account) {
+        this.account = account;
+    }
 
-	public void setText(final String text)
-	{
-		this.text = text;
-	}
+    public String getText() {
+        return text;
+    }
+
+    public void setText(final String text) {
+        this.text = text;
+    }
 
 }

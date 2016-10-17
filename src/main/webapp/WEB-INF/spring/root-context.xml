@@ -1,45 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--suppress SpringInjectionValueStyleInspection, SpringModelInspection -->
 <beans
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xmlns:tx="http://www.springframework.org/schema/tx"
 		xmlns:context="http://www.springframework.org/schema/context"
 		xmlns:mvc="http://www.springframework.org/schema/mvc"
-		xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns="http://www.springframework.org/schema/beans"
 		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
-		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd"
 >
-	<!-- If the Spring LTW infrastructure can find at least one 'META-INF/aop.xml' file,
-	then AspectJ weaving is on, else it is off. This is the default value.-->
-	<!--<context:load-time-weaver-->
-			<!--weaver-class="org.springframework.instrument.classloading.glassfish.GlassFishLoadTimeWeaver"-->
-			<!--aspectj-weaving="off"/>-->
-
 	<mvc:annotation-driven />
     <import resource="security-context.xml" />
 	<context:annotation-config />
-    <context:property-placeholder location="/WEB-INF/servlet.properties" />
-	<!-- Root Context: defines shared resources visible to all other web components -->
-	<bean
-		id="dataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-	>
-		<property name="driverClassName">
-			<value>oracle.jdbc.driver.OracleDriver</value>
-		</property>
-		<property name="url">
-			<value>jdbc:oracle:thin:@192.168.1.65:1521:orcl</value>
-		</property>
-		<property name="username">
-			<value>C##activer</value>
-		</property>
-		<property name="password">
-			<value>3361243</value>
-		</property>
-	</bean>
 
+	<context:property-placeholder location="/WEB-INF/local.properties" ignore-unresolvable="true" />
+	<context:property-placeholder location="/WEB-INF/servlet.properties" />
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="url" value="${db.url}"/>
+		<property name="username" value="${db.username}"/>
+		<property name="password" value="${db.password}"/>
+	</bean>
 
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
@@ -50,6 +34,8 @@
 				<prop key="hibernate.max_fetch_depth">3</prop>
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+				<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+				<!--<prop key="hibernate.cache.use_second_level_cache">true</prop>-->
 			</props>
 		</property>
 	</bean>
@@ -61,97 +47,77 @@
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
 
 	<!-- Classes for work of db tables -->
+	<import resource="dao-context.xml" />
 
-	<bean
-		id="serviceAbstract"
-		class="ru.todo100.activer.dao.AbstractDao"
-		abstract="true" />
 
-	<bean
-		id="accountService"
-		class="ru.todo100.activer.dao.AccountDao"
-		parent="serviceAbstract" />
-	<bean
-		id="markService"
-		class="ru.todo100.activer.dao.MarkDao"
-		parent="serviceAbstract" />
-
-	<bean id="iCanService"
-		  class="ru.todo100.activer.dao.ICanDao"
-		  parent="serviceAbstract"/>
-
-	<bean id="iWantService"
-		  class="ru.todo100.activer.dao.IWantDao"
-		  parent="serviceAbstract"/>
-
-	<bean id="photoService" class="ru.todo100.activer.dao.PhotoDao" parent="serviceAbstract"/>
-
-	<bean id="messageService" class="ru.todo100.activer.dao.MessageDao" parent="serviceAbstract"/>
+	<bean id="partnerService" class="ru.todo100.activer.service.impl.PartnerServiceImpl"/>
+	<bean id="adminAccountService" class="ru.todo100.activer.service.impl.AdminAccountServiceImpl"/>
+	<bean id="friendsService" class="ru.todo100.activer.service.impl.FriendsServiceImpl"/>
+	<bean id="paymentService" class="ru.todo100.activer.service.impl.PaymentServiceImpl"/>
+	<bean id="giftService" class="ru.todo100.activer.service.impl.GiftServiceImpl"/>
+	<bean id="disputeService" class="ru.todo100.activer.service.impl.DisputeServiceImpl"/>
+	<bean id="promocodeService" class="ru.todo100.activer.service.impl.PromoServiceImpl"/>
 
 	<!-- end classes -->
 
-	<bean id="addingStandartItemsFilter" class="ru.todo100.activer.filter.AddingStandartItemsFilter" />
-
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.yandex.ru" />
-		<property name="username" value="support@3dplenty.com" />
-		<property name="password" value="3dplenty" />
+		<property name="username" value="support@onoffline.ru" />
+		<property name="password" value="123456" />
 		<property name="javaMailProperties">
 			<props>
 				<prop key="mail.smtp.ssl.enable">true</prop>
-				<prop key="mail.smtp.from">support@3dplenty.com</prop>
+				<prop key="mail.smtp.from">support@onoffline.ru</prop>
 			</props>
 		</property>
 	</bean>
 
-	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
-		<property name="velocityProperties">
-			<props>
-				<prop key="resource.loader">file</prop>
-				<prop key="file.resource.loader.class">org.apache.velocity.runtime.resource.loader.FileResourceLoader
-				</prop>
-				<prop key="file.resource.loader.path">/</prop>
-				<prop key="file.resource.loader.cache">false</prop>
-				<prop key="file.resource.loader.modificationCheckInterval">0</prop>
-			</props>
-		</property>
+	<bean id="freemarkerMailConfiguration"
+		  class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
+		<property name="templateLoaderPath" value="/WEB-INF/velocity/email/" />
 	</bean>
 
-	<bean id="mailBean" class="ru.todo100.activer.util.MailBean">
+	<bean id="mailService" class="ru.todo100.activer.util.MailService">
 		<property name="mailSender" ref="mailSender" />
-		<property name="velocityEngine" ref="velocityEngine" />
+		<property name="freemarkerMailConfiguration" ref="freemarkerMailConfiguration"/>
 	</bean>
 
 	<!-- Localization -->
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-		<property name="basename" value="classpath:messages" />
-		<property name="defaultEncoding" value="utf-8" />
+		<!--property name="basename" value="classpath*:WEB-INF.messages" /-->
+		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
 
-	<bean id="markPopulator" class="ru.todo100.activer.populators.MarkPopulator"/>
-	<bean id="iCanPopulator" class="ru.todo100.activer.populators.ICanPopulator"/>
-	<bean id="iWantPopulator" class="ru.todo100.activer.populators.IWantPopulator"/>
 
 	<bean id="wallPopulator" class="ru.todo100.activer.populators.WallPopulator"/>
-
+	<bean id="interestPopulator" class="ru.todo100.activer.populators.InterestPopulator"/>
 	<bean id="profilePopulator" class="ru.todo100.activer.populators.ProfilePopulator"/>
-
 	<bean id="messagePopulator" class="ru.todo100.activer.populators.ProfilePopulator"/>
-
-	<bean id="markRelationService" class="ru.todo100.activer.dao.MarkRelationDao"/>
-
-	<bean id="markFacade" class="ru.todo100.activer.facade.MarkFacade"/>
-
-	<bean id="wallService" class="ru.todo100.activer.dao.WallDao"/>
+	<bean id="tripPopulator" class="ru.todo100.activer.populators.TripPopulator"/>
+	<bean id="dreamPopulator" class="ru.todo100.activer.populators.DreamPopulator"/>
+	<bean id="educationPopulator" class="ru.todo100.activer.populators.EducationPopulator"/>
+	<bean id="jobPopulator" class="ru.todo100.activer.populators.JobPopulator"/>
+	<bean id="childrenPopulator" class="ru.todo100.activer.populators.ChildrenPopulator"/>
+	<bean id="newsPopulator" class="ru.todo100.activer.populators.NewsPopulator"/>
+	<bean id="messageAccountDataPopulator" class="ru.todo100.activer.populators.MessageAccountDataPopulator"/>
+	<bean id="accountGiftDataPopulator" class="ru.todo100.activer.populators.AccountGiftDataPopulator"/>
+	<bean id="videoPopulator" class="ru.todo100.activer.populators.VideoPopulator"/>
 
 	<bean id="photoStrategy" class="ru.todo100.activer.strategy.PhotoStrategy">
 		<property name="pathToSave" value="/resources/photos"/>
 	</bean>
 
+	<bean id="newsService" class="ru.todo100.activer.service.impl.NewsServiceImpl"/>
+
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
 		<property name="defaultLocale" value="en" />
 	</bean>
 
+	<bean id="referService" class="ru.todo100.activer.service.impl.ReferServiceImpl"/>
+	<bean id="payPalService" class="ru.todo100.activer.service.impl.PayPalServiceImpl"/>
+
+	<bean id="balanceService" class="ru.todo100.activer.service.impl.BalanceServiceImpl"/>
 	<!-- Facades -->
 	<import resource="facade-context.xml" />
+
 </beans>

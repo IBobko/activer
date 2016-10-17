@@ -1,87 +1,114 @@
 package ru.todo100.activer.data;
 
-import java.util.Calendar;
+import java.io.Serializable;
 
 /**
- * @author Igor Bobko
+ * @author Igor Bobko <limit-speed@yandex.ru>.
  */
-public class MessageData
-{
-	private Integer            id;
-	private Integer            accountFrom;
-	private Integer            accountTo;
-	private String             text;
-	private MessageAccountData sender;
-	private MessageAccountData accountDataTo;
-	private String           date;
+public class MessageData implements Serializable {
+    /**
+     * Идентификатор сообщения в системе
+     */
+    private Number id;
+    /**
+     * Тело сигнала
+     */
+    private String message;
+    /**
+     * От кого пришел сигнал
+     */
+    private MessageAccountData from;
+    /**
+     * Кому предназначается сигнал
+     */
+    private MessageAccountData to;
+    /**
+     * Дата сигнала
+     */
+    private String date;
+    /**
+     * Прочитан ли сигнал получателем
+     */
+    private Boolean read;
 
-	public String getDate()
-	{
-		return date;
-	}
+    private String attachmentFile;
 
-	public void setDate(final String date)
-	{
-		this.date = date;
-	}
+    public String getAttachmentHtml() {
+        return attachmentHtml;
+    }
 
-	public MessageAccountData getAccountDataTo()
-	{
-		return accountDataTo;
-	}
+    public void setAttachmentHtml(String attachmentHtml) {
+        this.attachmentHtml = attachmentHtml;
+    }
 
-	public void setAccountDataTo(final MessageAccountData accountDataTo)
-	{
-		this.accountDataTo = accountDataTo;
-	}
+    private String attachmentHtml;
+    /**
+     * Собеседник, противоположная сторона. Часто может совпадать либо с from.id, либо с to.id
+     * Также может содержать ID диалога
+     */
+    private Number interlocutor;
 
-	public MessageAccountData getSender()
-	{
-		return sender;
-	}
+    public String getAttachmentFile() {
+        return attachmentFile;
+    }
 
-	public void setSender(final MessageAccountData sender)
-	{
-		this.sender = sender;
-	}
+    public void setAttachmentFile(String attachmentFile) {
+        this.attachmentFile = attachmentFile;
+    }
 
-	public Integer getId()
-	{
-		return id;
-	}
+    public Boolean getRead() {
+        return read;
+    }
 
-	public void setId(final Integer id)
-	{
-		this.id = id;
-	}
+    public void setRead(Boolean read) {
+        this.read = read;
+    }
 
-	public Integer getAccountFrom()
-	{
-		return accountFrom;
-	}
+    public Number getInterlocutor() {
+        return interlocutor;
+    }
 
-	public void setAccountFrom(final Integer accountFrom)
-	{
-		this.accountFrom = accountFrom;
-	}
+    public void setInterlocutor(Number interlocutor) {
+        this.interlocutor = interlocutor;
+    }
 
-	public Integer getAccountTo()
-	{
-		return accountTo;
-	}
+    public String getDate() {
+        return date;
+    }
 
-	public void setAccountTo(final Integer accountTo)
-	{
-		this.accountTo = accountTo;
-	}
+    public void setDate(final String date) {
+        this.date = date;
+    }
 
-	public String getText()
-	{
-		return text;
-	}
+    public MessageAccountData getTo() {
+        return to;
+    }
 
-	public void setText(final String text)
-	{
-		this.text = text;
-	}
+    public void setTo(final MessageAccountData to) {
+        this.to = to;
+    }
+
+    public MessageAccountData getFrom() {
+        return from;
+    }
+
+    public void setFrom(final MessageAccountData from) {
+        this.from = from;
+    }
+
+    public Number getId() {
+        return id;
+    }
+
+    public void setId(final Number id) {
+        this.id = id;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(final String message) {
+        this.message = message;
+    }
 }

@@ -1,5 +1,5 @@
 -- Creating new user for oracle
-CREATE USER C##activer IDENTIFIED BY '3361243';
+CREATE USER C##activer IDENTIFIED BY 3361243;
 
 -- Give grants
 GRANT CREATE SEQUENCE TO C##activer;

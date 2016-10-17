@@ -1,85 +1,93 @@
 package ru.todo100.activer.model;
 
-import java.util.Calendar;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
- * @author Igor Bobko
+ * @author Igor Bobko <limit-speed@yandex.ru>.
  */
-@SuppressWarnings({"JpaDataSourceORMInspection", "unused"})
 @Entity
-@Table(name="photo")
-public class PhotoItem extends Item
-{
-	@Id
-	@SequenceGenerator(name = "default_gen", sequenceName = "photo_seq", allocationSize = 1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "default_gen")
-	private Integer id;
+@Table(name = "photo")
+public class PhotoItem extends Item {
+    @Id
+    @SequenceGenerator(name = "default_gen", sequenceName = "photo_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")
+    public Integer id;
 
-	public Integer getId()
-	{
-		return id;
-	}
+    @NotNull
+    @Column(name = "path", nullable = false)
+    private String path;
 
-	public void setId(Integer id)
-	{
-		this.id = id;
-	}
-	@NotNull
-	@Column(name = "account_id",nullable = false)
-	private Integer  account;
+    @NotNull
+    @Column(name = "small_path", nullable = false)
+    private String smallPath;
 
-	@NotNull
-	@Column(name = "path",nullable = false)
-	private String   path;
+    @NotNull
+    @Column(name = "middle_path", nullable = false)
+    private String middlePath;
 
-	@NotNull
-	@Column(name = "type",nullable = false)
-	private String   type;
+    @Column(name = "album_id")
+    private Integer albumId;
 
-	@NotNull
-	@Column(name = "added_date",nullable = false)
-	private Calendar addedDate;
+    @Column(name = "description")
+    private String description;
+    @NotNull
+    @Column(name = "account_id", nullable = false)
+    private Integer accountId;
 
-	public Integer getAccount()
-	{
-		return account;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setAccount(final Integer account)
-	{
-		this.account = account;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public String getPath()
-	{
-		return path;
-	}
+    public Integer getAccountId() {
+        return accountId;
+    }
 
-	public void setPath(final String path)
-	{
-		this.path = path;
-	}
+    public void setAccountId(Integer accountId) {
+        this.accountId = accountId;
+    }
 
-	public String getType()
-	{
-		return type;
-	}
+    public Integer getAlbumId() {
+        return albumId;
+    }
 
-	public void setType(final String type)
-	{
-		this.type = type;
-	}
+    public void setAlbumId(Integer albumId) {
+        this.albumId = albumId;
+    }
 
-	public Calendar getAddedDate()
-	{
-		return addedDate;
-	}
+    public String getMiddlePath() {
+        return middlePath;
+    }
 
-	public void setAddedDate(final Calendar addedDate)
-	{
-		this.addedDate = addedDate;
-	}
+    public void setMiddlePath(String middlePath) {
+        this.middlePath = middlePath;
+    }
+
+    public String getSmallPath() {
+        return smallPath;
+    }
+
+    public void setSmallPath(String smallPath) {
+        this.smallPath = smallPath;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }

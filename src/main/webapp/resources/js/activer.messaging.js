@@ -1,39 +1,70 @@
 if (window.ACTIVER == undefined) {
-  window.ACTIVER = {};
+    window.ACTIVER = {};
 }
 
 window.ACTIVER.Dialog = {
-  stompClient: null,
-  init: function() {
-    var that = this;
-    $('#messages').scrollTop($('#messages').height());
-    $("#dialogForm").submit(function () {
-      var text = this.querySelector("#text").value;
-      that.stompClient.send("/message1/" + window.ACTIVER.Data.profile.id, {}, JSON.stringify({'accountDataTo': window.ACTIVER.Data.browseProfile, 'text': text}));
-      document.getElementById('text').value = "";
-      return false;
-    });
-    this.connect();
-  },
-  connect: function() {
-    var that = this;
-    var socket = new SockJS(window.ACTIVER.context_path + '/message1/' + window.ACTIVER.Data.profile.id);
-    this.stompClient = Stomp.over(socket);
-    this.stompClient.connect({}, function (frame) {
-      console.log(frame);
-      that.stompClient.subscribe('/message2/' + window.ACTIVER.Data.profile.id, function (greeting) {
-        var message = JSON.parse(greeting.body);
-        if (message.text == null || message.text == undefined || message.text == ""){
-          return;
+
+    init: function () {
+
+    },
+
+    /**
+     * Used in case the use of the template, sending data, and reload the template.
+     *
+     * @param templateId It is a id of html tag.
+     * @param url URL for sending of data.
+     * @param callback Function is called by receiving data.
+     * @constructor
+     */
+    Messages: function (templateId, url, callback) {
+        this.r = function r(data, path, template) {
+            for (var index in data) {
+                var Path = path;
+                if (path != "") {
+                    Path += "_";
+                }
+                Path += index;
+                if (data.hasOwnProperty(index)) {
+                    if (typeof data[index] === "object" && data[index] != null) {
+                        r(data[index], Path, template);
+                    } else {
+                        if (data[index] == null) {
+                            data[index] = "";
+                        }
+                        template.val = template.val.replace(new RegExp('#' + Path, 'g'), data[index]);
+                    }
+                }
+            }
+        };
+        var that = this;
+
+        this.submit = function (data) {
+            var that = this;
+
+            $.ajax({
+                url: url,
+                data:data,
+                type: 'POST',
+                contentType: false,
+                processData: false
+            }).done(function(data){
+                if (data === "") return;
+                var template = that.getHtmlPost(data);
+                callback(template);
+            });
+        };
+
+        this.getHtmlPost = function (data) {
+            var template = {val: $(templateId).val()};
+            that.r(data, "", template);
+            return template.val;
         }
-        var template = $("#templatePost").html();
-        template = template.replace(/%date%/gi,message.date);
-        template = template.replace(/%firstName%/gi,message.sender.firstName);
-        template = template.replace(/%lastName%/gi,message.sender.lastName);
-        template = template.replace(/%text%/gi,message.text);
-        $('#messages').append(template);
-        $('#messages').scrollTop($('#messages').height());
-      });
-    });
-  }
+    },
+
+    Loader: function () {
+        this.end = false;
+        this.already_downloading = false;
+        this.loaded = 1;
+        this.lastScrollTop = 0;
+    }
 };

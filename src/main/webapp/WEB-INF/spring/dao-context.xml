@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.springframework.org/schema/beans"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+>
+
+    <bean id="accountService" class="ru.todo100.activer.dao.AccountDao"/>
+
+    <bean id="countryDao" class="ru.todo100.activer.dao.CountryDao"/>
+
+    <bean id="tripDao" class="ru.todo100.activer.dao.TripDao"/>
+
+    <bean id="videoDao" class="ru.todo100.activer.dao.VideoDao"/>
+
+    <bean id="photoAlbumDao" class="ru.todo100.activer.dao.PhotoAlbumDao"/>
+
+    <bean id="payPalAccountDao" class="ru.todo100.activer.dao.PayPalAccountDao"/>
+
+    <bean id="giftCategoryDao" class="ru.todo100.activer.dao.GiftCategoryDao"/>
+
+    <bean id="photosDao" class="ru.todo100.activer.dao.PhotosDao"/>
+
+    <bean id="wallService" class="ru.todo100.activer.dao.WallDao"/>
+
+    <bean id="settingService" class="ru.todo100.activer.dao.SettingDao"/>
+
+    <bean id="photoService1" class="ru.todo100.activer.service.impl.PhotoServiceImpl"/>
+
+    <bean id="friendDao" class="ru.todo100.activer.dao.FriendDao"/>
+
+    <bean id="disputeThemeDao" class="ru.todo100.activer.dao.DisputeThemeDao"/>
+
+    <bean id="networkListCacheIDao" class="ru.todo100.activer.dao.NetworkListCacheIDao"/>
+
+    <bean id="adminAccountListCacheDao" class="ru.todo100.activer.dao.AdminAccountListCacheDao"/>
+
+    <bean id="giftDao" class="ru.todo100.activer.dao.GiftDao"/>
+
+    <bean id="paymentDebitDaoDao" class="ru.todo100.activer.dao.PaymentDebitDao"/>
+
+    <bean id="paymentCreditDaoDao" class="ru.todo100.activer.dao.PaymentCreditDao"/>
+
+    <bean id="photoService" class="ru.todo100.activer.dao.PhotoDao"/>
+
+    <bean id="messageService" class="ru.todo100.activer.dao.MessageDao"/>
+
+    <bean id="accountGiftDao" class="ru.todo100.activer.dao.AccountGiftDao"/>
+
+    <bean id="newsDao" class="ru.todo100.activer.dao.NewsDao"/>
+
+    <bean id="happenedDisputeDao" class="ru.todo100.activer.dao.HappenedDisputeDao"/>
+
+    <bean id="disputeMessageDao" class="ru.todo100.activer.dao.DisputeMessageDao"/>
+
+    <bean id="happenedFlirtDao" class="ru.todo100.activer.dao.HappenedFlirtDao"/>
+
+    <bean id="flirtMessageDao" class="ru.todo100.activer.dao.FlirtMessageDao"/>
+
+    <bean id="balanceDao" class="ru.todo100.activer.dao.BalanceDao"/>
+
+</beans>

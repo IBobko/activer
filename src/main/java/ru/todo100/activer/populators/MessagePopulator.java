@@ -4,7 +4,8 @@ import ru.todo100.activer.data.MessageData;
 import ru.todo100.activer.model.MessageItem;
 
 /**
- * @author Igor Bobko
+ * todo Абсолютно не нужный класс на даннм этапе, но удалять жалко
+ * @author Igor Bobko <limit-speed@yandex.ru>.
  */
 public class MessagePopulator implements Populator<MessageItem,MessageData>
 {
@@ -12,9 +13,6 @@ public class MessagePopulator implements Populator<MessageItem,MessageData>
 	public MessageData populate(final MessageItem messageItem)
 	{
 		final MessageData messageData = new MessageData();
-		messageData.setAccountFrom(messageItem.getAccountFrom());
-		messageData.setAccountTo(messageItem.getAccountTo());
-		messageData.setText(messageItem.getText());
 		return messageData;
 	}
 }

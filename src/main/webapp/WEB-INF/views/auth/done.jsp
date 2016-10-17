@@ -1,6 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<h1>Sign up complete</h1>
+<%@ page language="java" trimDirectiveWhitespaces="true" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<h1>Регистрация завершена</h1>
 <hr/>
 <div class="alert alert-info">
-    Thank you for registration. Please, check your mail.
+    Спасибо за регистрацию. Проверьте свой E-mail.
 </div>

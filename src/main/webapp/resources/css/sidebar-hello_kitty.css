@@ -1,0 +1,151 @@
+#wrapper {
+    padding-left: 0;
+}
+
+#wrapper.toggled {
+    padding-left: 250px;
+}
+
+* {
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#page-content-wrapper * {
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    transition: none;
+}
+
+
+#sidebar-wrapper {
+    z-index: 1001;
+    position: fixed;
+    left: 250px;
+    width: 0;
+    height: 100%;
+    margin-left: -250px;
+    overflow-y: auto;
+    background: #000;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 250px;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    min-width: 515px;
+    position: absolute;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -250px;
+}
+
+/* Sidebar Styles */
+
+.toggled .sidebar-nav li a {
+    padding-left: 20px;
+}
+.toggled .sidebar-nav li span {
+    font-size: 22px;
+    margin-right: 20px;
+}
+
+.toggled .copyright {
+    margin-left: -250px;
+}
+
+.toggled .sidebar-nav .badge {
+    position: absolute;
+    left: 35px;
+    font-size: 8px;
+    min-width: 22px !important;
+    padding: 6px 5px !important;
+    top: -5px;
+}
+.toggled .premium {
+    margin-left: -250px !important;
+}
+
+.sidebar-nav li span {
+    vertical-align: middle;
+    color: white;
+    margin-right: 15px;
+}
+
+.sidebar-nav {
+    position: relative;
+    width: 250px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-transform: uppercase;
+}
+
+.sidebar-nav li a {
+    padding-left: 40px;
+    line-height: 40px;
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: white;
+    font-size: 12px;
+}
+
+.sidebar-nav li a:hover {
+    text-decoration: none;
+    color: white;
+    background: rgba(255,255,255,0.2);
+}
+
+.sidebar-nav  .active {
+    background-color: #e2eb47;
+}
+
+.sidebar-nav > .active a {
+    color: #333436;
+}
+
+.sidebar-nav > .active a:hover {
+    color: #333436;
+    background: none;
+}
+
+#wrapper {
+    padding-left: 250px;
+}
+
+#wrapper.toggled {
+    padding-left: 60px;
+}
+
+#sidebar-wrapper {
+    width: 250px;
+    min-height: 480px;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 60px;
+}
+
+#wrapper.toggled #sidebar-wrapper .my-navbar-brand {
+    margin-left: -200px;
+    overflow: hidden;
+}
+
+#page-content-wrapper {
+    position: relative;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: relative;
+    margin-right: 0;
+}
