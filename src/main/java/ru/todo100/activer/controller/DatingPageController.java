@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ru.todo100.activer.PopupMessageType;
 import ru.todo100.activer.dao.*;
 import ru.todo100.activer.data.*;
+import ru.todo100.activer.facade.TopLineFacade;
 import ru.todo100.activer.model.*;
 import ru.todo100.activer.service.PhotoService;
 
@@ -28,17 +29,34 @@ import java.util.Set;
 @Controller
 @RequestMapping("/dating")
 public class DatingPageController {
-    @Autowired
     private SimpMessagingTemplate template;
-
     private AccountDao accountDao;
     private HappenedDisputeDao happenedDisputeDao;
     @Autowired
     private PhotoService photoService1;
     @Autowired
     private DisputeThemeDao disputeThemeDao;
-
     private HappenedFlirtDao happenedFlirtDao;
+    private GiftDao giftDao;
+    private TopLineFacade topLineFacade;
+
+    public SimpMessagingTemplate getTemplate() {
+        return template;
+    }
+
+    @Autowired
+    public void setTemplate(SimpMessagingTemplate template) {
+        this.template = template;
+    }
+
+    public TopLineFacade getTopLineFacade() {
+        return topLineFacade;
+    }
+
+    @Autowired
+    public void setTopLineFacade(TopLineFacade topLineFacade) {
+        this.topLineFacade = topLineFacade;
+    }
 
     public GiftDao getGiftDao() {
         return giftDao;
@@ -48,9 +66,6 @@ public class DatingPageController {
     public void setGiftDao(GiftDao giftDao) {
         this.giftDao = giftDao;
     }
-
-
-    private GiftDao giftDao;
 
     public AccountDao getAccountDao() {
         return accountDao;
@@ -69,6 +84,7 @@ public class DatingPageController {
             model.addAttribute("dialog", dialog);
         } catch (NumberFormatException ignored) {
         }
+        model.addAttribute("topLines", getTopLineFacade().getTopLines());
         return "dating/index";
     }
 
@@ -100,7 +116,7 @@ public class DatingPageController {
             model.addAttribute("flirtData", flirtData);
 
             final PhotoAvatarSizeData photos = photoService1.getSizedPhoto(profileData.getId());
-            model.addAttribute("photo",photos.getPhotoAvatar());
+            model.addAttribute("photo", photos.getPhotoAvatar());
 
             model.addAttribute("profile", profileData);
 
@@ -119,7 +135,6 @@ public class DatingPageController {
         } else {
             opponent = accountDao.get(happenedFlirt.getAccountInitId());
         }
-
 
         final PhotoAvatarSizeData photos = photoService1.getSizedPhoto(opponent.getId());
         happenedFlirtData.setOpponentAvatar(photos.getPhotoAvatar());
@@ -145,7 +160,7 @@ public class DatingPageController {
         final HappenedDisputeData happenedDisputeData = new HappenedDisputeData();
         happenedDisputeData.setId(item.getId());
 
-        final DisputeThemeItem disputeThemeItem = (DisputeThemeItem)disputeThemeDao.get(item.getThemeId());
+        final DisputeThemeItem disputeThemeItem = (DisputeThemeItem) disputeThemeDao.get(item.getThemeId());
 
         happenedDisputeData.setThemeTitle(disputeThemeItem.getName());
         final AccountItem opponent;
@@ -159,7 +174,7 @@ public class DatingPageController {
         if (position == 0) {
             happenedDisputeData.setOpponentPosition(disputeThemeItem.getPosition1());
             happenedDisputeData.setYourPosition(disputeThemeItem.getPosition2());
-        } else{
+        } else {
             happenedDisputeData.setOpponentPosition(disputeThemeItem.getPosition2());
             happenedDisputeData.setYourPosition(disputeThemeItem.getPosition1());
 
@@ -207,8 +222,8 @@ public class DatingPageController {
 
 
             final PhotoAvatarSizeData photos = photoService1.getSizedPhoto(profileData.getId());
-            model.addAttribute("photo",photos.getPhotoAvatar());
-            model.addAttribute("profile",profileData);
+            model.addAttribute("photo", photos.getPhotoAvatar());
+            model.addAttribute("profile", profileData);
 
             model.addAttribute("gifts", getGiftDao().getAll());
             return "dating/dispute";
@@ -237,7 +252,7 @@ public class DatingPageController {
         from.setId(account.getId());
         messageData.setFrom(from);
         messageData.setInterlocutor(happenedDisputeItem.getId());
-        template.convertAndSendToUser(account.getUsername(), "/global2", messageData);
+        getTemplate().convertAndSendToUser(account.getUsername(), "/global2", messageData);
         response.getWriter().println(happenedDisputeItem.getId());
     }
 
@@ -259,7 +274,7 @@ public class DatingPageController {
         final PacketMessageData messageData = new PacketMessageData();
         messageData.setType(PopupMessageType.FLIRT);
         messageData.setInterlocutor(happenedFlirtItem.getId());
-        template.convertAndSendToUser(account.getUsername(), "/global2", messageData);
+        getTemplate().convertAndSendToUser(account.getUsername(), "/global2", messageData);
         response.getWriter().println(happenedFlirtItem.getId());
     }
 
@@ -269,11 +284,15 @@ public class DatingPageController {
     public void agree(@RequestParam Integer interlocutor, @RequestParam String agree, final HttpServletResponse response, final HttpServletRequest request) throws IOException {
         response.setContentType("application/json");
         final ProfileData profileData = getAccountDao().getCurrentProfileData(request.getSession());
-        final HappenedFlirtItem happenedFlirtItem = (HappenedFlirtItem)getHappenedFlirtDao().get(interlocutor);
+        final HappenedFlirtItem happenedFlirtItem = (HappenedFlirtItem) getHappenedFlirtDao().get(interlocutor);
         Integer agreed = null;
         switch (agree) {
-            case "yes" : agreed = 1; break;
-            case "no" : agreed = 0; break;
+            case "yes":
+                agreed = 1;
+                break;
+            case "no":
+                agreed = 0;
+                break;
         }
         if (agreed == null) return;
 
@@ -284,22 +303,22 @@ public class DatingPageController {
             happenedFlirtItem.setAgreeInit(agreed);
             if (agreed == 1) {
                 if (happenedFlirtItem.getAgreeApplied() == null) {
-                    result.put("action","wait");
+                    result.put("action", "wait");
                 } else if (happenedFlirtItem.getAgreeApplied().equals(1)) {
-                    result.put("action","ok");
-                    result.put("account_id",happenedFlirtItem.getAccountAppliedId());
+                    result.put("action", "ok");
+                    result.put("account_id", happenedFlirtItem.getAccountAppliedId());
 
                     final AccountItem accountItem = getAccountDao().get(happenedFlirtItem.getAccountAppliedId());
                     final PacketMessageData messageData = new PacketMessageData();
                     messageData.setType(PopupMessageType.FLIRT_AGREE);
                     messageData.setInterlocutor(happenedFlirtItem.getAccountAppliedId());
-                    template.convertAndSendToUser(accountItem.getUsername(), "/global2", messageData);
+                    getTemplate().convertAndSendToUser(accountItem.getUsername(), "/global2", messageData);
 
                 } else if (happenedFlirtItem.getAgreeApplied().equals(0)) {
-                    result.put("action","disagree");
+                    result.put("action", "disagree");
                 }
             } else {
-                result.put("action","done");
+                result.put("action", "done");
             }
 
         }
@@ -307,23 +326,23 @@ public class DatingPageController {
             happenedFlirtItem.setAgreeApplied(agreed);
             if (agreed == 1) {
                 if (happenedFlirtItem.getAgreeInit() == null) {
-                    result.put("action","wait");
+                    result.put("action", "wait");
                 } else if (happenedFlirtItem.getAgreeInit().equals(1)) {
-                    result.put("action","ok");
-                    result.put("account_id",happenedFlirtItem.getAccountInitId());
+                    result.put("action", "ok");
+                    result.put("account_id", happenedFlirtItem.getAccountInitId());
 
                     final AccountItem accountItem = getAccountDao().get(happenedFlirtItem.getAccountInitId());
                     final PacketMessageData messageData = new PacketMessageData();
                     messageData.setType(PopupMessageType.FLIRT_AGREE);
                     messageData.setInterlocutor(happenedFlirtItem.getAccountAppliedId());
-                    template.convertAndSendToUser(accountItem.getUsername(), "/global2", messageData);
+                    getTemplate().convertAndSendToUser(accountItem.getUsername(), "/global2", messageData);
 
 
                 } else if (happenedFlirtItem.getAgreeInit().equals(0)) {
-                    result.put("action","disagree");
+                    result.put("action", "disagree");
                 }
             } else {
-                result.put("action","done");
+                result.put("action", "done");
             }
         }
         getHappenedFlirtDao().save(happenedFlirtItem);

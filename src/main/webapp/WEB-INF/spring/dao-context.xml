@@ -59,4 +59,6 @@
 
     <bean id="balanceDao" class="ru.todo100.activer.dao.BalanceDao"/>
 
+    <bean id="topLineDao" class="ru.todo100.activer.dao.TopLineDao"/>
+
 </beans>

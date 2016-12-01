@@ -135,7 +135,7 @@
         });
     </script>
 </head>
-
+<body>
 <div id="wrapper" <c:if test="${sessionScope.containsKey('leftmenu')}">class="toggled"</c:if>>
     <!-- Sidebar -->
     <div id="sidebar-wrapper">

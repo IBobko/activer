@@ -10,21 +10,12 @@
         padding:10px;
     }
 
-    .trips ul{
-        list-style: none;
-
-    }
-
-    .trips ul li{
-        float:left;
+    .trips li{
         border-radius: 40px;
         background-color: #e4e7f7;
-        height:36px;
-        margin:10px;
-        padding:10px
+        height: 36px;
+        padding: 10px
     }
-
-
 </style>
 
 <h4 style="color:#337ab7;font-weight:bold">Добавить путешествия</h4>
@@ -71,7 +62,7 @@
 
 
 <div class="trips">
-    <ul>
+    <ul class="list-inline">
         <c:forEach items="${trips}" var="trip">
             <li><span onclick="document.location='<c:url value="/settings/trips/remove?trip=${trip.id}"/>';"><span class="glyphicon glyphicon-remove-circle"></span></span>&nbsp;<a href="#">${trip.country}'${trip.year}</a></li>
         </c:forEach>

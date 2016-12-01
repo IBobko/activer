@@ -5,4 +5,6 @@
 
        <bean id="profileFacade" class="ru.todo100.activer.facade.impl.ProfileFacadeImpl"/>
 
+       <bean id="topLineFacade" class="ru.todo100.activer.facade.impl.TopLineFacadeImpl"/>
+
 </beans>

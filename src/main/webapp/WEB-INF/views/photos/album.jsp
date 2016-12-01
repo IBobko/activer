@@ -16,15 +16,7 @@
         text-transform: uppercase;
         font-weight: bold;
         color: #3f51b3;
-        float: left;
-        list-style: none;
         margin: 0 50px 20px 0;
-    }
-
-    #photos li {
-        float: left;
-        margin: 10px;
-        list-style: none;
     }
 </style>
 
@@ -97,11 +89,11 @@
     });
 </script>
 
-<ul style="margin-top:36px;margin-left:130px" class="photo_menu">
+<ul style="margin-top:36px;margin-left:130px" class="photo_menu list-unstyled">
     <li>${album.name} (${photos.size()})</li>
 </ul>
 
-<ul id="photos" class="thumbnails yoxview">
+<ul id="photos" class="list-inline thumbnails yoxview">
     <c:forEach items="${photos}" var="photo">
         <li>
             <a id="photo-${photo.id}" href="${staticImages}/${photo.path.trim()}"><img photo-id="${photo.id}"

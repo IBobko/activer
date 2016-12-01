@@ -3,18 +3,6 @@
 <%@ taglib tagdir="/WEB-INF/tags/profile" prefix="profile" %>
 
 <style type="text/css">
-    .datingBlock button {
-        font-size: 10px !important;
-        font-weight: bold !important;
-        color: #fff !important;
-        background-color: #2f40a0 !important;
-        text-transform: uppercase;
-        border-radius: 30px !important;
-        border: none !important;
-        padding: 10px 15px !important;
-        margin: 10px 0 !important;
-    }
-
     .modal {
         font-weight: normal;
     }
@@ -39,14 +27,13 @@
     поэтому рекомендуем ознакомиться с описанием.
 </div>
 
-
 <div class="datingBlock">
     <img src="<c:url value="/resources/img/flirt.jpg"/>" style="float: left;margin: 0 30px"/>
     <h4 style="color: #3F51B5;font-weight:bold;">Флирт</h4>
     У вас есть 5 минут, чтобы познакомиться с собеседником и узнать его поближе.
     Проверьте свое обаяние на собеседнике.
-    <br/>
-    <button id="searchFlirt" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Выбрать</button>
+    <br/><br/>
+    <button id="searchFlirt" class="btn btn-default std-button"><span class="glyphicon glyphicon-ok"></span> Выбрать</button>
 
     <script type="text/javascript">
         $('#searchFlirt').click(function () {
@@ -63,8 +50,8 @@
     <h4 style="color: #3F51B5;font-weight:bold;">Споры</h4>
     В начале диалога мы даем вам тему и обозначаем вашу позицию относительно проблемы. У вас есть 7 минут, чтобы
     доказать собеседнику, что вы правы на все 100%.
-    <br/>
-    <button id="searchDispute" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Выбрать</button>
+    <br/><br/>
+    <button id="searchDispute" class="btn btn-default std-button"><span class="glyphicon glyphicon-ok"></span> Выбрать</button>
     <script type="text/javascript">
         $('#searchDispute').click(function () {
             $('#pleaseWaitingWindow').modal('show');
@@ -74,11 +61,24 @@
         });
     </script>
 </div>
-<%--<div class="datingBlock">--%>
-    <%--<img src="<c:url value="/resources/img/top.jpg"/>" style="float: left;margin: 0 30px"/>--%>
-    <%--<h4 style="color: #3F51B5;font-weight:bold;">TOP LINE</h4>--%>
-    <%--Хотите больше знакомтс и друзей? Просто нажмите на кнопку ниже и попадите в TOP LINE--%>
-    <%--<br/>--%>
-    <%--<button class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Выбрать</button>--%>
-<%--</div>--%>
+
+<div class="datingBlock">
+    <img src="<c:url value="/resources/img/top.jpg"/>" style="float: left;margin: 0 30px"/>
+    <h4 style="color: #3F51B5;font-weight:bold;">TOP LINE</h4>
+    Хотите больше знакомств и друзей? Просто нажмите на кнопку ниже и попадите в TOP LINE.
+    <br/><br/>
+    <a class="btn btn-default std-button" href="<c:url value="/top-line"/>"><span class="glyphicon glyphicon-ok"></span> Выбрать</a>
+</div>
+
+<ul class="list-inline">
+<c:forEach var="topLine" items="${topLines}">
+    <li>
+        <a href="<c:url value="/profile/id${topLine.account.id}"/>">
+
+            <img title="<c:out value="${topLine.message}"/>" style="width:100px;" src="${staticImages}/${topLine.account.photo60x60}"/>
+        </a>
+    </li>
+</c:forEach>
+</ul>
+
 
