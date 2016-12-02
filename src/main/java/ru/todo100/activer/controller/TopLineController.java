@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.TopLineDao;
 import ru.todo100.activer.service.BalanceService;
@@ -56,10 +55,13 @@ public class TopLineController {
     }
 
     @RequestMapping(value = "/buy")
-    public String buy(@RequestParam final String message) {
+    public String buy(@RequestParam String message) {
         final Integer account_id = getAccountService().getCurrentAccount().getId();
-        if (getBalanceService().subtractAccountBalanceSum(account_id,new BigDecimal(1),"Top")) {
-            getTopLineDao().addTopLine(account_id,message);
+        if (message.length() > 200) {
+            message = message.substring(0, 200);
+        }
+        if (getBalanceService().subtractAccountBalanceSum(account_id, new BigDecimal(1), "Top")) {
+            getTopLineDao().addTopLine(account_id, message);
         }
         return "redirect:/dating";
     }
