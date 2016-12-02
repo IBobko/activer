@@ -74,7 +74,6 @@
 <c:forEach var="topLine" items="${topLines}">
     <li>
         <a href="<c:url value="/profile/id${topLine.account.id}"/>">
-
             <img title="<c:out value="${topLine.message}"/>" style="width:100px;" src="${staticImages}/${topLine.account.photo60x60}"/>
         </a>
     </li>

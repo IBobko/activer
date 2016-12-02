@@ -64,7 +64,7 @@
         </td>
     </tr>
     <tr>
-        <td colspan="2" align="center" style="font-size: 16px"><strong>Стоимость:</strong> <span style="color:#2b669a">1 line / мес</span>&nbsp;&nbsp;&nbsp;<a href="<c:url value="/premium/buy_topline"/>" class="std-button btn btn-default" >Купить размещение</a></td>
+        <td colspan="2" align="center" style="font-size: 16px"><strong>Стоимость:</strong> <span style="color:#2b669a">1 line / мес</span>&nbsp;&nbsp;&nbsp;<a href="<c:url value="/top-line"/>" class="std-button btn btn-default" >Купить размещение</a></td>
     </tr>
 </table>
 

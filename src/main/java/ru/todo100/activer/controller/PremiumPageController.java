@@ -50,11 +50,6 @@ public class PremiumPageController {
         return "premium/index";
     }
 
-    @RequestMapping(value="/buy_topline", method = RequestMethod.GET)
-    public String buyTop() {
-        return "redirect:/premium";
-    }
-
     @RequestMapping(value = "/buy", method = RequestMethod.GET)
     public String buy() {
         final AccountItem accountItem = getAccountService().getCurrentAccount();
@@ -70,13 +65,13 @@ public class PremiumPageController {
             return "redirect:/";
         }
 
-        BigDecimal accountBalance = accountItem.getBalance().getSum();
+        final BigDecimal accountBalance = accountItem.getBalance().getSum();
 
         if (accountBalance.compareTo(PREMIUM_PRICE) == -1) {
             return "redirect:/";
         }
 
-        AuthorityItem item = new AuthorityItem();
+        final AuthorityItem item = new AuthorityItem();
         item.setRole(ROLE_FOR_BUYING);
         item.setAccount(accountItem);
         accountItem.getAuthorities().add(item);
