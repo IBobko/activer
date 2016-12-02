@@ -66,20 +66,40 @@ public class PartnerServiceImpl implements PartnerService {
         return new BigDecimal(7);
     }
 
-    public List<PartnerInfo> recursive(String referCode, Integer level) {
-        final List<AccountItem> accounts = referService.getByReferCode(referCode);
+
+    public Integer counterOfInvitedPeople(AccountItem inviting, Integer level) {
+        final List<AccountItem> accounts = referService.getByReferCode(inviting.getReferCode());
+        Integer invited = 0;
+        if (level != 6 && accounts.size() != 0) {
+            for (AccountItem account : accounts) {
+                invited += counterOfInvitedPeople(account,level+1);
+            }
+        }
+        return accounts.size() + invited;
+    }
+
+    public Integer countOfInvited(AccountItem accountItem) {
+        return referService.getByReferCode(accountItem.getReferCode()).size();
+    }
+
+
+    public List<PartnerInfo> recursive(AccountItem inviting, Integer level) {
+        final List<AccountItem> accounts = referService.getByReferCode(inviting.getReferCode());
         final List<PartnerInfo> result = new ArrayList<>();
         for (AccountItem account: accounts) {
             final PartnerInfo partnerInfo = new PartnerInfo();
             partnerInfo.setId(account.getId());
             partnerInfo.setLevel(level);
             partnerInfo.setEarned(new BigDecimal("1000"));
-            partnerInfo.setInvitedCount(90);
-            partnerInfo.setInviter("Igor Bobko");
+            partnerInfo.setInvitedCount(countOfInvited(account));
+            partnerInfo.setInviter(inviting.getLastName() + " " + inviting.getFirstName());
             partnerInfo.setName(account.getLastName() + " " + account.getFirstName());
-            partnerInfo.setNetworkCount(20);
+            partnerInfo.setNetworkCount(counterOfInvitedPeople(account,0));
             partnerInfo.setProfit(new BigDecimal("800"));
             partnerInfo.setReferCode(account.getReferCode());
+            partnerInfo.setAccountItem(account);
+            partnerInfo.setInviterLevel(level-1);
+
             result.add(partnerInfo);
         }
 
@@ -88,7 +108,7 @@ public class PartnerServiceImpl implements PartnerService {
 
         if (level != 6 && accounts.size() != 0) {
             for (PartnerInfo partner : result) {
-                final List<PartnerInfo> childrenPartners = recursive(partner.getReferCode(), level + 1);
+                final List<PartnerInfo> childrenPartners = recursive(partner.getAccountItem(), level + 1);
                 if (childrenPartners.size() != 0) {
                     total.addAll(childrenPartners);
                 }
@@ -102,7 +122,7 @@ public class PartnerServiceImpl implements PartnerService {
     @Transactional
     public void synchronize(Integer accountId) {
         final AccountItem current = accountService.get(accountId);
-        final List<PartnerInfo> accounts = recursive(current.getReferCode(),1);
+        final List<PartnerInfo> accounts = recursive(current,1);
 
         final Query query = getNetworkListCacheIDao().getSession().createQuery("delete from NetworkListCacheItem where ownerAccountId = :id");
         query.setInteger("id", accountId).executeUpdate();

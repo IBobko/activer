@@ -81,7 +81,7 @@ public class AdminAccountServiceImpl implements AdminAccountService {
             final AdminAccountListCacheItem adminAccountListCacheItem = new AdminAccountListCacheItem();
             adminAccountListCacheItem.setAccountItem(accountItem);
             adminAccountListCacheItem.setNetworkCount(getPartnerService().getNetworkCount(accountItem.getId()));
-            List<PartnerInfo> partners = getPartnerService().recursive(accountItem.getReferCode(), 6);
+            List<PartnerInfo> partners = getPartnerService().recursive(accountItem, 6);
             adminAccountListCacheItem.setNetworkCount(partners.size());
             AccountItem inviter = referService.getUserByRefer(accountItem.getUsedReferCode());
             if (inviter != null) {

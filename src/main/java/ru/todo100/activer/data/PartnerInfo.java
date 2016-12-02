@@ -1,5 +1,7 @@
 package ru.todo100.activer.data;
 
+import ru.todo100.activer.model.AccountItem;
+
 import java.math.BigDecimal;
 
 /**
@@ -16,6 +18,15 @@ public class PartnerInfo {
     private BigDecimal earned;
     private BigDecimal profit;
     private String referCode;
+    private AccountItem accountItem;
+
+    public AccountItem getAccountItem() {
+        return accountItem;
+    }
+
+    public void setAccountItem(AccountItem accountItem) {
+        this.accountItem = accountItem;
+    }
 
     public String getReferCode() {
         return referCode;
