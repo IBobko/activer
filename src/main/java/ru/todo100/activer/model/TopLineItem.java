@@ -10,7 +10,7 @@ import java.util.Calendar;
 @Table(name = "top_line")
 public class TopLineItem extends Item {
     @Id
-    @SequenceGenerator(name = "default_gen", sequenceName = "top_line_seq")
+    @SequenceGenerator(name = "default_gen", sequenceName = "top_line_seq",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")
     private Integer id;
 

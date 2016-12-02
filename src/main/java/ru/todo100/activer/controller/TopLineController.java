@@ -56,7 +56,7 @@ public class TopLineController {
     }
 
     @RequestMapping(value = "/buy")
-    public String buy(@RequestParam String message) {
+    public String buy(@RequestParam final String message) {
         final Integer account_id = getAccountService().getCurrentAccount().getId();
         if (getBalanceService().subtractAccountBalanceSum(account_id,new BigDecimal(1),"Top")) {
             getTopLineDao().addTopLine(account_id,message);
