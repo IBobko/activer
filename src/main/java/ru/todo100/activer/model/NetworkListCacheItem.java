@@ -31,7 +31,7 @@ public class NetworkListCacheItem extends Item {
     @Column(name = "inviter_level")
     private Integer inviterLevel;
     @Column(name = "invited_count")
-    private Integer invitedCount;
+    private Long invitedCount;
     @Column(name = "network_count")
     private Integer networkCount;
     @Column(name = "earned")
@@ -97,11 +97,11 @@ public class NetworkListCacheItem extends Item {
         this.inviterLevel = inviterLevel;
     }
 
-    public Integer getInvitedCount() {
+    public Long getInvitedCount() {
         return invitedCount;
     }
 
-    public void setInvitedCount(Integer invitedCount) {
+    public void setInvitedCount(Long invitedCount) {
         this.invitedCount = invitedCount;
     }
 

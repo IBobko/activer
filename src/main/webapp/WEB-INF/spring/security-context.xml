@@ -55,4 +55,26 @@
     </beans:bean>
 
 
+
+    <!--<bean id="aclCache" class="org.springframework.security.acls.domain.EhCacheBasedAclCache">-->
+        <!--<constructor-arg>-->
+            <!--<bean class="org.springframework.cache.ehcache.EhCacheFactoryBean" p:cacheName="aclCache">-->
+                <!--<property name="cacheManager">-->
+                    <!--<bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"/>-->
+                <!--</property>-->
+            <!--</bean>-->
+        <!--</constructor-arg>-->
+    <!--</bean>-->
+    <!---->
+    <!---->
+
+    <!--<beans:bean class="org.springframework.security.acls.AclPermissionEvaluator" id="aclPermissionEvaluator">-->
+        <!--<beans:constructor-arg ref="jdbcMutableAclService" />-->
+    <!--</beans:bean>-->
+
+
+    <!--<beans:bean id="userDetailsService" class="ru.todo100.activer.service.impl.OnOffUserDetailsService">-->
+
+    <!--</beans:bean>-->
+
 </beans:beans>

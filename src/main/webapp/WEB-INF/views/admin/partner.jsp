@@ -35,9 +35,9 @@
                        value="http://onoffline.ru/auth/signup?referCode=${currentProfileData.referCode}"/>
                 <div style="line-height: 50px">
                     Введи E-mail друга, чтобы он тоже смог присоедениться к нам
-                    <input class="form-control" type="email">
+                    <input class="form-control" type="email" id="myFriendEmail">
 
-                    <button type="submit" class="std-button btn btn-default"><span
+                    <button type="submit" class="std-button btn btn-default" id="mySubmitButton"><span
                             class="glyphicon glyphicon-send"></span> Отправить
                     </button>
                 </div>
@@ -48,17 +48,26 @@
                         charset="utf-8"></script>
                 <script type="text/javascript" src="//yastatic.net/share2/share.js" charset="utf-8"></script>
                 <div class="ya-share2" data-services="vkontakte,facebook,odnoklassniki,moimir"
-                     data-title="ON / OFF LINE"
-                     data-description="Моя ссылка на супер сайте. <a href='http://onoffline/auth/signup?referCode=02398'>http://onoffline/auth/signup?referCode=02398</a> "></div>
+                     data-title="Моя ссылка на супер сайте. <a href='http://onoffline/auth/signup?referCode=${currentProfileData.referCode}'>http://onoffline/auth/signup?referCode=${currentProfileData.referCode}</a>"
+                     data-description="Моя ссылка на супер сайте. <a href='http://onoffline/auth/signup?referCode=${currentProfileData.referCode}'>http://onoffline/auth/signup?referCode=${currentProfileData.referCode}</a> "></div>
             </div>
         </div>
     </div>
 </div>
-<script>
+<script type="text/javascript">
     $(function () {
         $('#inviteNewParnersWindow').on('shown.bs.modal', function () {
             $("#inviteNewParnersWindow #myReferLink").select();
-        })
+        });
+
+        $('#mySubmitButton').click(function(){
+            var data = {
+                'email': $("#myFriendEmail").val()
+            };
+            $.post("<c:url value="/admin/partner/send_email"/>",data,function(response){
+                alert(response);
+            });
+        });
     });
 </script>
 

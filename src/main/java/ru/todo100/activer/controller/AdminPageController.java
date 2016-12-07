@@ -430,4 +430,11 @@ public class AdminPageController {
         return "Done";
     }
 
+    @ResponseBody
+    @RequestMapping("/partner/send_email")
+    public String sendFriendNotification(HttpServletRequest request) {
+        String friendEmail = request.getParameter("email");
+        return friendEmail;
+    }
+
 }

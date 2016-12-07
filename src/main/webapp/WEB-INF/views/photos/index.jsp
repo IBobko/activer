@@ -1,21 +1,18 @@
 <%--@elvariable id="staticImages" type="java.lang.String"--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <style type="text/css">
     .photo_menu {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
+        display: flex;
+        text-transform: uppercase;
+        font-size: 18px;
+        color: #3f51b3;
+        font-weight: bold;
     }
 
-    .photo_menu li {
-        font-size: 18px;
-        text-transform: uppercase;
-        font-weight: bold;
-        color: #3f51b3;
-        float: left;
-        list-style: none;
+    .photo_menu > * {
         margin: 0 50px 20px 0;
     }
 
@@ -37,10 +34,11 @@
     }
 
     div.descriptionWindow:hover {
-        opacity:0.7;
+        opacity: 0.7;
     }
+
     div.descriptionWindow {
-        opacity:0;
+        opacity: 0;
         background-color: #2b669a;
         position: absolute;
         height: 180px;
@@ -48,20 +46,24 @@
     }
 </style>
 <c:if test="${currentProfileData.id == accountId}">
-<a class="std-button btn btn-default" style="float:right" href="<c:url value="/photos/edit"/>"><span
-        class="glyphicon glyphicon-plus"></span> Добавить альбом</a>
-    </c:if>
-<ul class="photo_menu">
-    <li>Мои альбомы</li>
-    <li>Все фотографии</li>
-</ul>
+    <a class="std-button btn btn-default" style="float:right" href="<c:url value="/photos/edit"/>"><span
+            class="glyphicon glyphicon-plus"></span> Добавить альбом</a>
+</c:if>
+<div class="photo_menu">
+    <div>Мои альбомы</div>
+    <div>Все фотографии</div>
+</div>
 
 <ul id="albums">
     <c:forEach items="${albums}" var="album">
         <li onclick='goToAlbum(${album.id})' id="album${album.id}">
-            <div style="overflow: hidden">
-                <a href="<c:url value="/photos/edit?id=${album.id}" />" style="font-size:20px;float:right"><span class="fa fa-cog"></span></a>
-            </div>
+            <c:if test="${album.accountId == currentProfileData.id}">
+                <div style="overflow: hidden">
+
+                    <a href="<c:url value="/photos/edit?id=${album.id}" />" style="font-size:20px;float:right"><span
+                            class="fa fa-cog"></span></a>
+                </div>
+            </c:if>
             <div class="descriptionWindow"></div>
             <div class="photoWindow">
                 <c:if test="${empty album.cover}">
@@ -73,7 +75,8 @@
             </div>
 
             <div style="overflow: hidden;margin:10px;text-align: left">
-                <div style="float:right"><span style="font-size:22px;color: #92a0c3" class="fa fa-camera"></span>&nbsp;${album.photos.size()}</div>
+                <div style="float:right"><span style="font-size:22px;color: #92a0c3"
+                                               class="fa fa-camera"></span>&nbsp;${album.photos.size()}</div>
                     ${album.name}
             </div>
         </li>

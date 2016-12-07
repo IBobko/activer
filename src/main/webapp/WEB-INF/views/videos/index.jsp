@@ -8,32 +8,30 @@
         overflow: hidden;
     }
 
-    #albums {
-        list-style: none;
-    }
-
     .video_menu li {
         font-size: 18px;
         text-transform: uppercase;
         font-weight: bold;
         color: #3f51b3;
-        float: left;
         list-style: none;
         margin: 0 50px 20px 0;
     }
 </style>
-<a class="std-button btn btn-default" style="float:right" href="<c:url value="/videos/edit"/>"><span
-        class="glyphicon glyphicon-plus"></span> Добавить видео</a>
+<c:if test="${profile.my}">
+    <a class="std-button btn btn-default" style="float:right" href="<c:url value="/videos/edit"/>"><span
+            class="glyphicon glyphicon-plus"></span> Добавить видео</a>
+</c:if>
 <ul style="margin-top:36px;" class="video_menu">
     <li>Видеозаписи</li>
 </ul>
 
-<ul id="albums">
-    <c:forEach items="${profile.videos}" var="video">
-        <li><c:if test="${profile.my}"><a href="<c:url value="/videos/remove/?id=${video.id}"/>">Удалить</a><br/></c:if>
-                ${video.body}<br/>
-                ${video.description}
-            <hr/>
-        </li>
-    </c:forEach>
-</ul>
+<c:forEach items="${profile.videos}" var="video">
+    <div>
+        <c:if test="${profile.my}">
+            <a href="<c:url value="/videos/remove/?id=${video.id}"/>">Удалить</a><br/></c:if>
+            ${video.body}<br/>
+            ${video.description}
+        <hr/>
+    </div>
+</c:forEach>
+

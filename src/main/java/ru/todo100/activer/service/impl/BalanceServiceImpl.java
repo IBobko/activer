@@ -1,5 +1,6 @@
 package ru.todo100.activer.service.impl;
 
+import org.hibernate.SQLQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.BalanceDao;
@@ -47,6 +48,12 @@ public class BalanceServiceImpl implements BalanceService {
         balanceItem.setSum(sum);
         getBalanceDao().save(balanceItem);
         getAccountService().addSynchronizer(accountItem.getId(), "balance", sum);
+    }
+
+    public BigDecimal getSpentSumByAccount(Integer account_id) {
+        final SQLQuery q = getBalanceDao().getSession().createSQLQuery("select SUM(payment_debit_sum) from payment_debit order by id;");
+        final Integer sum = (Integer)q.uniqueResult();
+        return new BigDecimal(sum);
     }
 
     @Override

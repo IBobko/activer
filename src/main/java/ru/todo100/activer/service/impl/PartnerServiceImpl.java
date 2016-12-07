@@ -11,9 +11,10 @@ import ru.todo100.activer.dao.NetworkListCacheIDao;
 import ru.todo100.activer.data.PartnerData;
 import ru.todo100.activer.data.PartnerInfo;
 import ru.todo100.activer.data.PartnerQualifier;
-import ru.todo100.activer.qualifier.Qualifier;
 import ru.todo100.activer.model.AccountItem;
+import ru.todo100.activer.model.AuthorityItem;
 import ru.todo100.activer.model.NetworkListCacheItem;
+import ru.todo100.activer.qualifier.Qualifier;
 import ru.todo100.activer.service.PartnerService;
 import ru.todo100.activer.service.ReferService;
 
@@ -31,13 +32,29 @@ import java.util.List;
 @SuppressWarnings("JpaQlInspection")
 @Transactional
 public class PartnerServiceImpl implements PartnerService {
-
-    @Autowired
     private ReferService referService;
-
     private NetworkListCacheIDao networkListCacheIDao;
-    @Autowired
     private AccountDao accountService;
+
+    Long[] levelProfit = {14l,6l,2l,1l,1l,4l};
+
+    public AccountDao getAccountService() {
+        return accountService;
+    }
+
+    @Autowired
+    public void setAccountService(AccountDao accountService) {
+        this.accountService = accountService;
+    }
+
+    public ReferService getReferService() {
+        return referService;
+    }
+
+    @Autowired
+    public void setReferService(ReferService referService) {
+        this.referService = referService;
+    }
 
     public NetworkListCacheIDao getNetworkListCacheIDao() {
         return networkListCacheIDao;
@@ -66,44 +83,47 @@ public class PartnerServiceImpl implements PartnerService {
         return new BigDecimal(7);
     }
 
-
     public Integer counterOfInvitedPeople(AccountItem inviting, Integer level) {
         final List<AccountItem> accounts = referService.getByReferCode(inviting.getReferCode());
         Integer invited = 0;
         if (level != 6 && accounts.size() != 0) {
             for (AccountItem account : accounts) {
-                invited += counterOfInvitedPeople(account,level+1);
+                invited += counterOfInvitedPeople(account, level + 1);
             }
         }
         return accounts.size() + invited;
     }
 
-    public Integer countOfInvited(AccountItem accountItem) {
-        return referService.getByReferCode(accountItem.getReferCode()).size();
+    private boolean isSpecial(final AccountItem accountItem) {
+        for (AuthorityItem authorityItem: accountItem.getAuthorities()) {
+            if (authorityItem.getRole().equals("ROLE_PARTNER")) {
+                return true;
+            }
+        }
+        return false;
     }
 
-
-    public List<PartnerInfo> recursive(AccountItem inviting, Integer level) {
-        final List<AccountItem> accounts = referService.getByReferCode(inviting.getReferCode());
+    public List<PartnerInfo> recursive(final AccountItem inviting, final Integer level) {
+        final List<AccountItem> accounts = getReferService().getByReferCode(inviting.getReferCode());
         final List<PartnerInfo> result = new ArrayList<>();
-        for (AccountItem account: accounts) {
+        for (AccountItem account : accounts) {
             final PartnerInfo partnerInfo = new PartnerInfo();
             partnerInfo.setId(account.getId());
             partnerInfo.setLevel(level);
-            partnerInfo.setEarned(new BigDecimal("1000"));
-            partnerInfo.setInvitedCount(countOfInvited(account));
+            partnerInfo.setEarned(isSpecial(account) ? new BigDecimal(levelProfit[level]):new BigDecimal("0"));
+            partnerInfo.setInvitedCount(getReferService().getCountOfUsedReferCode(account.getReferCode()));
             partnerInfo.setInviter(inviting.getLastName() + " " + inviting.getFirstName());
             partnerInfo.setName(account.getLastName() + " " + account.getFirstName());
-            partnerInfo.setNetworkCount(counterOfInvitedPeople(account,0));
-            partnerInfo.setProfit(new BigDecimal("800"));
+            partnerInfo.setNetworkCount(counterOfInvitedPeople(account, 0));
+            partnerInfo.setProfit(isSpecial(account) ? new BigDecimal(levelProfit[level]):new BigDecimal("0"));
             partnerInfo.setReferCode(account.getReferCode());
             partnerInfo.setAccountItem(account);
-            partnerInfo.setInviterLevel(level-1);
+            partnerInfo.setInviterLevel(level - 1);
 
             result.add(partnerInfo);
         }
 
-        List<PartnerInfo> total = new ArrayList<>();
+        final List<PartnerInfo> total = new ArrayList<>();
         total.addAll(result);
 
         if (level != 6 && accounts.size() != 0) {
@@ -121,13 +141,13 @@ public class PartnerServiceImpl implements PartnerService {
     @Override
     @Transactional
     public void synchronize(Integer accountId) {
-        final AccountItem current = accountService.get(accountId);
-        final List<PartnerInfo> accounts = recursive(current,1);
+        final AccountItem current = getAccountService().get(accountId);
+        final List<PartnerInfo> accounts = recursive(current, 1);
 
         final Query query = getNetworkListCacheIDao().getSession().createQuery("delete from NetworkListCacheItem where ownerAccountId = :id");
         query.setInteger("id", accountId).executeUpdate();
 
-        for (PartnerInfo partner : accounts) {
+        for (final PartnerInfo partner : accounts) {
             final NetworkListCacheItem networkListCacheItem = new NetworkListCacheItem();
             networkListCacheItem.setOwnerAccountId(accountId);
             networkListCacheItem.setAccountId(partner.getId());
@@ -166,9 +186,7 @@ public class PartnerServiceImpl implements PartnerService {
     }
 
     public List<PartnerData> getPartners(PartnerQualifier qualifier) {
-
         final Criteria criteria = generateCriteria(qualifier);
-
 
         if (qualifier.getStart() != null) {
             criteria.setFirstResult(qualifier.getStart());
@@ -178,7 +196,7 @@ public class PartnerServiceImpl implements PartnerService {
             criteria.setMaxResults(qualifier.getCount());
         }
 
-        if (qualifier.getOrderName()!=null && qualifier.getOrder() != null) {
+        if (qualifier.getOrderName() != null && qualifier.getOrder() != null) {
             if (qualifier.getOrder() == Qualifier.Order.asc) {
                 criteria.addOrder(Order.asc(qualifier.getOrderName()));
             }
@@ -186,7 +204,6 @@ public class PartnerServiceImpl implements PartnerService {
                 criteria.addOrder(Order.desc(qualifier.getOrderName()));
             }
         }
-
 
         @SuppressWarnings("unchecked")
         final List<NetworkListCacheItem> result = criteria.list();
@@ -218,7 +235,6 @@ public class PartnerServiceImpl implements PartnerService {
             if (networkListCacheItem.getNetworkCount() != null) {
                 partner.setNetworkCount(networkListCacheItem.getNetworkCount().toString());
             }
-
             partnerData.add(partner);
 
         }
@@ -228,6 +244,6 @@ public class PartnerServiceImpl implements PartnerService {
     @Override
     public Long getPartnersCount(PartnerQualifier qualifier) {
         final Criteria criteria = generateCriteria(qualifier);
-        return (Long)criteria.setProjection(Projections.rowCount()).uniqueResult();
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 }

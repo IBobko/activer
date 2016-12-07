@@ -12,7 +12,7 @@ public class PartnerInfo {
     private String name;
     private Integer level;
     private String inviter;
-    private Integer invitedCount;
+    private Long invitedCount;
     private Integer inviterLevel;
     private Integer networkCount;
     private BigDecimal earned;
@@ -68,11 +68,11 @@ public class PartnerInfo {
         this.inviter = inviter;
     }
 
-    public Integer getInvitedCount() {
+    public Long getInvitedCount() {
         return invitedCount;
     }
 
-    public void setInvitedCount(Integer invitedCount) {
+    public void setInvitedCount(Long invitedCount) {
         this.invitedCount = invitedCount;
     }
 
