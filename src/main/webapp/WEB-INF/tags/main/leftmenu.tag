@@ -1,4 +1,4 @@
-<%--suppress XmlPathReference --%>
+﻿<%--suppress XmlPathReference --%>
 <%--@elvariable id="friendsData" type="ru.todo100.activer.data.FriendsData"--%>
 <%--@elvariable id="currentProfileData" type="ru.todo100.activer.data.ProfileData"--%>
 
@@ -98,6 +98,11 @@
                 Видео
             </a>
         </li>
+        <li>
+            <a href="<c:url value="/premium"/>" style="color:orange">
+	      <span style="color:orange" class="fa fa-diamond"></span>	
+	      Купить аккаунт</a>
+        </li>
     </ul>
 </c:if>
 
@@ -137,6 +142,11 @@
                 <span class="fa fa-play-circle"></span>
                 Видео
             </a>
+        </li>
+        <li>
+            <a href="<c:url value="/premium"/>" style="color:orange">
+	      <span style="color:orange" class="fa fa-diamond"></span>	
+	      Купить аккаунт</a>
         </li>
     </ul>
 </c:if>
@@ -178,6 +188,11 @@
                 Видео
             </a>
         </li>
+        <li>
+            <a href="<c:url value="/premium"/>" style="color:orange">
+	      <span style="color:orange" class="fa fa-diamond"></span>	
+	      Купить аккаунт</a>
+        </li>
     </ul>
 </c:if>
 
@@ -217,6 +232,11 @@
                 <span class="fa fa-play-circle"></span>
                 Видео
             </a>
+        </li>
+        <li>
+            <a href="<c:url value="/premium"/>" style="color:orange">
+	      <span style="color:orange" class="fa fa-diamond"></span>	
+	      Купить аккаунт</a>
         </li>
     </ul>
 </c:if>
@@ -258,6 +278,56 @@
                 Видео
             </a>
         </li>
+        <li>
+            <a href="<c:url value="/premium"/>" style="color:orange">
+	      <span style="color:orange" class="fa fa-diamond"></span>	
+	      Купить аккаунт</a>
+        </li>
+    </ul>
+</c:if>
+
+<c:if test="${pageType == 'admin/partner'}">
+    <ul class="sidebar-nav">
+        <li>
+            <a href="<c:url value="/profile"/>">
+                <span class="fa fa-user"></span>
+                Моя страница
+            </a>
+        </li>
+        <li>
+            <a href="<c:url value="/friend"/>">
+                <span class="fa fa-smile-o"></span>
+                Друзья
+
+                <c:if test="${friendsData.outRequest.size() > 0}">
+                    <span class="badge">${friendsData.outRequest.size()}</span>
+                </c:if>
+
+            </a>
+        </li>
+        <li>
+            <a href="<c:url value="/message"/>">
+                <span class="fa fa-envelope-o"></span>
+                Сообщения${countNotRead}
+            </a>
+        </li>
+        <li>
+            <a href="<c:url value="/photos"/>">
+                <span class="fa fa-photo"></span>
+                Фотографии
+            </a>
+        </li>
+        <li>
+            <a href="<c:url value="/videos?accountId=${currentProfileData.id}"/>">
+                <span class="fa fa-play-circle"></span>
+                Видео
+            </a>
+        </li>
+        <li>
+            <a href="<c:url value="/premium"/>" style="color:orange">
+	      <span style="color:orange" class="fa fa-diamond"></span>	
+	      Купить аккаунт</a>
+        </li>
     </ul>
 </c:if>
 
@@ -286,19 +356,19 @@
         </li>
         <li ${SettingsSafetyMenu}>
             <a href="<c:url value="/safety"/>">
-                <span class="fa fa-smile-o"></span>
+                <span class="fa fa-key"></span>
                 Безопастность
             </a>
         </li>
         <li ${SettingsPrivateMenu}>
             <a href="<c:url value="/private"/>">
-                <span class="fa fa-photo"></span>
+                <span class="fa fa-eye"></span>
                 Приватность
             </a>
         </li>
         <li ${SettingsThemeMenu}>
             <a href="<c:url value="/themes"/>">
-                <span class="fa fa-photo"></span>
+                <span class="fa fa-star"></span>
                 Тема профиля
             </a>
         </li>
@@ -310,11 +380,11 @@
 <%--@elvariable id="giftsMenu" type="java.lang.String"--%>
 <%--@elvariable id="creatorMenu" type="java.lang.String"--%>
 <%--@elvariable id="balanceMenu" type="java.lang.String"--%>
-<c:if test="${mainPage == 'admin'}">
+<c:if test="${pageType == 'admin/creator'}">
     <ul class="sidebar-nav">
         <li ${creatorMenu}>
             <a href="<c:url value="/admin/creator"/>">
-                <span class="fa fa-stats"></span>
+                <span class="fa fa-line-chart"></span>
                 Статистика
             </a>
         </li>
@@ -338,9 +408,5 @@
         </li>
     </ul>
 </c:if>
-
-<div style="text-align: center">
-    <a href="<c:url value="/premium"/>" style="color:orange">Купить аккаунт</a>
-</div>
 
 
