@@ -1,0 +1,5 @@
+Ваш друг прислал вам ссыль
+
+<a href="http://onoffline/auth/signup?referCode=${referCode}">http://onoffline/auth/signup?referCode=${referCode}</a>
+
+

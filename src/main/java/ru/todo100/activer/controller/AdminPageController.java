@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -17,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +38,7 @@ import ru.todo100.activer.model.GiftItem;
 import ru.todo100.activer.qualifier.DisputeThemeQualifier;
 import ru.todo100.activer.qualifier.Qualifier;
 import ru.todo100.activer.service.*;
+import ru.todo100.activer.util.MailService;
 import ru.todo100.activer.util.ResizeImage;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,6 +75,7 @@ public class AdminPageController {
     private PaymentService paymentService;
     @Autowired
     private PaymentCreditDao paymentCreditDao;
+    private MailService mailService;
 
     public DisputeService getDisputeService() {
         return disputeService;
@@ -179,12 +181,12 @@ public class AdminPageController {
     }
 
     @RequestMapping("/gifts/add")
-    public String giftsAdd(final Model model,@RequestParam(required = false, defaultValue = "0") final Integer id) {
+    public String giftsAdd(final Model model, @RequestParam(required = false, defaultValue = "0") final Integer id) {
         model.addAttribute("pageType", "admin/gifts/add");
         final GiftAddForm giftAddForm = new GiftAddForm();
         if (!id.equals(0)) {
             final Session session = giftDao.getSessionFactory().openSession();
-            final GiftItem giftItem = (GiftItem)session.get(giftDao.getItemClass(),id);
+            final GiftItem giftItem = (GiftItem) session.get(giftDao.getItemClass(), id);
 
             giftAddForm.setId(giftItem.getId());
             giftAddForm.setCategory(giftItem.getCategory());
@@ -195,7 +197,7 @@ public class AdminPageController {
 
         }
         model.addAttribute("giftAddForm", giftAddForm);
-        model.addAttribute("categories",giftCategoryDao.getCategories());
+        model.addAttribute("categories", giftCategoryDao.getCategories());
         return "admin/gifts/add";
     }
 
@@ -247,13 +249,13 @@ public class AdminPageController {
         System.out.println(bindingResult);
         GiftItem giftItem = new GiftItem();
         if (giftAddForm.getId() != null) {
-            giftItem = (GiftItem)giftDao.get(giftAddForm.getId());
+            giftItem = (GiftItem) giftDao.get(giftAddForm.getId());
         } else {
             final File originalFile = new File(giftAddForm.getFile().getOriginalFilename());
             FileUtils.writeByteArrayToFile(originalFile, giftAddForm.getFile().getBytes());
 
             final File fileShowingSize = getNewFile(originalFile, 256, 256);
-            final String theString= sendFile(fileShowingSize, giftAddForm.getFile().getContentType());
+            final String theString = sendFile(fileShowingSize, giftAddForm.getFile().getContentType());
             giftItem.setFile(theString);
         }
 
@@ -430,11 +432,21 @@ public class AdminPageController {
         return "Done";
     }
 
+    public MailService getMailService() {
+        return mailService;
+    }
+
+    @Autowired
+    public void setMailService(MailService mailService) {
+        this.mailService = mailService;
+    }
+
     @ResponseBody
     @RequestMapping("/partner/send_email")
     public String sendFriendNotification(HttpServletRequest request) {
         String friendEmail = request.getParameter("email");
-        return friendEmail;
+        if (StringUtils.isEmpty(friendEmail)) return "EMPTY";
+        getMailService().sendFriendNotification(accountService.getCurrentAccount(), friendEmail);
+        return "EXECUTED";
     }
-
 }

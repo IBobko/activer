@@ -33,9 +33,9 @@ public class MailService {
     public void sendCompleteSignUp(final AccountItem account) {
         MimeMessagePreparator preparator = mimeMessage -> {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true);
-            message.setFrom("support@todo100.ru");
+            message.setFrom("support@onoffline.ru");
             message.setTo(account.getEmail());
-            message.setSubject("Registration on todo100.ru");
+            message.setSubject("Registration on onoffline.ru");
             Map<String, Object> model = new HashMap<>();
             model.put("fullName", account.getFirstName() + " " + account.getLastName());
             model.put("login", account.getUsername());
@@ -52,8 +52,8 @@ public class MailService {
         MimeMessagePreparator preparator = mimeMessage -> {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true);
             message.setTo(account.getEmail());
-            message.setFrom("no-replay@3dplenty.com");
-            message.setSubject("Registration on onoffline.ru");
+            message.setFrom("support@onoffline.ru");
+            message.setSubject("Password on onoffline.ru");
             Map<String, Object> model = new HashMap<>();
             model.put("fullName", account.getFirstName() + " " + account.getLastName());
             model.put("login", account.getUsername());
@@ -61,6 +61,23 @@ public class MailService {
 
             Template t = getFreemarkerMailConfiguration().getTemplate("forgot.vm");
             String text = FreeMarkerTemplateUtils.processTemplateIntoString(t,model);
+            message.setText(text, true);
+        };
+        getMailSender().send(preparator);
+    }
+
+    public void sendFriendNotification(final AccountItem fromAccount, final String toEmail) {
+        MimeMessagePreparator preparator = mimeMessage -> {
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true);
+            message.setTo(toEmail);
+            message.setFrom("no-replay@onoffline.com");
+            message.setSubject("Notification on onoffline.ru");
+            Map<String, Object> model = new HashMap<>();
+            model.put("referCode", fromAccount.getReferCode());
+
+            final Template t = getFreemarkerMailConfiguration().getTemplate("friend-notification.vm");
+
+            final String text = FreeMarkerTemplateUtils.processTemplateIntoString(t,model);
             message.setText(text, true);
         };
         getMailSender().send(preparator);
