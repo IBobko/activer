@@ -10,8 +10,8 @@ import java.util.List;
  */
 public interface AdminAccountService {
     void synchronize();
-
     Long getAccountsCount(AdminAccountQualifier qualifier);
-
     List<AdminAccountData> getAccounts(AdminAccountQualifier qualifier);
+    Long getTotalAccountAmount();
+    Long getTotalOnlineAccountAmount();
 }

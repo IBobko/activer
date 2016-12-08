@@ -1,14 +1,11 @@
 package ru.todo100.activer.service.impl;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import ru.todo100.activer.dao.AccountDao;
-import ru.todo100.activer.dao.AdminAccountListCacheDao;
+
 import ru.todo100.activer.data.AdminAccountData;
 import ru.todo100.activer.data.AdminAccountQualifier;
 import ru.todo100.activer.data.PartnerInfo;
@@ -19,21 +16,27 @@ import ru.todo100.activer.service.AdminAccountService;
 import ru.todo100.activer.service.PartnerService;
 import ru.todo100.activer.service.ReferService;
 
+import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
 public class AdminAccountServiceImpl implements AdminAccountService {
-    @Autowired
     private ReferService referService;
     private PartnerService partnerService;
-    @Autowired
-    private AdminAccountListCacheDao adminAccountListCacheDao;
-    @Autowired
     private SessionFactory sessionFactory;
-    @Autowired
     private AccountDao accountService;
+
+    public ReferService getReferService() {
+        return referService;
+    }
+
+    @Autowired
+    public void setReferService(ReferService referService) {
+        this.referService = referService;
+    }
 
     public PartnerService getPartnerService() {
         return partnerService;
@@ -44,18 +47,12 @@ public class AdminAccountServiceImpl implements AdminAccountService {
         this.partnerService = partnerService;
     }
 
-    public AdminAccountListCacheDao getAdminAccountListCacheDao() {
-        return adminAccountListCacheDao;
-    }
-
-    public void setAdminAccountListCacheDao(AdminAccountListCacheDao adminAccountListCacheDao) {
-        this.adminAccountListCacheDao = adminAccountListCacheDao;
-    }
 
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }
 
+    @Autowired
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -64,6 +61,7 @@ public class AdminAccountServiceImpl implements AdminAccountService {
         return accountService;
     }
 
+    @Autowired
     public void setAccountService(AccountDao accountService) {
         this.accountService = accountService;
     }
@@ -81,9 +79,9 @@ public class AdminAccountServiceImpl implements AdminAccountService {
             final AdminAccountListCacheItem adminAccountListCacheItem = new AdminAccountListCacheItem();
             adminAccountListCacheItem.setAccountItem(accountItem);
             adminAccountListCacheItem.setNetworkCount(getPartnerService().getNetworkCount(accountItem.getId()));
-            List<PartnerInfo> partners = getPartnerService().recursive(accountItem, 6);
+            List<PartnerInfo> partners = getPartnerService().recursive(accountItem, 1);
             adminAccountListCacheItem.setNetworkCount(partners.size());
-            AccountItem inviter = referService.getUserByRefer(accountItem.getUsedReferCode());
+            AccountItem inviter = getReferService().getUserByRefer(accountItem.getUsedReferCode());
             if (inviter != null) {
                 adminAccountListCacheItem.setInviterName(inviter.getLastName() + " " + inviter.getFirstName());
                 adminAccountListCacheItem.setInviterId(inviter.getId());
@@ -100,34 +98,35 @@ public class AdminAccountServiceImpl implements AdminAccountService {
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
-    private Criteria generateCriteria(AdminAccountQualifier qualifier) {
-        Class<? extends AdminAccountQualifier> type = qualifier.getClass();
-        Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(AdminAccountListCacheItem.class);
-//        for (final Method method : type.getMethods()) {
-//            if (method.getDeclaringClass() != type) continue;
-//            if (method.getName().startsWith("get") && method.getTypeParameters().length == 0) {
-//                final String field = method.getName().substring(3);
-//                final String fieldName = field.substring(0, 1).toLowerCase() + field.substring(1);
-//                try {
-//                    Object value = method.invoke(qualifier);
-//                    if (value == null) continue;
-//                    criteria.add(Restrictions.eq(fieldName, method.invoke(qualifier)));
-//                } catch (IllegalAccessException | InvocationTargetException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
+    private Criteria generateCriteria(final AdminAccountQualifier qualifier) {
+        final Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(AdminAccountListCacheItem.class);
+        qualifier.setOnOffline(false);
+        if (qualifier.getOnOffline() != null) {
+            criteria.createAlias("accountItem","accountItem");
+            criteria.add(Restrictions.sqlRestriction("isOnline(accountite1_.account_last_activity) = " + (qualifier.getOnOffline() ? 1 : 0)));
+        }
+
+        if (qualifier.getCount()!=null) {
+            criteria.setMaxResults(qualifier.getCount());
+        }
+
+
+        if (qualifier.getStart()!=null) {
+            criteria.setFirstResult(qualifier.getStart());
+        }
+
         return criteria;
     }
-
 
     @SuppressWarnings("unchecked")
     @Override
     @Transactional
     public List<AdminAccountData> getAccounts(AdminAccountQualifier qualifier) {
-        List<AdminAccountListCacheItem> items = getSessionFactory().getCurrentSession().createCriteria(AdminAccountListCacheItem.class).list();
+        final Criteria criteria = generateCriteria(qualifier);
+
+        final List<AdminAccountListCacheItem> items = criteria.list();
         List<AdminAccountData> result = new ArrayList<>();
-        for (AdminAccountListCacheItem item : items) {
+        for (final AdminAccountListCacheItem item : items) {
             AdminAccountData data = new AdminAccountData();
             data.setFirstName(item.getAccountItem().getFirstName());
             data.setLastName(item.getAccountItem().getLastName());
@@ -143,16 +142,15 @@ public class AdminAccountServiceImpl implements AdminAccountService {
             data.setType("Бесплатный");
             Set<AuthorityItem> authorities = item.getAccountItem().getAuthorities();
 
-            for (AuthorityItem authorityItem: authorities) {
-                if (authorityItem.getRole().equals("ROLE_PARTNER")){
+            for (AuthorityItem authorityItem : authorities) {
+                if (authorityItem.getRole().equals("ROLE_PARTNER")) {
                     data.setType("Партнер");
                 }
-                if (authorityItem.getRole().equals("ROLE_CREATOR")){
+                if (authorityItem.getRole().equals("ROLE_CREATOR")) {
                     data.setType("Создатель");
                     break;
                 }
             }
-
 
             Calendar lastActivity = item.getAccountItem().getLastActivity();
             if (lastActivity == null) {
@@ -172,5 +170,29 @@ public class AdminAccountServiceImpl implements AdminAccountService {
             result.add(data);
         }
         return result;
+    }
+
+    @Override
+    @Transactional
+    public Long getTotalAccountAmount() {
+        return (Long) getSessionFactory().getCurrentSession().createCriteria(AccountItem.class)
+                .setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    @Transactional
+    public Long getTotalOnlineAccountAmount() {
+        SQLQuery query = getSessionFactory().getCurrentSession().createSQLQuery("select COUNT(*)\n" +
+                "from ACCOUNT where ((extract(day    from (systimestamp - timestamp '1970-01-01 00:00:00')) * 86400000\n" +
+                "+ extract(hour   from (systimestamp - timestamp '1970-01-01 00:00:00')) * 3600000\n" +
+                "+ extract(minute from (systimestamp - timestamp '1970-01-01 00:00:00')) * 60000\n" +
+                "+ extract(second from (systimestamp - timestamp '1970-01-01 00:00:00')) * 1000)\n" +
+                "-\n" +
+                "(extract(day    from (ACCOUNT_LAST_ACTIVITY - timestamp '1970-01-01 00:00:00')) * 86400000\n" +
+                "+ extract(hour   from (ACCOUNT_LAST_ACTIVITY - timestamp '1970-01-01 00:00:00')) * 3600000\n" +
+                "+ extract(minute from (ACCOUNT_LAST_ACTIVITY - timestamp '1970-01-01 00:00:00')) * 60000\n" +
+                "+ extract(second from (ACCOUNT_LAST_ACTIVITY - timestamp '1970-01-01 00:00:00')) * 1000)) < 600000");
+
+        return ((BigDecimal)query.uniqueResult()).longValue();
     }
 }

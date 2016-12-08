@@ -20,15 +20,13 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.GiftCategoryDao;
 import ru.todo100.activer.dao.GiftDao;
 import ru.todo100.activer.dao.PaymentCreditDao;
 import ru.todo100.activer.data.*;
+import ru.todo100.activer.form.AdminAccountPagedForm;
 import ru.todo100.activer.form.DisputeThemeForm;
 import ru.todo100.activer.form.GiftAddForm;
 import ru.todo100.activer.form.PagedForm;
@@ -122,12 +120,13 @@ public class AdminPageController {
     }
 
     @RequestMapping("/creator")
-    public String creator(final Model model, final PagedForm pagedForm, @RequestParam(name = "synch", required = false) Integer synch) {
+    public String creator(final Model model, @ModelAttribute(name = "pagedForm") final AdminAccountPagedForm pagedForm, @RequestParam(name = "synch", required = false) final Integer synch) {
         if (synch != null) {
             getAdminAccountService().synchronize();
         }
         model.addAttribute("pageType", "admin/creator");
-
+        model.addAttribute("totalAmount", getAdminAccountService().getTotalAccountAmount());
+        model.addAttribute("totalOnlineAmount",getAdminAccountService().getTotalOnlineAccountAmount());
         model.addAttribute("pagedData", adminAccountPagedData(pagedForm));
         return "admin/creator";
     }

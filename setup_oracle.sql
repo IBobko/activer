@@ -12,6 +12,7 @@ ALTER USER C##activer QUOTA 100M ON USERS;
 -- Give creating triggers
 
 GRANT CREATE TRIGGER TO C##activer;
+GRANT CREATE PROCEDURE TO C##activer;
 
 -- ACL
 

@@ -34,7 +34,7 @@ public class AccountItem extends DateChanges implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")
     private Integer id;
 
-    @OneToOne(mappedBy = "account")
+    @OneToOne(mappedBy = "account",fetch = FetchType.LAZY)
     private BalanceItem balance;
 
     @OneToMany(cascade = CascadeType.ALL)

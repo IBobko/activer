@@ -91,7 +91,7 @@ public class AccountDao extends AbstractDao {
     }
 
     public List<AccountItem> getAll() {
-        return getCriteria().setMaxResults(10).list();
+        return getCriteria().list();
     }
 
     @Override
@@ -169,6 +169,12 @@ public class AccountDao extends AbstractDao {
             initCurrentProfile(session);
         }
         final ProfileData profileData = (ProfileData) session.getAttribute("currentProfileData");
+
+        final AccountItem accountItem = getSession().load(AccountItem.class,profileData.getId());
+        accountItem.setLastActivity(new GregorianCalendar());
+        addSynchronizer(accountItem.getId(),"lastActivity",accountItem.getLastActivity());
+        save(accountItem);
+
         if (synchronizers.containsKey(profileData.getId())) {
             final List<ProfileValue> values = synchronizers.get(profileData.getId());
             for (ProfileValue value : values) {

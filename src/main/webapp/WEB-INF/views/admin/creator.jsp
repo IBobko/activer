@@ -1,8 +1,29 @@
 <%@ page language="java" trimDirectiveWhitespaces="true" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="admin" tagdir="/WEB-INF/tags/admin" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <h4 style="color: #3F51B5;font-weight:bold;">Сводная по зарегистрированным пользователям</h4>
+
+<table>
+    <tr>
+        <td>Всего зарегистрированных пользователей:</td>
+        <td>${totalAmount}</td>
+    </tr>
+    <tr>
+        <td>Всего пользователей online:</td>
+        <td>${totalOnlineAmount}</td>
+    </tr>
+</table>
+
+<div style="display: flex">
+    <form:form modelAttribute="pagedForm" >
+        <div>
+            <form:checkbox id="online" value="1" path="online"/> online
+        </div>
+    </form:form>
+</div>
+
 
 <div id="partnerListWrapper">
     <table class="table table-hover" id="partnerList">
@@ -28,14 +49,19 @@
 
 <admin:paginator paginatorId="adminAccountListPaged" pagedData="${pagedData}" onClickFunction="page"/>
 
+
+
+<script type="text/javascript">
+    function page(p) {
+        var online = $('#online').is(":checked") ? 1 : 0;
+
+        document.location = "${pageContext.request.getAttribute("javax.servlet.forward.request_uri")}?page=" + p + "&online=" + online;
+    }
+</script>
+
 <pre>
 
-сводная по зарегистрированых
-всего зарегано на сайте
-сейчас онлайн
-
-
-фильтр
+    фильтр
     он/офф лайн
     тип аккаунта
     поиск по email

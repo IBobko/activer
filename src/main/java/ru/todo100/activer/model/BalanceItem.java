@@ -13,7 +13,7 @@ public class BalanceItem extends Item {
     @Column(name = "account_id",insertable = false,updatable = false)
     private Integer id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @PrimaryKeyJoinColumn
     private AccountItem account;
 
