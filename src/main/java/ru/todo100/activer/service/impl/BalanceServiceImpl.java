@@ -13,6 +13,7 @@ import ru.todo100.activer.model.PaymentDebitItem;
 import ru.todo100.activer.service.BalanceService;
 
 import java.math.BigDecimal;
+import java.util.GregorianCalendar;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
@@ -68,12 +69,14 @@ public class BalanceServiceImpl implements BalanceService {
             paymentCreditItem.setAccount(accountItem);
             paymentCreditItem.setPaymentCreditDescription(description);
             paymentCreditItem.setPaymentCreditSum(subtrahend);
+            paymentCreditItem.setDate(new GregorianCalendar());
             paymentCreditDao.save(paymentCreditItem);
 
             final PaymentDebitItem paymentDebitItem = new PaymentDebitItem();
             paymentDebitItem.setAccountId(accountItem.getId());
             paymentDebitItem.setPaymentDebitDescription(description);
             paymentDebitItem.setPaymentDebitSum(subtrahend);
+            paymentDebitItem.setDate(new GregorianCalendar());
             paymentDebitDao.save(paymentDebitItem);
 
             return true;
