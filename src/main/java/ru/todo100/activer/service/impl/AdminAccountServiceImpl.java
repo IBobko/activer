@@ -100,21 +100,10 @@ public class AdminAccountServiceImpl implements AdminAccountService {
 
     private Criteria generateCriteria(final AdminAccountQualifier qualifier) {
         final Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(AdminAccountListCacheItem.class);
-        qualifier.setOnOffline(false);
         if (qualifier.getOnOffline() != null) {
             criteria.createAlias("accountItem","accountItem");
             criteria.add(Restrictions.sqlRestriction("isOnline(accountite1_.account_last_activity) = " + (qualifier.getOnOffline() ? 1 : 0)));
         }
-
-        if (qualifier.getCount()!=null) {
-            criteria.setMaxResults(qualifier.getCount());
-        }
-
-
-        if (qualifier.getStart()!=null) {
-            criteria.setFirstResult(qualifier.getStart());
-        }
-
         return criteria;
     }
 
@@ -123,6 +112,13 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     @Transactional
     public List<AdminAccountData> getAccounts(AdminAccountQualifier qualifier) {
         final Criteria criteria = generateCriteria(qualifier);
+        if (qualifier.getCount()!=null) {
+            criteria.setMaxResults(qualifier.getCount());
+        }
+
+        if (qualifier.getStart()!=null) {
+            criteria.setFirstResult(qualifier.getStart());
+        }
 
         final List<AdminAccountListCacheItem> items = criteria.list();
         List<AdminAccountData> result = new ArrayList<>();

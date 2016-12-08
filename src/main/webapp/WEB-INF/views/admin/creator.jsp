@@ -15,14 +15,24 @@
         <td>${totalOnlineAmount}</td>
     </tr>
 </table>
-
+<form:form modelAttribute="pagedForm" >
 <div style="display: flex">
-    <form:form modelAttribute="pagedForm" >
+
         <div>
             <form:checkbox id="online" value="1" path="online"/> online
         </div>
-    </form:form>
+        <div>
+            <form:select path="accountType">
+                <form:option value="1">Обычный</form:option>
+                <form:option value="2">Уникальный</form:option>
+                <form:option value="3">Создатель</form:option>
+            </form:select>
+        </div>
+    <div>
+        E-mail: <form:input path="email"/>
+    </div>
 </div>
+</form:form>
 
 
 <div id="partnerListWrapper">

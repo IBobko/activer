@@ -309,10 +309,13 @@ public class AdminPageController {
         return "redirect:/admin/dispute";
     }
 
-    public PagedData<AdminAccountData> adminAccountPagedData(final PagedForm pagedForm) {
+    public PagedData<AdminAccountData> adminAccountPagedData(final AdminAccountPagedForm pagedForm) {
         AdminAccountQualifier qualifier = new AdminAccountQualifier();
         qualifier.setCount(COUNT_PER_PAGE);
         qualifier.setStart(pagedForm.getPage() * COUNT_PER_PAGE);
+        if (pagedForm.getOnline()) {
+            qualifier.setOnOffline(true);
+        }
 
         if (pagedForm.getOrderType() != null && pagedForm.getOrderField() != null) {
             qualifier.setOrderName(pagedForm.getOrderField());
