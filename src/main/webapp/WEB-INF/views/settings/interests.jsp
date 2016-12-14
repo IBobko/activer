@@ -2,14 +2,20 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <link rel="stylesheet" href="<c:url value="/resources/css/inputTags.css"/>">
+<script type="text/javascript" src="<c:url value="/resources/js/inputTags.jquery.js"/>"></script>
 
 <style type="text/css">
     #page-content-wrapper {
         font-weight: normal;
     }
+
+    #save-dialog {
+        overflow: hidden;
+        height:0;
+        width:300px;
+    }
 </style>
 
-<script type="text/javascript" src="<c:url value="/resources/js/inputTags.jquery.js"/>"></script>
 
 <h4 style="color:#337ab7;font-weight:bold">Интересы</h4>
 
@@ -21,7 +27,7 @@
 <br/>
 <input type="text" id="tags" value=""/>
 
-<script>
+<script type="text/javascript">
     $(function ($) {
         window.tags = $('#tags').inputTags({
             tags: [<c:forEach var="interest" items="${interests}" varStatus="loop">
@@ -64,13 +70,23 @@
             data["tags[" + index + "]"] = $(e).attr('data-tag');
         });
         $.post("<c:url value="/settings/interests"/>", data, function () {
+            $("#save-dialog").animate({
+                height:"22px"
+            });
+            setTimeout(function(){
+                $("#save-dialog").css("height",0);
+            },3000);
+
 
         });
     }
 
 </script>
 
-<br/><br/>
+<br/>
+<br/>
+<p class="bg-info" id="save-dialog">Сохранено</p>
+<br/>
 <a class="std-button btn btn-default" onclick="saveTags()"><span class="fa fa-check">&nbsp;</span>Сохранить</a>
 
 
