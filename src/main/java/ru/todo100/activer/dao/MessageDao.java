@@ -80,15 +80,16 @@ public class MessageDao extends AbstractDao {
 
         final ArrayList<MessageItem> dialogs = new ArrayList<>();
 
-        for (Object[] row : result) {
+        for (final Object[] row : result) {
             MessageItem messageItem = (MessageItem) getCriteria().add(Restrictions.and(Restrictions.eq("accountFrom", row[0]), Restrictions.eq("accountTo", row[1]))).addOrder(Order.desc("addedDate")).setMaxResults(1).uniqueResult();
 
             Iterator<MessageItem> it = dialogs.iterator();
             boolean needForAdd = true;
             while (it.hasNext()) {
                 final MessageItem item = it.next();
-                if ((item.getAccountFrom() == row[0] && item.getAccountTo() == row[1]) ||
-                        (item.getAccountFrom() == row[1] && item.getAccountTo() == row[0])) {
+                if (item.getAccountFrom() == null || row[0] == null || item.getAccountTo() == null || row[1] == null) continue;
+                if ((item.getAccountFrom().equals(row[0]) && item.getAccountTo().equals(row[1])) ||
+                        (item.getAccountFrom().equals(row[1]) && item.getAccountTo().equals(row[0]))) {
                     if (item.getAddedDate().getTime().getTime() < messageItem.getAddedDate().getTime().getTime()) {
                         it.remove();
                     } else {
