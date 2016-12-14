@@ -240,11 +240,16 @@ public class AccountDao extends AbstractDao {
 
 
                 if (value.getName().equals("education")) {
-                    profileData.setEducation(educationPopulator.populate((EducationItem) value.getValue()));
+                    for (final EducationItem educationItem : (Set<EducationItem>) value.getValue()) {
+                        profileData.setEducation(educationPopulator.populate(educationItem));
+                    }
+
                 }
 
                 if (value.getName().equals("job")) {
-                    profileData.setJob(jobPopulator.populate((JobItem) value.getValue()));
+                    for (final JobItem jobItem : (Set<JobItem>) value.getValue()) {
+                        profileData.setJob(jobPopulator.populate(jobItem));
+                    }
                 }
 
                 if (value.getName().equals("children")) {
