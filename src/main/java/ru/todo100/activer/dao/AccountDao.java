@@ -211,7 +211,7 @@ public class AccountDao extends AbstractDao {
 
                 if (value.getName().equals("videos")) {
                     final List<VideoData> videos = new ArrayList<>();
-                    for (VideoItem item : (Set<VideoItem>) value.getValue()) {
+                    for (VideoItem item : (List<VideoItem>) value.getValue()) {
                         videos.add(getVideoPopulator().populate(item));
                     }
                     profileData.setVideos(videos);

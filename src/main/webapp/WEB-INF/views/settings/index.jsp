@@ -208,7 +208,7 @@
                             </td>
                             <td>
                                 <div style="width:202px" class="input-group date form_date col-md-5" data-date=""
-                                     data-date-format="dd/mm/yyyy" data-link-format="yyyy-mm-dd">
+                                     data-date-format="dd/MM/yyyy" data-link-format="yyyy-MM-dd">
                                     <form:input type="text" path="birthDate" cssClass="form-control"
                                                 cssStyle="background-color: white" readonly="true"/>
                                     <span class="input-group-addon"><span
