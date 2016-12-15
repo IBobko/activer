@@ -177,7 +177,8 @@ public class AccountDao extends AbstractDao {
 
         if (synchronizers.containsKey(profileData.getId())) {
             final List<ProfileValue> values = synchronizers.get(profileData.getId());
-            for (ProfileValue value : values) {
+            for (final ProfileValue value : values) {
+                if (value == null || value.getValue() == null || value.getName() == null) continue;
                 if (value.getName().equals("balance")) {
                     profileData.setBalance((BigDecimal) value.getValue());
                 }
