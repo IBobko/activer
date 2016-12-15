@@ -292,7 +292,6 @@
 
 </script>
 
-
 <!-- Dreams -->
 <div class="container-fluid dreams">
     <div class="row">
@@ -303,12 +302,10 @@
             <div class="col-xs-4">
                 <div class="media">
                     <div class="media-left media-middle">
-                        <a href="#">
-                            <img class="media-object" src="${staticImages}/${dream.photo}">
-                        </a>
+                        <img class="media-object" src="${staticImages}/${dream.photo}">
                     </div>
                     <div class="media-body media-middle hidden-sm hidden-xs">
-                        <a class="text-color-dark" href="#">${dream.text}</a>
+                        <span class="text-color-dark">${dream.text}</span>
                     </div>
                 </div>
             </div>

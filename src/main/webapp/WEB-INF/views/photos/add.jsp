@@ -16,7 +16,7 @@
             $image.cropper({
 
                 // autoCropArea: 0.5,
-//
+
                 built: function () {
                     //$image.cropper('setCanvasData', canvasData);
                     $image.cropper('setCropBoxData', {
@@ -93,8 +93,6 @@
         var reader = new FileReader();
         reader.onload = function (e) {
             $('#image').attr('src',e.target.result);
-
-
             $('#modal').modal('show');
         };
         reader.readAsDataURL(this.files[0]);

@@ -1,11 +1,13 @@
 <html>
 <body>
-<h3>Hi, ${fullName}! Welcome to the onoffline!</h3>
+<h3>Здравствуйте, ${fullName}! Добро пожаловать на onoffline!</h3>
 <div>
-    <strong>Your login:</strong> ${login}<br/>
-    <strong>Your password:</strong> ${password}<br/>
+    <strong>Ваш логин:</strong> ${login}<br/>
+    <strong>Ваш пароль:</strong> ${password}<br/>
 </div>
 <div>Enjoy!</div>
-<div><a href="http://onoffline.ru/">http://onoffline.ru/</a></div>
+<div>
+    <a href="http://onoffline.ru/">http://onoffline.ru/</a>
+</div>
 </body>
 </html>
