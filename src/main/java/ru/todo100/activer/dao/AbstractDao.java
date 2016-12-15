@@ -64,6 +64,8 @@ abstract public class AbstractDao<T> {
             }
             session.persist(item);
         }
+        session.flush();
+        session.clear();
     }
 
 }
