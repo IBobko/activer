@@ -332,6 +332,7 @@
                            style="cursor:pointer;position:absolute;height:34px;opacity: 0;overflow: hidden;width:165px">
                         <a href="#" class="std-button btn btn-default"><span class="fa fa-camera"></span>&nbsp;Прикрепить фото</a>
                     </div>
+                    <div style="position:absolute;display: none" id="sending-wall-message"><img style="height:40px;" src="<c:url value="/resources/img/progress.gif"/>"></div>
                     <textarea  style="width: calc(100% - 340px);" class="form-control" id="wall-text" placeholder="Есть мысли?" maxlength="140" rows="2"></textarea>
                 </div>
                 <img src="#" style="max-width:200px; max-height:200px;display: none;" id="renderImage"/>
@@ -349,6 +350,7 @@
 
             <script type="text/javascript">
                 var m = new window.ACTIVER.Dialog.Messages('#wall-template',"<c:url value="/wall/publish"/>",function(result){
+                    $('#sending-wall-message').hide();
                     $('#profile-wall').prepend(result);
                     jQuery(".yoxview").yoxview( {
                                 backgroundColor: '#000000',
@@ -371,6 +373,7 @@
                 });
 
                 $('#wall').submit(function () {
+                    $('#sending-wall-message').show();
                     $wallText = $('#wall-text');
                     formData.set("id",${profile.id});
                     formData.set("text",$wallText.val());
