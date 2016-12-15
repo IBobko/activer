@@ -9,8 +9,12 @@
         font-weight: normal;
     }
 </style>
-
 <h3 style="color:#337ab7;font-weight:bold">Смена пароля</h3>
+
+<c:if test="${passwordSaved != null}">
+    <p class="bg-success" style="padding:10px">Пароль успешно изменен</p>
+</c:if>
+
 <form:form method="post" modelAttribute="changePasswordForm">
     <table>
         <tr>
@@ -18,7 +22,7 @@
                 Введите старый пароль
             </td>
             <td>
-                <form:input type="text" cssClass="form-control" path="oldPassword"/>
+                <form:password cssClass="form-control" path="oldPassword"/>
             </td>
             <td>
                 <form:errors path="oldPassword"/>
@@ -29,7 +33,7 @@
                 Ваш новый пароль
             </td>
             <td>
-                <form:input type="text" cssClass="form-control" path="newPassword"/>
+                <form:password cssClass="form-control" path="newPassword"/>
             </td>
             <td>
                 <form:errors path="newPassword"/>
@@ -40,7 +44,7 @@
                 Подтвердите новый пароль
             </td>
             <td>
-                <form:input type="text" cssClass="form-control" path="repeatedPassword"/>
+                <form:password cssClass="form-control" path="repeatedPassword"/>
             </td>
             <td>
                 <form:errors path="repeatedPassword"/>

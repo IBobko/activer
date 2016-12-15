@@ -58,11 +58,12 @@ public class SafetyPageController {
         if (!bindingResult.hasErrors()) {
             account.setPassword(changePasswordForm.getRepeatedPassword());
             accountService.save(account);
+            redirectAttributes.addFlashAttribute("passwordSaved", true);
         }
-
 
         redirectAttributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + "changePasswordForm", bindingResult);
         redirectAttributes.addFlashAttribute("changePasswordForm", changePasswordForm);
+
         return "redirect:/safety";
 
     }
