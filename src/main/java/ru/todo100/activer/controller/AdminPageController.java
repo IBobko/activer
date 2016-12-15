@@ -59,20 +59,26 @@ public class AdminPageController {
     private Integer COUNT_PER_PAGE;
     private GiftService giftService;
     private AdminAccountService adminAccountService;
+
     @Autowired
     private AccountDao accountService;
     private PartnerService partnerService;
+
     @Autowired
     private SimpMessagingTemplate template;
 
     private DisputeService disputeService;
+
     @Autowired
     private GiftCategoryDao giftCategoryDao;
+
     @Autowired
     private GiftDao giftDao;
     private PaymentService paymentService;
+
     @Autowired
     private PaymentCreditDao paymentCreditDao;
+
     private MailService mailService;
 
     public DisputeService getDisputeService() {
@@ -310,10 +316,11 @@ public class AdminPageController {
     }
 
     public PagedData<AdminAccountData> adminAccountPagedData(final AdminAccountPagedForm pagedForm) {
-        AdminAccountQualifier qualifier = new AdminAccountQualifier();
+        final AdminAccountQualifier qualifier = new AdminAccountQualifier();
         qualifier.setCount(COUNT_PER_PAGE);
         qualifier.setStart(pagedForm.getPage() * COUNT_PER_PAGE);
-        if (pagedForm.getOnline()) {
+
+        if (pagedForm.getOnline() != null && pagedForm.getOnline()) {
             qualifier.setOnOffline(true);
         }
 

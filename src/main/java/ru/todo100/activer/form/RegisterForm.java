@@ -10,6 +10,15 @@ public class RegisterForm {
     private String firstName;
     private String lastName;
     private String email;
+    private Boolean agreement;
+
+    public Boolean getAgreement() {
+        return agreement;
+    }
+
+    public void setAgreement(Boolean agreement) {
+        this.agreement = agreement;
+    }
 
     public String getRefer() {
         return refer;
@@ -47,9 +56,10 @@ public class RegisterForm {
         return "TTT";
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }

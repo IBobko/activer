@@ -202,6 +202,9 @@
 		<put-attribute name="content" value="/WEB-INF/views/premium/index.jsp"/>
 	</definition>
 
+	<definition name="agreement/main" template="/WEB-INF/views/agreement/main.jsp">
+	</definition>
+
 	<!-- TOP LINE -->
 
 	<definition name="topline/index" extends="base-template">

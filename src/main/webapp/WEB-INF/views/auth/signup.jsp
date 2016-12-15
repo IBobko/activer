@@ -67,6 +67,11 @@
                         <form:input type="email" class="form-control" id="emailInput" placeholder="Введите email"
                                     path="email"/>
                     </div>
+
+                    <div class="form-group">
+                        <form:errors path="agreement"/>
+                        <form:checkbox path="agreement"/> Я согласен с условиями <a href="<c:url value="/agreement/main"/>" target="_blank">пользовательского соглашения.</a>
+                    </div>
                     <br/>
                             <div style="text-align: center">
                                 <form:button type="submit" class="std-button btn btn-default"><span
