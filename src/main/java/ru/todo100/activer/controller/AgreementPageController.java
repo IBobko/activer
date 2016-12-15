@@ -14,4 +14,9 @@ public class AgreementPageController {
 
         return "agreement/main";
     }
+
+    @RequestMapping("/supplementary")
+    public String supplementary() {
+        return "agreement/supplementary";
+    }
 }

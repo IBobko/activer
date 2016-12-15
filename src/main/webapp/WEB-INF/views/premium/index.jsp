@@ -19,8 +19,9 @@
         </td>
         <td style="padding-top:0px; vertical-align: baseline;">
             <strong style="font-size:16px;" >При покупки статуса <span style="color:#ffa51a; font-size:18px;">УНИКАЛЬНЫЙ</span> вы получаете:</strong>
+
             <ul style="padding-top:10px;">
-                <li>5 подарков</li>
+                <li>30 подарков</li>
                 <li>Возможность индивидуального дизайна страницы</li>
                 <li>Возможность приватного доступа</li>
                 <li>Возможность приватного просмотра анкет пользователей</li>
@@ -28,6 +29,7 @@
                 <li style="color:#ffa51a;"><b>Просмотр карты зарегистрированных пользователей</b></li>
                 <li>Участие в ежегодных розыгрышах компании</li>
             </ul>
+            Покупая аккаунт вы соглашаетесь с <a target="_blank" href="<c:url value="/agreement/supplementary"/>">дополнительным соглашением</a>
         </td>
     </tr>
     <tr>
@@ -41,8 +43,9 @@
         </td>
         <td style="padding-top:0px; vertical-align: baseline;">
             <strong style="font-size:16px;" >При покупки статуса <span style="color:#ffa51a; font-size:18px;">ОСОБЕННЫЙ</span> вы получаете:</strong>
+
             <ul style="padding-top:10px;">
-                <li>5 подарков</li>
+                <li>15 подарков</li>
                 <li>Возможность индивидуального дизайна страницы</li>
                 <li>Возможность приватного доступа</li>
                 <li>Возможность приватного просмотра анкет пользователей</li>
@@ -52,7 +55,7 @@
     </tr>
     <br/><br/>
     <tr>
-        <td colspan="2" align="left" style="font-size: 18px; padding-top: 15px;"><span>Стоимость:</span> <strong style="color:#2b669a">60 lines / год</strong>&nbsp;&nbsp;&nbsp;СКОРО НА САЙТЕ!</span></td>
+        <td colspan="2" align="left" style="font-size: 18px; padding-top: 15px;"><span>Стоимость:</span> <strong style="color:#2b669a">30 lines / год</strong>&nbsp;&nbsp;&nbsp;СКОРО НА САЙТЕ!</span></td>
     </tr>
 </table>
 <br/><br/><br/><br/>

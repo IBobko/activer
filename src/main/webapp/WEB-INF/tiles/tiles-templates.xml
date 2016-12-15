@@ -205,6 +205,8 @@
 	<definition name="agreement/main" template="/WEB-INF/views/agreement/main.jsp">
 	</definition>
 
+	<definition name="agreement/supplementary" template="/WEB-INF/views/agreement/supplementary.jsp">
+	</definition>
 	<!-- TOP LINE -->
 
 	<definition name="topline/index" extends="base-template">
