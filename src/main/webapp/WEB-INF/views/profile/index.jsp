@@ -10,10 +10,14 @@
 <div class="container-fluid info-panel">
     <div class="row">
         <ul class="nav nav-pills">
-            <li><a class="text-color-dark" href="<c:url value="/gifts/id${profile.id}"/>">${profile.gifts.size()} подарков</a></li>
-            <li><a class="text-color-dark" href="<c:url value="/friend/list/id${profile.id}"/>">${friends.friends.size()} друга</a></li>
-            <li><a class="text-color-dark" href="<c:url value="/photos/?accountId=${profile.id}"/>">${photos.size()} фото</a></li>
-            <li><a class="text-color-dark" href="<c:url value="/videos/?accountId=${profile.id}"/>">${profile.videos.size()} видео</a></li>
+            <li><a class="text-color-dark" href="<c:url value="/gifts/id${profile.id}"/>">${profile.gifts.size()}
+                подарков</a></li>
+            <li><a class="text-color-dark"
+                   href="<c:url value="/friend/list/id${profile.id}"/>">${friends.friends.size()} друга</a></li>
+            <li><a class="text-color-dark" href="<c:url value="/photos/?accountId=${profile.id}"/>">${photos.size()}
+                фото</a></li>
+            <li><a class="text-color-dark"
+                   href="<c:url value="/videos/?accountId=${profile.id}"/>">${profile.videos.size()} видео</a></li>
             <li><a class="text-color-dark" href="#interests">${profile.interests.size()} интересов</a></li>
         </ul>
     </div>
@@ -46,9 +50,25 @@
         </c:if>
         <div class="media">
             <div class="media-left media-heading yoxview">
-                <a href="${staticImages}/${showingPhoto}">
-                    <img alt="First" title="<c:if test="${profile.my}"><a href='<c:url value="/settings"/>'>Изменить</a></c:if>" class="media-object" src="${staticImages}/${photo}">
-                </a>
+                <c:choose>
+                    <c:when test="${photo != null}">
+                        <a href="${staticImages}/${showingPhoto}">
+                            <img alt="First"
+                                 title="<c:if test="${profile.my}"><a href='<c:url value="/settings"/>'>Изменить</a></c:if>"
+                                 class="media-object" src="${staticImages}/${photo}">
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <c:if test="${profile.my}">
+                            <a href="<c:url value="/settings"/>">
+                        </c:if>
+                        <img alt="First" src="<c:url value="/resources/img/noavatar_20.png"/>">
+                        <c:if test="${profile.my}">
+                            </a>
+                        </c:if>
+                    </c:otherwise>
+                </c:choose>
+
             </div>
             <div class="media-body">
 
@@ -177,7 +197,8 @@
 <div class="container-fluid photos">
     <div class="row">
         <p class="status-line">Фотографии - ${photos.size()} <a onclick="document.location=this.href" class="pull-right"
-                                                                href="<c:url value="/photos"/><c:if test="${!profile.my}">?accountId=${profile.id}</c:if>">все фото</a></p>
+                                                                href="<c:url value="/photos"/><c:if test="${!profile.my}">?accountId=${profile.id}</c:if>">все
+            фото</a></p>
     </div>
     <div id="collapsePhoto" class="row panel-collapse collapse <c:if test="${photos.size() != 0}">in</c:if>">
         <div class="text-justify">
@@ -264,7 +285,8 @@
 <!-- Travels -->
 <div class="container-fluid travels">
     <div class="row">
-        <p class="status-line">Мои путешествия - ${profile.trips.size()} <a onclick="document.location=this.href" class="pull-right"
+        <p class="status-line">Мои путешествия - ${profile.trips.size()} <a onclick="document.location=this.href"
+                                                                            class="pull-right"
                                                                             href="<c:url value="/settings/trips"/>">добавить</a>
         </p>
     </div>
@@ -295,7 +317,10 @@
 <!-- Dreams -->
 <div class="container-fluid dreams">
     <div class="row">
-        <p class="status-line">Мои мечты - ${profile.dreams.size()} <a onclick="document.location=this.href" class="pull-right" href="<c:url value="/settings/dreams"/>">добавить</a></p>
+        <p class="status-line">Мои мечты - ${profile.dreams.size()} <a onclick="document.location=this.href"
+                                                                       class="pull-right"
+                                                                       href="<c:url value="/settings/dreams"/>">добавить</a>
+        </p>
     </div>
     <div class="row">
         <c:forEach items="${profile.dreams}" var="dream">
@@ -323,14 +348,21 @@
         <c:if test="${profile.my}">
             <form class="add-thought" id="wall">
                 <div class="form-group" style="overflow: hidden">
-                    <button type="submit" class="btn btn-default pull-right" style="margin-top:0px;margin-left: 10px;float: right;"><span class="fa fa-pencil"></span> Опубликовать</button>
+                    <button type="submit" class="btn btn-default pull-right"
+                            style="margin-top:0px;margin-left: 10px;float: right;"><span class="fa fa-pencil"></span>
+                        Опубликовать
+                    </button>
                     <div style="float:right">
                         <input id="choosePhoto" name="photo" type="file"
-                           style="cursor:pointer;position:absolute;height:34px;opacity: 0;overflow: hidden;width:165px">
-                        <a href="#" class="std-button btn btn-default"><span class="fa fa-camera"></span>&nbsp;Прикрепить фото</a>
+                               style="cursor:pointer;position:absolute;height:34px;opacity: 0;overflow: hidden;width:165px">
+                        <a href="#" class="std-button btn btn-default"><span class="fa fa-camera"></span>&nbsp;Прикрепить
+                            фото</a>
                     </div>
-                    <div style="position:absolute;display: none" id="sending-wall-message"><img style="height:40px;" src="<c:url value="/resources/img/progress.gif"/>"></div>
-                    <textarea  style="width: calc(100% - 340px);" class="form-control" id="wall-text" placeholder="Есть мысли?" maxlength="140" rows="2"></textarea>
+                    <div style="position:absolute;display: none" id="sending-wall-message"><img style="height:40px;"
+                                                                                                src="<c:url value="/resources/img/progress.gif"/>">
+                    </div>
+                    <textarea style="width: calc(100% - 340px);" class="form-control" id="wall-text"
+                              placeholder="Есть мысли?" maxlength="140" rows="2"></textarea>
                 </div>
                 <img src="#" style="max-width:200px; max-height:200px;display: none;" id="renderImage"/>
             </form>
@@ -346,23 +378,23 @@
             </c:forEach>
 
             <script type="text/javascript">
-                var m = new window.ACTIVER.Dialog.Messages('#wall-template',"<c:url value="/wall/publish"/>",function(result){
+                var m = new window.ACTIVER.Dialog.Messages('#wall-template', "<c:url value="/wall/publish"/>", function (result) {
                     $('#sending-wall-message').hide();
                     $('#profile-wall').prepend(result);
-                    jQuery(".yoxview").yoxview( {
-                                backgroundColor: '#000000',
-                                backgroundOpacity: 0.8,
-                                lang: 'ru',
-                            });
+                    jQuery(".yoxview").yoxview({
+                        backgroundColor: '#000000',
+                        backgroundOpacity: 0.8,
+                        lang: 'ru',
+                    });
                 });
 
                 var renderImageForPublish = document.getElementById("renderImage");
                 var formData = new FormData();
-                $('#choosePhoto').change(function(){
+                $('#choosePhoto').change(function () {
                     var fileData = $('#choosePhoto').prop('files')[0];
                     formData.set('photo', fileData);
                     var reader = new FileReader();
-                    reader.onload = function(frEvent) {
+                    reader.onload = function (frEvent) {
                         renderImageForPublish.style.display = 'inline';
                         renderImageForPublish.src = frEvent.target.result;
                     };
@@ -372,8 +404,8 @@
                 $('#wall').submit(function () {
                     $('#sending-wall-message').show();
                     $wallText = $('#wall-text');
-                    formData.set("id",${profile.id});
-                    formData.set("text",$wallText.val());
+                    formData.set("id", ${profile.id});
+                    formData.set("text", $wallText.val());
                     m.submit(formData);
                     // cleaning
                     $wallText.val("");
@@ -408,7 +440,7 @@
     var lastScrollTop = 0;
     $(document).scroll(function (e) {
         var st = $(this).scrollTop();
-        if (st < lastScrollTop){
+        if (st < lastScrollTop) {
             return;
         }
         lastScrollTop = st;
@@ -425,9 +457,10 @@
                 }
             }).done(function (data) {
                 already_downloading = false;
-                if (data.elements.length == 0){
+                if (data.elements.length == 0) {
                     end = true;
-                };
+                }
+                ;
 
                 for (var index in data.elements) {
                     $('#profile-wall').append(m.getHtmlPost(data.elements[index]));
@@ -438,8 +471,8 @@
     });
 
     function deleteWallPost(id) {
-        $.get("<c:url value="/wall/remove/"/>" + id,function(response){
-            $("[wall-id='"+response+"']").remove();
+        $.get("<c:url value="/wall/remove/"/>" + id, function (response) {
+            $("[wall-id='" + response + "']").remove();
         })
 
     }
@@ -448,6 +481,6 @@
 
 <style type="text/css">
     .wallRemove {
-    <c:if test="${currentProfileData.id != profile.id}">display:none</c:if>
+    <c:if test="${currentProfileData.id != profile.id}"> display: none</c:if>
     }
 </style>

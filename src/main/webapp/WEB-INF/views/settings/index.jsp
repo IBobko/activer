@@ -106,14 +106,18 @@
     </div>
 </div>
 
-
-
-
 <table>
     <tr>
         <td valign="top" width="250">
             <div style="margin-top:44px;text-align: center" id="image">
-                <img style="width:152px;height:152px;" src="${staticFiles}/${photo.photoAvatar}."/>
+                <c:choose>
+                    <c:when test="${photo.photoAvatar != null}">
+                        <img style="width:152px;height:152px;" src="${staticImages}/${photo.photoAvatar}"/>
+                    </c:when>
+                    <c:otherwise>
+                        <img style="width:152px;height:152px;" src="<c:url value="/resources/img/noavatar_20.png"/>"/>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </td>
         <td>
@@ -147,7 +151,7 @@
 
                         for (var index in data) {
                             if (data.hasOwnProperty(index)) {
-                                body.append("<div style='text-align:center' image-id='"+data[index].id+"' onclick='selectPhotoFromGallery(this)'><img style='width:200px' src='${staticFiles}/" + data[index].smallPath + ".'/></div>");
+                                body.append("<div style='text-align:center' image-id='"+data[index].id+"' onclick='selectPhotoFromGallery(this)'><img style='width:200px' src='${staticImages}/" + data[index].smallPath + "'/></div>");
                                 body.append("<br/>");
                             }
                         }
