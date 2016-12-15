@@ -73,13 +73,13 @@ public class AccountDao extends AbstractDao {
     private ProfilePopulator profilePopulator;
     @Autowired
     private EducationPopulator educationPopulator;
-    @Autowired
-    private JobPopulator jobPopulator;
+
     @Autowired
     private ChildrenPopulator childrenPopulator;
 
     private HashMap<Integer, List<ProfileValue>> synchronizers = new HashMap<>();
     private VideoPopulator videoPopulator;
+    private JobPopulator jobPopulator;
 
     public VideoPopulator getVideoPopulator() {
         return videoPopulator;
@@ -136,7 +136,7 @@ public class AccountDao extends AbstractDao {
 
             final AccountItem accountItem = get(auth.getName());
             accountItem.setLastActivity(new GregorianCalendar());
-            addSynchronizer(accountItem.getId(),"lastActivity",accountItem.getLastActivity());
+            addSynchronizer(accountItem.getId(), "lastActivity", accountItem.getLastActivity());
             save(accountItem);
             return accountItem;
         }
@@ -170,9 +170,9 @@ public class AccountDao extends AbstractDao {
         }
         final ProfileData profileData = (ProfileData) session.getAttribute("currentProfileData");
 
-        final AccountItem accountItem = getSession().load(AccountItem.class,profileData.getId());
+        final AccountItem accountItem = getSession().load(AccountItem.class, profileData.getId());
         accountItem.setLastActivity(new GregorianCalendar());
-        addSynchronizer(accountItem.getId(),"lastActivity",accountItem.getLastActivity());
+        addSynchronizer(accountItem.getId(), "lastActivity", accountItem.getLastActivity());
         save(accountItem);
 
         if (synchronizers.containsKey(profileData.getId())) {
@@ -290,6 +290,10 @@ public class AccountDao extends AbstractDao {
 
         if (registerForm.getEmail().equals("")) {
             ie.addError("E-mail is empty");
+        }
+
+        if (registerForm.getAgreement() == null || !registerForm.getAgreement()) {
+            ie.addError("Agreement");
         }
 
         if (!MailService.isValidEmailAddress(registerForm.getEmail())) {
@@ -437,9 +441,7 @@ public class AccountDao extends AbstractDao {
 
             if (item.getJobItems() != null && !item.getJobItems().isEmpty()) {
                 JobItem jobItem = (JobItem) item.getJobItems().toArray()[item.getJobItems().size() - 1];
-                jobData.setCity(jobItem.getCity());
-                jobData.setPost(jobItem.getPost());
-                jobData.setWork(jobItem.getWorkplace());
+                jobData = getJobPopulator().populate(jobItem);
             }
             friendData.setJob(jobData);
 
@@ -451,6 +453,15 @@ public class AccountDao extends AbstractDao {
         }
 
         return datas;
+    }
+
+    public JobPopulator getJobPopulator() {
+        return jobPopulator;
+    }
+
+    @Autowired
+    public void setJobPopulator(JobPopulator jobPopulator) {
+        this.jobPopulator = jobPopulator;
     }
 
     public Long getCountByQualifier(Qualifier qualifier) {
