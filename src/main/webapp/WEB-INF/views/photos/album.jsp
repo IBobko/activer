@@ -49,6 +49,9 @@
 
 <c:if test="${currentProfileData.id == album.accountId}">
     <div style="float:right">
+        <div id="sending-photo-progress" style="display:none; position:absolute;background-color: white;width:200px;height:34px;">
+            <img style="height:30px;" src="<c:url value="/resources/img/progress.gif"/>"/>
+        </div>
         <input type="file" id="addingPhoto" style="cursor:pointer;position:absolute;height:34px;opacity: 0;width:165px"/>
         <a href="#" class="std-button btn btn-default"><span class="fa fa-pencil"></span>&nbsp;Добавить фото</a>
     </div>
@@ -56,6 +59,9 @@
 
 <script type="text/javascript">
     $('#addingPhoto').change(function (event) {
+
+        $("#sending-photo-progress").show();
+
         var files = event.target.files;
         var data = new FormData();
 
@@ -79,6 +85,7 @@
                             backgroundOpacity: 0.8,
                             lang: 'ru',
                         });
+                $("#sending-photo-progress").hide();
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 // Handle errors here

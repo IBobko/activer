@@ -45,10 +45,8 @@ public class ResizeImage {
     	return resizedImage;
     }
 
-
-
 	public static void crop(final File original, final File dest, String extention, int width, int height) {
-		Rectangle rect = new Rectangle(width,height);
+		final Rectangle rect = new Rectangle(width,height);
 		try{
 			if (extention.equals("png")) {
 				BufferedImage originalImage = ImageIO.read(original);
@@ -66,14 +64,10 @@ public class ResizeImage {
 		}
 	}
 
-
 	private static BufferedImage cropImage(final BufferedImage src, final Rectangle rect) {
-
 		// Картинка, больше
 		int x= (src.getWidth()  - rect.width) / 2;
 		int y = (src.getHeight() - rect.height) / 2;
-
-
 		return src.getSubimage(x, y, rect.width, rect.height);
 	}
 }
