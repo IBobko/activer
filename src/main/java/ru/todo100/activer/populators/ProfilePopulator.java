@@ -1,7 +1,10 @@
 package ru.todo100.activer.populators;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.todo100.activer.dao.*;
+import ru.todo100.activer.dao.AccountGiftDao;
+import ru.todo100.activer.dao.BalanceDao;
+import ru.todo100.activer.dao.PhotoDao;
+import ru.todo100.activer.dao.SettingDao;
 import ru.todo100.activer.data.*;
 import ru.todo100.activer.model.*;
 
@@ -15,7 +18,6 @@ import java.util.Set;
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
 public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
-    @Autowired
     private PhotoDao photoService;
     private BalanceDao balanceDao;
     private EducationPopulator educationPopulator;
@@ -24,19 +26,14 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
     private InterestPopulator interestPopulator;
     private TripPopulator tripPopulator;
     private DreamPopulator dreamPopulator;
-
     private VideoPopulator videoPopulator;
-    @Autowired
     private SettingDao settingService;
-    @Autowired
     private AccountGiftDao accountGiftDao;
-    @Autowired
-    private GiftDao giftDao;
     private AccountGiftDataPopulator accountGiftDataPopulator;
 
-    public static Integer calculateAge(final Calendar dob) {
+    private static Integer calculateAge(final Calendar dob) {
         if (dob == null) return 0;
-        final Calendar dayOfBirth = (Calendar)dob.clone();
+        final Calendar dayOfBirth = (Calendar) dob.clone();
 
         final Calendar today = Calendar.getInstance();
         // include day of birth
@@ -48,7 +45,34 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         return age;
     }
 
-    public VideoPopulator getVideoPopulator() {
+    private PhotoDao getPhotoService() {
+        return photoService;
+    }
+
+    @Autowired
+    public void setPhotoService(PhotoDao photoService) {
+        this.photoService = photoService;
+    }
+
+    private SettingDao getSettingService() {
+        return settingService;
+    }
+
+    @Autowired
+    public void setSettingService(SettingDao settingService) {
+        this.settingService = settingService;
+    }
+
+    private AccountGiftDao getAccountGiftDao() {
+        return accountGiftDao;
+    }
+
+    @Autowired
+    public void setAccountGiftDao(AccountGiftDao accountGiftDao) {
+        this.accountGiftDao = accountGiftDao;
+    }
+
+    private VideoPopulator getVideoPopulator() {
         return videoPopulator;
     }
 
@@ -57,7 +81,7 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         this.videoPopulator = videoPopulator;
     }
 
-    public BalanceDao getBalanceDao() {
+    private BalanceDao getBalanceDao() {
         return balanceDao;
     }
 
@@ -125,7 +149,7 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         if (accountItem == null) {
             return null;
         }
-        final AccountPhotoItem facePhoto = photoService.getByAccount(accountItem.getId());
+        final AccountPhotoItem facePhoto = getPhotoService().getByAccount(accountItem.getId());
 
         final ProfileData profileData = new ProfileData();
         profileData.setId(accountItem.getId());
@@ -177,7 +201,7 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
             profileData.setPhoto60x60(f.getParent() + "/" + "60x60_" + f.getName());
         }
 
-        final List<AccountGiftItem> gifts = accountGiftDao.getGiftsByAccount(profileData.getId());
+        final List<AccountGiftItem> gifts = getAccountGiftDao().getGiftsByAccount(profileData.getId());
         final List<AccountGiftData> giftData = new ArrayList<>();
         for (final AccountGiftItem accountGiftItem : gifts) {
             giftData.add(getAccountGiftDataPopulator().populate(accountGiftItem));
@@ -194,9 +218,9 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
             profileData.setStatus("ROLE_USER");
         }
 
-        profileData.setShowOnline(Boolean.valueOf(settingService.getAccountSetting(profileData.getId(), "showOnline")));
-        profileData.setShowPremium(Boolean.valueOf(settingService.getAccountSetting(profileData.getId(), "showPremium")));
-        profileData.setTheme(settingService.getAccountSetting(profileData.getId(), "theme"));
+        profileData.setShowOnline(Boolean.valueOf(getSettingService().getAccountSetting(profileData.getId(), "showOnline")));
+        profileData.setShowPremium(Boolean.valueOf(getSettingService().getAccountSetting(profileData.getId(), "showPremium")));
+        profileData.setTheme(getSettingService().getAccountSetting(profileData.getId(), "theme"));
         profileData.setReferCode(accountItem.getReferCode());
         profileData.setMaritalStatus(accountItem.getMaritalStatus());
 
@@ -216,13 +240,13 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         return profileData;
     }
 
-    public boolean authorityContains(Set<AuthorityItem> authorities, String role) {
+    private boolean authorityContains(Set<AuthorityItem> authorities, String role) {
         for (AuthorityItem authority : authorities)
             if (authority.getRole().equals(role)) return true;
         return false;
     }
 
-    public AccountGiftDataPopulator getAccountGiftDataPopulator() {
+    private AccountGiftDataPopulator getAccountGiftDataPopulator() {
         return accountGiftDataPopulator;
     }
 
