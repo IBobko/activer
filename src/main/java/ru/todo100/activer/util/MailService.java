@@ -32,7 +32,7 @@ public class MailService {
 
     public void sendCompleteSignUp(final AccountItem account) {
         MimeMessagePreparator preparator = mimeMessage -> {
-            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true);
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true,"UTF-8");
             message.setFrom("support@onoffline.ru");
             message.setTo(account.getEmail());
             message.setSubject("Registration on onoffline.ru");
@@ -50,7 +50,7 @@ public class MailService {
 
     public void sendForgotPassword(final AccountItem account) {
         MimeMessagePreparator preparator = mimeMessage -> {
-            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true);
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true,"UTF-8");
             message.setTo(account.getEmail());
             message.setFrom("support@onoffline.ru");
             message.setSubject("Password on onoffline.ru");
@@ -68,15 +68,14 @@ public class MailService {
 
     public void sendFriendNotification(final AccountItem fromAccount, final String toEmail) {
         MimeMessagePreparator preparator = mimeMessage -> {
-            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true);
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true,"UTF-8");
             message.setTo(toEmail);
-            message.setFrom("no-replay@onoffline.com");
-            message.setSubject("Notification on onoffline.ru");
+            message.setFrom("no-replay@onoffline.ru");
+            message.setSubject("Ваш друг прислал вам ссылку на onoffline.ru");
             Map<String, Object> model = new HashMap<>();
             model.put("referCode", fromAccount.getReferCode());
-
+            model.put("friendName", fromAccount.getFirstName() + " " + fromAccount.getLastName());
             final Template t = getFreemarkerMailConfiguration().getTemplate("friend-notification.vm");
-
             final String text = FreeMarkerTemplateUtils.processTemplateIntoString(t,model);
             message.setText(text, true);
         };

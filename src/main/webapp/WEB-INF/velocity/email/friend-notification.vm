@@ -1,9 +1,14 @@
 <html>
 <body>
+Здравствуйте! Мы рады сообщить, что Ваш друг<br/>
+<strong>${friendName}</strong><br/>
+приглашает Вас стать пользователем новой социальной сети, где Вы можете не только общаться и знакомиться, но и зарабатывать деньги!<br/>
+Рады Вас видеть на нашем ресурсе <a href="http://onoffline.ru/auth/signup?referCode=${referCode}">http://onoffline.ru/auth/signup?referCode=${referCode}</a>
+<br/>
+<hr/>
+В случае возникновения вопросов или пожеланий Вы можете написать нам на почту:<br/>
+С уважением команда ONOFFLINE<br/>
 
-Здравствуйте. Ваш друг прислал вам ссылку, чтобы вы смогли зарегистрироваться на сайте OnOffline.<br/>
-
-<a href="http://onoffline.ru/auth/signup?referCode=${referCode}">http://onoffline.ru/auth/signup?referCode=${referCode}</a>
 </body>
 </html>
 
