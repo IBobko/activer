@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Table(name = "gift")
 public class GiftItem extends Item {
     @Id
-    @SequenceGenerator(name = "default_gen", sequenceName = "gift_seq")
+    @SequenceGenerator(name = "default_gen", sequenceName = "gift_seq",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")
     private Integer id;
 
