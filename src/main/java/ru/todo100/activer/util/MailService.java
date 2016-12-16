@@ -68,16 +68,16 @@ public class MailService {
 
     public void sendFriendNotification(final AccountItem fromAccount, final String toEmail) {
         MimeMessagePreparator preparator = mimeMessage -> {
-            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true,"UTF-8");
+            final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true);
             message.setTo(toEmail);
             message.setFrom("no-replay@onoffline.ru");
             message.setSubject("Ваш друг прислал вам ссылку на onoffline.ru");
-            Map<String, Object> model = new HashMap<>();
+            final Map<String, Object> model = new HashMap<>();
             model.put("referCode", fromAccount.getReferCode());
             model.put("friendName", fromAccount.getFirstName() + " " + fromAccount.getLastName());
             final Template t = getFreemarkerMailConfiguration().getTemplate("friend-notification.vm");
             final String text = FreeMarkerTemplateUtils.processTemplateIntoString(t,model);
-            message.setText(text, true);
+            mimeMessage.setContent(text,"text/html; charset=utf-8");
         };
         getMailSender().send(preparator);
     }

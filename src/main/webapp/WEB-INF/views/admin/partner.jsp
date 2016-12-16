@@ -65,7 +65,7 @@
                 'email': $("#myFriendEmail").val()
             };
             $.post("<c:url value="/admin/partner/send_email"/>",data,function(response){
-                alert(response);
+                alert("Отправлено");
             });
         });
     });
