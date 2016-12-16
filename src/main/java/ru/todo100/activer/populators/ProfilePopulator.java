@@ -36,13 +36,13 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
 
     public static Integer calculateAge(final Calendar dob) {
         if (dob == null) return 0;
-        Calendar today = Calendar.getInstance();
+        final Calendar dayOfBirth = (Calendar)dob.clone();
 
+        final Calendar today = Calendar.getInstance();
         // include day of birth
-        dob.add(Calendar.DAY_OF_MONTH, -1);
-
-        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
-        if (today.get(Calendar.DAY_OF_YEAR) <= dob.get(Calendar.DAY_OF_YEAR)) {
+        dayOfBirth.add(Calendar.DAY_OF_MONTH, -1);
+        int age = today.get(Calendar.YEAR) - dayOfBirth.get(Calendar.YEAR);
+        if (today.get(Calendar.DAY_OF_YEAR) <= dayOfBirth.get(Calendar.DAY_OF_YEAR)) {
             age--;
         }
         return age;
@@ -128,15 +128,11 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         final AccountPhotoItem facePhoto = photoService.getByAccount(accountItem.getId());
 
         final ProfileData profileData = new ProfileData();
+        profileData.setId(accountItem.getId());
         profileData.setFirstName(accountItem.getFirstName());
         profileData.setLastName(accountItem.getLastName());
 
         profileData.setOnline(accountItem.getIsOnline());
-
-        profileData.setId(accountItem.getId());
-        if (accountItem.getBirthdate() != null) {
-            profileData.setBirthDate(FORMAT_DD_MM_yyyy.format(accountItem.getBirthdate().getTime()));
-        }
 
         /* Educations populate*/
         if (!accountItem.getEducationItems().isEmpty()) {
@@ -205,6 +201,7 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         profileData.setMaritalStatus(accountItem.getMaritalStatus());
 
         if (accountItem.getBirthdate() != null) {
+            profileData.setBirthDate(FORMAT_DD_MM_yyyy.format(accountItem.getBirthdate().getTime()));
             profileData.setAge(calculateAge(accountItem.getBirthdate()));
             Calendar birthdate = accountItem.getBirthdate();
             profileData.setZodiac(zodiac(birthdate.get(Calendar.MONTH) + 1, birthdate.get(Calendar.DAY_OF_MONTH)));
@@ -215,7 +212,6 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
             videos.add(getVideoPopulator().populate(videoItem));
         }
         profileData.setVideos(videos);
-
 
         return profileData;
     }

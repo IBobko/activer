@@ -13,7 +13,8 @@ public class WorldMap {
         return "World Map;";
     }
 
-    public String generateCData(List<TripData> trips) {
+    public String generateCData(final List<TripData> trips) {
+        if (trips == null) return "";
         StringBuilder result = new StringBuilder();
         boolean wasFirst = false;
         for (int i = 0; i < trips.size(); i++) {
