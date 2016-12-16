@@ -380,7 +380,7 @@
 <%--@elvariable id="giftsMenu" type="java.lang.String"--%>
 <%--@elvariable id="creatorMenu" type="java.lang.String"--%>
 <%--@elvariable id="balanceMenu" type="java.lang.String"--%>
-<c:if test="${pageType == 'admin/creator'}">
+<c:if test="${pageType == 'admin/creator' || pageType == 'admin/gifts' || pageType == 'admin/dispute' || pageType == 'admin/balance'}">
     <ul class="sidebar-nav">
         <li ${creatorMenu}>
             <a href="<c:url value="/admin/creator"/>">
