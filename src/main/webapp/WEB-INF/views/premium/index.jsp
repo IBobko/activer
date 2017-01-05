@@ -61,10 +61,6 @@
 
 <h3 class="title">Дополнительные возможности</h3>
 
-<div style="font-size:16px">
-    Нужно будет придумать сюда какой-то текст бла бла бла бла бла бла бла бла бла бла бла бла
-</div>
-
 <style>
     .additions td{
         padding:10px;
@@ -97,9 +93,9 @@
             <img src="<c:url value="/resources/img/buy_design.png"/>"/>
         </td>
         <td style="padding-top:0px; vertical-align: baseline; ">
-            <strong style="font-size:16px;" >Индивидуальный дизайн:</strong>
+            <strong style="font-size:16px;" >Будь ярче. Индивидуальный дизайн своей страницы.</strong>
             <ul style="padding-top:10px;">
-                <li>Индивидуальный дизайн ваше страницы и еще много всяких преимуществ</li>
+                <li>Индивидуальный дизайн вашей страницы.Будь ярче, покажи свою индивидуальность.</li>
             </ul>
         </td>
     </tr>
