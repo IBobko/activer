@@ -54,16 +54,15 @@
 <div style="overflow: hidden">
     <div style="width:300px;float:left">
 
-        <img src="${staticFiles}/${flirtData.opponentAvatar}.jpg"
+        <img src="${staticImages}/${flirtData.opponentAvatar}"
              style="width:117px;float:left;margin:10px"/>
-        <h4 style="color: #3F51B5;font-weight:bold;">${F.opponentFirstName} ${flirtData.opponentLastName}</h4>
+        <h4 style="color: #3F51B5;font-weight:bold;">${flirtData.opponentFirstName} ${flirtData.opponentLastName}</h4>
         <div style="margin:10px 0;font-weight: normal">Ваш собеседник</div>
         ${flirtData.age} лет
         <br/>
         <br/>
         <button class="std-button btn btn-default"><span class="glyphicon glyphicon-ok"></span> Добавить в друзья
         </button>
-        <button class="std-button btn btn-default"><span class="glyphicon glyphicon-gift"></span></button>
 
         <h4 style="color: #3F51B5;font-weight:bold;">Интересы</h4>
         <ul>
