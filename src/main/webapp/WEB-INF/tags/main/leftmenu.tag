@@ -410,3 +410,14 @@
 </c:if>
 
 
+
+<c:if test="${pageType == 'premium'}">
+    <ul class="sidebar-nav">
+        <li>
+            <a href="<c:url value="/"/>">
+                <span class="fa fa-user"></span>
+                Моя страница
+            </a>
+        </li>
+    </ul>
+</c:if>

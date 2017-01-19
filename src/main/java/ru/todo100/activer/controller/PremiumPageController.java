@@ -46,7 +46,7 @@ public class PremiumPageController {
     @RequestMapping(method = RequestMethod.GET)
     public String index(Model model) {
         model.addAttribute("premiumPrice", PREMIUM_PRICE);
-
+        model.addAttribute("pageType", "premium");
         return "premium/index";
     }
 
