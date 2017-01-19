@@ -16,7 +16,7 @@
 <div class="modal fade" id="pleaseWaitingWindow">
     <div class="modal-dialog modal-sm">
         <div class="modal-content" style="padding: 30px">
-            <img src="<c:url value="/resources/img/progress.gif"/>" style="margin: 0 30px"/>
+            <img src="<c:url value="/resources/img/progress.gif"/>" style="width:170px;margin: 0 30px"/>
             <div style="margin-top:30px;">Подождите, пока сервер подберет вам собеседника.</div>
         </div>
     </div>
