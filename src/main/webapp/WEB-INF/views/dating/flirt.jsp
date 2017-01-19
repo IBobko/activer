@@ -16,7 +16,7 @@
                 <ul class="gifts-list">
                     <c:forEach items="${gifts}" var="gift">
                         <li>
-                            <a href="#" class="giftForAdd" gift-id="${gift.id}"><img src="<c:url value="${staticFiles}/${gift.file}."/>"></a>
+                            <a href="#" class="giftForAdd" gift-id="${gift.id}"><img src="<c:url value="${staticImages}/${gift.file}"/>"></a>
                             <br/>
                             Стоимость: 1$
                         </li>
