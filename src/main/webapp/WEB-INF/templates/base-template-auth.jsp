@@ -68,7 +68,7 @@
             </div>
         </nav>
         <main:leftmenu/>
-        <p class="copyright">on/off line <span class="fa fa-copyright"></span> 2016</p>
+        <p class="copyright">on/off line <span class="fa fa-copyright"></span> 2016-2017</p>
     </div>
     <!-- /Sidebar -->
 

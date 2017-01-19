@@ -139,7 +139,7 @@
         <ul>
             <li>2 шт. - Sony PlayStation 4</li>
             <li>2 шт. - CanonEos 650D</li>
-            <li>2 шт. - Apple Iphone 6 s</li>
+            <li>2 шт. - Apple Iphone 7 plus</li>
         </ul>
     </div>
 </div>
