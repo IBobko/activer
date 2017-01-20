@@ -520,6 +520,9 @@ public class SettingPageController {
             file = new File(cropped.getOriginalFilename() + extension);
             FileUtils.writeByteArrayToFile(file, cropped.getBytes());
             final String croppedFileName = sendFile(file, cropped.getContentType());
+
+            System.out.println("115454" + croppedFileName);
+
             accountPhotoItem.setNameAvatar(croppedFileName);
             miniCroppedFile = getNewFile(file, 60, 60);
             final String miniCroppedFileName = sendFile(miniCroppedFile, cropped.getContentType());
