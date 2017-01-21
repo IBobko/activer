@@ -45,11 +45,10 @@ import java.util.*;
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
+@SuppressWarnings("SpringAutowiredFieldsWarningInspection")
 @Controller
 @RequestMapping("/settings")
 public class SettingPageController {
-    @Value("${static.host}")
-    private String staticHost;
     private CountryDao countryDao;
     private List<CountryItem> countryItems;
     @Autowired
@@ -63,7 +62,7 @@ public class SettingPageController {
     private NewsService newsService;
     private PhotoDao photoDao;
 
-    public CountryDao getCountryDao() {
+    private CountryDao getCountryDao() {
         return countryDao;
     }
 
@@ -281,10 +280,10 @@ public class SettingPageController {
         return photoAvatarSizeData;
     }
 
-    public String sendFile(File file, String contentType) throws IOException {
+    private String sendFile(File file, String contentType) throws IOException {
         final HttpClient httpclient = HttpClientBuilder.create().build();
         final MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-        final HttpPost httppost = new HttpPost(staticHost + "/static/upload");
+        final HttpPost httppost = new HttpPost(STATIC_HOST_UPLOAD + "/static/upload");
         builder.addPart("image", new FileBody(file, ContentType.create(contentType)));
         httppost.setEntity(builder.build());
         final HttpResponse response = httpclient.execute(httppost);
@@ -293,7 +292,7 @@ public class SettingPageController {
         return writer.toString();
     }
 
-    public File getNewFile(File file, int width, int height) {
+    private File getNewFile(File file, int width, int height) {
         String newName = RandomStringUtils.randomAlphanumeric(6);
         final File newFile = new File(newName);
         String extension = FilenameUtils.getExtension(file.getName());
@@ -301,7 +300,7 @@ public class SettingPageController {
         return newFile;
     }
 
-    public InterestPopulator getInterestPopulator() {
+    private InterestPopulator getInterestPopulator() {
         return interestPopulator;
     }
 
@@ -349,7 +348,7 @@ public class SettingPageController {
 
     }
 
-    public TripPopulator getTripPopulator() {
+    private TripPopulator getTripPopulator() {
         return tripPopulator;
     }
 
@@ -542,7 +541,7 @@ public class SettingPageController {
         }
     }
 
-    public PhotoDao getPhotoDao() {
+    private PhotoDao getPhotoDao() {
         return photoDao;
     }
 
