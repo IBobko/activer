@@ -24,7 +24,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.CountryDao;
 import ru.todo100.activer.dao.PhotoDao;
-import ru.todo100.activer.data.*;
+import ru.todo100.activer.data.InterestData;
+import ru.todo100.activer.data.PhotoAvatarSizeData;
+import ru.todo100.activer.data.ProfileData;
+import ru.todo100.activer.data.TripData;
 import ru.todo100.activer.form.*;
 import ru.todo100.activer.model.*;
 import ru.todo100.activer.populators.InterestPopulator;
@@ -61,6 +64,8 @@ public class SettingPageController {
     @Autowired
     private NewsService newsService;
     private PhotoDao photoDao;
+    @Value(value = "${static.host.upload}")
+    private String STATIC_HOST_UPLOAD;
 
     private CountryDao getCountryDao() {
         return countryDao;
@@ -164,11 +169,11 @@ public class SettingPageController {
             account.setBirthdate(mainInfoForm.getBirthDate());
             accountService.save(account);
 
-            accountService.addSynchronizer(account.getId(),"firstName",account.getFirstName());
-            accountService.addSynchronizer(account.getId(),"lastName",account.getLastName());
-            accountService.addSynchronizer(account.getId(),"sex",account.getSex());
-            accountService.addSynchronizer(account.getId(),"maritalStatus",account.getMaritalStatus());
-            accountService.addSynchronizer(account.getId(),"birthdate",account.getBirthdate());
+            accountService.addSynchronizer(account.getId(), "firstName", account.getFirstName());
+            accountService.addSynchronizer(account.getId(), "lastName", account.getLastName());
+            accountService.addSynchronizer(account.getId(), "sex", account.getSex());
+            accountService.addSynchronizer(account.getId(), "maritalStatus", account.getMaritalStatus());
+            accountService.addSynchronizer(account.getId(), "birthdate", account.getBirthdate());
         }
         return "redirect:/settings";
     }
@@ -230,9 +235,9 @@ public class SettingPageController {
 
             accountService.save(account);
 
-            accountService.addSynchronizer(account.getId(),"education",account.getEducationItems());
-            accountService.addSynchronizer(account.getId(),"job",account.getJobItems());
-            accountService.addSynchronizer(account.getId(),"children",account.getChildrenItems());
+            accountService.addSynchronizer(account.getId(), "education", account.getEducationItems());
+            accountService.addSynchronizer(account.getId(), "job", account.getJobItems());
+            accountService.addSynchronizer(account.getId(), "children", account.getChildrenItems());
         }
         return "redirect:/settings";
     }
@@ -344,7 +349,7 @@ public class SettingPageController {
         account.setInterestItems(interests);
         accountService.save(account);
         accountService.deleteOldInterests();
-        accountService.addSynchronizer(account.getId(),"interests",interests);
+        accountService.addSynchronizer(account.getId(), "interests", interests);
 
     }
 
@@ -373,7 +378,7 @@ public class SettingPageController {
     }
 
     @RequestMapping(value = "/trips", method = RequestMethod.POST)
-    public String tripsPost(@Valid final TripForm tripForm, final BindingResult bindingResult,final RedirectAttributes attr) {
+    public String tripsPost(@Valid final TripForm tripForm, final BindingResult bindingResult, final RedirectAttributes attr) {
         if (!bindingResult.hasErrors()) {
             final AccountItem account = accountService.getCurrentAccount();
             final TripItem tripItem = new TripItem();
@@ -387,9 +392,9 @@ public class SettingPageController {
             }
             final Set<TripItem> trips = account.getTripItems();
             trips.add(tripItem);
-            accountService.addSynchronizer(account.getId(),"trips",trips);
+            accountService.addSynchronizer(account.getId(), "trips", trips);
             accountService.save(account);
-        }else {
+        } else {
             attr.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + "tripForm", bindingResult);
             attr.addFlashAttribute("tripForm", tripForm);
         }
@@ -416,13 +421,9 @@ public class SettingPageController {
         return "settings/dreams";
     }
 
-    @Value(value = "${static.host.upload}")
-    private String STATIC_HOST_UPLOAD;
-
-
     private void deletePhoto(String filename) throws IOException {
         final HttpClient httpclient = HttpClientBuilder.create().build();
-        final HttpPost httppost = new HttpPost(STATIC_HOST_UPLOAD + "/static/remove/file?filename="+ URLEncoder.encode(filename, "UTF-8"));
+        final HttpPost httppost = new HttpPost(STATIC_HOST_UPLOAD + "/static/remove/file?filename=" + URLEncoder.encode(filename, "UTF-8"));
         httpclient.execute(httppost);
     }
 
@@ -469,7 +470,7 @@ public class SettingPageController {
             }
             final Set<DreamItem> dreams = account.getDreamItems();
             dreams.add(dreamItem);
-            accountService.addSynchronizer(account.getId(),"dreams",dreams);
+            accountService.addSynchronizer(account.getId(), "dreams", dreams);
             accountService.save(account);
         }
         return "redirect:/settings/dreams";
@@ -491,8 +492,9 @@ public class SettingPageController {
             }
 
             accountService.deleteDream(id);
-            accountService.addSynchronizer(accountService.getCurrentAccount().getId(),"dreams",accountService.getCurrentAccount().getDreamItems());
-        } catch (NumberFormatException ignored) {}
+            accountService.addSynchronizer(accountService.getCurrentAccount().getId(), "dreams", accountService.getCurrentAccount().getDreamItems());
+        } catch (NumberFormatException ignored) {
+        }
         return "redirect:/settings/dreams";
     }
 
@@ -519,16 +521,9 @@ public class SettingPageController {
             file = new File(cropped.getOriginalFilename() + extension);
             FileUtils.writeByteArrayToFile(file, cropped.getBytes());
             final String croppedFileName = sendFile(file, cropped.getContentType());
-
-            System.out.println("115454" + croppedFileName);
-
             accountPhotoItem.setNameAvatar(croppedFileName);
             miniCroppedFile = getNewFile(file, 60, 60);
             final String miniCroppedFileName = sendFile(miniCroppedFile, cropped.getContentType());
-
-            System.out.println("11545454" + miniCroppedFileName);
-
-
             accountPhotoItem.setNameMini(miniCroppedFileName);
             getPhotoDao().save(accountPhotoItem);
         } finally {
@@ -549,5 +544,4 @@ public class SettingPageController {
     public void setPhotoDao(PhotoDao photoDao) {
         this.photoDao = photoDao;
     }
-
 }
