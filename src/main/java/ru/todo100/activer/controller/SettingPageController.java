@@ -526,6 +526,10 @@ public class SettingPageController {
             accountPhotoItem.setNameAvatar(croppedFileName);
             miniCroppedFile = getNewFile(file, 60, 60);
             final String miniCroppedFileName = sendFile(miniCroppedFile, cropped.getContentType());
+
+            System.out.println("11545454" + miniCroppedFileName);
+
+
             accountPhotoItem.setNameMini(miniCroppedFileName);
             getPhotoDao().save(accountPhotoItem);
         } finally {
