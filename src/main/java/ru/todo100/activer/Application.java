@@ -1,7 +1,9 @@
 package ru.todo100.activer;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.support.ErrorPageFilter;
@@ -14,6 +16,7 @@ import org.springframework.context.annotation.ImportResource;
  */
 
 @SpringBootApplication
+@EnableAutoConfiguration(exclude = SecurityAutoConfiguration.class)
 @ImportResource("classpath:/spring/root-context.xml")
 public class Application extends SpringBootServletInitializer {
     public static void main(String[] args) {

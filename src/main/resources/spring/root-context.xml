@@ -11,7 +11,6 @@
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd"
 >
 
-
 	<!--<security:global-method-security-->
 	<!--pre-post-annotations="enabled" />-->
 
@@ -34,10 +33,13 @@
 	<!--</mvc:interceptor>-->
 	<!--</mvc:interceptors>-->
 
+	<bean id="abstractMessageHandler" abstract="true" class="ru.todo100.activer.handler.AbstractMessageHandler"/>
+	<bean id="disputeHandler" class="ru.todo100.activer.handler.DisputeHandler" parent="abstractMessageHandler"/>
+	<bean id="flirtHandler" class="ru.todo100.activer.handler.FlirtHandler" parent="abstractMessageHandler"/>
+	<bean id="privateMessageHandler" class="ru.todo100.activer.handler.PrivateMessageHandler"
+				parent="abstractMessageHandler"/>
 
-	<mvc:annotation-driven />
 	<import resource="security-context.xml" />
-	<context:annotation-config />
 
 	<context:property-placeholder location="local.properties" ignore-unresolvable="true" />
 	<context:property-placeholder location="servlet.properties" />
