@@ -1,6 +1,6 @@
 <%@ page language="java" trimDirectiveWhitespaces="true" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="admin" tagdir="/WEB-INF/tags/admin" %>
+<%@ taglib prefix="admin" tagdir="/src/main/webapp/WEB-INF/tags/admin" %>
 
 <h4 style="color: #3F51B5;font-weight:bold;">Баланс</h4>
 
