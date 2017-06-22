@@ -14,16 +14,16 @@ import java.util.GregorianCalendar;
  */
 public class PhotoServiceImpl implements PhotoService {
 
+    private PhotoDao photoDao;
+
     public PhotoDao getPhotoDao() {
         return photoDao;
     }
 
     @Autowired
-    public void setPhotoDao(PhotoDao photoDao) {
+    public void setPhotoDao(final PhotoDao photoDao) {
         this.photoDao = photoDao;
     }
-
-    private PhotoDao photoDao;
 
     @Override
     @Transactional
@@ -40,11 +40,13 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     @Override
-    public PhotoAvatarSizeData getSizedPhoto(Integer accountId) {
+    public PhotoAvatarSizeData getSizedPhoto(final Integer accountId) {
         final AccountPhotoItem accountPhotoItem = getPhotoDao().getByAccount(accountId);
         final PhotoAvatarSizeData photoAvatarSizeData = new PhotoAvatarSizeData();
-        if (accountPhotoItem != null ){
+        if (accountPhotoItem != null) {
             /*Было бы неплохо, если бы за это отвечали популяторы*/
+            photoAvatarSizeData.setLikes(accountPhotoItem.getLikes().size());
+            photoAvatarSizeData.setId(accountPhotoItem.getId());
             photoAvatarSizeData.setPhotoAvatar(accountPhotoItem.getNameAvatar());
             photoAvatarSizeData.setPhotoMini(accountPhotoItem.getNameMini());
             photoAvatarSizeData.setPhotoThumbnail(accountPhotoItem.getNameThumbnail());

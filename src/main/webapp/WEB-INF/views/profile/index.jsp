@@ -68,6 +68,12 @@
                         </c:if>
                     </c:otherwise>
                 </c:choose>
+                (${avatarPhotos.likes}) <a href="#" id="like_avatar">Нравиться</a>
+                <script type="text/javascript">
+                    $("#like_avatar").click(function(){
+                        window.ACTIVER.Global.stompClient.send("/likes",{},${avatarPhotos.id});
+                    });
+                </script>
 
             </div>
             <div class="media-body">

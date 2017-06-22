@@ -5,6 +5,10 @@ package ru.todo100.activer.data;
  */
 public class PhotoAvatarSizeData {
     /**
+     * ID фотографии.
+     */
+    private Integer id;
+    /**
      * Фотография отображаемая в сообщениях
      */
     private String photoMini;
@@ -24,6 +28,24 @@ public class PhotoAvatarSizeData {
      * Уменьшенный размер фотографий
      */
     private String photoThumbnail;
+
+    private Integer likes;
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Integer likes) {
+        this.likes = likes;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getPhotoMini() {
         return photoMini;

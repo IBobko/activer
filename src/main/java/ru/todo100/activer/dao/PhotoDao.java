@@ -2,6 +2,7 @@ package ru.todo100.activer.dao;
 
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Service;
 import ru.todo100.activer.model.AccountPhotoItem;
 import ru.todo100.activer.model.Item;
 

@@ -1,4 +1,4 @@
-if (window.ACTIVER == undefined) {
+if (window.ACTIVER === undefined) {
     window.ACTIVER = {};
 }
 
@@ -26,8 +26,8 @@ window.ACTIVER.Global = {
      * @param f Функция содержащая код обработки
      */
     on: function(type,f) {
-        if (typeof type == "string" && typeof f == "function") {
-            if (type.indexOf(".") != -1) {
+        if (typeof type === "string" && typeof f === "function") {
+            if (type.indexOf(".") !== -1) {
                 this.handlersWithNamespace[type] = f;
                 return;
             }
@@ -56,7 +56,7 @@ window.ACTIVER.Global = {
                 for (var j in that.handlersWithNamespace) {
                     if (that.handlersWithNamespace.hasOwnProperty(j)) {
                         var event = j.split(".");
-                        if (event[0] == result.type) {
+                        if (event[0] === result.type) {
                             that.handlersWithNamespace[j](result);
                         }
                     }
@@ -73,7 +73,7 @@ window.ACTIVER.Global = {
                         that.handlers[result.type](result);
                     }
                 } else {
-                    if (that.onPRIVATE_MESSAGE != null) {
+                    if (that.onPRIVATE_MESSAGE !== null) {
                         that.onPRIVATE_MESSAGE(result);
                     }
                 }

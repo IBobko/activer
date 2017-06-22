@@ -3,6 +3,7 @@ package ru.todo100.activer.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Calendar;
+import java.util.Set;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
@@ -38,6 +39,17 @@ public class AccountPhotoItem extends Item {
     @NotNull
     @Column(name = "added_date", nullable = false)
     private Calendar addedDate;
+    @OneToMany
+    @JoinColumn(name = "account_photo_id")
+    private Set<AccountPhotoLikeItem> likes;
+
+    public Set<AccountPhotoLikeItem> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Set<AccountPhotoLikeItem> likes) {
+        this.likes = likes;
+    }
 
     public String getNameThumbnail() {
         return nameThumbnail;
@@ -95,13 +107,11 @@ public class AccountPhotoItem extends Item {
         this.name = name;
     }
 
-	public Calendar getAddedDate()
-	{
-		return addedDate;
-	}
+    public Calendar getAddedDate() {
+        return addedDate;
+    }
 
-	public void setAddedDate(final Calendar addedDate)
-	{
-		this.addedDate = addedDate;
-	}
+    public void setAddedDate(final Calendar addedDate) {
+        this.addedDate = addedDate;
+    }
 }
