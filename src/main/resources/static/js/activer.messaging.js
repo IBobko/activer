@@ -1,4 +1,4 @@
-if (window.ACTIVER == undefined) {
+if (window.ACTIVER === undefined) {
     window.ACTIVER = {};
 }
 

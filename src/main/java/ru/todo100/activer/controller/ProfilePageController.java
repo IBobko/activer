@@ -121,6 +121,7 @@ public class ProfilePageController {
 
         model.addAttribute("profile", profile);
         model.addAttribute("photos", photos);
+        model.addAttribute("avatarPhotos", avatarPhotos);
         model.addAttribute("showingPhoto", avatarPhotos.getPhotoShowing());
         model.addAttribute("photo", avatarPhotos.getPhotoAvatar());
         populatePersonOfPage(model, profile);
