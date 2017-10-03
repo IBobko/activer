@@ -19,7 +19,7 @@
     <meta name="description" content="">
 
     <title>On\Off Line</title>
-
+    <meta name="telderi" content="8ed3a10837674abc41ae029629c84a1e" />
     <!-- Favicon -->
     <link rel="icon" href="<c:url value="/resources/img/favicon.ico"/>" type="image/x-icon">
 
