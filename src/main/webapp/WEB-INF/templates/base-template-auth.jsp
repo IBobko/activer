@@ -33,7 +33,7 @@
     <link href="<c:url value="/resources/css/styles.css"/>" rel="stylesheet">
     <link href="<c:url value="/resources/css/sidebar.css"/>" rel="stylesheet">
     <link href="<c:url value="/resources/font-awesome/css/font-awesome.min.css"/>" rel="stylesheet">
-
+    <meta name="telderi" content="8ed3a10837674abc41ae029629c84a1e" />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
