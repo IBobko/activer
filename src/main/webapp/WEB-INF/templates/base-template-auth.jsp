@@ -16,7 +16,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-
+    <meta name="telderi" content="8ed3a10837674abc41ae029629c84a1e" />
     <title>On\Off Line</title>
 
     <!-- Favicon -->
