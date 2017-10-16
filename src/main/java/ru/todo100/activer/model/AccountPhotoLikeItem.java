@@ -12,8 +12,8 @@ public class AccountPhotoLikeItem {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_made_like", referencedColumnName = "id", nullable = false)
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "account_made_like", referencedColumnName = "id", nullable = false)
     private AccountItem accountMadeLike;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_photo_id", referencedColumnName = "photo_id", nullable = false)

@@ -45,7 +45,7 @@ public class PhotoServiceImpl implements PhotoService {
         final PhotoAvatarSizeData photoAvatarSizeData = new PhotoAvatarSizeData();
         if (accountPhotoItem != null) {
             /*Было бы неплохо, если бы за это отвечали популяторы*/
-            photoAvatarSizeData.setLikes(accountPhotoItem.getLikes().size());
+//            photoAvatarSizeData.setLikes(accountPhotoItem.getLikes().size());
             photoAvatarSizeData.setId(accountPhotoItem.getId());
             photoAvatarSizeData.setPhotoAvatar(accountPhotoItem.getNameAvatar());
             photoAvatarSizeData.setPhotoMini(accountPhotoItem.getNameMini());

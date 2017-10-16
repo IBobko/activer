@@ -14,8 +14,8 @@ public class PhotoLikeItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
     private AccountItem accountMadeLike;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_photo_id", referencedColumnName = "photo_id", nullable = false)
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "account_photo_id", referencedColumnName = "photo_id", nullable = false)
     private PhotoItem photo;
 
     public Integer getId() {
