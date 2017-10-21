@@ -6,7 +6,7 @@
     <groupId>ru.todo100</groupId>
     <artifactId>activer</artifactId>
     <name>activer.todo100.ru</name>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <version>1.0.0-BUILD-SNAPSHOT</version>
     <properties>
         <org.springframework-version>4.3.4.RELEASE</org.springframework-version>
