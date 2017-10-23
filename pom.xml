@@ -346,20 +346,16 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
-                <filtering>true</filtering>
+                <filtering>false</filtering>
                 <excludes>
-                    <exclude>**\*.woff2</exclude>
-                    <exclude>**\*.woff</exclude>
-                    <exclude>**\*.ttf</exclude>
+                    <exclude>**\*.prorperties</exclude>
                 </excludes>
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
-                <filtering>false</filtering>
+                <filtering>true</filtering>
                 <includes>
-                    <include>**\*.woff2</include>
-                    <include>**\*.woff</include>
-                    <include>**\*.ttf</include>
+                    <include>**\*.prorperties</include>
                 </includes>
             </resource>
         </resources>
