@@ -347,6 +347,20 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
+                <excludes>
+                    <exclude>**\*.woff2</exclude>
+                    <exclude>**\*.woff</exclude>
+                    <exclude>**\*.ttf</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**\*.woff2</include>
+                    <include>**\*.woff</include>
+                    <include>**\*.ttf</include>
+                </includes>
             </resource>
         </resources>
 
