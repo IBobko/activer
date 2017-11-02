@@ -17,7 +17,7 @@
 </div>
 
 <div style="text-align: center;margin:20px">
-    <video poster="http://onoffline.ru/static/video/first-cadr.png" src="http://onoffline.ru/static/video/on-off-long.mp4"  width="640" height="480" controls></video>
+    <video poster="http://onoffline.ru:8080/static/video/first-cadr.png" src="http://onoffline.ru:8080/static/video/on-off-long.mp4"  width="640" height="480" controls></video>
 </div>
 
 <h4 style="color: #3F51B5;font-weight:bold; text-align: center">Мы меняем взгляд на социальные сети</h4>
