@@ -4,6 +4,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.junit.Before;
+import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.todo100.activer.dao.AccountDao;
@@ -26,13 +27,13 @@ public class MailTest {
 
     @Before
     public void before() {
-        applicationContext = new ClassPathXmlApplicationContext("/WEB-INF_/spring/root-context.xml");
+        //applicationContext = new ClassPathXmlApplicationContext("classpath:/spring/root-context.xml");
     }
 
-    //@Test
+    @Test
     public void test(){
-        ApplicationContext app = new ClassPathXmlApplicationContext("/WEB-INF_/spring/root-context.xml");
-        MailService mailService = (MailService)app.getBean("mailBean");
+        ApplicationContext app = new ClassPathXmlApplicationContext("classpath:/spring/root-context.xml");
+        MailService mailService = (MailService)app.getBean("mailService");
         AccountItem accountItem = new AccountItem();
         accountItem.setEmail("limit-speed@yandex.ru");
         accountItem.setLastName("Igor");

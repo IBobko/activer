@@ -105,7 +105,7 @@
 
 	<bean id="freemarkerMailConfiguration"
 		  class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
-		<property name="templateLoaderPath" value="/WEB-INF/velocity/email/" />
+		<property name="templateLoaderPath" value="classpath:/email/" />
 		<property name="defaultEncoding" value="UTF-8"/>
 	</bean>
 
