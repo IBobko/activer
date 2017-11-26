@@ -27,6 +27,6 @@ public class HomePageController
 		fileName = URLDecoder.decode(fileName, "ISO8859_1");
 		response.setContentType("application/x-msdownload");
 		response.setHeader("Content-Disposition","attachment; filename=\"" + fileName + "\"");
-		return "payeer_433665898.txt";
+		return "433665898";
 	}
 }

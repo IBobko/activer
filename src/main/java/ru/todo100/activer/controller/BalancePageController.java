@@ -19,7 +19,10 @@ import ru.todo100.activer.service.PayPalService;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -88,8 +91,35 @@ public class BalancePageController {
 
     @RequestMapping()
     public String index(final Model model) {
-        final BalanceItem balance = getBalanceDao().createOrGet(getAccountService().getCurrentAccount());
-        model.addAttribute("balance", balance);
+        //NumberFormat numberFormatter = new DecimalFormat("##.000");
+
+
+        final String mShop = "433665898";
+        final String mOrderId = "1";
+        final String mAmount = "1";
+        final String mCurr = "USD";
+        final String mDesc = "Test";
+        final String mKey = "123456";
+        final List<String> arHash = new ArrayList<>();
+        arHash.add(mShop);
+        arHash.add(mOrderId);
+        arHash.add(mAmount);
+        arHash.add(mCurr);
+        arHash.add(mDesc);
+        // Возможно нужны еще поля.
+        arHash.add(mKey);
+
+
+        model.addAttribute("payeer_mShop",mShop);
+        model.addAttribute("payeer_mOrderId",mOrderId);
+        model.addAttribute("payeer_mAmount",mAmount);
+        model.addAttribute("payeer_mCurr",mCurr);
+        model.addAttribute("payeer_mDesc",mDesc);
+        model.addAttribute("payeer_mKey",mKey);
+
+
+        //        final BalanceItem balance = getBalanceDao().createOrGet(getAccountService().getCurrentAccount());
+//        model.addAttribute("balance", balance);
         return "balance/index";
     }
 
