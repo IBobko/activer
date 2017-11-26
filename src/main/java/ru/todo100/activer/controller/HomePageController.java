@@ -23,10 +23,10 @@ public class HomePageController
 	@ResponseBody
 	@RequestMapping("/payeer_433665898.txt")
 	public String txt(HttpServletResponse response) throws UnsupportedEncodingException {
-		String fileName = URLEncoder.encode("payeer_433665898.txt", "UTF-8");
-		fileName = URLDecoder.decode(fileName, "ISO8859_1");
-		response.setContentType("application/x-msdownload");
-		response.setHeader("Content-Disposition","attachment; filename=\"" + fileName + "\"");
+		//String fileName = URLEncoder.encode("payeer_433665898.txt", "UTF-8");
+		//fileName = URLDecoder.decode(fileName, "ISO8859_1");
+		//response.setContentType("application/x-msdownload");
+		//response.setHeader("Content-Disposition","attachment; filename=\"" + fileName + "\"");
 		return "433665898";
 	}
 }
