@@ -3,7 +3,10 @@ package ru.todo100.activer.controller;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +16,7 @@ import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.BalanceDao;
 import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.model.BalanceItem;
+import ru.todo100.activer.payeer.domain.PayeerForm;
 import ru.todo100.activer.service.BalanceService;
 import ru.todo100.activer.service.PayPalService;
 
@@ -55,12 +59,19 @@ class Pay implements Serializable {
 @SuppressWarnings("WeakerAccess")
 @Controller
 @RequestMapping("/balance")
-public class BalancePageController {
+public class BalancePageController implements ApplicationContextAware {
 
     private BalanceDao balanceDao;
     private AccountDao accountService;
     private PayPalService payPalService;
     private BalanceService balanceService;
+
+    public ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
     public BalanceDao getBalanceDao() {
         return balanceDao;
@@ -91,15 +102,20 @@ public class BalancePageController {
 
     @RequestMapping()
     public String index(final Model model) {
+        PayeerForm form = new PayeerForm();
+
         //NumberFormat numberFormatter = new DecimalFormat("##.000");
 
+        form.setShop(getApplicationContext().getEnvironment().getProperty("payeer.shop"));
+        form.setKey(getApplicationContext().getEnvironment().getProperty("payeer.key"));
 
-        final String mShop = "433665898";
+
+        final String mShop = getApplicationContext().getEnvironment().getProperty("payeer.shop");
         final String mOrderId = "1";
         final String mAmount = "1";
-        final String mCurr = "USD";
+        final String mCurr = getApplicationContext().getEnvironment().getProperty("payeer.default_curr");
         final String mDesc = "Test";
-        final String mKey = "123456";
+        final String mKey = getApplicationContext().getEnvironment().getProperty("payeer.key");
         final List<String> arHash = new ArrayList<>();
         arHash.add(mShop);
         arHash.add(mOrderId);
@@ -109,13 +125,13 @@ public class BalancePageController {
         // Возможно нужны еще поля.
         arHash.add(mKey);
 
-
-        model.addAttribute("payeer_mShop",mShop);
-        model.addAttribute("payeer_mOrderId",mOrderId);
-        model.addAttribute("payeer_mAmount",mAmount);
-        model.addAttribute("payeer_mCurr",mCurr);
-        model.addAttribute("payeer_mDesc",mDesc);
-        model.addAttribute("payeer_mKey",mKey);
+        model.addAttribute("payeer", form);
+        model.addAttribute("payeer_mShop", mShop);
+        model.addAttribute("payeer_mOrderId", mOrderId);
+        model.addAttribute("payeer_mAmount", mAmount);
+        model.addAttribute("payeer_mCurr", mCurr);
+        model.addAttribute("payeer_mDesc", mDesc);
+        model.addAttribute("payeer_mKey", mKey);
 
 
         //        final BalanceItem balance = getBalanceDao().createOrGet(getAccountService().getCurrentAccount());
@@ -225,5 +241,10 @@ public class BalancePageController {
             request.getSession().removeAttribute("pay");
         }
         return new ModelAndView("redirect:/balance");
+    }
+
+    @Override
+    public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }

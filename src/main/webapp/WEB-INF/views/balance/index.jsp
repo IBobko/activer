@@ -36,7 +36,7 @@
 </form>
 
 <form method="post" action="https://payeer.com/merchant/">
-    <input type="hidden" name="m_shop" value="${payeer_mShop}">
+    <input type="hidden" name="m_shop" value="${payeer.shop}">
     <input type="hidden" name="m_orderid" value="${payeer_mOrderId}">
     <input type="hidden" name="m_amount" value="${payeer_mAmount}">
     <input type="hidden" name="m_curr" value="${payeer_mCurr}">

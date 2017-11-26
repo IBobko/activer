@@ -21,7 +21,7 @@ public class HomePageController
 	}
 
 	@ResponseBody
-	@RequestMapping("/payeer_433665898.txt")
+	@RequestMapping("/payeer_433788345.txt")
 	public String txt(HttpServletResponse response) throws UnsupportedEncodingException {
 		//String fileName = URLEncoder.encode("payeer_433665898.txt", "UTF-8");
 		//fileName = URLDecoder.decode(fileName, "ISO8859_1");
