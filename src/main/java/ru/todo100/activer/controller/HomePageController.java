@@ -16,7 +16,7 @@ public class HomePageController
 	}
 
 	@ResponseBody
-	@RequestMapping("/telderi8ed3a10837674abc41ae029629c84a1e.txt")
+	@RequestMapping("/payeer_433665898.txt")
 	public String txt()
 	{
 		return "1";
