@@ -102,37 +102,27 @@ public class BalancePageController implements ApplicationContextAware {
 
     @RequestMapping()
     public String index(final Model model) {
-        PayeerForm form = new PayeerForm();
+        final PayeerForm form = new PayeerForm();
 
         //NumberFormat numberFormatter = new DecimalFormat("##.000");
 
         form.setShop(getApplicationContext().getEnvironment().getProperty("payeer.shop"));
         form.setKey(getApplicationContext().getEnvironment().getProperty("payeer.key"));
+        form.setOrder(1);
+        form.setAmount(1);
+        form.setDesc("Test");
+        form.setCurr(getApplicationContext().getEnvironment().getProperty("payeer.default_curr"));
 
-
-        final String mShop = getApplicationContext().getEnvironment().getProperty("payeer.shop");
-        final String mOrderId = "1";
-        final String mAmount = "1";
-        final String mCurr = getApplicationContext().getEnvironment().getProperty("payeer.default_curr");
-        final String mDesc = "Test";
-        final String mKey = getApplicationContext().getEnvironment().getProperty("payeer.key");
         final List<String> arHash = new ArrayList<>();
-        arHash.add(mShop);
-        arHash.add(mOrderId);
-        arHash.add(mAmount);
-        arHash.add(mCurr);
-        arHash.add(mDesc);
+        arHash.add(form.getShop());
+        arHash.add(form.getOrder().toString());
+        arHash.add(form.getAmount().toString());
+        arHash.add(form.getCurr());
+        arHash.add(form.getDesc());
         // Возможно нужны еще поля.
-        arHash.add(mKey);
+        arHash.add(form.getKey());
 
         model.addAttribute("payeer", form);
-        model.addAttribute("payeer_mShop", mShop);
-        model.addAttribute("payeer_mOrderId", mOrderId);
-        model.addAttribute("payeer_mAmount", mAmount);
-        model.addAttribute("payeer_mCurr", mCurr);
-        model.addAttribute("payeer_mDesc", mDesc);
-        model.addAttribute("payeer_mKey", mKey);
-
 
         //        final BalanceItem balance = getBalanceDao().createOrGet(getAccountService().getCurrentAccount());
 //        model.addAttribute("balance", balance);
