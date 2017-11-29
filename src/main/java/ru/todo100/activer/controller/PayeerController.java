@@ -69,7 +69,7 @@ public class PayeerController {
      * @return null
      */
     @ResponseBody
-    @RequestMapping(value = "/status", method = RequestMethod.POST)
+    @RequestMapping(value = "/status")
     public String handlerPage(@RequestParam final Map<String, String> params, final HttpServletRequest request) {
         final List<String> allowedIp = new ArrayList<>();
         allowedIp.add("185.71.65.92");
