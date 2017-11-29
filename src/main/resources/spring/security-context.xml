@@ -31,6 +31,7 @@
         <intercept-url pattern="/auth/**" access="permitAll"/>
         <intercept-url pattern="/agreement/**" access="permitAll"/>
         <intercept-url pattern="/resources/**" access="permitAll"/>
+        <intercept-url pattern="/payeer/status" access="permitAll"/>
 
         <intercept-url pattern="/admin/partner/**" access="hasRole('ROLE_PARTNER')"/>
         <intercept-url pattern="/admin/creator/**" access="hasRole('ROLE_CREATOR')"/>
