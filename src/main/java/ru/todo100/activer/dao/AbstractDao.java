@@ -10,6 +10,7 @@ import ru.todo100.activer.model.Item;
 import ru.todo100.activer.model.WallItem;
 import ru.todo100.activer.qualifier.WallQualifier;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -30,7 +31,9 @@ abstract public class AbstractDao<T> {
 
     public Criteria getCriteria() {
         final Session session = getSession();
-        session.beginTransaction();
+        if (!session.getTransaction().isActive()) {
+            session.beginTransaction();
+        }
         return session.createCriteria(getItemClass());
     }
 

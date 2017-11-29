@@ -34,16 +34,3 @@
         </tr>
     </table>
 </form>
-
-<form method="post" action="https://payeer.com/merchant/">
-    <input type="hidden" name="m_shop" value="${payeer.shop}">
-    <input type="hidden" name="m_orderid" value="${payeer.order}">
-    <input type="hidden" name="m_amount" value="${payeer.amount}">
-    <input type="hidden" name="m_curr" value="${payeer.curr}">
-    <input type="hidden" name="m_desc" value="${payeer.desc}">
-    <input type="hidden" name="m_sign" value="${payeer_sign}">
-    <input type="hidden" name="form[ps]" value="2609">
-    <input type="hidden" name="form[curr[2609]]" value="${payeer.curr}">
-    <%--<input type="hidden" name="m_params" value="<?=$m_params?>">--%>
-    <input type="submit" name="m_process" value="send"/>
-</form>

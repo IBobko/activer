@@ -213,4 +213,7 @@
 		<put-attribute name="content" value="/WEB-INF/views/topline/index.jsp"/>
 	</definition>
 
+
+	<definition name="balance/payeer_submit" template="/WEB-INF/views/payeer/form_submit.jsp"/>
+
 </tiles-definitions> 

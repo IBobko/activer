@@ -1,12 +1,6 @@
 package ru.todo100.activer.controller;
 
-import com.paypal.api.payments.*;
-import com.paypal.base.rest.APIContext;
-import com.paypal.base.rest.PayPalRESTException;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +11,7 @@ import ru.todo100.activer.dao.BalanceDao;
 import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.model.BalanceItem;
 import ru.todo100.activer.payeer.domain.PayeerForm;
+import ru.todo100.activer.payeer.service.PayeerService;
 import ru.todo100.activer.service.BalanceService;
 import ru.todo100.activer.service.PayPalService;
 
@@ -25,10 +20,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
@@ -59,19 +50,14 @@ class Pay implements Serializable {
 @SuppressWarnings("WeakerAccess")
 @Controller
 @RequestMapping("/balance")
-public class BalancePageController implements ApplicationContextAware {
+public class BalancePageController {
 
     private BalanceDao balanceDao;
     private AccountDao accountService;
     private PayPalService payPalService;
     private BalanceService balanceService;
 
-    public ApplicationContext getApplicationContext() {
-        return applicationContext;
-    }
-
-    @Autowired
-    private ApplicationContext applicationContext;
+    private PayeerService payeerService;
 
     public BalanceDao getBalanceDao() {
         return balanceDao;
@@ -100,106 +86,109 @@ public class BalancePageController implements ApplicationContextAware {
         this.payPalService = payPalService;
     }
 
+    public PayeerService getPayeerService() {
+        return payeerService;
+    }
+
+    @Autowired
+    public void setPayeerService(PayeerService payeerService) {
+        this.payeerService = payeerService;
+    }
+
     @RequestMapping()
     public String index(final Model model) {
-        final PayeerForm form = new PayeerForm();
-
-        //NumberFormat numberFormatter = new DecimalFormat("##.000");
-
-        form.setShop(getApplicationContext().getEnvironment().getProperty("payeer.shop"));
-        form.setKey(getApplicationContext().getEnvironment().getProperty("payeer.key"));
-        form.setOrder(1);
-        form.setAmount(1);
-        form.setDesc("Test");
-        form.setCurr(getApplicationContext().getEnvironment().getProperty("payeer.default_curr"));
-
-        final List<String> arHash = new ArrayList<>();
-        arHash.add(form.getShop());
-        arHash.add(form.getOrder().toString());
-        arHash.add(form.getAmount().toString());
-        arHash.add(form.getCurr());
-        arHash.add(form.getDesc());
-        // Возможно нужны еще поля.
-        arHash.add(form.getKey());
-
-        model.addAttribute("payeer", form);
-
-        //        final BalanceItem balance = getBalanceDao().createOrGet(getAccountService().getCurrentAccount());
-//        model.addAttribute("balance", balance);
+        final BalanceItem balance = getBalanceDao().createOrGet(getAccountService().getCurrentAccount());
+        model.addAttribute("balance", balance);
         return "balance/index";
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView post(final HttpServletRequest request) {
-        final APIContext apiContext = getPayPalService().getApiContext();
-        if (apiContext == null) return null;
-
-        final BigDecimal sum = new BigDecimal(request.getParameter("sum"));
-
-
-//        final Details details = new Details();
-//        details.setShipping("1");
-//        details.setSubtotal(sum.subtract(new BigDecimal("2")).toString());
-//        details.setTax("1");
-
-        Amount amount = new Amount();
-        amount.setCurrency("USD");
-        amount.setTotal(sum.toString());
-        //amount.setDetails(details);
-
-
-        Transaction transaction = new Transaction();
-        transaction.setAmount(amount);
-        //transaction.setDescription("This is the payment transaction description.");
-
-        Item item = new Item();
-        item.setName("Ground Coffee 40 oz").setQuantity("1").setCurrency("USD").setPrice(sum.toString());
-        ItemList itemList = new ItemList();
-        List<Item> items = new ArrayList<>();
-        items.add(item);
-        itemList.setItems(items);
-
-        transaction.setItemList(itemList);
-
-
-        final List<Transaction> transactions = new ArrayList<>();
-        transactions.add(transaction);
-
-        Payer payer = new Payer();
-        payer.setPaymentMethod("paypal");
-
-        Payment payment = new Payment();
-        payment.setIntent("sale");
-        payment.setPayer(payer);
-        payment.setTransactions(transactions);
-
-        RedirectUrls redirectUrls = new RedirectUrls();
-
-
-        final String guid = UUID.randomUUID().toString().replaceAll("-", "");
-
-        redirectUrls.setCancelUrl(getPayPalService().getServerName(request) + "/balance/cancel?guid=" + guid);
-        redirectUrls.setReturnUrl(getPayPalService().getServerName(request) + "/balance/result/?guid=" + guid);
-        payment.setRedirectUrls(redirectUrls);
-
-        String href = "/balance";
-        try {
-            Payment createdPayment = payment.create(apiContext);
-            for (final Links link : createdPayment.getLinks()) {
-                if (link.getRel().equalsIgnoreCase("approval_url")) {
-                    href = link.getHref();
-                    break;
-                }
-            }
-        } catch (PayPalRESTException ignored) {
+    public ModelAndView post(final HttpServletRequest request, final Model model) {
+        final String sum = request.getParameter("sum");
+        if (sum == null) {
+            return new ModelAndView("redict:/balance");
         }
 
-        final Pay pay = new Pay();
-        pay.setGuid(guid);
-        pay.setSum(sum);
-        request.getSession().setAttribute("pay", pay);
-
-        return new ModelAndView("redirect:" + href);
+        final PayeerForm form = new PayeerForm();
+        final NumberFormat numberFormatter = new DecimalFormat("0.00");
+        form.setShop(getPayeerService().getShop());
+        form.setKey(getPayeerService().getKey());
+        form.setOrder(1);
+        form.setAmount(numberFormatter.format(Double.parseDouble(sum)));
+        form.setDesc("Test");
+        form.setCurr(getPayeerService().getDefaultCurr());
+        form.setSign(getPayeerService().getSign(form));
+        model.addAttribute("payeer", form);
+        return new ModelAndView("balance/payeer_submit", model.asMap());
+//        final APIContext apiContext = getPayPalService().getApiContext();
+//        if (apiContext == null) return null;
+//
+//        final BigDecimal sum = new BigDecimal(request.getParameter("sum"));
+//
+//
+////        final Details details = new Details();
+////        details.setShipping("1");
+////        details.setSubtotal(sum.subtract(new BigDecimal("2")).toString());
+////        details.setTax("1");
+//
+//        Amount amount = new Amount();
+//        amount.setCurrency("USD");
+//        amount.setTotal(sum.toString());
+//        //amount.setDetails(details);
+//
+//
+//        Transaction transaction = new Transaction();
+//        transaction.setAmount(amount);
+//        //transaction.setDescription("This is the payment transaction description.");
+//
+//        Item item = new Item();
+//        item.setName("Ground Coffee 40 oz").setQuantity("1").setCurrency("USD").setPrice(sum.toString());
+//        ItemList itemList = new ItemList();
+//        List<Item> items = new ArrayList<>();
+//        items.add(item);
+//        itemList.setItems(items);
+//
+//        transaction.setItemList(itemList);
+//
+//
+//        final List<Transaction> transactions = new ArrayList<>();
+//        transactions.add(transaction);
+//
+//        Payer payer = new Payer();
+//        payer.setPaymentMethod("paypal");
+//
+//        Payment payment = new Payment();
+//        payment.setIntent("sale");
+//        payment.setPayer(payer);
+//        payment.setTransactions(transactions);
+//
+//        RedirectUrls redirectUrls = new RedirectUrls();
+//
+//
+//        final String guid = UUID.randomUUID().toString().replaceAll("-", "");
+//
+//        redirectUrls.setCancelUrl(getPayPalService().getServerName(request) + "/balance/cancel?guid=" + guid);
+//        redirectUrls.setReturnUrl(getPayPalService().getServerName(request) + "/balance/result/?guid=" + guid);
+//        payment.setRedirectUrls(redirectUrls);
+//
+//        String href = "/balance";
+//        try {
+//            Payment createdPayment = payment.create(apiContext);
+//            for (final Links link : createdPayment.getLinks()) {
+//                if (link.getRel().equalsIgnoreCase("approval_url")) {
+//                    href = link.getHref();
+//                    break;
+//                }
+//            }
+//        } catch (PayPalRESTException ignored) {
+//        }
+//
+//        final Pay pay = new Pay();
+//        pay.setGuid(guid);
+//        pay.setSum(sum);
+//        request.getSession().setAttribute("pay", pay);
+//
+//        return new ModelAndView("redirect:" + href);
     }
 
     @RequestMapping("/cancel")
@@ -231,10 +220,5 @@ public class BalancePageController implements ApplicationContextAware {
             request.getSession().removeAttribute("pay");
         }
         return new ModelAndView("redirect:/balance");
-    }
-
-    @Override
-    public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
     }
 }
