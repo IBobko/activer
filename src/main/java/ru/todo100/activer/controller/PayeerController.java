@@ -6,9 +6,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import ru.todo100.activer.dao.AccountDao;
+import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.payeer.service.PayeerService;
+import ru.todo100.activer.service.BalanceService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +21,24 @@ import java.util.Map;
 @RequestMapping("/payeer")
 public class PayeerController {
     private PayeerService payeerService;
+    private BalanceService balanceService;
+    private AccountDao accountService;
+
+    public BalanceService getBalanceService() {
+        return balanceService;
+    }
+
+    public void setBalanceService(BalanceService balanceService) {
+        this.balanceService = balanceService;
+    }
+
+    public AccountDao getAccountService() {
+        return accountService;
+    }
+
+    public void setAccountService(AccountDao accountService) {
+        this.accountService = accountService;
+    }
 
     private PayeerService getPayeerService() {
         return payeerService;
@@ -78,7 +100,8 @@ public class PayeerController {
             arHash.add(key);
             final String hash = getPayeerService().getHash(arHash);
             if (params.get("m_sign").equals(hash) && params.get("m_status").equals("success")) {
-                // Здесь нужно запустить процесс зачисления денег на счет.
+                final ProfileData profileData = getAccountService().getCurrentProfileData(request.getSession());
+                getBalanceService().additionAccountBalanceSum(profileData.getId(), new BigDecimal(params.get("m_amount")), "Поступление средств через Payeer");
                 return null;
             }
         }
