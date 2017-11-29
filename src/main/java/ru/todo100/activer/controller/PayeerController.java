@@ -3,7 +3,6 @@ package ru.todo100.activer.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ru.todo100.activer.dao.AccountDao;
@@ -49,17 +48,14 @@ public class PayeerController {
         this.payeerService = payeerService;
     }
 
-    @ResponseBody
     @RequestMapping("/success")
     public String successPage() {
-        return "1";
+        return "payeer/success";
     }
 
-
-    @ResponseBody
     @RequestMapping("/fail")
     public String failedPage() {
-        return "0";
+        return "payeer/fail";
     }
 
     /**
@@ -77,7 +73,7 @@ public class PayeerController {
         allowedIp.add("149.202.17.210");
 
         if (!allowedIp.contains(request.getRemoteAddr())) {
-            return null;
+            return params.get("m_orderid") + "|error";
         }
 
         if (params.containsKey("m_operation_id") && params.containsKey("m_sign")) {
@@ -102,9 +98,9 @@ public class PayeerController {
             if (params.get("m_sign").equals(hash) && params.get("m_status").equals("success")) {
                 final ProfileData profileData = getAccountService().getCurrentProfileData(request.getSession());
                 getBalanceService().additionAccountBalanceSum(profileData.getId(), new BigDecimal(params.get("m_amount")), "Поступление средств через Payeer");
-                return null;
+                return params.get("m_orderid") + "|success";
             }
         }
-        return null;
+        return params.get("m_orderid") + "|error";
     }
 }

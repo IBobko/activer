@@ -216,4 +216,12 @@
 
 	<definition name="balance/payeer_submit" template="/WEB-INF/views/payeer/form_submit.jsp"/>
 
+	<definition name="payeer/success" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/payeer/success.jsp"/>
+	</definition>
+
+	<definition name="payeer/fail" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/payeer/fail.jsp"/>
+	</definition>
+
 </tiles-definitions> 
