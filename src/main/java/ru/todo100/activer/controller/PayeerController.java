@@ -64,7 +64,7 @@ public class PayeerController {
         allowedIp.add("185.71.65.189");
         allowedIp.add("149.202.17.210");
 
-        if (!allowedIp.contains(request.getRemoteAddr())) {
+        if (!allowedIp.contains(request.getHeader("x-forwarded-for"))) {
             return params.get("m_orderid") + "|error";
         }
 
