@@ -21,7 +21,6 @@ import java.util.Map;
 public class PayeerController {
     private PayeerService payeerService;
     private BalanceService balanceService;
-    private AccountDao accountService;
 
     private BalanceService getBalanceService() {
         return balanceService;
@@ -30,15 +29,6 @@ public class PayeerController {
     @Autowired
     public void setBalanceService(BalanceService balanceService) {
         this.balanceService = balanceService;
-    }
-
-    private AccountDao getAccountService() {
-        return accountService;
-    }
-
-    @Autowired
-    public void setAccountService(AccountDao accountService) {
-        this.accountService = accountService;
     }
 
     private PayeerService getPayeerService() {
@@ -51,33 +41,8 @@ public class PayeerController {
     }
 
     @RequestMapping("/success")
-    public String successPage(@RequestParam final Map<String, String> params, final HttpServletRequest request) {
-        if (params.containsKey("m_operation_id") && params.containsKey("m_sign")) {
-            final String key = getPayeerService().getKey();
-            final List<String> arHash = new ArrayList<>();
-            arHash.add(params.get("m_operation_id"));
-            arHash.add(params.get("m_operation_ps"));
-            arHash.add(params.get("m_operation_date"));
-            arHash.add(params.get("m_operation_pay_date"));
-            arHash.add(params.get("m_shop"));
-            arHash.add(params.get("m_orderid"));
-            arHash.add(params.get("m_amount"));
-            arHash.add(params.get("m_curr"));
-            arHash.add(params.get("m_desc"));
-            arHash.add(params.get("m_status"));
-
-            if (params.containsKey("m_params")) {
-                arHash.add(params.get("m_params"));
-            }
-            arHash.add(key);
-            final String hash = getPayeerService().getHash(arHash);
-            if (params.get("m_sign").equals(hash) && params.get("m_status").equals("success")) {
-                final ProfileData profileData = getAccountService().getCurrentProfileData(request.getSession());
-                getBalanceService().additionAccountBalanceSum(profileData.getId(), new BigDecimal(params.get("m_amount")), "Поступление средств через Payeer");
-                return "payeer/success";
-            }
-        }
-        return "payeer/fail";
+    public String successPage() {
+        return "payeer/success";
     }
 
     @RequestMapping("/fail")
@@ -123,8 +88,7 @@ public class PayeerController {
             arHash.add(key);
             final String hash = getPayeerService().getHash(arHash);
             if (params.get("m_sign").equals(hash) && params.get("m_status").equals("success")) {
-                final ProfileData profileData = getAccountService().getCurrentProfileData(request.getSession());
-                getBalanceService().additionAccountBalanceSum(profileData.getId(), new BigDecimal(params.get("m_amount")), "Поступление средств через Payeer");
+                getBalanceService().additionAccountBalanceSum(Integer.parseInt(params.get("m_desc")), new BigDecimal(params.get("m_amount")), "Поступление средств через Payeer");
                 return params.get("m_orderid") + "|success";
             }
         }

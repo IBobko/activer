@@ -115,7 +115,7 @@ public class BalancePageController {
         form.setKey(getPayeerService().getKey());
         form.setOrder(1);
         form.setAmount(numberFormatter.format(Double.parseDouble(sum)));
-        form.setDesc("Test");
+        form.setDesc(getAccountService().getCurrentProfileData(request.getSession()).getId().toString());
         form.setCurr(getPayeerService().getDefaultCurr());
         form.setSign(getPayeerService().getSign(form));
         model.addAttribute("payeer", form);
