@@ -218,8 +218,22 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
             profileData.setStatus("ROLE_USER");
         }
 
-        profileData.setShowOnline(Boolean.valueOf(getSettingService().getAccountSetting(profileData.getId(), "showOnline")));
-        profileData.setShowPremium(Boolean.valueOf(getSettingService().getAccountSetting(profileData.getId(), "showPremium")));
+        final String showOnline = getSettingService().getAccountSetting(profileData.getId(), "showOnline");
+        // По умолчанию значение показывать что пользовать онлайн.
+        if (showOnline == null) {
+            profileData.setShowOnline(true);
+        } else {
+            profileData.setShowOnline(Boolean.valueOf(showOnline));
+        }
+
+        // По умолчанию значение показывать статус пользователя.
+        final String showPremium = getSettingService().getAccountSetting(profileData.getId(), "showPremium");
+        if (showPremium == null) {
+            profileData.setShowPremium(true);
+        } else {
+            profileData.setShowPremium(Boolean.valueOf(showPremium));
+        }
+
         profileData.setTheme(getSettingService().getAccountSetting(profileData.getId(), "theme"));
         profileData.setReferCode(accountItem.getReferCode());
         profileData.setMaritalStatus(accountItem.getMaritalStatus());

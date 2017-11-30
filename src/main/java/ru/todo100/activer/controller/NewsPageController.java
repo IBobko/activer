@@ -57,7 +57,6 @@ public class NewsPageController {
         return "news/index";
     }
 
-
     public List<Integer> getAccounts(final HttpSession session){
         final List<Integer> accounts = new ArrayList<>();
         final List<FriendData> friends = friendsService.getFriendData(session).getFriends();

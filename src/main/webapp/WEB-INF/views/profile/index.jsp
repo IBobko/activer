@@ -88,8 +88,7 @@
                     </c:if>
                 </c:if>
 
-
-                <h4 class="media-heading">${profile.firstName}&nbsp;${profile.lastName}<c:if test="${profile.age ne 0}">'${profile.age}</c:if></h4>
+                <h4 class="media-heading">${profile.firstName}&nbsp;${profile.lastName}<c:if test="${profile.age ne 0 && profile.age != null}">'${profile.age}</c:if></h4>
                 <table class="table">
                     <tr>
                         <td width="200">Дата рождения:</td>
@@ -151,8 +150,10 @@
                     </tr>
                     <tr>
                         <td>Образование:</td>
-                        <td>${profile.education.university} - Факультет ${profile.education.faculty}
-                            ‘${profile.education.year}</td>
+                        <td>
+                            ${profile.education.university}<c:if test="${not empty profile.education.faculty}"> - Факультет ${profile.education.faculty}</c:if>
+                            <c:if test="${not empty profile.education.year}">‘${profile.education.year}</c:if>
+                        </td>
                     </tr>
                     <tr>
                         <td>Работа:</td>

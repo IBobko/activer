@@ -10,8 +10,8 @@
 <h3 class="title">Новости</h3>
 
 <div id="newsBand" style="overflow-y: scroll; height:600px">
-    <c:forEach var="new" items="${news}">
-        <news:item news="${new}"/>
+    <c:forEach var="post" items="${news}">
+        <news:item news="${post}"/>
     </c:forEach>
 </div>
 

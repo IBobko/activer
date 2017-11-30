@@ -5,8 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import ru.todo100.activer.dao.AccountDao;
-import ru.todo100.activer.data.ProfileData;
 import ru.todo100.activer.payeer.service.PayeerService;
 import ru.todo100.activer.service.BalanceService;
 
