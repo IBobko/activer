@@ -1,6 +1,6 @@
 package ru.todo100.activer.service.impl;
 
-import org.hibernate.SQLQuery;
+import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.dao.BalanceDao;
@@ -21,12 +21,28 @@ import java.util.GregorianCalendar;
 public class BalanceServiceImpl implements BalanceService {
     private AccountDao accountService;
     private BalanceDao balanceDao;
-    @Autowired
     private PaymentDebitDao paymentDebitDao;
-    @Autowired
     private PaymentCreditDao paymentCreditDao;
 
-    public BalanceDao getBalanceDao() {
+    private PaymentDebitDao getPaymentDebitDao() {
+        return paymentDebitDao;
+    }
+
+    @Autowired
+    public void setPaymentDebitDao(PaymentDebitDao paymentDebitDao) {
+        this.paymentDebitDao = paymentDebitDao;
+    }
+
+    private PaymentCreditDao getPaymentCreditDao() {
+        return paymentCreditDao;
+    }
+
+    @Autowired
+    public void setPaymentCreditDao(PaymentCreditDao paymentCreditDao) {
+        this.paymentCreditDao = paymentCreditDao;
+    }
+
+    private BalanceDao getBalanceDao() {
         return balanceDao;
     }
 
@@ -52,8 +68,8 @@ public class BalanceServiceImpl implements BalanceService {
     }
 
     public BigDecimal getSpentSumByAccount(Integer account_id) {
-        final SQLQuery q = getBalanceDao().getSession().createSQLQuery("select SUM(payment_debit_sum) from payment_debit order by id;");
-        final Integer sum = (Integer)q.uniqueResult();
+        final NativeQuery q = getBalanceDao().getSession().createNativeQuery("SELECT SUM(payment_debit_sum) FROM payment_debit ORDER BY id;");
+        final Integer sum = (Integer) q.uniqueResult();
         return new BigDecimal(sum);
     }
 
@@ -62,7 +78,7 @@ public class BalanceServiceImpl implements BalanceService {
         final AccountItem accountItem = getAccountService().get(accountId);
         final BalanceItem balanceItem = getBalanceDao().createOrGet(accountItem);
         int compare = balanceItem.getSum().compareTo(subtrahend);
-        if (compare == 1 || compare == 0) {
+        if (compare >= 0) {
             BigDecimal newSum = balanceItem.getSum().subtract(subtrahend);
             setAccountBalanceSum(accountItem, newSum);
             final PaymentCreditItem paymentCreditItem = new PaymentCreditItem();
@@ -70,14 +86,14 @@ public class BalanceServiceImpl implements BalanceService {
             paymentCreditItem.setPaymentCreditDescription(description);
             paymentCreditItem.setPaymentCreditSum(subtrahend);
             paymentCreditItem.setDate(new GregorianCalendar());
-            paymentCreditDao.save(paymentCreditItem);
+            getPaymentCreditDao().save(paymentCreditItem);
 
             final PaymentDebitItem paymentDebitItem = new PaymentDebitItem();
             paymentDebitItem.setAccountId(accountItem.getId());
             paymentDebitItem.setPaymentDebitDescription(description);
             paymentDebitItem.setPaymentDebitSum(subtrahend);
             paymentDebitItem.setDate(new GregorianCalendar());
-            paymentDebitDao.save(paymentDebitItem);
+            getPaymentDebitDao().save(paymentDebitItem);
 
             return true;
         }

@@ -1,11 +1,14 @@
 package ru.todo100.activer.service.impl;
 
-import org.hibernate.*;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.todo100.activer.dao.AccountDao;
-
 import ru.todo100.activer.data.AdminAccountData;
 import ru.todo100.activer.data.AdminAccountQualifier;
 import ru.todo100.activer.data.PartnerInfo;
@@ -29,7 +32,7 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     private SessionFactory sessionFactory;
     private AccountDao accountService;
 
-    public ReferService getReferService() {
+    private ReferService getReferService() {
         return referService;
     }
 
@@ -38,7 +41,7 @@ public class AdminAccountServiceImpl implements AdminAccountService {
         this.referService = referService;
     }
 
-    public PartnerService getPartnerService() {
+    private PartnerService getPartnerService() {
         return partnerService;
     }
 
@@ -48,7 +51,7 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     }
 
 
-    public SessionFactory getSessionFactory() {
+    private SessionFactory getSessionFactory() {
         return sessionFactory;
     }
 
@@ -70,7 +73,7 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     public void synchronize() {
         final Session session = getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
-        session.createSQLQuery("delete from admin_account_list_cache").executeUpdate();
+        session.createNativeQuery("DELETE FROM admin_account_list_cache").executeUpdate();
         tx.commit();
 
         tx = session.beginTransaction();
@@ -101,7 +104,7 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     private Criteria generateCriteria(final AdminAccountQualifier qualifier) {
         final Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(AdminAccountListCacheItem.class);
         if (qualifier.getOnOffline() != null) {
-            criteria.createAlias("accountItem","accountItem");
+            criteria.createAlias("accountItem", "accountItem");
             criteria.add(Restrictions.sqlRestriction("isOnline(accountite1_.account_last_activity) = " + (qualifier.getOnOffline() ? 1 : 0)));
         }
         return criteria;
@@ -112,11 +115,11 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     @Transactional
     public List<AdminAccountData> getAccounts(AdminAccountQualifier qualifier) {
         final Criteria criteria = generateCriteria(qualifier);
-        if (qualifier.getCount()!=null) {
+        if (qualifier.getCount() != null) {
             criteria.setMaxResults(qualifier.getCount());
         }
 
-        if (qualifier.getStart()!=null) {
+        if (qualifier.getStart() != null) {
             criteria.setFirstResult(qualifier.getStart());
         }
 
@@ -178,17 +181,17 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     @Override
     @Transactional
     public Long getTotalOnlineAccountAmount() {
-        SQLQuery query = getSessionFactory().getCurrentSession().createSQLQuery("select COUNT(*)\n" +
-                "from ACCOUNT where ((extract(day    from (systimestamp - timestamp '1970-01-01 00:00:00')) * 86400000\n" +
-                "+ extract(hour   from (systimestamp - timestamp '1970-01-01 00:00:00')) * 3600000\n" +
-                "+ extract(minute from (systimestamp - timestamp '1970-01-01 00:00:00')) * 60000\n" +
-                "+ extract(second from (systimestamp - timestamp '1970-01-01 00:00:00')) * 1000)\n" +
+        final NativeQuery query = getSessionFactory().getCurrentSession().createNativeQuery("SELECT COUNT(*)\n" +
+                "FROM ACCOUNT WHERE ((extract(DAY    FROM (systimestamp - TIMESTAMP '1970-01-01 00:00:00')) * 86400000\n" +
+                "+ extract(HOUR   FROM (systimestamp - TIMESTAMP '1970-01-01 00:00:00')) * 3600000\n" +
+                "+ extract(MINUTE FROM (systimestamp - TIMESTAMP '1970-01-01 00:00:00')) * 60000\n" +
+                "+ extract(SECOND FROM (systimestamp - TIMESTAMP '1970-01-01 00:00:00')) * 1000)\n" +
                 "-\n" +
-                "(extract(day    from (ACCOUNT_LAST_ACTIVITY - timestamp '1970-01-01 00:00:00')) * 86400000\n" +
-                "+ extract(hour   from (ACCOUNT_LAST_ACTIVITY - timestamp '1970-01-01 00:00:00')) * 3600000\n" +
-                "+ extract(minute from (ACCOUNT_LAST_ACTIVITY - timestamp '1970-01-01 00:00:00')) * 60000\n" +
-                "+ extract(second from (ACCOUNT_LAST_ACTIVITY - timestamp '1970-01-01 00:00:00')) * 1000)) < 600000");
+                "(extract(DAY    FROM (ACCOUNT_LAST_ACTIVITY - TIMESTAMP '1970-01-01 00:00:00')) * 86400000\n" +
+                "+ extract(HOUR   FROM (ACCOUNT_LAST_ACTIVITY - TIMESTAMP '1970-01-01 00:00:00')) * 3600000\n" +
+                "+ extract(MINUTE FROM (ACCOUNT_LAST_ACTIVITY - TIMESTAMP '1970-01-01 00:00:00')) * 60000\n" +
+                "+ extract(SECOND FROM (ACCOUNT_LAST_ACTIVITY - TIMESTAMP '1970-01-01 00:00:00')) * 1000)) < 600000");
 
-        return ((BigDecimal)query.uniqueResult()).longValue();
+        return ((BigDecimal) query.uniqueResult()).longValue();
     }
 }

@@ -34,7 +34,7 @@ public class PremiumPageController {
         this.accountService = accountService;
     }
 
-    public BalanceService getBalanceService() {
+    private BalanceService getBalanceService() {
         return balanceService;
     }
 
@@ -58,6 +58,7 @@ public class PremiumPageController {
         for (AuthorityItem item : accountItem.getAuthorities()) {
             if (item.getRole().equals(ROLE_FOR_BUYING)) {
                 alreadyHasPartnerPrivileges = true;
+                break;
             }
         }
 
@@ -67,7 +68,7 @@ public class PremiumPageController {
 
         final BigDecimal accountBalance = accountItem.getBalance().getSum();
 
-        if (accountBalance.compareTo(PREMIUM_PRICE) == -1) {
+        if (accountBalance.compareTo(PREMIUM_PRICE) < 0) {
             return "redirect:/";
         }
 

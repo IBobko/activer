@@ -17,8 +17,8 @@ public class HappenedDisputeDao extends AbstractDao {
     }
 
     @Transactional
-    public HappenedDisputeItem create(Integer initAccount,Integer appliedAccount) {
-        final DisputeThemeItem theme = (DisputeThemeItem)getSession().createSQLQuery("SELECT * FROM (SELECT * FROM dispute_theme ORDER BY DBMS_RANDOM.RANDOM) WHERE rownum < 2")
+    public HappenedDisputeItem create(Integer initAccount, Integer appliedAccount) {
+        final DisputeThemeItem theme = (DisputeThemeItem) getSession().createNativeQuery("SELECT * FROM (SELECT * FROM dispute_theme ORDER BY DBMS_RANDOM.RANDOM) t WHERE rownum < 2")
                 .addEntity(DisputeThemeItem.class).uniqueResult();
         final HappenedDisputeItem happenedDisputeItem = new HappenedDisputeItem();
         happenedDisputeItem.setAccountAppliedId(appliedAccount);

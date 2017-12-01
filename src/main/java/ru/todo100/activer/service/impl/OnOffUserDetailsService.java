@@ -4,6 +4,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,7 +14,7 @@ import java.util.List;
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
 
-public class OnOffUserDetailsService extends JdbcDaoImpl {
+public class OnOffUserDetailsService extends JdbcUserDetailsManager {
     public OnOffUserDetailsService() {
         super();
     }
@@ -21,5 +22,7 @@ public class OnOffUserDetailsService extends JdbcDaoImpl {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return super.loadUserByUsername(username);
     }
+
+
 
 }

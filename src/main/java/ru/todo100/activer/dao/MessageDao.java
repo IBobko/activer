@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Igor Bobko <limit-speed@yandex.ru>.
@@ -48,12 +49,12 @@ public class MessageDao extends AbstractDao {
                 "(account_from = " + person2 + " and account_to = " + person1 + ")";
 
 
-        @SuppressWarnings("unchecked") List<Object[]> rows = getSessionFactory().getCurrentSession().createSQLQuery(sql).list();
+        @SuppressWarnings("unchecked") List<Object[]> rows = getSessionFactory().getCurrentSession().createNativeQuery(sql).list();
         System.out.println("SQL QUERY:" + (System.currentTimeMillis() - start));
 
         start = System.currentTimeMillis();
 
-        List<MessageItem> result = new ArrayList<MessageItem>();
+        List<MessageItem> result = new ArrayList<>();
         for (Object[] row : rows) {
             MessageItem messageItem = new MessageItem();
             messageItem.setId(((BigDecimal) row[0]).intValue());
@@ -87,7 +88,8 @@ public class MessageDao extends AbstractDao {
             boolean needForAdd = true;
             while (it.hasNext()) {
                 final MessageItem item = it.next();
-                if (item.getAccountFrom() == null || row[0] == null || item.getAccountTo() == null || row[1] == null) continue;
+                if (item.getAccountFrom() == null || row[0] == null || item.getAccountTo() == null || row[1] == null)
+                    continue;
                 if ((item.getAccountFrom().equals(row[0]) && item.getAccountTo().equals(row[1])) ||
                         (item.getAccountFrom().equals(row[1]) && item.getAccountTo().equals(row[0]))) {
                     if (item.getAddedDate().getTime().getTime() < messageItem.getAddedDate().getTime().getTime()) {
@@ -147,7 +149,7 @@ public class MessageDao extends AbstractDao {
         Integer count = 0;
         List<MessageItem> dialogs = getDialogs(accountId);
         for (MessageItem message : dialogs) {
-            if (message.getAccountFrom() == accountId) {
+            if (Objects.equals(message.getAccountFrom(), accountId)) {
                 count += countNotRed(message.getAccountTo(), accountId).intValue();
             } else {
                 count += countNotRed(message.getAccountFrom(), accountId).intValue();
@@ -164,7 +166,7 @@ public class MessageDao extends AbstractDao {
         return messageCounterAdd(session, -1);
     }
 
-    public boolean messageCounterAdd(final HttpSession session, final int i) {
+    private boolean messageCounterAdd(final HttpSession session, final int i) {
         Integer countOfUnreadMessages = (Integer) session.getAttribute("unreadMessages");
         if (countOfUnreadMessages != null && countOfUnreadMessages + i >= 0) {
             session.setAttribute("unreadMessages", countOfUnreadMessages + i);

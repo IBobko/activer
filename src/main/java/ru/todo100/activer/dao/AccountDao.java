@@ -81,7 +81,7 @@ public class AccountDao extends AbstractDao {
     private VideoPopulator videoPopulator;
     private JobPopulator jobPopulator;
 
-    public VideoPopulator getVideoPopulator() {
+    private VideoPopulator getVideoPopulator() {
         return videoPopulator;
     }
 
@@ -282,7 +282,7 @@ public class AccountDao extends AbstractDao {
     }
 
     public void deleteOldInterests() {
-        getSession().createSQLQuery("DELETE FROM INTEREST WHERE account_id is null").executeUpdate();
+        getSession().createNativeQuery("DELETE FROM INTEREST WHERE account_id IS NULL").executeUpdate();
     }
 
     public AccountItem saveForm(RegisterForm registerForm) throws InputError {
@@ -366,7 +366,7 @@ public class AccountDao extends AbstractDao {
     public AccountItem getRandomOnlineAccount(HttpSession session) {
         ProfileData profileData = getCurrentProfileData(session);
 
-        final List<BigDecimal> result = getSession().createSQLQuery(
+        final List<BigDecimal> result = getSession().createNativeQuery(
                 "select id from (select id,extract( day from diff )*24*60*60*1000 + " +
                         " extract( hour from diff )*60*60*1000 + " +
                         " extract( minute from diff )*60*1000 + " +
@@ -456,7 +456,7 @@ public class AccountDao extends AbstractDao {
         return datas;
     }
 
-    public JobPopulator getJobPopulator() {
+    private JobPopulator getJobPopulator() {
         return jobPopulator;
     }
 
