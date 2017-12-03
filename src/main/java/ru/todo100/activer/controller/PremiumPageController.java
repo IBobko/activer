@@ -63,13 +63,13 @@ public class PremiumPageController {
         }
 
         if (alreadyHasPartnerPrivileges) {
-            return "redirect:/";
+            return "premium/already_have";
         }
 
         final BigDecimal accountBalance = accountItem.getBalance().getSum();
 
         if (accountBalance.compareTo(PREMIUM_PRICE) < 0) {
-            return "redirect:/";
+            return "premium/not_enough_money";
         }
 
         final AuthorityItem item = new AuthorityItem();

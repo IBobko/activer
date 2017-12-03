@@ -198,6 +198,14 @@
 		<put-attribute name="content" value="/WEB-INF/views/premium/success.jsp"/>
 	</definition>
 
+	<definition name="premium/not_enough_money" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/premium/not_enough_money.jsp"/>
+	</definition>
+
+	<definition name="premium/already_have" extends="base-template">
+		<put-attribute name="content" value="/WEB-INF/views/premium/already_have.jsp"/>
+	</definition>
+
 	<definition name="premium/index" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/premium/index.jsp"/>
 	</definition>
