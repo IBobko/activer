@@ -19,7 +19,7 @@ public class ThemesPageController {
     private SettingDao settingService;
     private AccountDao accountService;
 
-    public SettingDao getSettingService() {
+    private SettingDao getSettingService() {
         return settingService;
     }
 
@@ -43,12 +43,12 @@ public class ThemesPageController {
     }
 
     @RequestMapping("/update/{theme}")
-    public String update(@PathVariable String theme, HttpSession session,Model model) {
+    public String update(@PathVariable final String theme, final HttpSession session, final Model model) {
         model.addAttribute("pageType", "settings/theme");
-        Integer accountId = getAccountService().getCurrentProfileData(session).getId();
+        final Integer accountId = getAccountService().getCurrentProfileData(session).getId();
         getSettingService().setAccountSetting(accountId, "theme", theme);
         getAccountService().addSynchronizer(accountId, "theme", theme);
-        return "redirect:/profile/index";
+        return "redirect:/themes";
     }
 
 }
