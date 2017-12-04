@@ -429,27 +429,6 @@
                 </table>
             </form:form>
             </div>
-
-            <h4 style="color:#337ab7;font-weight:bold">Привязка к PayPal</h4>
-            <form:form method="post" modelAttribute="payPalForm">
-                <table>
-                    <tr>
-                        <td width="300">
-                            PayPal account
-                        </td>
-                        <td>
-                            <form:input type="text" path="login" cssClass="form-control"/>
-                        </td>
-                        <td>
-                            <form:errors path="login"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" style="text-align: center"><input type="submit" class="std-button btn btn-default" value="Привязать"/></td>
-                        <td></td>
-                    </tr>
-                </table>
-            </form:form>
         </td>
     </tr>
 
