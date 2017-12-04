@@ -1,12 +1,12 @@
-import org.hibernate.tool.schema.TargetType;
-import org.junit.Assert;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
-import org.junit.Before;
-import org.junit.Test;
+import org.hibernate.tool.schema.TargetType;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.testng.Assert;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 import ru.todo100.activer.dao.AccountDao;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.AuthorityItem;
@@ -22,18 +22,24 @@ import java.util.EnumSet;
  */
 public class MailTest {
 
-    ApplicationContext applicationContext;
+    private ApplicationContext applicationContext;
 
-
-    @Before
-    public void before() {
-        //applicationContext = new ClassPathXmlApplicationContext("classpath:/spring/root-context.xml");
+    private ApplicationContext getApplicationContext() {
+        return applicationContext;
     }
 
-    @Test
-    public void test(){
-        ApplicationContext app = new ClassPathXmlApplicationContext("classpath:/spring/root-context.xml");
-        MailService mailService = (MailService)app.getBean("mailService");
+    private void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
+
+    @BeforeTest
+    public void before() {
+        setApplicationContext(new ClassPathXmlApplicationContext("classpath:/spring/root-context.xml"));
+    }
+
+    @Test(enabled = false)
+    public void test() {
+        final MailService mailService = (MailService) getApplicationContext().getBean("mailService");
         AccountItem accountItem = new AccountItem();
         accountItem.setEmail("limit-speed@yandex.ru");
         accountItem.setLastName("Igor");
@@ -57,18 +63,17 @@ public class MailTest {
 
     //@Test
     public void generatePromo() {
-        PromoService promoService = (PromoService)applicationContext.getBean("promocodeService");
+        PromoService promoService = (PromoService) applicationContext.getBean("promocodeService");
         AccountItem accountItem = getTestAccount2();
         System.out.println(promoService.generateNewPromo(accountItem));
     }
 
     //@Test
     public void showAccountsPromo() {
-        PromoService promoService = (PromoService)applicationContext.getBean("promocodeService");
+        PromoService promoService = (PromoService) applicationContext.getBean("promocodeService");
         AccountItem accountItem = getTestAccount2();
 
-        for (PromoCodeItem promoCodeItem : promoService.getAccountPromos(accountItem))
-        {
+        for (PromoCodeItem promoCodeItem : promoService.getAccountPromos(accountItem)) {
             System.out.println(promoCodeItem);
         }
 
@@ -77,7 +82,7 @@ public class MailTest {
 
     //@Test
     public void checkPromo() {
-        PromoService promoService = (PromoService)applicationContext.getBean("promocodeService");
+        PromoService promoService = (PromoService) applicationContext.getBean("promocodeService");
         PromoCodeItem promo = promoService.getPromo("7565");
         if (promo != null && promo.getUsed() == null) {
             System.out.println("Промо найден и он свободен");
@@ -100,17 +105,17 @@ public class MailTest {
 
     //@Test
     public void referTest() {
-        ReferService referService = (ReferService)applicationContext.getBean("referService");
+        ReferService referService = (ReferService) applicationContext.getBean("referService");
         AccountItem account = referService.getUserByRefer("jKitrS");
         if (account != null) {
-            System.out.println(account  + " Пользователь с такой реферальной ссылкой найден");
+            System.out.println(account + " Пользователь с такой реферальной ссылкой найден");
         } else {
             System.out.println("Пользователь с такой реферальной ссылкой не найден");
         }
     }
 
     private AccountItem getTestAccount2() {
-        AccountDao accountService = (AccountDao)applicationContext.getBean("accountService");
+        AccountDao accountService = (AccountDao) applicationContext.getBean("accountService");
         AccountItem accountItem = accountService.get("limit-speed@yandex.ru");
         Assert.assertNotNull(accountItem);
         return accountItem;
@@ -136,6 +141,6 @@ public class MailTest {
         gen.setOutputFile("C://Users/User/1.sql");
         gen.setDelimiter(";");
         gen.setFormat(true);
-        gen.createOnly(targetTypes,metadata.buildMetadata());
+        gen.createOnly(targetTypes, metadata.buildMetadata());
     }
 }
