@@ -52,14 +52,6 @@
     	<put-attribute name="content" value="/WEB-INF/views/mysql/tables.jsp" />
 	</definition>
 
-	<definition name="paypal/fail" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/paypal/fail.jsp" />
-	</definition>
-
-	<definition name="paypal/success" extends="base-template">
-    	<put-attribute name="content" value="/WEB-INF/views/paypal/success.jsp" />
-	</definition>
-
 	<definition name="message/index" extends="base-template">
 		<put-attribute name="content" value="/WEB-INF/views/message/index.jsp" />
 	</definition>

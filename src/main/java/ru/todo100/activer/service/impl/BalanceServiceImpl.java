@@ -110,4 +110,9 @@ public class BalanceServiceImpl implements BalanceService {
         setAccountBalanceSum(accountItem, newSum);
     }
 
+    @Override
+    public BalanceItem getBalance(final AccountItem accountItem) {
+        return getBalanceDao().createOrGet(getAccountService().getCurrentAccount());
+    }
+
 }
