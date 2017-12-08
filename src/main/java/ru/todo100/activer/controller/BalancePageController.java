@@ -32,6 +32,7 @@ public class BalancePageController {
         return payeerService;
     }
 
+    @Autowired
     public void setPayeerService(PayeerService payeerService) {
         this.payeerService = payeerService;
     }

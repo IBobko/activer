@@ -70,7 +70,7 @@
 
                     <div class="form-group">
                         <form:errors path="agreement"/>
-                        <form:checkbox path="agreement"/> Я согласен с условиями <a href="<c:url value="/agreement/main"/>" target="_blank">пользовательского соглашения</a> и <a target="_blank" href="<c:url value="/agreement/supplementary"/>">дополнительного соглашением</a> и даю согласие на обработку своих персональных данных.
+                        <form:checkbox path="agreement"/> Я согласен с условиями <a href="<c:url value="/agreement/main"/>" target="_blank">пользовательского соглашения</a>, <a target="_blank" href="<c:url value="/agreement/supplementary"/>">дополнительного соглашением</a> и даю согласие на обработку своих персональных данных.
                     </div>
                     <br/>
                             <div style="text-align: center">
