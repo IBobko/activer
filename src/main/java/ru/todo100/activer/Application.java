@@ -67,7 +67,7 @@ public class Application extends SpringBootServletInitializer {
     @Bean
     public TilesConfigurer tilesConfigurer() {
         TilesConfigurer tilesConfigurer = new TilesConfigurer();
-        tilesConfigurer.setDefinitions("/WEB-INF/tiles/tiles-templates.xml");
+        tilesConfigurer.setDefinitions("classpath:/tiles/tiles-templates.xml");
         return tilesConfigurer;
     }
 
