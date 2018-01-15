@@ -68,6 +68,7 @@
             </div>
         </nav>
         <main:leftmenu/>
+        <p class="copyright" style="bottom:60px">Сайт работает в тестовом режиме. По всем вопросам пишите на почту <a href="mailto:support@onoffline.ru">support@onoffline.ru</a></p>
         <p class="copyright">on/off line <span class="fa fa-copyright"></span> 2016-2017</p>
     </div>
     <!-- /Sidebar -->
