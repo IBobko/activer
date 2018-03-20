@@ -3,7 +3,10 @@ package ru.todo100.activer.dao;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import ru.todo100.activer.data.*;
+import ru.todo100.activer.data.FriendData;
+import ru.todo100.activer.data.FriendsData;
+import ru.todo100.activer.data.JobData;
+import ru.todo100.activer.data.PhotoAvatarSizeData;
 import ru.todo100.activer.model.AccountFriendRelationItem;
 import ru.todo100.activer.model.AccountItem;
 import ru.todo100.activer.model.JobItem;
@@ -17,7 +20,7 @@ import java.util.List;
  * @author Igor Bobko <limit-speed@yandex.ru>.
  */
 @Transactional
-public class FriendDao extends AbstractDao  {
+public class FriendDao extends AbstractDao {
     @Autowired
     PhotoService photoService1;
 
@@ -27,12 +30,9 @@ public class FriendDao extends AbstractDao  {
     }
 
     public FriendsData getFriends(final Integer accountId) {
-        @SuppressWarnings("unchecked")
-        final List<AccountFriendRelationItem> outRelations = getCriteria().add(Restrictions.eq("account.id", accountId)).list();
+        @SuppressWarnings("unchecked") final List<AccountFriendRelationItem> outRelations = getCriteria().add(Restrictions.eq("account.id", accountId)).list();
 
-        @SuppressWarnings("unchecked")
-        final List<AccountFriendRelationItem> inRelations = getCriteria().add(Restrictions.eq("friendAccount.id", accountId)).list();
-
+        @SuppressWarnings("unchecked") final List<AccountFriendRelationItem> inRelations = getCriteria().add(Restrictions.eq("friendAccount.id", accountId)).list();
 
         final List<FriendData> friends = new ArrayList<>();
         final List<FriendData> outRequest = new ArrayList<>();
@@ -80,7 +80,7 @@ public class FriendDao extends AbstractDao  {
         JobData jobData = new JobData();
 
         if (accountItem.getJobItems() != null && !accountItem.getJobItems().isEmpty()) {
-            JobItem jobItem = (JobItem)accountItem.getJobItems().toArray()[accountItem.getJobItems().size()-1];
+            JobItem jobItem = (JobItem) accountItem.getJobItems().toArray()[accountItem.getJobItems().size() - 1];
             jobData.setCity(jobItem.getCity());
             jobData.setPost(jobItem.getPost());
             jobData.setWork(jobItem.getWorkplace());
@@ -94,21 +94,18 @@ public class FriendDao extends AbstractDao  {
         return friendData;
     }
 
-    public void addRequest(Integer accountId, Integer FriendId) {
-        AccountFriendRelationItem item = new AccountFriendRelationItem();
-        AccountItem item1 = getSession().load(AccountItem.class,accountId);
-        item.setAccount(item1);
-
-        AccountItem item2 = getSession().load(AccountItem.class,FriendId);
-        item.setFriendAccount(item2);
-
+    public void addRequest(final Integer accountId, final Integer FriendId) {
+        final AccountFriendRelationItem item = new AccountFriendRelationItem();
+        final AccountItem account = getSession().load(AccountItem.class, accountId);
+        item.setAccount(account);
+        final AccountItem friendAccount = getSession().load(AccountItem.class, FriendId);
+        item.setFriendAccount(friendAccount);
         getSession().save(item);
-
     }
 
     public void delete(Integer accountId, Integer friendId) {
         final AccountFriendRelationItem friend = (AccountFriendRelationItem) getCriteria()
-                .add(Restrictions.and(Restrictions.eq("account.id", accountId),Restrictions.eq("friendAccount.id", friendId)))
+                .add(Restrictions.and(Restrictions.eq("account.id", accountId), Restrictions.eq("friendAccount.id", friendId)))
                 .uniqueResult();
         getSession().delete(friend);
     }

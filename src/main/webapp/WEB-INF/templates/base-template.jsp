@@ -199,6 +199,17 @@
         popupWindow.show();
     });
 
+    ACTIVER.Global.on("FRIEND_REQUEST",function(data){
+        var popupWindow = $('.popupWindow');
+        popupWindow.on('click',function(){
+           $(this).hide();
+        });
+        var fullName = "<strong><a href='/profile/id" + data.from.id + "' style='color:white'>" + data.from.firstName + " " + data.from.lastName + "</a></strong>";
+        var photo = "<img src='${staticImages}/" + data.from.photo60x60 + "'/>";
+        popupWindow.html(photo + "<div style='margin-left: 10px'>" + fullName + " хочет добавить вас в друзья</div>");
+        popupWindow.css('display','flex');
+    });
+
     if (window.ACTIVER.Global.onPRIVATE_MESSAGE == null) {
         window.ACTIVER.Global.onPRIVATE_MESSAGE = function (data) {
             console.log(data);
@@ -233,7 +244,7 @@
         };
     }
 </script>
-<div id="popupWindow"
+<div id="popupWindow" class="popupWindow"
      style="font-size:12px;display:none;bottom:5%; z-index:100000; left:10px; position:fixed; width:300px; height:80px;background:#5d7fb5;border-radius:10px;padding:10px;font-weight:normal;color:white;">
 
 </div>

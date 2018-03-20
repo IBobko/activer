@@ -156,7 +156,7 @@ public class ProfilePopulator implements Populator<AccountItem, ProfileData> {
         profileData.setFirstName(accountItem.getFirstName());
         profileData.setLastName(accountItem.getLastName());
 
-        profileData.setOnline(accountItem.getIsOnline());
+        profileData.setOnline(accountItem.isOnline());
 
         /* Educations populate*/
         if (!accountItem.getEducationItems().isEmpty()) {

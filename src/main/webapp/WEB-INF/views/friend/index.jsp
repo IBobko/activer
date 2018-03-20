@@ -37,7 +37,7 @@
         <div role="tabpanel" class="tab-pane active" id="Friends" >
             <c:forEach items="${friendData.friends}" var="friend">
                 <div class="manBlock">
-                    <img src="${staticFiles}/${friend.photo60x60}." width="80" style="float:left">
+                    <img src="${staticImages}/${friend.photo60x60}." width="80" style="float:left">
                     <div style="margin: 0 100px">
                         <a href="<c:url value="/profile/id${friend.id}"/>">${friend.firstName}&nbsp;${friend.lastName}</a><br/>
                         <span style="font-weight: normal">${friend.job.post}&nbsp;-&nbsp;${friend.job.work}</span><br/>
@@ -49,7 +49,7 @@
         <div role="tabpanel" class="tab-pane" id="outFriends" onclick="tabClick('out')">
             <c:forEach items="${friendData.outRequest}" var="friend">
                 <div class="manBlock">
-                    <img src="${staticFiles}/${friend.photo60x60}." width="80" style="float:left">
+                    <img src="${staticImages}/${friend.photo60x60}." width="80" style="float:left">
                     <div style="margin: 0 100px">
                         <a href="<c:url value="/profile/id${friend.id}"/>">${friend.firstName}&nbsp;${friend.lastName}</a><br/>
                         <span style="font-weight: normal">${friend.job.post} ${friend.job.work}</span><br/>
@@ -62,7 +62,7 @@
         <div role="tabpanel" class="tab-pane" id="inFriends" onclick="tabClick('in')">
             <c:forEach items="${friendData.inRequest}" var="friend">
                 <div class="manBlock">
-                    <img src="${staticFiles}/${friend.photo60x60}." width="80" style="float:left">
+                    <img src="${staticImages}/${friend.photo60x60}." width="80" style="float:left">
                     <div style="margin: 0 100px">
                         <a href="<c:url value="/profile/id${friend.id}"/>">${friend.firstName}&nbsp;${friend.lastName}</a><br/>
                         <span style="font-weight: normal">${friend.job.post} ${friend.job.work}</span><br/>
@@ -125,7 +125,7 @@
 
             <c:forEach items="${searchResult}" var="friend">
                 <div class="manBlock" style="width:400px">
-                    <img src="${staticFiles}/${friend.photo60x60}." width="80" style="float:left">
+                    <img src="${staticImages}/${friend.photo60x60}." width="80" style="float:left">
                     <div style="margin: 0 100px">
                         <a href="<c:url value="/profile/id${friend.id}"/>">${friend.firstName}&nbsp;${friend.lastName}</a><br/>
                         <a style="font-weight: normal" href="<c:url value="/message/${friend.id}"/>">Написать сообщение</a><br/>

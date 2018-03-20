@@ -61,4 +61,5 @@
 
     <bean id="topLineDao" class="ru.todo100.activer.dao.TopLineDao"/>
 
+    <bean id="notificationDao" class="ru.todo100.activer.dao.NotificationDao"/>
 </beans>

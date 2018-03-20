@@ -156,6 +156,8 @@
 	<bean id="payPalService" class="ru.todo100.activer.service.impl.PayPalServiceImpl"/>
 
 	<bean id="balanceService" class="ru.todo100.activer.service.impl.BalanceServiceImpl"/>
+	<bean id="notificationService" class="ru.todo100.activer.service.impl.NotificationServiceImpl"/>
+
 	<!-- Facades -->
 	<import resource="facade-context.xml" />
 

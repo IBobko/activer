@@ -299,7 +299,7 @@ public class AccountItem extends DateChanges implements Serializable {
         this.referCode = referCode;
     }
 
-    public boolean getIsOnline() {
+    public boolean isOnline() {
         final Calendar calendar = getLastActivity();
         return calendar != null && new GregorianCalendar().getTimeInMillis() - calendar.getTimeInMillis() <= 300000;
     }

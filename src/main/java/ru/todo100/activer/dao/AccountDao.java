@@ -470,4 +470,15 @@ public class AccountDao extends AbstractDao {
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
+    public Boolean isOnline(final AccountItem account) {
+        if (account != null) {
+            return account.isOnline();
+        }
+        return null;
+    }
+
+    public Boolean isOnline(final Integer accountId) {
+        final AccountItem account = getSession().load(AccountItem.class, accountId);
+        return isOnline(account);
+    }
 }

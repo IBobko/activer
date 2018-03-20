@@ -171,7 +171,7 @@ public class MessagePageController {
         messageAccountDataPopulator.setLastName(accountItem.getLastName());
         messageAccountDataPopulator.setId(accountItem.getId());
         messageAccountDataPopulator.setPhoto60x60(photoService1.getSizedPhoto(accountItem.getId()).getPhotoMini());
-        messageAccountDataPopulator.setOnline(accountItem.getIsOnline());
+        messageAccountDataPopulator.setOnline(accountItem.isOnline());
         return messageAccountDataPopulator;
     }
 
